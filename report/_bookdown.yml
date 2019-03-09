@@ -1,0 +1,4 @@
+new_session: true
+book_filename: "resdoc"
+rmd_files: ["index.Rmd", "introduction.Rmd", "appendix-example.Rmd", "references.Rmd"]
+delete_merged_file: true

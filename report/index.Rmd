@@ -1,0 +1,55 @@
+---
+title: "A management procedure framework for groundfish in British Columbia"
+author: |
+  First. M. Last^1^ and
+  Alex B. Smith^1^
+author_list: "Last, F.M. and Smith, A.B."
+address: |
+  ^1^Pacific Biological Station\
+     Fisheries and Oceans Canada, 3190 Hammond Bay Road\
+     Nanaimo, British Columbia, V9T 6N7, Canada\
+year: 2019
+report_number: nnn
+region: Pacific Region
+abstract: |
+  Here is the abstract text. 
+header: "Draft working paper --- Do not cite or circulate" # or "" to omit
+output:
+ csasdown::resdoc_pdf:
+   french: false
+# ------------
+# End of options to set
+knit: bookdown::render_book
+link-citations: true
+bibliography: bib/refs.bib
+csl: csl/csas.csl # or csl/csas-french.csl for French
+---
+
+```{r setup, echo=FALSE, cache=FALSE, message=FALSE, results='hide', warning=FALSE}
+# adjust as desired:
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>",
+  fig.path = if (knitr:::is_latex_output()) "knitr-figs-pdf/" else "knitr-figs-docx/",
+  cache.path = if (knitr:::is_latex_output()) "knitr-cache-tex/" else "knitr-cache-docx/",
+  fig.asp = 0.618,
+  fig.width = 9,
+  out.width = "6in",
+  echo = FALSE,
+#  autodep = TRUE,
+#  cache = TRUE,
+  cache.comments = FALSE,
+  dev = if (knitr:::is_latex_output()) "png" else "png",
+  dpi = 180,
+  fig.align = "center",
+  fig.pos = "htb"
+)
+options(kableExtra.latex.load_packages = FALSE)
+```
+
+```{r load-libraries, cache=FALSE}
+# add other packages here:
+library(csasdown)
+```
