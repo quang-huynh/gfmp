@@ -75,10 +75,11 @@ pbs2dlm <- function(dat, name = "", area = "3[CD]+",
   obj@Ind <- ind / mean(ind, na.rm = TRUE) # standardise
 
   # Maturity ----------
-  samps <- bind_samples(
-    dat_comm = dat$commercial_samples,
-    dat_survey = dat$survey_samples
-  )
+  # samps <- bind_samples(
+    # dat_comm = dat$commercial_samples,
+    # dat_survey = dat$survey_samples
+  # )
+  samps <- dat$survey_samples
   m_mat <- fit_mat_ogive(samps, type = "length")
   mat_perc <- extract_maturity_perc(stats::coef(m_mat$model))
   se_l50 <- delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
