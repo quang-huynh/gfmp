@@ -24,11 +24,18 @@ knitr::opts_chunk$set(
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 library(DLMtool)
+library(gfplot)
 library(rfishbase)
 # library(PBSmptools)
 # devtools::load_all("../pbs-mptools")
 # options(mc.cores = parallel::detectCores())
 n_iters <- 50
+
+# Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
+if(!exists(d)){
+  fetch_data("shortraker rockfish")
+}
+d <- load_data("shortraker rockfish")
 ```
 
 ## Stock parameters
@@ -44,8 +51,8 @@ stock <- DLMtool::Rockfish
 *Not necessarily reliable because ageing very uncertain; probably should look at some upper quantile or take value from elsewhere*
 
 ```{r}
-(gfbio_maxage <- max(PBSmptools::short_age_length$age))
-stock@maxage <- gfbio_maxage
+# (gfbio_maxage <- max(PBSmptools::short_age_length$age))
+# stock@maxage <- gfbio_maxage
 ```
 
 R0, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
@@ -66,10 +73,10 @@ Inter-annual variability in natural mortality rate expressed as a uniform distri
 stock@Msd
 ```
 
-Mean temporal trend in natural mortality rate, expressed as a percent change in M per year. Unlikely to find any data on this. We leave it at the default ranging between -0.25% and 0.25% per year.
+Mean temporal trend in natural mortality rate, expressed as a percent change in M per year. Unlikely to find any data on this. Set it to range between -0.25% and 0.25% per year.
 
 ```{r}
-stock@Mgrad
+stock@Mgrad <- c(-0.0025, 0.0025)
 ```
 
 Fraction of discarded fish that die. For shortraker, and the most rockfish, this value should be at or near 100%.
@@ -89,16 +96,17 @@ Maximum length: @love2002 list the maximum size as 120 cm. They also note that i
 Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model. 
 
 ```{r}
+short_age_length <- 
 # short_age_length <- PBSmptools::get_age_length("Sebastes borealis", "West Coast Haida Gwaii")
-short_age_length <- PBSmptools::short_age_length
-set.seed(123)
-vb_model <- PBSmptools::fit_vb(
-  age = short_age_length$age, 
-  length = short_age_length$length,
-  control = list(adapt_delta = 0.9), iter = 800, cores = 1, chains = 3)
-bayesplot::mcmc_combo(as.matrix(vb_model), pars = c("k", "linf", "t0", "sigma"))
-vb_samples <- PBSmptools::sample_posterior_vb(vb_model, n = n_iters)
-pairs(vb_samples)
+# short_age_length <- PBSmptools::short_age_length
+# set.seed(123)
+# vb_model <- PBSmptools::fit_vb(
+#   age = short_age_length$age, 
+#   length = short_age_length$length,
+#   control = list(adapt_delta = 0.9), iter = 800, cores = 1, chains = 3)
+# bayesplot::mcmc_combo(as.matrix(vb_model), pars = c("k", "linf", "t0", "sigma"))
+# vb_samples <- PBSmptools::sample_posterior_vb(vb_model, n = n_iters)
+# pairs(vb_samples)
 
 # # TODO move this plotting code to the package:
 # e <- rstan::extract(vb_model)
@@ -121,96 +129,96 @@ pairs(vb_samples)
 
 Let's try fitting VB models that permit a specified level of aging measurement error. We will specify this level of measurement error with a CV.
 
-```{r}
-library(rstan)
-rstan_options(auto_write = TRUE)
-short_age_length <- PBSmptools::short_age_length
+<!-- ```{r} -->
+<!-- library(rstan) -->
+<!-- rstan_options(auto_write = TRUE) -->
+<!-- short_age_length <- PBSmptools::short_age_length -->
 
-cv_ages <- c(0, 0.2)
-e <- list()
-g <- list()
-vb_fit <- list()
-for (ii in seq_along(cv_ages)) {
-  if (cv_ages[[ii]] == 0) {
-    vb_fit[[ii]] <- stan("analysis/vb_gamma.stan",
-      data = 
-        list(age = short_age_length$age,
-          length = short_age_length$length,
-          N = length(short_age_length$age)),
-      control = list(adapt_delta = 0.99, max_treedepth = 25), 
-      iter = 2000, cores = 1, chains = 4,
-      pars = c("k", "linf", "cv_length", "t0"))
-  } else {
-    vb_fit[[ii]] <- stan("analysis/vb_aging_error_gamma.stan",
-      data = 
-        list(age = short_age_length$age,
-          length = short_age_length$length,
-          N = length(short_age_length$age),
-          cv_age = cv_ages[ii]),
-      control = list(adapt_delta = 0.99, max_treedepth = 25), 
-      iter = 2000, cores = 1, chains = 4,
-      pars = c("k", "linf", "cv_length", "t0"))
-  }
-  e[[ii]] <- rstan::extract(vb_fit[[ii]])
-}
-ages <- seq(0, max(PBSmptools::short_age_length$age), length.out = 200)
-for (ii in seq_along(cv_ages)) {
-  p <- matrix(nrow = length(PBSmptools::short_age_length$age), ncol = 150)
-  samples <- sample(seq_len(length(e[[ii]]$linf)), size = ncol(p))
-  for (i in 1:nrow(p)) {
-    for (j in seq_len(ncol(p))) {
-      p[i, j] <- e[[ii]]$linf[samples[j]] * 
-        (1 - exp(-e[[ii]]$k[samples[j]] * (ages[i] - e[[ii]]$t0[samples[j]])))
-    }
-  }
-  p <- reshape2::melt(p)
-  p$age <- ages[p$Var1]
-  p$sex <- 1
-  library(ggplot2)
-  g[[ii]] <- 
-    ggplot(PBSmptools::short_age_length, aes(age, length, colour = as.factor(sex))) +
-    geom_point() +
-    geom_line(aes(y = value, group = Var2), data = p, colour = "black", alpha = 0.05) +
-    guides(colour = FALSE)
-}
-# gridExtra::grid.arrange(g[[1]], g[[2]], g[[3]], g[[4]])
+<!-- cv_ages <- c(0, 0.2) -->
+<!-- e <- list() -->
+<!-- g <- list() -->
+<!-- vb_fit <- list() -->
+<!-- for (ii in seq_along(cv_ages)) { -->
+<!--   if (cv_ages[[ii]] == 0) { -->
+<!--     vb_fit[[ii]] <- stan("analysis/vb_gamma.stan", -->
+<!--       data =  -->
+<!--         list(age = short_age_length$age, -->
+<!--           length = short_age_length$length, -->
+<!--           N = length(short_age_length$age)), -->
+<!--       control = list(adapt_delta = 0.99, max_treedepth = 25),  -->
+<!--       iter = 2000, cores = 1, chains = 4, -->
+<!--       pars = c("k", "linf", "cv_length", "t0")) -->
+<!--   } else { -->
+<!--     vb_fit[[ii]] <- stan("analysis/vb_aging_error_gamma.stan", -->
+<!--       data =  -->
+<!--         list(age = short_age_length$age, -->
+<!--           length = short_age_length$length, -->
+<!--           N = length(short_age_length$age), -->
+<!--           cv_age = cv_ages[ii]), -->
+<!--       control = list(adapt_delta = 0.99, max_treedepth = 25),  -->
+<!--       iter = 2000, cores = 1, chains = 4, -->
+<!--       pars = c("k", "linf", "cv_length", "t0")) -->
+<!--   } -->
+<!--   e[[ii]] <- rstan::extract(vb_fit[[ii]]) -->
+<!-- } -->
+<!-- ages <- seq(0, max(PBSmptools::short_age_length$age), length.out = 200) -->
+<!-- for (ii in seq_along(cv_ages)) { -->
+<!--   p <- matrix(nrow = length(PBSmptools::short_age_length$age), ncol = 150) -->
+<!--   samples <- sample(seq_len(length(e[[ii]]$linf)), size = ncol(p)) -->
+<!--   for (i in 1:nrow(p)) { -->
+<!--     for (j in seq_len(ncol(p))) { -->
+<!--       p[i, j] <- e[[ii]]$linf[samples[j]] *  -->
+<!--         (1 - exp(-e[[ii]]$k[samples[j]] * (ages[i] - e[[ii]]$t0[samples[j]]))) -->
+<!--     } -->
+<!--   } -->
+<!--   p <- reshape2::melt(p) -->
+<!--   p$age <- ages[p$Var1] -->
+<!--   p$sex <- 1 -->
+<!--   library(ggplot2) -->
+<!--   g[[ii]] <-  -->
+<!--     ggplot(PBSmptools::short_age_length, aes(age, length, colour = as.factor(sex))) + -->
+<!--     geom_point() + -->
+<!--     geom_line(aes(y = value, group = Var2), data = p, colour = "black", alpha = 0.05) + -->
+<!--     guides(colour = FALSE) -->
+<!-- } -->
+<!-- # gridExtra::grid.arrange(g[[1]], g[[2]], g[[3]], g[[4]]) -->
 
-# devtools::install_github("seananderson/stanhelpers")
-out <- plyr::llply(vb_fit, stanhelpers::extract_df, output = "long_df")
-for (i in seq_along(cv_ages)) out[[i]]$cv_age <- cv_ages[[i]]
-out <- dplyr::bind_rows(out)
-out <- dplyr::filter(out, variable != "lp__")
-ggplot(out, aes(value)) + geom_histogram() + 
-  facet_grid(cv_age~variable, scales = "free")
+<!-- # devtools::install_github("seananderson/stanhelpers") -->
+<!-- out <- plyr::llply(vb_fit, stanhelpers::extract_df, output = "long_df") -->
+<!-- for (i in seq_along(cv_ages)) out[[i]]$cv_age <- cv_ages[[i]] -->
+<!-- out <- dplyr::bind_rows(out) -->
+<!-- out <- dplyr::filter(out, variable != "lp__") -->
+<!-- ggplot(out, aes(value)) + geom_histogram() +  -->
+<!--   facet_grid(cv_age~variable, scales = "free") -->
 
-ggplot(out, aes(as.factor(cv_age), value)) + 
-  geom_violin(draw_quantiles = c(0.5)) + 
-  facet_wrap(~variable, scales = "free_y")
+<!-- ggplot(out, aes(as.factor(cv_age), value)) +  -->
+<!--   geom_violin(draw_quantiles = c(0.5)) +  -->
+<!--   facet_wrap(~variable, scales = "free_y") -->
 
-cv <- 0.2
-ages <- seq(1, 150, length.out = 1000)
-ages_w_error <- rgamma(n = length(ages), shape = 1/cv^2, rate = 1/(ages * cv^2))
-par(xpd = NA)
-plot(ages, ages_w_error, yaxs = "i", ylim = c(0, max(ages_w_error)*1.01), 
-  col = "#00000040", pch = 19)
-lines(ages, ages)
+<!-- cv <- 0.2 -->
+<!-- ages <- seq(1, 150, length.out = 1000) -->
+<!-- ages_w_error <- rgamma(n = length(ages), shape = 1/cv^2, rate = 1/(ages * cv^2)) -->
+<!-- par(xpd = NA) -->
+<!-- plot(ages, ages_w_error, yaxs = "i", ylim = c(0, max(ages_w_error)*1.01),  -->
+<!--   col = "#00000040", pch = 19) -->
+<!-- lines(ages, ages) -->
 
-cv <- 0.2
-g[[2]] + geom_segment(data = dplyr::mutate(PBSmptools::short_age_length, 
-  l = qgamma(0.025, shape = 1/cv^2, rate = 1/(age * cv^2)),
-  u = qgamma(0.975, shape = 1/cv^2, rate = 1/(age * cv^2))),
-  aes(x = l, xend = u, y = length, yend = length), alpha = 0.1,
-  colour = "black") +
-  theme_light() +
-  coord_cartesian(xlim = c(0, 160))
-ggsave("analysis/short-vb-ex.pdf", width = 6, height = 5)
+<!-- cv <- 0.2 -->
+<!-- g[[2]] + geom_segment(data = dplyr::mutate(PBSmptools::short_age_length,  -->
+<!--   l = qgamma(0.025, shape = 1/cv^2, rate = 1/(age * cv^2)), -->
+<!--   u = qgamma(0.975, shape = 1/cv^2, rate = 1/(age * cv^2))), -->
+<!--   aes(x = l, xend = u, y = length, yend = length), alpha = 0.1, -->
+<!--   colour = "black") + -->
+<!--   theme_light() + -->
+<!--   coord_cartesian(xlim = c(0, 160)) -->
+<!-- ggsave("analysis/short-vb-ex.pdf", width = 6, height = 5) -->
 
-# e <- stanhelpers::extract_df(vb_fit[[2]], output = "wide_df") %>% 
-#   dplyr::select(k, linf, t0)
-# GGally::ggpairs(e)
+<!-- # e <- stanhelpers::extract_df(vb_fit[[2]], output = "wide_df") %>%  -->
+<!-- #   dplyr::select(k, linf, t0) -->
+<!-- # GGally::ggpairs(e) -->
 
-vb_samples <- extract(e[[2]])
-```
+<!-- vb_samples <- extract(e[[2]]) -->
+<!-- ``` -->
 
 
 ```{r}
@@ -252,7 +260,7 @@ stock@Linfgrad
 Mean temporal trend in log-normal recruitment deviations. Need to look into exactly what this corresponds to. Trend over what period of time? 
 
 ```{r}
-stock@recgrad
+#stock@recgrad
 ```
 
 Autocorrelation in recruitment deviations rec(t) = AC*rec(t-1)+(1-AC)*sigma(t). The default is a wide range, `r stock@AC`. @thorson2014 find that autocorrelation of recruitment deviations is probably around 0.45. Barring better information in the literature, let's leave the default wide range:
