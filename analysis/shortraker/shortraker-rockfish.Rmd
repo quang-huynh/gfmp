@@ -32,10 +32,11 @@ library(rfishbase)
 n_iters <- 50
 
 # Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
-if(!exists(d)){
-  fetch_data("shortraker rockfish")
+species_name <- "shortraker rockfish"
+if(!data_file_exists(species_name)){
+  fetch_data(species_name)
 }
-d <- load_data("shortraker rockfish")
+d <- load_data(species_name)
 ```
 
 ## Stock parameters
@@ -51,8 +52,7 @@ stock <- DLMtool::Rockfish
 *Not necessarily reliable because ageing very uncertain; probably should look at some upper quantile or take value from elsewhere*
 
 ```{r}
-# (gfbio_maxage <- max(PBSmptools::short_age_length$age))
-# stock@maxage <- gfbio_maxage
+stock@maxage <- max(d$commercial_samples$age, na.rm = TRUE)
 ```
 
 R0, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
@@ -96,7 +96,7 @@ Maximum length: @love2002 list the maximum size as 120 cm. They also note that i
 Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model. 
 
 ```{r}
-short_age_length <- 
+#short_age_length <- g
 # short_age_length <- PBSmptools::get_age_length("Sebastes borealis", "West Coast Haida Gwaii")
 # short_age_length <- PBSmptools::short_age_length
 # set.seed(123)

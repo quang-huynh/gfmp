@@ -1,5 +1,6 @@
-#' fetch_data
+#' Create the data file for the given species by running gfplot routines
 #'
+#' @param species_name the name of the species or species code as described in gfplot
 #' @param file the full path filename including extension .rds
 #'
 #' @export
@@ -19,8 +20,9 @@ fetch_data <- function(species_name = "shortraker rockfish",
   saveRDS(d, file)
 }
 
-#' load_data
+#' Load the data in from the data file for the given species
 #'
+#' @param species_name the name of the species or species code as described in gfplot
 #' @param file the full path filename including extension .rds
 #'
 #' @return the contents of the rds file as a list
@@ -38,4 +40,23 @@ load_data <- function(species_name = "shortraker rockfish",
     stop("Error, file ", file, " does not exist. To create it, run fetch_data().\n")
   }
   readRDS(file)
+}
+
+#' Does the data file exist or not for the given species
+#'
+#' @param species_name the name of the species or species code as described in gfplot
+#' @param file the full path filename including extension .rds
+#'
+#' @return the contents of the rds file as a list
+#' @export
+#'
+#' @examples
+#' data_file_exists("shortraker rockfish")
+data_file_exists <- function(species_name = "shortraker rockfish",
+                             file = file.path(here::here("generated-data"),
+                                              paste0(gsub(" ",
+                                                          "-",
+                                                          species_name),
+                                                     ".rds"))){
+  file.exists(file)
 }
