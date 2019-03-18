@@ -23,8 +23,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
+library(tidyverse)
 library(DLMtool)
 library(gfplot)
+library(stanhelpers)
 library(rfishbase)
 # library(PBSmptools)
 # devtools::load_all("../pbs-mptools")
@@ -52,7 +54,7 @@ stock <- DLMtool::Rockfish
 *Not necessarily reliable because ageing very uncertain; probably should look at some upper quantile or take value from elsewhere*
 
 ```{r}
-stock@maxage <- max(d$commercial_samples$age, na.rm = TRUE)
+stock@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
 ```
 
 R0, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
@@ -96,35 +98,14 @@ Maximum length: @love2002 list the maximum size as 120 cm. They also note that i
 Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model. 
 
 ```{r}
-#short_age_length <- g
-# short_age_length <- PBSmptools::get_age_length("Sebastes borealis", "West Coast Haida Gwaii")
-# short_age_length <- PBSmptools::short_age_length
-# set.seed(123)
-# vb_model <- PBSmptools::fit_vb(
-#   age = short_age_length$age, 
-#   length = short_age_length$length,
-#   control = list(adapt_delta = 0.9), iter = 800, cores = 1, chains = 3)
-# bayesplot::mcmc_combo(as.matrix(vb_model), pars = c("k", "linf", "t0", "sigma"))
-# vb_samples <- PBSmptools::sample_posterior_vb(vb_model, n = n_iters)
-# pairs(vb_samples)
+x <- bind_samples(dat_survey = d$survey_samples, dat_comm = d$commercial_samples)
+x <- x[!duplicated(x$specimen_id), ]
+x <- filter(x, major_stat_area_name != "4B: STRAIT OF GEORGIA")
+vb_m <- fit_vb(x, "male", method = "mcmc", iter = 2000, chains = 1, cores = 4)
+vb_f <- fit_vb(x, "female", method = "mcmc", iter = 2000, chains = 1, cores = 4)
 
-# # TODO move this plotting code to the package:
-# e <- rstan::extract(vb_model)
-# ages <- seq(0, 150, length.out = 200)
-# p <- matrix(nrow = length(PBSmptools::short_age_length$age), ncol = 150)
-# samples <- sample(seq_len(length(e$linf)), size = ncol(p))
-# for (i in 1:nrow(p)) {
-#   for (j in seq_len(ncol(p))) {
-#     p[i, j] <- e$linf[samples[j]] * (1 - exp(-e$k[samples[j]] * (ages[i] - e$t0[samples[j]])))
-#   }
-# }
-# p <- reshape2::melt(p)
-# p$age <- ages[p$Var1]
-# p$sex <- 1
-# library(ggplot2)
-# ggplot(PBSmptools::short_age_length, aes(age, length, colour = as.factor(sex))) +
-#   geom_point() +
-#   geom_line(aes(y = value, group = Var2), data = p, colour = "black", alpha = 0.05)
+plot_vb(object_female = vb_f, object_male = vb_m) +
+  guides(colour = FALSE, fill = FALSE, lty = FALSE)
 ```
 
 Let's try fitting VB models that permit a specified level of aging measurement error. We will specify this level of measurement error with a CV.
@@ -222,9 +203,9 @@ Let's try fitting VB models that permit a specified level of aging measurement e
 
 
 ```{r}
-# short@Linf
-# short@K
-# short@t0
+short@Linf <- vonb$model$par$linf
+short@K <- vonb$model$par$k
+short@t0 <- vonb$model$t0
 ```
 
 Coefficient of variation of length-at-age (assumed constant for all age classes).
