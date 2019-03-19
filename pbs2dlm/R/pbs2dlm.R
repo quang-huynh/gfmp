@@ -66,7 +66,97 @@ data_file_exists <- function(species_name,
   file.exists(file)
 }
 
-#' Convert groundfish PBS data to a DLMtool data object
+#' Create a Stock object for DLMtool from data and values, to be used in an Operating Model (OM)
+#'
+#' @param d An S4 object of class DLMtool Data.
+#'
+#' @return An S4 object of class DLMtool Stock.
+#' @export
+#' #' \dontrun{
+#' library(gfplot)
+#' species <- "shortraker rockfish"
+#' fetch_data(species)
+#' d <- load_data(species)
+#' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
+#' om <- create_dlm_stock(dat)
+#' }
+create_dlm_stock <- function(d){
+
+  obj <- methods::new("Stock")
+  obj@Name <- d@name
+  obj@Common_Name <- d@Common_Name
+  obj$Species <- d@Species
+
+  obj
+}
+
+#' Create a Fleet object for DLMtool from data and values, to be used in an Operating Model (OM)
+#'
+#' @param d An S4 object of class DLMtool Data.
+#'
+#' @return An S4 object of class DLMtool Fleet.
+#' @export
+#' #' \dontrun{
+#' library(gfplot)
+#' species <- "shortraker rockfish"
+#' fetch_data(species)
+#' d <- load_data(species)
+#' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
+#' om <- create_dlm_fleet(dat)
+#' }
+create_dlm_fleet <- function(d){
+
+  obj <- methods::new("Fleet")
+  obj@Name <- d@name
+
+  obj
+}
+
+#' Create an Obs object for DLMtool from data and values, to be used in an Operating Model (OM)
+#'
+#' @param d An S4 object of class DLMtool Data.
+#'
+#' @return An S4 object of class DLMtool Obs.
+#' @export
+#' #' \dontrun{
+#' library(gfplot)
+#' species <- "shortraker rockfish"
+#' fetch_data(species)
+#' d <- load_data(species)
+#' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
+#' om <- create_dlm_obs(dat)
+#' }
+create_dlm_obs <- function(d){
+
+  obj <- methods::new("Obs")
+  obj@Name <- d@name
+
+  obj
+}
+
+#' Create an Imp object for DLMtool from data and values, to be used in an Operating Model (OM)
+#'
+#' @param d An S4 object of class DLMtool Data.
+#'
+#' @return An S4 object of class DLMtool Imp.
+#' @export
+#' #' \dontrun{
+#' library(gfplot)
+#' species <- "shortraker rockfish"
+#' fetch_data(species)
+#' d <- load_data(species)
+#' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
+#' om <- create_dlm_imp(dat)
+#' }
+create_dlm_imp <- function(d){
+
+  obj <- methods::new("Imp")
+  obj@Name <- d@name
+
+  obj
+}
+
+#' Convert groundfish PBS data to a DLMtool Data object
 #'
 #' Takes the output from \pkg{gfplot} data fetching functions and converts them to a
 #' DLMtool data object.
@@ -105,22 +195,22 @@ data_file_exists <- function(species_name,
 #' d$survey_samples <- get_survey_samples(species)
 #' d$catch <- get_catch(species)
 #' d$survey_index <- get_survey_index(species)
-#' pbs2dlm(d, name = "BC Pacific Cod", area = "3[CD]+")
+#' create_dlm_data(d, name = "BC Pacific Cod", area = "3[CD]+")
 #'
 #' species <- "shortraker rockfish"
 #' fetch_data(species)
 #' d <- load_data(species)
-#' pbs2dlm(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
+#' create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
 #' }
-pbs2dlm <- function(dat,
-                    name = "",
-                    common_name = "",
-                    area = "3[CD]+",
-                    survey = "SYN WCVI",
-                    max_year = max_year_from_all_data,
-                    min_mean_length = 10,
-                    length_bin_interval = 2,
-                    unsorted_only = FALSE) {
+create_dlm_data <- function(dat,
+                            name = "",
+                            common_name = "",
+                            area = "3[CD]+",
+                            survey = "SYN WCVI",
+                            max_year = max_year_from_all_data,
+                            min_mean_length = 10,
+                            length_bin_interval = 2,
+                            unsorted_only = FALSE) {
 
   # Setup ----------
   obj <- methods::new("Data")
@@ -132,10 +222,10 @@ pbs2dlm <- function(dat,
                                 dat$commercial_samples$year,
                                 dat$catch$year,
                                 dat$survey_index$year)
-  dat$commercial_samples <- filter(dat$commercial_samples, .data$year <= max_year)
-  dat$survey_samples <- filter(dat$survey_samples, .data$year <= max_year)
-  dat$catch <- filter(dat$catch, .data$year <= max_year)
-  dat$survey_index <- filter(dat$survey_index, .data$year <= max_year)
+  dat$commercial_samples <- dplyr::filter(dat$commercial_samples, year <= max_year)
+  dat$survey_samples <- dplyr::filter(dat$survey_samples, year <= max_year)
+  dat$catch <- dplyr::filter(dat$catch, year <= max_year)
+  dat$survey_index <- dplyr::filter(dat$survey_index, year <= max_year)
 
   # Catch ----------
   catch <- tidy_catch(dat$catch, areas = area)
@@ -287,7 +377,6 @@ tidy_caa <- function(dat, yrs, unsorted_only = FALSE, interval = 1,
     dim = c(1L, nrow(caa), ncol(caa))
   ) # nsim x nyears x MaxAge
 }
-
 
 extract_maturity_perc <- function(object) {
   m.p0.5 <- logit_perc(a = object[[1]], b = object[[2]], perc = 0.5)
