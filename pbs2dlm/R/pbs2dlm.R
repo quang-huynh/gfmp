@@ -68,7 +68,9 @@ data_file_exists <- function(species_name,
 
 #' Create a Stock object for DLMtool from data and values, to be used in an Operating Model (OM)
 #'
-#' @param d An S4 object of class DLMtool Data.
+#' @param d An S4 object of class DLMtool Data. If NULL, default values from the statring_stock
+#'   will be used in the returned object. If supplied, select values will be copied from the
+#'   Data object into the returned Stock object.
 #'
 #' @return An S4 object of class DLMtool Stock.
 #' @export
@@ -78,14 +80,90 @@ data_file_exists <- function(species_name,
 #' fetch_data(species)
 #' d <- load_data(species)
 #' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
-#' om <- create_dlm_stock(dat)
+#' stk <- create_dlm_stock(dat, starting_stock = "Rockfish")
+#' stk2 <- create_dlm_stock(starting_stock = "Rockfish")
+#' stk3 <- create_dlm_stock()
 #' }
-create_dlm_stock <- function(d){
+create_dlm_stock <- function(dat = NULL,
+                             starting_stock = NA,
+                             name = obj@Name,
+                             common_name = obj@Common_Name,
+                             species = obj@Species,
+                             maxage = obj@maxage,
+                             r0 = obj@R0,
+                             m = obj@M,
+                             m2 = obj@M2,
+                             mexp = obj@Mexp,
+                             msd = obj@Msd,
+                             mgrad = obj@Mgrad,
+                             h = obj@h,
+                             srrel = obj@SRrel,
+                             perr = obj@Perr,
+                             ac = obj@AC,
+                             period = obj@Period,
+                             amplitude = obj@Amplitude,
+                             linf = obj@Linf,
+                             k = obj@K,
+                             t0 = obj@t0,
+                             lencv = obj@LenCV,
+                             ksd = obj@Ksd,
+                             kgrad = obj@Kgrad,
+                             linfsd = obj@Linfsd,
+                             linfgrad = obj@Linfgrad,
+                             l50 = obj@L50,
+                             l50_95= obj@L50_95,
+                             d = obj@D,
+                             a = obj@a,
+                             b = obj@b,
+                             size_area_1 = obj@Size_area_1,
+                             frac_area_1 = obj@Frac_area_1,
+                             prob_staying = obj@Prob_staying,
+                             fdisc = obj@Fdisc,
+                             src = obj@Source){
 
-  obj <- methods::new("Stock")
-  obj@Name <- d@name
-  obj@Common_Name <- d@Common_Name
-  obj$Species <- d@Species
+  if(is.na(starting_stock)){
+    obj <- methods::new("Stock")
+  }else if(starting_stock %in% avail("Stock")){
+    obj <- get(starting_stock)
+  }else{
+    warning("starting_stock '", starting_stock, "', doesn't exist. Use one of:\n",
+            paste(avail("Stock"), collapse = "\n"))
+  }
+
+  obj@Name <- ifelse(is.null(dat), name, dat@Name)
+  obj@Common_Name <- ifelse(is.null(dat), common_name, dat@Common_Name)
+  obj@Species <- ifelse(is.null(dat), species, dat@Species)
+  obj@maxage <- ifelse(is.null(dat), maxage, dat@MaxAge)
+  obj@R0 <- r0
+  obj@M <- m
+  obj@M2 <- m2
+  obj@Mexp <- mexp
+  obj@Msd <- msd
+  obj@Mgrad <- mgrad
+  obj@h <- h
+  obj@SRrel <- srrel
+  obj@Perr <- perr
+  obj@AC <- ac
+  obj@Period <- period
+  obj@Amplitude <- amplitude
+  obj@Linf <- ifelse(is.null(dat), linf, dat@vbLinf)
+  obj@K <- ifelse(is.null(dat), k, dat@vbK)
+  obj@t0 <- ifelse(is.null(dat), t0, dat@vbt0)
+  obj@LenCV <- lencv
+  obj@Ksd <- ksd
+  obj@Kgrad <- kgrad
+  obj@Linfsd <- linfsd
+  obj@Linfgrad <- linfgrad
+  obj@L50 <- l50
+  obj@L50_95<- l50_95
+  obj@D <- d
+  obj@a <- a
+  obj@b <- b
+  obj@Size_area_1 <- size_area_1
+  obj@Frac_area_1 <- frac_area_1
+  obj@Prob_staying <- prob_staying
+  obj@Fdisc <- fdisc
+  obj@Source <- src
 
   obj
 }
