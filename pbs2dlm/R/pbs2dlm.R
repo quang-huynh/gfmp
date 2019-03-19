@@ -73,6 +73,9 @@ data_file_exists <- function(species_name,
 #'   Data object into the returned Stock object.
 #'
 #' @return An S4 object of class DLMtool Stock.
+#'
+#' @importFrom rlang abort
+#'
 #' @export
 #' #' \dontrun{
 #' library(gfplot)
@@ -126,8 +129,8 @@ create_dlm_stock <- function(dat = NULL,
   }else if(starting_stock %in% avail("Stock")){
     obj <- get(starting_stock)
   }else{
-    warning("starting_stock '", starting_stock, "', doesn't exist. Use one of:\n",
-            paste(avail("Stock"), collapse = "\n"))
+    abort("starting_stock '", starting_stock, "', doesn't exist. Use one of:\n",
+          paste(avail("Stock"), collapse = "\n"))
   }
 
   obj@Name <- ifelse(is.null(dat), name, dat@Name)
