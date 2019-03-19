@@ -29,7 +29,7 @@ library(gfplot)
 library(stanhelpers)
 library(rfishbase)
 library(RColorBrewer)
-source(file.path(here::here(), "R", "get-data.R"))
+#source(file.path(here::here(), "R", "get-data.R"))
 n_iters <- 50
 
 # Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
