@@ -74,8 +74,6 @@ data_file_exists <- function(species_name,
 #'
 #' @return An S4 object of class DLMtool Stock.
 #'
-#' @importFrom rlang abort
-#'
 #' @export
 #' #' \dontrun{
 #' library(gfplot)
@@ -129,8 +127,8 @@ create_dlm_stock <- function(dat = NULL,
   }else if(starting_stock %in% avail("Stock")){
     obj <- get(starting_stock)
   }else{
-    abort("starting_stock '", starting_stock, "', doesn't exist. Use one of:\n",
-          paste(avail("Stock"), collapse = "\n"))
+    stop("starting_stock '", starting_stock, "', doesn't exist. Use one of:\n",
+         paste(avail("Stock"), collapse = "\n"))
   }
 
   obj@Name <- ifelse(is.null(dat), name, dat@Name)
@@ -173,9 +171,12 @@ create_dlm_stock <- function(dat = NULL,
 
 #' Create a Fleet object for DLMtool from data and values, to be used in an Operating Model (OM)
 #'
-#' @param d An S4 object of class DLMtool Data.
+#' @param d An S4 object of class DLMtool Data. If NULL, default values from the statring_fleet
+#'   will be used in the returned object. If supplied, select values will be copied from the
+#'   Data object into the returned Fleet object.
 #'
 #' @return An S4 object of class DLMtool Fleet.
+#'
 #' @export
 #' #' \dontrun{
 #' library(gfplot)
@@ -183,12 +184,74 @@ create_dlm_stock <- function(dat = NULL,
 #' fetch_data(species)
 #' d <- load_data(species)
 #' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
-#' om <- create_dlm_fleet(dat)
+#' flt <- create_dlm_fleet(dat, starting_fleet = "Generic_Fleet")
+#' flt2 <- create_dlm_fleet(starting_fleet = "Generic_Fleet")
+#' flt3 <- create_dlm_fleet()
 #' }
-create_dlm_fleet <- function(d){
+create_dlm_fleet <- function(dat = NULL,
+                             starting_fleet = NA,
+                             name = obj@Name,
+                             nyears = obj@nyears,
+                             spat_targ = obj@Spat_targ,
+                             effyears = obj@EffYears,
+                             efflower = obj@EffLower,
+                             esd = obj@Esd,
+                             qinc = obj@qinc,
+                             qcv = obj@qcv,
+                             l5 = obj@L5,
+                             lfs = obj@LFS,
+                             vmaxlen = obj@Vmaxlen,
+                             isrel = obj@isRel,
+                             lr5 = obj@LR5,
+                             lfr = obj@LFR,
+                             rmaxlen = obj@Rmaxlen,
+                             dr = obj@DR,
+                             selyears = obj@SelYears,
+                             absselyears = obj@AbsSelYears,
+                             l5lower = obj@L5Lower,
+                             l5upper = obj@L5Upper,
+                             lfslower = obj@LFSLower,
+                             lfsupper = obj@LFSUpper,
+                             vmaxlower = obj@VmaxLower,
+                             vmaxupper = obj@VmaxUpper,
+                             currentyr = obj@CurrentYr,
+                             mpa = obj@MPA){
 
-  obj <- methods::new("Fleet")
-  obj@Name <- d@name
+  if(is.na(starting_fleet)){
+    obj <- methods::new("Fleet")
+  }else if(starting_fleet %in% avail("Fleet")){
+    obj <- get(starting_fleet)
+  }else{
+    stop("starting_fleet '", starting_fleet, "', doesn't exist. Use one of:\n",
+          paste(avail("Fleet"), collapse = "\n"))
+  }
+
+  obj@Name <- ifelse(is.null(dat), name, dat@Name)
+  obj@nyears <- nyears
+  obj@Spat_targ <- spat_targ
+  obj@EffYears <- effyears
+  obj@EffLower <- efflower
+  obj@Esd <- esd
+  obj@qinc <- qinc
+  obj@qcv <- qcv
+  obj@L5 <- l5
+  obj@LFS <- lfs
+  obj@Vmaxlen <- vmaxlen
+  obj@isRel <- isrel
+  obj@LR5 <- lr5
+  obj@LFR <- lfr
+  obj@Rmaxlen <- rmaxlen
+  obj@DR <- dr
+  obj@SelYears <- selyears
+  obj@AbsSelYears <- absselyears
+  obj@L5Lower <- l5lower
+  obj@L5Upper <- l5upper
+  obj@LFSLower <- lfslower
+  obj@LFSUpper <- lfsupper
+  obj@VmaxLower <- vmaxlower
+  obj@VmaxUpper <- vmaxupper
+  obj@CurrentYr <- currentyr
+  obj@MPA <- mpa
 
   obj
 }
