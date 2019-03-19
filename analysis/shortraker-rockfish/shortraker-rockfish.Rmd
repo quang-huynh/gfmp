@@ -28,13 +28,22 @@ library(DLMtool)
 library(gfplot)
 library(stanhelpers)
 library(rfishbase)
-# library(PBSmptools)
-# devtools::load_all("../pbs-mptools")
-# options(mc.cores = parallel::detectCores())
+library(RColorBrewer)
+source(file.path(here::here(), "R", "get-data.R"))
 n_iters <- 50
 
 # Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
+science_name <- "Sebastes borealis"
 species_name <- "shortraker rockfish"
+species_dir <- file.path(here::here("analysis",
+                                    paste0(gsub(" ",
+                                                "-",
+                                                species_name))))
+# figures_dir <- file.path(species_dir, "figures")
+# if(!dir.exists(figures_dir)){
+#   dir.create(figures_dir)
+# }
+
 if(!data_file_exists(species_name)){
   fetch_data(species_name)
 }
@@ -63,7 +72,7 @@ R0, the magnitude of unfished recruitment is fixed to an arbitrary value since i
 stock@R0
 ```
 
-@echave2015 estimate natural mortality in the Gulf of Alaska to be 0.03. Let's place some relatively wide bounds around that. 
+@echave2015 estimate natural mortality in the Gulf of Alaska to be 0.03. Let's place some relatively wide bounds around that.
 
 ```{r}
 stock@M <- c(0.02, 0.10)
@@ -93,9 +102,9 @@ Steepness of the stock recruit relationship (uniform distribution). TODO take fr
 stock@h
 ```
 
-Maximum length: @love2002 list the maximum size as 120 cm. They also note that in the Gulf of Alaska fish smaller than 35 cm are rarely found. Fishbase lists a maximum length of 108 cm. However, we can fit von Bertalanffy growth curves to the length-age data in GFBio. 
+Maximum length: @love2002 list the maximum size as 120 cm. They also note that in the Gulf of Alaska fish smaller than 35 cm are rarely found. Fishbase lists a maximum length of 108 cm. However, we can fit von Bertalanffy growth curves to the length-age data in GFBio.
 
-Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model. 
+Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model.
 
 ```{r}
 x <- bind_samples(dat_survey = d$survey_samples, dat_comm = d$commercial_samples)
@@ -103,6 +112,7 @@ x <- x[!duplicated(x$specimen_id), ]
 x <- filter(x, major_stat_area_name != "4B: STRAIT OF GEORGIA")
 vb_m <- fit_vb(x, "male", method = "mcmc", iter = 2000, chains = 1, cores = 4)
 vb_f <- fit_vb(x, "female", method = "mcmc", iter = 2000, chains = 1, cores = 4)
+vonb <- fit_vb(x, "all", method = "mcmc", iter = 2000, chains = 1, cores = 4)
 
 plot_vb(object_female = vb_f, object_male = vb_m) +
   guides(colour = FALSE, fill = FALSE, lty = FALSE)
@@ -203,9 +213,12 @@ Let's try fitting VB models that permit a specified level of aging measurement e
 
 
 ```{r}
-short@Linf <- vonb$model$par$linf
-short@K <- vonb$model$par$k
-short@t0 <- vonb$model$t0
+vb <- vonb$model %>% 
+  as.data.frame() %>% 
+  as_tibble()
+stock@Linf <- median(vb$linf)
+stock@K <- median(vb$k)
+stock@t0 <- median(vb$t0)
 ```
 
 Coefficient of variation of length-at-age (assumed constant for all age classes).
@@ -223,7 +236,7 @@ stock@Ksd
 Mean temporal trend in growth parameter K, expressed as a percentage change in K per year. We leave it at the default of ranging between -0.25% and 0.25% per year.
 
 ```{r}
-stock@Kgrad
+stock@Kgrad <- c(-0.0025, 0.0025)
 ```
 
 Inter-annual variability in maximum length.
@@ -232,13 +245,13 @@ Inter-annual variability in maximum length.
 stock@Linfsd
 ```
 
-Range of annual percent change in L infinity.
+Range of annual percent change in L infinity. Use guess of +/- 1% for now.
 
 ```{r}
-stock@Linfgrad
+stock@Linfgrad <- c(-0.1, 0.1)
 ```
 
-Mean temporal trend in log-normal recruitment deviations. Need to look into exactly what this corresponds to. Trend over what period of time? 
+Mean temporal trend in log-normal recruitment deviations. Need to look into exactly what this corresponds to. Trend over what period of time? TODO - this slot doesn't exist in the stock object
 
 ```{r}
 #stock@recgrad
@@ -254,12 +267,12 @@ Length-weight parameter alpha. This parameter is known as the condition factor. 
 
 Alternatively, we could use the value cited in @love2002 (a = 0.0098, b = 3.130), which is based on Martin (1997) (reference found within @love2002).
 
-Values within @love2011 are even lower. 
+Values within @love2011 are even lower.
 
 **2018-03-29: should use values from the model fits to our data in other document**
 
 ```{r}
-lw <- rfishbase::length_weight("Sebastes borealis")
+lw <- rfishbase::length_weight(science_name)
 lw$a
 mean(lw$a)
 stock@a <- mean(lw$a)
@@ -295,7 +308,7 @@ Current level of stock depletion (Bcurrent/Bunfished). We need to put some thoug
 stock@D
 ```
 
-Process error, the CV of lognormal recruitment deviations. @thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8. Need to look for data in other assessments of similar rockfish species or of shortraker in other regions. 
+Process error, the CV of lognormal recruitment deviations. @thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8. Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
 
 ```{r}
 stock@Perr <- c(0.2, 0.8)
@@ -319,7 +332,7 @@ The fraction of the unfished habitat in area 1 of 2. Area 1 represents habitat o
 stock@Frac_area_1 <- c(0.1, 0.1)
 ```
 
-The probability of inviduals in area 1 remaining in area 1 over the course of one year. TODO 
+The probability of inviduals in area 1 remaining in area 1 over the course of one year. TODO
 
 ```{r}
 stock@Prob_staying <- c(0.85, 0.95)
@@ -343,19 +356,19 @@ Let's combine the stock, fleet, observation, and implementation objects into a c
 # avail("Imp")
 # avail("Fleet")
 # avail("Output")
-short_om <- new('OM', stock, Generic_fleet, Imprecise_Unbiased, Perfect_Imp)
-MPs <- c("DCAC", "DCAC_40", "DCAC_ML", "DBSRA_40", 
-  "DCAC4010", "DBSRA4010", "DBSRA", "DBSRA_ML",
-  "CC1", "CC4")
+short_om <- new('OM', stock, Generic_Fleet, Imprecise_Unbiased, Perfect_Imp)
+MPs <- c("DCAC", "DCAC_40", "DCAC_ML", "DBSRA_40",
+  "DCAC4010", "DBSRA4010", "DBSRA", "CC1", "CC4")
 short_om@nsim <- n_iters
 ```
 
 Let's now add the custom parameters:
 
 ```{r}
-short_om@cpars$Linf <- vb_samples$linf
-short_om@cpars$K <- vb_samples$k
-short_om@cpars$t0 <- vb_samples$t0
+short_om@cpars$Linf <- stock@Linf
+short_om@cpars$K <- stock@K
+short_om@cpars$t0 <- stock@t0
+short_om@maxage <- stock@maxage
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
@@ -363,9 +376,9 @@ There are a variety of built-in plotting functions to examine the components of 
 ```{r, eval=FALSE}
 plotStock(short_om, nsamp = 3, incVB = FALSE)
 
-pdf("analysis/short-ex-stock.pdf", width = 10, height = 12)
-plotStock(short_om, nsamp = 3, incVB = FALSE)
-dev.off()
+# pdf(file.path(figures_dir, "ex-stock.pdf"), width = 10, height = 12)
+# plotStock(short_om, nsamp = 3, incVB = FALSE)
+# dev.off()
 ```
 
 ```{r, eval=FALSE}
@@ -373,11 +386,11 @@ plotSelect(short_om, sim = 1) # one sample, others will look different
 ```
 
 ```{r, eval=FALSE}
-plotFleet(Generic_fleet, Stock = stock)
+plotFleet(GenericFfleet, Stock = stock)
 
-pdf("analysis/short-ex-fleet.pdf", width = 10, height = 12)
-plotFleet(Generic_fleet, Stock = stock)
-dev.off()
+# pdf(file.path(figures_dir, "ex-fleet.pdf"), width = 10, height = 12)
+# plotFleet(Generic_Fleet, Stock = stock)
+# dev.off()
 ```
 
 ```{r, eval=FALSE}
@@ -386,6 +399,10 @@ plotImp(Perfect_Imp)
 
 ```{r, eval=FALSE, fig.height=9}
 plotObs(Imprecise_Unbiased)
+
+# pdf(file.path(figures_dir, "imprecise-unbiased.pdf"), width = 10, height = 12)
+# plotObs(Imprecise_Unbiased)
+# dev.off()
 ```
 
 Or we can create all the plots at once:
@@ -393,43 +410,46 @@ Or we can create all the plots at once:
 ```{r, fig.height=9, fig.width=10}
 plot(short_om)
 
-pdf("analysis/short-ex-om-all.pdf", width = 10, height = 12)
-plot(short_om)
-dev.off()
+# pdf(file.path(figures_dir, "ex-om-all.pdf"), width = 10, height = 12)
+# plot(short_om)
+# dev.off()
 ```
 
 Now we can run closed-loop simulation:
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
-DLMtool::setup(cpus = parallel::detectCores())
-short_mse <- runMSErobust(OM = short_om, MPs = MPs, name = "analysis/short-mse")
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+if(!exists("short_mse")){
+  DLMtool::setup(cpus = parallel::detectCores())
+  short_mse <- runMSE(OM = short_om, MPs = MPs)
+}
 ```
 
-And examine the output. 
+And examine the output.
 
 ```{r}
-short_mse <- readRDS("analysis/short-mse.rdata")
+oldpar <- par()
 plot(short_mse)
-# DFO_hist(short_mse)
+oldpar <- par()
+##DFO_hist(short_mse)
 DFO_plot(short_mse)
 DFO_plot2(short_mse)
 ```
 
 ```{r, fig.height=9, warning=FALSE}
 DFO_proj(short_mse)
-DFO_hist(short_om)
-d <- DFO_plot2(short_mse)
+#DFO_hist(short_om)
+DFO_plot2(short_mse)
 
-ggplot(d, aes(B50/100, LTY/100, label = MP, colour = Satisfice)) +
-  geom_vline(xintercept = 0.5, col = "grey50") +
-  geom_hline(yintercept = 0.5, col = "grey50") +
-  geom_text() + ggsidekick::theme_sleek() +
-  scale_colour_manual(values = c("grey60", "black")) +
-  guides(colour = FALSE) +
-  xlab(expression(Pr(B>0.5~B[MSY]))) +
-  ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
-  xlim(0, 1) + ylim(0, 1)
-ggsave("analysis/short-obj-plot.pdf", width = 5, height = 5)
+# d <- DFO_plot2(short_mse)
+# ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
+#   geom_vline(xintercept = 0.5, col = "grey50") +
+#   geom_hline(yintercept = 0.5, col = "grey50") +
+#   geom_text() + ggsidekick::theme_sleek() +
+#   scale_colour_manual(values = c("grey60", "black")) +
+#   guides(colour = FALSE) +
+#   xlab(expression(Pr(B>0.5~B[MSY]))) +
+#   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
+#   xlim(0, 1) + ylim(0, 1)
 ```
 
 ```{r}
@@ -437,9 +457,9 @@ yend <- max(short_mse@proyears)
 ffmsy <- short_mse@F_FMSY[,,yend]
 bbmsy <- short_mse@B_BMSY[,,yend]
 
-ffmsy <- reshape2::melt(ffmsy) %>% 
+ffmsy <- reshape2::melt(ffmsy) %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
-bbmsy <- reshape2::melt(bbmsy) %>% 
+bbmsy <- reshape2::melt(bbmsy) %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value)
 
 d <- dplyr::inner_join(ffmsy, bbmsy)
@@ -461,7 +481,7 @@ ggplot(dplyr::filter(d, !mp_name %in% c("CC4", "DBSRA_ML")), aes(bbmsy, ffmsy)) 
   labs(colour = "Prob. density", x = expression(B/B[MSY]),
     y = expression(F/F[MSY])) +
   guides(colour = FALSE)
-ggsave("analysis/short-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
+#ggsave("analysis/short-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
 
 ggplot(dplyr::filter(d, mp_name == c("DBSRA")), aes(bbmsy, ffmsy)) +
   geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
@@ -475,22 +495,21 @@ ggplot(dplyr::filter(d, mp_name == c("DBSRA")), aes(bbmsy, ffmsy)) +
   labs(colour = "Prob. density", x = expression(B/B[MSY]),
     y = expression(F/F[MSY])) +
   guides(colour = FALSE)
-ggsave("analysis/short-bbmsy-ffmsy-dbsra.pdf", width = 4, height = 4)
+#ggsave("analysis/short-bbmsy-ffmsy-dbsra.pdf", width = 4, height = 4)
 ```
 
 ```{r}
-library(dplyr)
-ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>% 
+ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>% 
+bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
 levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
 
-d_median <- d %>% group_by(mp_name, year, variable) %>% 
-  summarise(median_value = median(value)) %>% 
+d_median <- d %>% group_by(mp_name, year, variable) %>%
+  summarise(median_value = median(value)) %>%
   mutate(iter = NA)
 
 fudge <- 3.5
@@ -499,35 +518,34 @@ d$over[d$value > fudge] <- TRUE
 d$value[d$over] <- fudge
 d_median$median_value[d_median$median_value > fudge] <- fudge
 
-d_last <- dplyr::filter(d, year == max(year)) %>% 
-  select(-over, -year) %>% 
+d_last <- dplyr::filter(d, year == max(year)) %>%
+  select(-over, -year) %>%
   rename(last_value = value)
 d <- inner_join(d, d_last)
 
-library(RColorBrewer)
 cols <- brewer.pal(3, "RdBu")
 cols[2] <- "grey80"
 
-plot_timeseries <- function(dat, dat_median, title = "", 
+plot_timeseries <- function(dat, dat_median, title = "",
   ylim = c(0, fudge), cols, values, labels = TRUE, yaxis = TRUE) {
-  g <- ggplot(dat, aes_string("year", "value", group = "iter")) + 
+  g <- ggplot(dat, aes_string("year", "value", group = "iter")) +
     geom_line(aes_string(colour = "last_value"), alpha = 0.3) +
-    facet_grid(mp_name~., labeller = label_parsed) + 
+    facet_grid(mp_name~., labeller = label_parsed) +
     ggsidekick::theme_sleek() +
-    scale_colour_gradientn(colours = cols, 
+    scale_colour_gradientn(colours = cols,
       values = values) +
-    geom_line(data = dat_median, aes_string("year", "median_value"), 
+    geom_line(data = dat_median, aes_string("year", "median_value"),
       colour = "black", lwd = 1.5) +
     ylim(ylim[1], ylim[2]) +
     ggtitle(title) +
     guides(colour = FALSE) +
     ylab("Value") + xlab("Year")
-  
-  if (!labels) 
+
+  if (!labels)
     g <- g + theme(strip.background = element_blank(),
       strip.text.y = element_blank())
-  
-  if (!yaxis) 
+
+  if (!yaxis)
     g <- g + theme(axis.text.y = element_blank())
   g
 }
@@ -551,9 +569,9 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   labels = TRUE, yaxis = TRUE)
 gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-pdf("analysis/short-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
-dev.off()
+# pdf("analysis/short-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+# dev.off()
 
 mps <- unique(d_$mp_name)
 mps <- mps[-which(mps %in% c("CC4"))]
@@ -567,9 +585,9 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
-dev.off()
+# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+# dev.off()
 
 mps <- unique(d_$mp_name)
 mps <- mps[-which(mps %in% c("CC4"))]
@@ -583,21 +601,21 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
-dev.off()
+# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+# dev.off()
 
 #########3
-ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>% 
+ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>% 
+bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
 levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
 
-d_sum <- d %>% group_by(mp_name, year, variable) %>% 
+d_sum <- d %>% group_by(mp_name, year, variable) %>%
   summarise(median_value = median(value),
     l = quantile(value, probs = 0.75),
     u = quantile(value, probs = 0.25),
@@ -617,8 +635,8 @@ d$last_value[d$last_value > fudge] <- fudge
 
 cols <- brewer.pal(5, "RdBu")
 cols <- c(cols[1], "grey50", cols[length(cols)])
-g <- ggplot(d_sum, aes_string("year", "median_value")) + 
-  facet_grid(mp_name~variable, labeller = label_parsed) + 
+g <- ggplot(d_sum, aes_string("year", "median_value")) +
+  facet_grid(mp_name~variable, labeller = label_parsed) +
   geom_ribbon(aes(ymin = ll, ymax = uu), fill = "grey90") +
   geom_ribbon(aes(ymin = l, ymax = u), fill = "grey70") +
   ggsidekick::theme_sleek() +
@@ -626,18 +644,16 @@ g <- ggplot(d_sum, aes_string("year", "median_value")) +
   coord_cartesian(ylim = c(0, 4)) +
   guides(colour = FALSE) +
   xlim(25, 50) +
-  geom_hline(yintercept = 1, 
+  geom_hline(yintercept = 1,
     col = "black", lty = 2) +
   ylab("Value") + xlab("Year")
-  # geom_line(data = filter(d, iter %in% c(1:10)), 
+  # geom_line(data = filter(d, iter %in% c(1:10)),
   #   aes(y = value, group = iter),
   #   alpha = 0.4, colour = "blue")
-  # scale_colour_gradientn(colours = cols, 
+  # scale_colour_gradientn(colours = cols,
   #     values = c(0, 0.8, 1.2, 3))
   # viridis::scale_colour_viridis()
 g
-
-
 ```
 
 
@@ -648,18 +664,18 @@ g
 #     data.matrix()  %>%
 #       coda::mcmc() %>%
 #         emdbook::HPDregionplot(prob = prob, n = n, ...)
-# 
+#
 #   for (j in length(x)) x[[j]]$contour_group <- j
-# 
+#
 #   x <- x %>% lapply(as.data.frame) %>%
 #     dplyr::bind_rows()
-# 
+#
 #   x <- dplyr::mutate(x, contour_group =
 #     ifelse(!is.na(contour_group), contour_group, 1))
-# 
+#
 #   x[,c("x", "y", "contour_group")]
 # }
-# 
+#
 # plot_polygons <- function(polygon_data, x_column, y_column,
 #   xlab = "Variance", ylab = "Mean", prob = 0.75,
 #   grouping = c("diversity_group"), ...) {
@@ -668,26 +684,26 @@ g
 # # We need unique IDs in case there are multiple polygons for one group
 #   contours$id <- paste(contours$contour_group, contours[,grouping[1]])
 #   polygon_data <- dplyr::mutate(polygon_data, id = 1)
-# 
+#
 #   p <- contours %>%
 #     ggplot(aes_string("x", "y", group = "id", color = grouping[1],
 #       fill = grouping[1]))
-# 
+#
 #   p <- p + geom_point(data = polygon_data, aes_string(x_column, y_column),
 #     alpha = 0.1)
 #   p <- p + geom_polygon(alpha = 0.3) +
-#     viridis::scale_fill_viridis() + 
+#     viridis::scale_fill_viridis() +
 #     viridis::scale_colour_viridis() +
 #     theme_bw() +
 #     xlab(xlab) + ylab(ylab)
-# 
+#
 #   if (length(grouping) > 1)
 #     p <- p + facet_wrap(grouping[2])
-# 
+#
 #   print(p)
 #   invisible(contours)
 # }
-# 
+#
 # plot_polygons(data.frame(bbmsy = bbmsy, ffmsy = ffmsy, group = 1), "bbmsy", "ffmsy", grouping = "group")
 
 ```
@@ -695,9 +711,9 @@ g
 VOI:
 
 ```{r}
-pdf("analysis/short-voi-om-b.pdf", width = 8, height = 8)
+#pdf("analysis/short-voi-om-b.pdf", width = 8, height = 8)
 VOIplot(short_mse, Par="OM", nMP=5, YVar="B")
-dev.off()
+#dev.off()
 ```
 
 
