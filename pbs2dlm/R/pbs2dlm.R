@@ -75,13 +75,16 @@ data_file_exists <- function(species_name,
 #'   object containing the elements `commercial_samples`, `survey_samples`,
 #'   `catch`, `survey_index`.
 #' @param name A name for the stock.
+#' @param common_name A common name for the stock.
 #' @param area The groundfish statistical area to subset the catch by.
 #' @param survey A survey abbreviation designating which survey to use for the
 #'   relative index of abundance.
-#' @param max_year The most recent year of data to include.
+#' @param max_year The most recent year of data to include. Default is the max
+#'   year found in the data.
 #' @param min_mean_length The minimum number of samples to include a mean length
 #'   measurement for a given year.
 #' @param length_bin_interval An interval for the length bins.
+#' @param unsorted_only Include unsorted commercial samples only
 #'
 #' @importClassesFrom DLMtool Data
 #' @importFrom gfplot tidy_catch tidy_survey_index bind_samples fit_mat_ogive
@@ -103,21 +106,32 @@ data_file_exists <- function(species_name,
 #' d$catch <- get_catch(species)
 #' d$survey_index <- get_survey_index(species)
 #' pbs2dlm(d, name = "BC Pacific Cod", area = "3[CD]+")
+#'
+#' species <- "shortraker rockfish"
+#' fetch_data(species)
+#' d <- load_data(species)
+#' pbs2dlm(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
 #' }
-
 pbs2dlm <- function(dat,
                     name = "",
+                    common_name = "",
                     area = "3[CD]+",
                     survey = "SYN WCVI",
-                    max_year = 2017,
+                    max_year = max_year_from_all_data,
                     min_mean_length = 10,
-                    length_bin_interval = 2) {
+                    length_bin_interval = 2,
+                    unsorted_only = FALSE) {
 
   # Setup ----------
   obj <- methods::new("Data")
   obj@Name <- name
+  obj@Common_Name <- common_name
   obj@Units <- "kg"
 
+  max_year_from_all_data <- max(dat$survey_samples$year,
+                                dat$commercial_samples$year,
+                                dat$catch$year,
+                                dat$survey_index$year)
   dat$commercial_samples <- filter(dat$commercial_samples, .data$year <= max_year)
   dat$survey_samples <- filter(dat$survey_samples, .data$year <= max_year)
   dat$catch <- filter(dat$catch, .data$year <= max_year)
@@ -161,7 +175,6 @@ pbs2dlm <- function(dat,
   obj@CV_L50 <- se_l50 / obj@L50
 
   # VB model ----------
-
   mvb <- suppressWarnings(fit_vb(samps, sex = "female"))
   .summary <- summary(TMB::sdreport(mvb$model))
   se <- .summary[,"Std. Error"]
@@ -186,7 +199,10 @@ pbs2dlm <- function(dat,
   obj@CV_wlb <- se[["b"]] / mlw$pars[["b"]]
 
   # Mean length timeseries ----------
-  # TODO commercial; unsorted only?
+  if(unsorted_only){
+    dat$commercial_samples <- dat$commercial_samples %>%
+      filter(sampling_desc == "UNSORTED")
+  }
   ml <- tidy_mean_length(dat$commercial_samples) %>%
     filter(.data$n > min_mean_length, .data$year <= max_year) %>%
     right_join(all_years, by = "year")
@@ -214,12 +230,12 @@ pbs2dlm <- function(dat,
   obj
 }
 
-# Generate mean-length time series
-#
-# @param dat Commercial or biological samples from [get_commercial_samples()] or
-#   [get_survey_samples()].
-# @param unsorted_only Logical for whether to only include the unsorted samples.
-#   Only applies to the commercial data.
+#' Generate mean-length time series
+#'
+#' @param dat Commercial or biological samples from [get_commercial_samples()] or
+#'   [get_survey_samples()].
+#' @param unsorted_only Logical for whether to only include the unsorted samples.
+#'   Only applies to the commercial data.
 tidy_mean_length <- function(dat, unsorted_only = FALSE) {
   dat <- dat[!duplicated(dat$specimen_id), , drop = FALSE]
   if ("sampling_desc" %in% names(dat) && unsorted_only) {
@@ -231,18 +247,18 @@ tidy_mean_length <- function(dat, unsorted_only = FALSE) {
     ungroup()
 }
 
-# Generate catch-at-age or catch-at-length data
-#
-# @param dat Commercial or biological samples from [get_commercial_samples()] or
-#   [get_survey_samples()].
-# @param yrs A complete set of years to include in the matrix.
-# @param unsorted_only Logical for whether to only include the unsorted samples.
-#   Only applies to the commercial data.
-# @param interval Interval for the complete set of ages or lengths. For example,
-#   for length bins of interval 2, `interval = 2`.
-#
-# @return A catch at age or catch at length matrix as an array.
-#   1 x nyears x nage/nlength
+#' Generate catch-at-age or catch-at-length data
+#'
+#' @param dat Commercial or biological samples from [get_commercial_samples()] or
+#'   [get_survey_samples()].
+#' @param yrs A complete set of years to include in the matrix.
+#' @param unsorted_only Logical for whether to only include the unsorted samples.
+#'   Only applies to the commercial data.
+#' @param interval Interval for the complete set of ages or lengths. For example,
+#'   for length bins of interval 2, `interval = 2`.
+#'
+#' @return A catch at age or catch at length matrix as an array.
+#'   1 x nyears x nage/nlength
 tidy_caa <- function(dat, yrs, unsorted_only = FALSE, interval = 1,
   sex = c(1, 2)) {
   dat <- dat[!duplicated(dat$specimen_id), , drop = FALSE]
