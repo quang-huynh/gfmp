@@ -653,10 +653,3 @@ sd2cv <- function(.sd) {
 logit_perc <- function(a, b, perc = 0.5) {
   -(log((1 / perc) - 1) + a) / b
 }
-
-
-x <- read_xml("<foo>
-   <bar>text <baz id = 'a' /></bar>
-   <bar>2</bar>
-   <baz id = 'b' />
-   </foo>")
