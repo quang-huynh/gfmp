@@ -258,7 +258,9 @@ create_dlm_fleet <- function(dat = NULL,
 
 #' Create an Obs object for DLMtool from data and values, to be used in an Operating Model (OM)
 #'
-#' @param d An S4 object of class DLMtool Data.
+#' @param d An S4 object of class DLMtool Data. If NULL, default values from the starting_obs
+#'   will be used in the returned object. If supplied, select values will be copied from the
+#'   Data object into the returned Obs object.
 #'
 #' @return An S4 object of class DLMtool Obs.
 #' @export
@@ -268,19 +270,88 @@ create_dlm_fleet <- function(dat = NULL,
 #' fetch_data(species)
 #' d <- load_data(species)
 #' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
-#' om <- create_dlm_obs(dat)
+#' obs <- create_dlm_obs(dat, starting_obs = "Imprecise_Unbiased")
+#' obs <- create_dlm_obs(starting_obs = "Imprecise_Unbiased")
+#' obs <- create_dlm_obs()
 #' }
-create_dlm_obs <- function(d){
+create_dlm_obs <- function(dat = NULL,
+                           starting_obs = NA,
+                           name = obj@Name,
+                           cobs = obj@Cobs,
+                           cbiascv = obj@Cbiascv,
+                           caa_nsamp = obj@CAA_nsamp,
+                           caa_ess = obj@CAA_ESS,
+                           cal_nsamp = obj@CAL_nsamp,
+                           cal_ess = obj@CAL_ESS,
+                           iobs = obj@Iobs,
+                           ibiascv = obj@Ibiascv,
+                           btobs = obj@Btobs,
+                           btbiascv = obj@Btbiascv,
+                           beta = obj@beta,
+                           lenmbiascv = obj@LenMbiascv,
+                           mbiascv = obj@Mbiascv,
+                           kbiascv = obj@Kbiascv,
+                           t0biascv = obj@t0biascv,
+                           linfbiascv = obj@Linfbiascv,
+                           lfcbiascv = obj@LFCbiascv,
+                           lfsbiascv = obj@LFSbiascv,
+                           fmsybiascv = obj@FMSYbiascv,
+                           fmsy_mbiascv = obj@FMSY_Mbiascv,
+                           bmsy_b0biascv = obj@BMSY_B0biascv,
+                           irefbiascv = obj@Irefbiascv,
+                           brefbiascv = obj@Brefbiascv,
+                           crefbiascv = obj@Crefbiascv,
+                           dbiascv = obj@Dbiascv,
+                           dobs = obj@Dobs,
+                           hbiascv = obj@hbiascv,
+                           recbiascv = obj@Recbiascv){
 
-  obj <- methods::new("Obs")
-  obj@Name <- d@name
+  if(is.na(starting_obs)){
+    obj <- methods::new("Obs")
+  }else if(starting_obs %in% avail("Obs")){
+    obj <- get(starting_obs)
+  }else{
+    stop("starting_obs '", starting_obs, "', doesn't exist. Use one of:\n",
+          paste(avail("Obs"), collapse = "\n"))
+  }
+
+  obj@Name <- ifelse(is.null(dat), name, dat@Name)
+  obj@Cobs <- cobs
+  obj@Cbiascv <- cbiascv
+  obj@CAA_nsamp <- caa_nsamp
+  obj@CAA_ESS <- caa_ess
+  obj@CAL_nsamp <- cal_nsamp
+  obj@CAL_ESS <- cal_ess
+  obj@Iobs <- iobs
+  obj@Ibiascv <- ibiascv
+  obj@Btobs <- btobs
+  obj@Btbiascv <- btbiascv
+  obj@beta <- beta
+  obj@LenMbiascv <-lenmbiascv
+  obj@Mbiascv <- mbiascv
+  obj@Kbiascv <- kbiascv
+  obj@t0biascv <- t0biascv
+  obj@Linfbiascv <- linfbiascv
+  obj@LFCbiascv <- lfcbiascv
+  obj@LFSbiascv <- lfsbiascv
+  obj@FMSYbiascv <- fmsybiascv
+  obj@FMSY_Mbiascv <- fmsy_mbiascv
+  obj@BMSY_B0biascv <- bmsy_b0biascv
+  obj@Irefbiascv <- irefbiascv
+  obj@Brefbiascv <- brefbiascv
+  obj@Crefbiascv <- crefbiascv
+  obj@Dbiascv <- dbiascv
+  obj@hbiascv <- hbiascv
+  obj@Recbiascv <- recbiascv
 
   obj
 }
 
 #' Create an Imp object for DLMtool from data and values, to be used in an Operating Model (OM)
 #'
-#' @param d An S4 object of class DLMtool Data.
+#' @param d An S4 object of class DLMtool Data. If NULL, default values from the starting_imp
+#'   will be used in the returned object. If supplied, select values will be copied from the
+#'   Data object into the returned Imp object.
 #'
 #' @return An S4 object of class DLMtool Imp.
 #' @export
@@ -290,12 +361,36 @@ create_dlm_obs <- function(d){
 #' fetch_data(species)
 #' d <- load_data(species)
 #' dat <- create_dlm_data(d, name = "Shortraker Rockfish", area = "5[ABCD]+")
-#' om <- create_dlm_imp(dat)
+#' imp <- create_dlm_imp(dat, starting_imp = "Perfect_Imp")
+#' imp <- create_dlm_imp(starting_imp = "Perfect_Imp")
+#' imp <- create_dlm_imp()
 #' }
-create_dlm_imp <- function(d){
+create_dlm_imp <- function(dat = NULL,
+                           starting_imp = NA,
+                           name = obj@Name,
+                           tacfrac = obj@TACFrac,
+                           tacsd = obj@TACSD,
+                           taefrac = obj@TAEFrac,
+                           taesd = obj@TAESD,
+                           sizelimfrac = obj@SizeLimFrac,
+                           sizelimsd = obj@SizeLimSD){
 
-  obj <- methods::new("Imp")
-  obj@Name <- d@name
+  if(is.na(starting_imp)){
+    obj <- methods::new("Imp")
+  }else if(starting_imp %in% avail("Imp")){
+    obj <- get(starting_imp)
+  }else{
+    stop("starting_imp '", starting_imp, "', doesn't exist. Use one of:\n",
+          paste(avail("Imp"), collapse = "\n"))
+  }
+
+  obj@Name <- ifelse(is.null(dat), name, dat@Name)
+  obj@TACFrac <- tacfrac
+  obj@TACSD <- tacsd
+  obj@TAEFrac <- taefrac
+  obj@TAESD <- taesd
+  obj@SizeLimFrac <- sizelimfrac
+  obj@SizeLimSD <- sizelimsd
 
   obj
 }
@@ -558,3 +653,10 @@ sd2cv <- function(.sd) {
 logit_perc <- function(a, b, perc = 0.5) {
   -(log((1 / perc) - 1) + a) / b
 }
+
+
+x <- read_xml("<foo>
+   <bar>text <baz id = 'a' /></bar>
+   <bar>2</bar>
+   <baz id = 'b' />
+   </foo>")
