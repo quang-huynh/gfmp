@@ -18,17 +18,13 @@ create_rmd <- function(fn = file.path(here::here("report"),
   #'   string combining all of them together with a section name
   #'
   #' @param df DLMtool Description data frame
-  #' @param sect_name Name to use for the section
-  #' @param prepend_name Characters to prepend to each slot name (for easy reading
-  #'   in the document where slot names are the same among types).
-  #' @param inst_obj_name The name to use for the instance to be referenced. e.g.
-  #'   a Data object will be referenced by a variable called 'dat' probably and
-  #'   Stock by 'stk'.
+  #' @param obj_name Name to use for the section
+  #' @param inst_obj_name The name to use for the instance of the object
   #'
   #' @return The Rmd - formatted string
   #'
   #' @examples
-  #' format_desc(DLMtool::DataDescription, "Data parameters", "Data", "dat")
+  #' format_desc(DLMtool::DataDescription, "Data")
   format_desc <- function(df,
                           obj_name = "Data",
                           inst_obj_name = tolower(obj_name)){
