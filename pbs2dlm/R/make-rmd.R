@@ -21,7 +21,7 @@ create_rmd <- function(fn = file.path(here::here("report"),
   #' @param obj_name Name to use for the section
   #' @param inst_obj_name The name to use for the instance of the object
   #'
-  #' @return The Rmd - formatted string
+  #' @return The Rmd - formatted vector of strings
   #'
   #' @examples
   #' format_desc(DLMtool::DataDescription, "Data")
