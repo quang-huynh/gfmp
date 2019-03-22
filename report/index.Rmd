@@ -12,7 +12,7 @@ year: 2019
 report_number: nnn
 region: Pacific Region
 abstract: |
-  Here is the abstract text. 
+  Here is the abstract text.
 header: "Draft working paper --- Do not cite or circulate" # or "" to omit
 output:
  csasdown::resdoc_pdf:
@@ -52,4 +52,5 @@ options(kableExtra.latex.load_packages = FALSE)
 ```{r load-libraries, cache=FALSE}
 # add other packages here:
 library(csasdown)
+library(DLMtool)
 ```
