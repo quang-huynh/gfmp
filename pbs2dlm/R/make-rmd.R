@@ -30,39 +30,34 @@ create_rmd <- function(fn = file.path(here::here("report"),
   #' @examples
   #' format_desc(DLMtool::DataDescription, "Data parameters", "Data", "dat")
   format_desc <- function(df,
-                          sect_name = "Default",
-                          prepend_name = "",
-                          inst_obj_name = "dat"){
+                          obj_name = "Data",
+                          inst_obj_name = tolower(obj_name)){
+
     df <- df %>%
-      mutate(code = paste0("```{r results = FALSE}\n  ",
-                           inst_obj_name,
-                           "@",
-                           Slot,
+      mutate(code = paste0("```{r, ",
+                           inst_obj_name, "-", Slot,
+                           ", results = FALSE}\n  ",
+                           inst_obj_name, "@", Slot,
                            "\n```"),
              Slot = paste0("## ",
-                           prepend_name,
-                           ifelse(prepend_name == "", "", " - "),
                            Slot,
                            "\n"),
              Description = paste0("*",
                                   Description,
                                   "*\n"))
-    c(paste0("# **", sect_name, "**\n\n"),
+    c(paste0("# **", obj_name, " slot descriptions**\n\n"),
+      paste0("```{r warnings = FALSE}\n  ",
+             inst_obj_name, " <- methods::new('", obj_name, "')\n```\n"),
       apply(df, 1, function(x) paste0(x, collapse = "\n\n")))
   }
 
-  rmd <- c("```{r message = FALSE}\n  library(DLMtool)\n  dat <- methods::new(\"Data\")\n```",
-           format_desc(DLMtool::DataDescription, "Data slots", "", "dat"),
-           "```{r}\n  stk <- methods::new(\"Stock\")\n```",
-           format_desc(DLMtool::StockDescription, "Stock slots", "", "stk"),
-           "```{r}\n  flt <- methods::new(\"Fleet\")\n```",
-           format_desc(DLMtool::FleetDescription, "Fleet slots", "", "flt"),
-           "```{r}\n  obs <- methods::new(\"Obs\")\n```",
-           format_desc(DLMtool::ObsDescription, "Obs slots", "", "obs"),
-           "```{r}\n  imp <- methods::new(\"Imp\")\n```",
-           format_desc(DLMtool::ImpDescription, "Imp slots", "", "imp"),
-           "```{r}\n  om <- methods::new(\"OM\")\n```",
-           format_desc(DLMtool::OMDescription, "OM slots", "", "om"))
+  rmd <- c("```{r message = FALSE}\n  library(DLMtool)\n```\n",
+           format_desc(DLMtool::DataDescription, "Data"),
+           format_desc(DLMtool::StockDescription, "Stock"),
+           format_desc(DLMtool::FleetDescription, "Fleet"),
+           format_desc(DLMtool::ObsDescription, "Obs"),
+           format_desc(DLMtool::ImpDescription, "Imp"),
+           format_desc(DLMtool::OMDescription, "OM"))
 
   conn <- file(fn)
   write(rmd, conn)
