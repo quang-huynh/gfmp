@@ -8,5 +8,6 @@ report/_book/*
 report/csas-style/*
 *.upa
 *.html
+*.md
 *cache
 build
