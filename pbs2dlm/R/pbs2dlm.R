@@ -6,8 +6,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' fetch_data()
 #' fetch_data("yelloweye rockfish")
+#' }
 fetch_data <- function(species_name = "shortraker rockfish",
                        file = file.path(here::here("generated-data"),
                                         paste0(gsub(" ",
@@ -34,7 +36,9 @@ fetch_data <- function(species_name = "shortraker rockfish",
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' d <- load_data()
+#' }
 load_data <- function(species_name = "shortraker rockfish",
                       file = file.path(here::here("generated-data"),
                                        paste0(gsub(" ",
@@ -53,10 +57,13 @@ load_data <- function(species_name = "shortraker rockfish",
 #' @param file the full path filename including extension .rds
 #'
 #' @return the contents of the rds file as a list
+#'
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data_file_exists("shortraker rockfish")
+#' }
 data_file_exists <- function(species_name,
                              file = file.path(here::here("generated-data"),
                                               paste0(gsub(" ",
@@ -75,7 +82,7 @@ data_file_exists <- function(species_name,
 #' @return An S4 object of class DLMtool Stock.
 #'
 #' @export
-#' #' \dontrun{
+#' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
 #' fetch_data(species)
@@ -178,7 +185,7 @@ create_dlm_stock <- function(dat = NULL,
 #' @return An S4 object of class DLMtool Fleet.
 #'
 #' @export
-#' #' \dontrun{
+#' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
 #' fetch_data(species)
@@ -264,7 +271,7 @@ create_dlm_fleet <- function(dat = NULL,
 #'
 #' @return An S4 object of class DLMtool Obs.
 #' @export
-#' #' \dontrun{
+#' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
 #' fetch_data(species)
@@ -355,7 +362,7 @@ create_dlm_obs <- function(dat = NULL,
 #'
 #' @return An S4 object of class DLMtool Imp.
 #' @export
-#' #' \dontrun{
+#' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
 #' fetch_data(species)
