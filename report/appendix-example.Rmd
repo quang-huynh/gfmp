@@ -17,7 +17,11 @@ Love, M.S., Yoklavich, M., and Thorsteinson, L.K. 2002. The Rockfishes of the No
 
 Thorson, J.T., Jensen, O.P., and Zipkin, E.F. 2014. How variable is recruitment for exploited marine fishes? A hierarchical model for testing life history theory. Can. J. Fish. Aquat. Sci. 71(7): 973–983. doi: 10.1139/cjfas-2013-0645.
 
-```{r, message=FALSE, warning=FALSE, results='hide'}
+## Stock parameters
+
+The first step is to load the data into the workspace using functions from the *gfplot* package. Here, *d* contains *catch*, *commercial_samples*, *survey_samples*< and *survey_index*.
+
+```{r, message=FALSE, warning=FALSE, results='hide', echo = 9 }
 n_iters <- 50
 
 # Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
@@ -27,18 +31,16 @@ species_dir <- file.path(here::here("analysis",
                                     paste0(gsub(" ",
                                                 "-",
                                                 species_name))))
-
 if(!data_file_exists(species_name)){
   fetch_data(species_name)
 }
 d <- load_data(species_name)
+d <- readRDS("../generated-data/shortraker-rockfish.rds")
 ```
 
-## Stock parameters
+Let's start building the *Stock* object with the generic rockfish model and modify from there.
 
-Let's start with the generic rockfish model and modify from there.
-
-```{r}
+```{r echo = TRUE}
 stock <- DLMtool::Rockfish
 ```
 
@@ -46,19 +48,19 @@ stock <- DLMtool::Rockfish
 
 *Not necessarily reliable because ageing very uncertain; probably should look at some upper quantile or take value from elsewhere*
 
-```{r}
+```{r echo = TRUE}
 stock@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
 ```
 
 R0, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
 
-```{r}
+```{r echo = TRUE}
 stock@R0
 ```
 
 @echave2015 estimate natural mortality in the Gulf of Alaska to be 0.03. Let's place some relatively wide bounds around that.
 
-```{r}
+```{r echo = TRUE}
 stock@M <- c(0.02, 0.10)
 ```
 

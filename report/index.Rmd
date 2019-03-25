@@ -51,11 +51,12 @@ options(kableExtra.latex.load_packages = FALSE)
 
 ```{r load-libraries, cache=FALSE}
 # add other packages here:
-library(tidyverse)
 library(gfplot)
 library(gfutilities)
+library(pbs2dlm)
 library(csasdown)
 library(DLMtool)
 library(rfishbase)
 library(RColorBrewer)
+library(tidyverse)
 ```
