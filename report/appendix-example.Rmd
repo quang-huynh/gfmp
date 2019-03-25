@@ -9,22 +9,14 @@ After that, all subsequent sections will be turned into appendices. -->
 
 This appendix outlines the setup and implementation of the  Shortraker rockfish (*Sebastes borealis*) operating model. It is not intended for use in a fisheries management context as presented here.
 
-Echave, K.B., Shotwell, S.K., and Hulson, P.-J.F. 2015. Assessment of the shortraker rockfish stock in the Gulf of Alaska. In Stock assessment and fishery evaluation report for the groundfish resources of the Gulf of Alaska. North Pacific Fishery Management Council, 605 W 4 th Ave, Suite 306, Anchorage AK 99501. pp. 975–1012.
-
-Love, M.S. 2011. Certainly More Than You Want to Know about the Fishes of the Pacific Coast: A Postmodern Experience. Really Big Press.
-
-Love, M.S., Yoklavich, M., and Thorsteinson, L.K. 2002. The Rockfishes of the Northeast Pacific. University of California Press.
-
-Thorson, J.T., Jensen, O.P., and Zipkin, E.F. 2014. How variable is recruitment for exploited marine fishes? A hierarchical model for testing life history theory. Can. J. Fish. Aquat. Sci. 71(7): 973–983. doi: 10.1139/cjfas-2013-0645.
-
 ## Stock parameters
 
-The first step is to load the data into the workspace using functions from the *gfplot* package. Here, *d* contains *catch*, *commercial_samples*, *survey_samples*< and *survey_index*.
+The first step is to load the data into the workspace using functions from the *gfplot* package. Here, *d* contains *catch*, *commercial_samples*, *survey_samples* and *survey_index*.
 
 ```{r, message=FALSE, warning=FALSE, results='hide', echo = 9 }
 n_iters <- 50
 
-# Set up Shortraker rockfish data - d will contain the data for commercial samples, survey, and catch
+# Set up data - d will contain the data for commercial samples, survey, and catch
 science_name <- "Sebastes borealis"
 species_name <- "shortraker rockfish"
 species_dir <- file.path(here::here("analysis",
@@ -36,6 +28,7 @@ if(!data_file_exists(species_name)){
 }
 d <- load_data(species_name)
 d <- readRDS("../generated-data/shortraker-rockfish.rds")
+lw <- rfishbase::length_weight(science_name)
 ```
 
 Let's start building the *Stock* object with the generic rockfish model and modify from there.
@@ -52,7 +45,7 @@ stock <- DLMtool::Rockfish
 stock@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
 ```
 
-R0, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
+R~0~, the magnitude of unfished recruitment is fixed to an arbitrary value since it scales the simulated numbers:
 
 ```{r echo = TRUE}
 stock@R0
@@ -66,36 +59,37 @@ stock@M <- c(0.02, 0.10)
 
 Inter-annual variability in natural mortality rate expressed as a uniform distribution of a CV. We are unlikely to find any data on this and need to take a best guess. Leaving this at the default:
 
-```{r}
+```{r echo = TRUE}
 stock@Msd
 ```
 
 Mean temporal trend in natural mortality rate, expressed as a percent change in M per year. Unlikely to find any data on this. Set it to range between -0.25% and 0.25% per year.
 
-```{r}
+```{r echo = TRUE}
 stock@Mgrad <- c(-0.0025, 0.0025)
 ```
 
-Fraction of discarded fish that die. For shortraker, and the most rockfish, this value should be at or near 100%.
+Fraction of discarded fish that die. For `r species_name`, and most rockfish, this value should be at or near 100%.
 
-```{r}
+```{r echo = TRUE}
 stock@Fdisc <- c(1, 1)
 ```
 
 Steepness of the stock recruit relationship (uniform distribution). TODO take from Robyn's work?
 
-```{r}
+```{r echo = TRUE}
 stock@h
 ```
 
-Maximum length: @love2002 list the maximum size as 120 cm. They also note that in the Gulf of Alaska fish smaller than 35 cm are rarely found. Fishbase lists a maximum length of 108 cm. However, we can fit von Bertalanffy growth curves to the length-age data in GFBio.
+Maximum length: @love2002 list the maximum size as 120 cm. They also note that in the Gulf of Alaska fish smaller than 35 cm are rarely found. Fishbase lists a maximum length of `r max(lw$LengthMax)` cm. However, we can fit von Bertalanffy growth curves to the length-age data in GFBio.
 
 Because we are providing our own samples from the model posterior, we provide these values using the custom parameters functionality in the `cpar` slot of the final operating model.
 
-```{r}
-x <- bind_samples(dat_survey = d$survey_samples, dat_comm = d$commercial_samples)
+```{r echo = TRUE}
+x <- bind_samples(dat_survey = d$survey_samples,
+                  dat_comm = d$commercial_samples)
 x <- x[!duplicated(x$specimen_id), ]
-x <- filter(x, major_stat_area_name != "4B: STRAIT OF GEORGIA")
+x <- dplyr::filter(x, major_stat_area_name != "4B: STRAIT OF GEORGIA")
 vb_m <- fit_vb(x, "male", method = "mcmc", iter = 2000, chains = 1, cores = 4)
 vb_f <- fit_vb(x, "female", method = "mcmc", iter = 2000, chains = 1, cores = 4)
 vonb <- fit_vb(x, "all", method = "mcmc", iter = 2000, chains = 1, cores = 4)
