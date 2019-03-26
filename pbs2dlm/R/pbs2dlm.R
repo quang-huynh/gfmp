@@ -10,12 +10,7 @@
 #' fetch_data()
 #' fetch_data("yelloweye rockfish")
 #' }
-fetch_data <- function(species_name = "shortraker rockfish",
-                       file = file.path(here::here("generated-data"),
-                                        paste0(gsub(" ",
-                                                    "-",
-                                                    species_name),
-                                               ".rds"))){
+fetch_data <- function(species_name = "shortraker rockfish", file) {
   d <- list()
   d$commercial_samples <- gfplot::get_commercial_samples(species_name)
   d$survey_samples <- gfplot::get_survey_samples(species_name)
@@ -116,9 +111,7 @@ create_dlm_stock <- function(dat = NULL,
                              t0 = obj@t0,
                              lencv = obj@LenCV,
                              ksd = obj@Ksd,
-                             kgrad = obj@Kgrad,
                              linfsd = obj@Linfsd,
-                             linfgrad = obj@Linfgrad,
                              l50 = obj@L50,
                              l50_95= obj@L50_95,
                              d = obj@D,
@@ -158,16 +151,16 @@ create_dlm_stock <- function(dat = NULL,
   obj@Linf <- ifelse(is.null(dat), linf, dat@vbLinf)
   obj@K <- ifelse(is.null(dat), k, dat@vbK)
   obj@t0 <- ifelse(is.null(dat), t0, dat@vbt0)
-  obj@LenCV <- lencv
-  obj@Ksd <- ksd
-  obj@Kgrad <- kgrad
-  obj@Linfsd <- linfsd
-  obj@Linfgrad <- linfgrad
-  obj@L50 <- l50
-  obj@L50_95<- l50_95
+  obj@LenCV <- ifelse(is.null(dat), lencv, dat@LenCV)
+  obj@Ksd <- ifelse(is.null(dat), ksd, dat@CV_vbK)
+  # obj@Kgrad <- ifelse(is.null(dat), kgrad, dat@CV_vbK)
+  obj@Linfsd <- ifelse(is.null(dat), linfsd, dat@CV_vbLinf)
+  # obj@Linfgrad <- linfgrad
+  obj@L50 <- ifelse(is.null(dat), l50, dat@L50)
+  obj@L50_95<- ifelse(is.null(dat), l50_95, dat@L95 - dat@L50)
   obj@D <- d
-  obj@a <- a
-  obj@b <- b
+  obj@a <- ifelse(is.null(dat), a, dat@wla)
+  obj@b <- ifelse(is.null(dat), b, dat@wlb)
   obj@Size_area_1 <- size_area_1
   obj@Frac_area_1 <- frac_area_1
   obj@Prob_staying <- prob_staying
