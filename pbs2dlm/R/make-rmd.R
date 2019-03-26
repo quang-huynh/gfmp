@@ -62,6 +62,7 @@ format_desc <- function(df,
         Description
       )
     )
+  df <- df[!grepl("No longer used", df$Description), , drop = FALSE]
 
   c(
     toupper(paste0("## ", obj_name, " slot descriptions\n")),
