@@ -63,7 +63,7 @@ format_desc <- function(df,
         "*"
       )
     )
-  df <- df[!grepl("No longer used", df$Description), , drop = FALSE]
+  df <- df[!grepl("NO LONGER USED", toupper(df$Description)), , drop = FALSE]
   df$Description <- gsub("([A-Za-z0-9]+)\\*$", "\\1.*", df$Description)
   df$Description <- gsub("([A-Za-z0-9]+)@([A-Za-z0-9]+)", "`\\1@\\2`",
     df$Description)
