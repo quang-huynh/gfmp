@@ -1,17 +1,18 @@
 #' Create template Rmd file describing DLMtool Objects and Slots
 #'
 #' @param file_name Filename/path of where to save the .Rmd file.
+#' @param overwite Overwite?
 #'
 #' @return Nothing
 #' @export
 #'
 #' @examples
 #' create_rmd()
-create_rmd <- function(file_name) {
-  if (file.exists(fn)) {
-    stop("File '", fn, "' exists. Delete or move before running this function.",
-      call. = FALSE)
-  }
+create_rmd <- function(file_name, overwrite = FALSE) {
+  fn <- file_name
+  if (file.exists(fn) && !overwrite)
+    stop("File '", fn, "' already exists. ",
+      "Set `overwite = TRUE` if you want to overwite it.", call. = FALSE)
 
   rmd <- c(
     "```{r message = FALSE}\nlibrary(DLMtool)\n```\n",
@@ -50,24 +51,22 @@ format_desc <- function(df,
         inst_obj_name, "-", Slot,
         ", results = FALSE, echo = TRUE}\n",
         inst_obj_name, "@", Slot,
-        "\n```"
+        "\n```\n"
       ),
       Slot = paste0(
-        "## ",
-        Slot,
-        "\n"
+        "### ",
+        Slot
       ),
       Description = paste0(
         "*",
-        Description,
-        "*\n"
+        Description
       )
     )
 
   c(
-    paste0("# **", obj_name, " slot descriptions**\n\n"),
+    toupper(paste0("## ", obj_name, " slot descriptions\n")),
     paste0(
-      "```{r warnings = FALSE}\n  ",
+      "```{r warnings = FALSE}\n",
       inst_obj_name, " <- methods::new('", obj_name, "')\n```\n"
     ),
     apply(df, 1, function(x) paste0(x, collapse = "\n\n"))
