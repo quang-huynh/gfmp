@@ -47,7 +47,7 @@ format_desc <- function(df,
   df <- df %>%
     mutate(
       code = paste0(
-        "```{r, ",
+        "```{r ",
         inst_obj_name, "-", Slot,
         ", results = FALSE, echo = TRUE}\n",
         inst_obj_name, "@", Slot,

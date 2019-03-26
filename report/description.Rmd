@@ -12,7 +12,7 @@ stock <- methods::new('Stock')
 
 *The name of the Stock object. Single value. Character string.*
 
-```{r, stock-Name, results = FALSE, echo = TRUE}
+```{r stock-Name, results = FALSE, echo = TRUE}
 stock@Name
 ```
 
@@ -20,7 +20,7 @@ stock@Name
 
 *Common name of the species. Character string.*
 
-```{r, stock-Common_Name, results = FALSE, echo = TRUE}
+```{r stock-Common_Name, results = FALSE, echo = TRUE}
 stock@Common_Name
 ```
 
@@ -28,7 +28,7 @@ stock@Common_Name
 
 *Scientific name of the species. Genus and species name. Character string.*
 
-```{r, stock-Species, results = FALSE, echo = TRUE}
+```{r stock-Species, results = FALSE, echo = TRUE}
 stock@Species
 ```
 
@@ -36,7 +36,7 @@ stock@Species
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer.*
 
-```{r, stock-maxage, results = FALSE, echo = TRUE}
+```{r stock-maxage, results = FALSE, echo = TRUE}
 stock@maxage
 ```
 
@@ -44,7 +44,7 @@ stock@maxage
 
 *The magnitude of unfished recruitment. Single value. Positive real number.*
 
-```{r, stock-R0, results = FALSE, echo = TRUE}
+```{r stock-R0, results = FALSE, echo = TRUE}
 stock@R0
 ```
 
@@ -52,7 +52,7 @@ stock@R0
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, stock-M, results = FALSE, echo = TRUE}
+```{r stock-M, results = FALSE, echo = TRUE}
 stock@M
 ```
 
@@ -60,7 +60,7 @@ stock@M
 
 *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number.*
 
-```{r, stock-M2, results = FALSE, echo = TRUE}
+```{r stock-M2, results = FALSE, echo = TRUE}
 stock@M2
 ```
 
@@ -68,7 +68,7 @@ stock@M2
 
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
 
-```{r, stock-Mexp, results = FALSE, echo = TRUE}
+```{r stock-Mexp, results = FALSE, echo = TRUE}
 stock@Mexp
 ```
 
@@ -76,7 +76,7 @@ stock@Mexp
 
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Msd, results = FALSE, echo = TRUE}
+```{r stock-Msd, results = FALSE, echo = TRUE}
 stock@Msd
 ```
 
@@ -84,7 +84,7 @@ stock@Msd
 
 *Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1.*
 
-```{r, stock-h, results = FALSE, echo = TRUE}
+```{r stock-h, results = FALSE, echo = TRUE}
 stock@h
 ```
 
@@ -92,7 +92,7 @@ stock@h
 
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer.*
 
-```{r, stock-SRrel, results = FALSE, echo = TRUE}
+```{r stock-SRrel, results = FALSE, echo = TRUE}
 stock@SRrel
 ```
 
@@ -100,7 +100,7 @@ stock@SRrel
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Perr, results = FALSE, echo = TRUE}
+```{r stock-Perr, results = FALSE, echo = TRUE}
 stock@Perr
 ```
 
@@ -108,7 +108,7 @@ stock@Perr
 
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-AC, results = FALSE, echo = TRUE}
+```{r stock-AC, results = FALSE, echo = TRUE}
 stock@AC
 ```
 
@@ -116,7 +116,7 @@ stock@AC
 
 *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Period, results = FALSE, echo = TRUE}
+```{r stock-Period, results = FALSE, echo = TRUE}
 stock@Period
 ```
 
@@ -124,7 +124,7 @@ stock@Period
 
 *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1.*
 
-```{r, stock-Amplitude, results = FALSE, echo = TRUE}
+```{r stock-Amplitude, results = FALSE, echo = TRUE}
 stock@Amplitude
 ```
 
@@ -132,7 +132,7 @@ stock@Amplitude
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-Linf, results = FALSE, echo = TRUE}
+```{r stock-Linf, results = FALSE, echo = TRUE}
 stock@Linf
 ```
 
@@ -140,7 +140,7 @@ stock@Linf
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-K, results = FALSE, echo = TRUE}
+```{r stock-K, results = FALSE, echo = TRUE}
 stock@K
 ```
 
@@ -148,7 +148,7 @@ stock@K
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers.*
 
-```{r, stock-t0, results = FALSE, echo = TRUE}
+```{r stock-t0, results = FALSE, echo = TRUE}
 stock@t0
 ```
 
@@ -156,7 +156,7 @@ stock@t0
 
 *Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-LenCV, results = FALSE, echo = TRUE}
+```{r stock-LenCV, results = FALSE, echo = TRUE}
 stock@LenCV
 ```
 
@@ -164,7 +164,7 @@ stock@LenCV
 
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Ksd, results = FALSE, echo = TRUE}
+```{r stock-Ksd, results = FALSE, echo = TRUE}
 stock@Ksd
 ```
 
@@ -172,7 +172,7 @@ stock@Ksd
 
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Linfsd, results = FALSE, echo = TRUE}
+```{r stock-Linfsd, results = FALSE, echo = TRUE}
 stock@Linfsd
 ```
 
@@ -180,7 +180,7 @@ stock@Linfsd
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-L50, results = FALSE, echo = TRUE}
+```{r stock-L50, results = FALSE, echo = TRUE}
 stock@L50
 ```
 
@@ -188,7 +188,7 @@ stock@L50
 
 *Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-L50_95, results = FALSE, echo = TRUE}
+```{r stock-L50_95, results = FALSE, echo = TRUE}
 stock@L50_95
 ```
 
@@ -196,7 +196,7 @@ stock@L50_95
 
 *Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, stock-D, results = FALSE, echo = TRUE}
+```{r stock-D, results = FALSE, echo = TRUE}
 stock@D
 ```
 
@@ -204,7 +204,7 @@ stock@D
 
 *Length-weight parameter alpha. Single value. Positive real number.*
 
-```{r, stock-a, results = FALSE, echo = TRUE}
+```{r stock-a, results = FALSE, echo = TRUE}
 stock@a
 ```
 
@@ -212,7 +212,7 @@ stock@a
 
 *Length-weight parameter beta. Single value. Positive real number.*
 
-```{r, stock-b, results = FALSE, echo = TRUE}
+```{r stock-b, results = FALSE, echo = TRUE}
 stock@b
 ```
 
@@ -220,7 +220,7 @@ stock@b
 
 *The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-Size_area_1, results = FALSE, echo = TRUE}
+```{r stock-Size_area_1, results = FALSE, echo = TRUE}
 stock@Size_area_1
 ```
 
@@ -228,7 +228,7 @@ stock@Size_area_1
 
 *The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, stock-Frac_area_1, results = FALSE, echo = TRUE}
+```{r stock-Frac_area_1, results = FALSE, echo = TRUE}
 stock@Frac_area_1
 ```
 
@@ -236,7 +236,7 @@ stock@Frac_area_1
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 
-```{r, stock-Prob_staying, results = FALSE, echo = TRUE}
+```{r stock-Prob_staying, results = FALSE, echo = TRUE}
 stock@Prob_staying
 ```
 
@@ -244,7 +244,7 @@ stock@Prob_staying
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, stock-Fdisc, results = FALSE, echo = TRUE}
+```{r stock-Fdisc, results = FALSE, echo = TRUE}
 stock@Fdisc
 ```
 
@@ -252,7 +252,7 @@ stock@Fdisc
 
 *A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
 
-```{r, stock-Source, results = FALSE, echo = TRUE}
+```{r stock-Source, results = FALSE, echo = TRUE}
 stock@Source
 ```
 
@@ -266,7 +266,7 @@ fleet <- methods::new('Fleet')
 
 *Name of the Fleet object. Single value. Character string.*
 
-```{r, fleet-Name, results = FALSE, echo = TRUE}
+```{r fleet-Name, results = FALSE, echo = TRUE}
 fleet@Name
 ```
 
@@ -274,7 +274,7 @@ fleet@Name
 
 *The number of years for the historical spool-up simulation. Single value. Positive integer.*
 
-```{r, fleet-nyears, results = FALSE, echo = TRUE}
+```{r fleet-nyears, results = FALSE, echo = TRUE}
 fleet@nyears
 ```
 
@@ -282,7 +282,7 @@ fleet@nyears
 
 *Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers.*
 
-```{r, fleet-Spat_targ, results = FALSE, echo = TRUE}
+```{r fleet-Spat_targ, results = FALSE, echo = TRUE}
 fleet@Spat_targ
 ```
 
@@ -290,7 +290,7 @@ fleet@Spat_targ
 
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers.*
 
-```{r, fleet-EffYears, results = FALSE, echo = TRUE}
+```{r fleet-EffYears, results = FALSE, echo = TRUE}
 fleet@EffYears
 ```
 
@@ -298,7 +298,7 @@ fleet@EffYears
 
 *Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-```{r, fleet-EffLower, results = FALSE, echo = TRUE}
+```{r fleet-EffLower, results = FALSE, echo = TRUE}
 fleet@EffLower
 ```
 
@@ -306,7 +306,7 @@ fleet@EffLower
 
 *Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-```{r, fleet-EffUpper, results = FALSE, echo = TRUE}
+```{r fleet-EffUpper, results = FALSE, echo = TRUE}
 fleet@EffUpper
 ```
 
@@ -314,7 +314,7 @@ fleet@EffUpper
 
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-Esd, results = FALSE, echo = TRUE}
+```{r fleet-Esd, results = FALSE, echo = TRUE}
 fleet@Esd
 ```
 
@@ -322,7 +322,7 @@ fleet@Esd
 
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-qinc, results = FALSE, echo = TRUE}
+```{r fleet-qinc, results = FALSE, echo = TRUE}
 fleet@qinc
 ```
 
@@ -330,7 +330,7 @@ fleet@qinc
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-qcv, results = FALSE, echo = TRUE}
+```{r fleet-qcv, results = FALSE, echo = TRUE}
 fleet@qcv
 ```
 
@@ -338,7 +338,7 @@ fleet@qcv
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, fleet-L5, results = FALSE, echo = TRUE}
+```{r fleet-L5, results = FALSE, echo = TRUE}
 fleet@L5
 ```
 
@@ -346,7 +346,7 @@ fleet@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, fleet-LFS, results = FALSE, echo = TRUE}
+```{r fleet-LFS, results = FALSE, echo = TRUE}
 fleet@LFS
 ```
 
@@ -354,7 +354,7 @@ fleet@LFS
 
 *The vulnerability of fish at Stock@Linf . Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, fleet-Vmaxlen, results = FALSE, echo = TRUE}
+```{r fleet-Vmaxlen, results = FALSE, echo = TRUE}
 fleet@Vmaxlen
 ```
 
@@ -362,7 +362,7 @@ fleet@Vmaxlen
 
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
 
-```{r, fleet-isRel, results = FALSE, echo = TRUE}
+```{r fleet-isRel, results = FALSE, echo = TRUE}
 fleet@isRel
 ```
 
@@ -370,7 +370,7 @@ fleet@isRel
 
 *Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-LR5, results = FALSE, echo = TRUE}
+```{r fleet-LR5, results = FALSE, echo = TRUE}
 fleet@LR5
 ```
 
@@ -378,7 +378,7 @@ fleet@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-LFR, results = FALSE, echo = TRUE}
+```{r fleet-LFR, results = FALSE, echo = TRUE}
 fleet@LFR
 ```
 
@@ -386,7 +386,7 @@ fleet@LFR
 
 *The retention of fish at Stock@Linf . Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, fleet-Rmaxlen, results = FALSE, echo = TRUE}
+```{r fleet-Rmaxlen, results = FALSE, echo = TRUE}
 fleet@Rmaxlen
 ```
 
@@ -394,7 +394,7 @@ fleet@Rmaxlen
 
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, fleet-DR, results = FALSE, echo = TRUE}
+```{r fleet-DR, results = FALSE, echo = TRUE}
 fleet@DR
 ```
 
@@ -402,7 +402,7 @@ fleet@DR
 
 *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
 
-```{r, fleet-SelYears, results = FALSE, echo = TRUE}
+```{r fleet-SelYears, results = FALSE, echo = TRUE}
 fleet@SelYears
 ```
 
@@ -410,7 +410,7 @@ fleet@SelYears
 
 *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
 
-```{r, fleet-AbsSelYears, results = FALSE, echo = TRUE}
+```{r fleet-AbsSelYears, results = FALSE, echo = TRUE}
 fleet@AbsSelYears
 ```
 
@@ -418,7 +418,7 @@ fleet@AbsSelYears
 
 *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, fleet-L5Lower, results = FALSE, echo = TRUE}
+```{r fleet-L5Lower, results = FALSE, echo = TRUE}
 fleet@L5Lower
 ```
 
@@ -426,7 +426,7 @@ fleet@L5Lower
 
 *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, fleet-L5Upper, results = FALSE, echo = TRUE}
+```{r fleet-L5Upper, results = FALSE, echo = TRUE}
 fleet@L5Upper
 ```
 
@@ -434,7 +434,7 @@ fleet@L5Upper
 
 *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, fleet-LFSLower, results = FALSE, echo = TRUE}
+```{r fleet-LFSLower, results = FALSE, echo = TRUE}
 fleet@LFSLower
 ```
 
@@ -442,7 +442,7 @@ fleet@LFSLower
 
 *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, fleet-LFSUpper, results = FALSE, echo = TRUE}
+```{r fleet-LFSUpper, results = FALSE, echo = TRUE}
 fleet@LFSUpper
 ```
 
@@ -450,7 +450,7 @@ fleet@LFSUpper
 
 *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
-```{r, fleet-VmaxLower, results = FALSE, echo = TRUE}
+```{r fleet-VmaxLower, results = FALSE, echo = TRUE}
 fleet@VmaxLower
 ```
 
@@ -458,7 +458,7 @@ fleet@VmaxLower
 
 *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
-```{r, fleet-VmaxUpper, results = FALSE, echo = TRUE}
+```{r fleet-VmaxUpper, results = FALSE, echo = TRUE}
 fleet@VmaxUpper
 ```
 
@@ -466,7 +466,7 @@ fleet@VmaxUpper
 
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
 
-```{r, fleet-CurrentYr, results = FALSE, echo = TRUE}
+```{r fleet-CurrentYr, results = FALSE, echo = TRUE}
 fleet@CurrentYr
 ```
 
@@ -474,7 +474,7 @@ fleet@CurrentYr
 
 *(Optional) Matrix specifying spatial closures for historical years.*
 
-```{r, fleet-MPA, results = FALSE, echo = TRUE}
+```{r fleet-MPA, results = FALSE, echo = TRUE}
 fleet@MPA
 ```
 
@@ -488,7 +488,7 @@ obs <- methods::new('Obs')
 
 *The name of the observation model object. Single value. Character string.*
 
-```{r, obs-Name, results = FALSE, echo = TRUE}
+```{r obs-Name, results = FALSE, echo = TRUE}
 obs@Name
 ```
 
@@ -496,7 +496,7 @@ obs@Name
 
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, obs-Cobs, results = FALSE, echo = TRUE}
+```{r obs-Cobs, results = FALSE, echo = TRUE}
 obs@Cobs
 ```
 
@@ -504,7 +504,7 @@ obs@Cobs
 
 *Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, obs-Cbiascv, results = FALSE, echo = TRUE}
+```{r obs-Cbiascv, results = FALSE, echo = TRUE}
 obs@Cbiascv
 ```
 
@@ -512,7 +512,7 @@ obs@Cbiascv
 
 *Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-CAA_nsamp, results = FALSE, echo = TRUE}
+```{r obs-CAA_nsamp, results = FALSE, echo = TRUE}
 obs@CAA_nsamp
 ```
 
@@ -520,7 +520,7 @@ obs@CAA_nsamp
 
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, obs-CAA_ESS, results = FALSE, echo = TRUE}
+```{r obs-CAA_ESS, results = FALSE, echo = TRUE}
 obs@CAA_ESS
 ```
 
@@ -528,7 +528,7 @@ obs@CAA_ESS
 
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, obs-CAL_nsamp, results = FALSE, echo = TRUE}
+```{r obs-CAL_nsamp, results = FALSE, echo = TRUE}
 obs@CAL_nsamp
 ```
 
@@ -536,7 +536,7 @@ obs@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, obs-CAL_ESS, results = FALSE, echo = TRUE}
+```{r obs-CAL_ESS, results = FALSE, echo = TRUE}
 obs@CAL_ESS
 ```
 
@@ -544,7 +544,7 @@ obs@CAL_ESS
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Iobs, results = FALSE, echo = TRUE}
+```{r obs-Iobs, results = FALSE, echo = TRUE}
 obs@Iobs
 ```
 
@@ -552,7 +552,7 @@ obs@Iobs
 
 *Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Ibiascv, results = FALSE, echo = TRUE}
+```{r obs-Ibiascv, results = FALSE, echo = TRUE}
 obs@Ibiascv
 ```
 
@@ -560,7 +560,7 @@ obs@Ibiascv
 
 *Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Btobs, results = FALSE, echo = TRUE}
+```{r obs-Btobs, results = FALSE, echo = TRUE}
 obs@Btobs
 ```
 
@@ -568,7 +568,7 @@ obs@Btobs
 
 *Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Btbiascv, results = FALSE, echo = TRUE}
+```{r obs-Btbiascv, results = FALSE, echo = TRUE}
 obs@Btbiascv
 ```
 
@@ -576,7 +576,7 @@ obs@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-beta, results = FALSE, echo = TRUE}
+```{r obs-beta, results = FALSE, echo = TRUE}
 obs@beta
 ```
 
@@ -584,7 +584,7 @@ obs@beta
 
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-LenMbiascv, results = FALSE, echo = TRUE}
+```{r obs-LenMbiascv, results = FALSE, echo = TRUE}
 obs@LenMbiascv
 ```
 
@@ -592,7 +592,7 @@ obs@LenMbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Mbiascv, results = FALSE, echo = TRUE}
+```{r obs-Mbiascv, results = FALSE, echo = TRUE}
 obs@Mbiascv
 ```
 
@@ -600,7 +600,7 @@ obs@Mbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Kbiascv, results = FALSE, echo = TRUE}
+```{r obs-Kbiascv, results = FALSE, echo = TRUE}
 obs@Kbiascv
 ```
 
@@ -608,7 +608,7 @@ obs@Kbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-t0biascv, results = FALSE, echo = TRUE}
+```{r obs-t0biascv, results = FALSE, echo = TRUE}
 obs@t0biascv
 ```
 
@@ -616,7 +616,7 @@ obs@t0biascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Linfbiascv, results = FALSE, echo = TRUE}
+```{r obs-Linfbiascv, results = FALSE, echo = TRUE}
 obs@Linfbiascv
 ```
 
@@ -624,7 +624,7 @@ obs@Linfbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-LFCbiascv, results = FALSE, echo = TRUE}
+```{r obs-LFCbiascv, results = FALSE, echo = TRUE}
 obs@LFCbiascv
 ```
 
@@ -632,7 +632,7 @@ obs@LFCbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-LFSbiascv, results = FALSE, echo = TRUE}
+```{r obs-LFSbiascv, results = FALSE, echo = TRUE}
 obs@LFSbiascv
 ```
 
@@ -640,7 +640,7 @@ obs@LFSbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-FMSYbiascv, results = FALSE, echo = TRUE}
+```{r obs-FMSYbiascv, results = FALSE, echo = TRUE}
 obs@FMSYbiascv
 ```
 
@@ -648,7 +648,7 @@ obs@FMSYbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-FMSY_Mbiascv, results = FALSE, echo = TRUE}
+```{r obs-FMSY_Mbiascv, results = FALSE, echo = TRUE}
 obs@FMSY_Mbiascv
 ```
 
@@ -656,7 +656,7 @@ obs@FMSY_Mbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-BMSY_B0biascv, results = FALSE, echo = TRUE}
+```{r obs-BMSY_B0biascv, results = FALSE, echo = TRUE}
 obs@BMSY_B0biascv
 ```
 
@@ -664,7 +664,7 @@ obs@BMSY_B0biascv
 
 *Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Irefbiascv, results = FALSE, echo = TRUE}
+```{r obs-Irefbiascv, results = FALSE, echo = TRUE}
 obs@Irefbiascv
 ```
 
@@ -672,7 +672,7 @@ obs@Irefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Brefbiascv, results = FALSE, echo = TRUE}
+```{r obs-Brefbiascv, results = FALSE, echo = TRUE}
 obs@Brefbiascv
 ```
 
@@ -680,7 +680,7 @@ obs@Brefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Crefbiascv, results = FALSE, echo = TRUE}
+```{r obs-Crefbiascv, results = FALSE, echo = TRUE}
 obs@Crefbiascv
 ```
 
@@ -688,7 +688,7 @@ obs@Crefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Dbiascv, results = FALSE, echo = TRUE}
+```{r obs-Dbiascv, results = FALSE, echo = TRUE}
 obs@Dbiascv
 ```
 
@@ -696,7 +696,7 @@ obs@Dbiascv
 
 *Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Dobs, results = FALSE, echo = TRUE}
+```{r obs-Dobs, results = FALSE, echo = TRUE}
 obs@Dobs
 ```
 
@@ -704,7 +704,7 @@ obs@Dobs
 
 *Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-hbiascv, results = FALSE, echo = TRUE}
+```{r obs-hbiascv, results = FALSE, echo = TRUE}
 obs@hbiascv
 ```
 
@@ -712,7 +712,7 @@ obs@hbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, obs-Recbiascv, results = FALSE, echo = TRUE}
+```{r obs-Recbiascv, results = FALSE, echo = TRUE}
 obs@Recbiascv
 ```
 
@@ -726,7 +726,7 @@ imp <- methods::new('Imp')
 
 *The name of the Implementation error object. Single value. Character string.*
 
-```{r, imp-Name, results = FALSE, echo = TRUE}
+```{r imp-Name, results = FALSE, echo = TRUE}
 imp@Name
 ```
 
@@ -734,7 +734,7 @@ imp@Name
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, imp-TACFrac, results = FALSE, echo = TRUE}
+```{r imp-TACFrac, results = FALSE, echo = TRUE}
 imp@TACFrac
 ```
 
@@ -742,7 +742,7 @@ imp@TACFrac
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, imp-TACSD, results = FALSE, echo = TRUE}
+```{r imp-TACSD, results = FALSE, echo = TRUE}
 imp@TACSD
 ```
 
@@ -750,7 +750,7 @@ imp@TACSD
 
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, imp-TAEFrac, results = FALSE, echo = TRUE}
+```{r imp-TAEFrac, results = FALSE, echo = TRUE}
 imp@TAEFrac
 ```
 
@@ -758,7 +758,7 @@ imp@TAEFrac
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, imp-TAESD, results = FALSE, echo = TRUE}
+```{r imp-TAESD, results = FALSE, echo = TRUE}
 imp@TAESD
 ```
 
@@ -766,7 +766,7 @@ imp@TAESD
 
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, imp-SizeLimFrac, results = FALSE, echo = TRUE}
+```{r imp-SizeLimFrac, results = FALSE, echo = TRUE}
 imp@SizeLimFrac
 ```
 
@@ -774,7 +774,7 @@ imp@SizeLimFrac
 
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, imp-SizeLimSD, results = FALSE, echo = TRUE}
+```{r imp-SizeLimSD, results = FALSE, echo = TRUE}
 imp@SizeLimSD
 ```
 
@@ -788,7 +788,7 @@ om <- methods::new('OM')
 
 *Name of the operating model.*
 
-```{r, om-Name, results = FALSE, echo = TRUE}
+```{r om-Name, results = FALSE, echo = TRUE}
 om@Name
 ```
 
@@ -796,7 +796,7 @@ om@Name
 
 *Name of the agency responsible for the management of the fishery. Character string.*
 
-```{r, om-Agency, results = FALSE, echo = TRUE}
+```{r om-Agency, results = FALSE, echo = TRUE}
 om@Agency
 ```
 
@@ -804,7 +804,7 @@ om@Agency
 
 *Name of the general geographic region of the fishery. Character string.*
 
-```{r, om-Region, results = FALSE, echo = TRUE}
+```{r om-Region, results = FALSE, echo = TRUE}
 om@Region
 ```
 
@@ -812,7 +812,7 @@ om@Region
 
 *Name of the organization who sponsored the OM. Character string.*
 
-```{r, om-Sponsor, results = FALSE, echo = TRUE}
+```{r om-Sponsor, results = FALSE, echo = TRUE}
 om@Sponsor
 ```
 
@@ -820,7 +820,7 @@ om@Sponsor
 
 *Latitude (decimal degrees). Negative values represent the South of the Equator. Numeric. Single value.*
 
-```{r, om-Latitude, results = FALSE, echo = TRUE}
+```{r om-Latitude, results = FALSE, echo = TRUE}
 om@Latitude
 ```
 
@@ -828,7 +828,7 @@ om@Latitude
 
 *Longitude (decimal degrees). Negative values represent the West of the Prime Meridian. Numeric. Single value.*
 
-```{r, om-Longitude, results = FALSE, echo = TRUE}
+```{r om-Longitude, results = FALSE, echo = TRUE}
 om@Longitude
 ```
 
@@ -836,7 +836,7 @@ om@Longitude
 
 *The number of simulations.*
 
-```{r, om-nsim, results = FALSE, echo = TRUE}
+```{r om-nsim, results = FALSE, echo = TRUE}
 om@nsim
 ```
 
@@ -844,7 +844,7 @@ om@nsim
 
 *The number of projected years.*
 
-```{r, om-proyears, results = FALSE, echo = TRUE}
+```{r om-proyears, results = FALSE, echo = TRUE}
 om@proyears
 ```
 
@@ -852,7 +852,7 @@ om@proyears
 
 *The assessment interval - how often would you like to update the management system?*
 
-```{r, om-interval, results = FALSE, echo = TRUE}
+```{r om-interval, results = FALSE, echo = TRUE}
 om@interval
 ```
 
@@ -860,7 +860,7 @@ om@interval
 
 *The percentile of the sample of the management recommendation for each method.*
 
-```{r, om-pstar, results = FALSE, echo = TRUE}
+```{r om-pstar, results = FALSE, echo = TRUE}
 om@pstar
 ```
 
@@ -868,7 +868,7 @@ om@pstar
 
 *Maximum instantaneous fishing mortality rate that may be simulated for any given age class.*
 
-```{r, om-maxF, results = FALSE, echo = TRUE}
+```{r om-maxF, results = FALSE, echo = TRUE}
 om@maxF
 ```
 
@@ -876,7 +876,7 @@ om@maxF
 
 *Number of samples of the management recommendation for each method. Note that when this is set to 1, the mean value of the data inputs is used.*
 
-```{r, om-reps, results = FALSE, echo = TRUE}
+```{r om-reps, results = FALSE, echo = TRUE}
 om@reps
 ```
 
@@ -884,7 +884,7 @@ om@reps
 
 *A list of custom parameters. Time series are a matrix nsim rows by nyears columns. Single parameters are a vector nsim long.*
 
-```{r, om-cpars, results = FALSE, echo = TRUE}
+```{r om-cpars, results = FALSE, echo = TRUE}
 om@cpars
 ```
 
@@ -892,7 +892,7 @@ om@cpars
 
 *A random seed to ensure users can reproduce results exactly.*
 
-```{r, om-seed, results = FALSE, echo = TRUE}
+```{r om-seed, results = FALSE, echo = TRUE}
 om@seed
 ```
 
@@ -900,7 +900,7 @@ om@seed
 
 *A reference to a website or article from which parameters were taken to define the operating model.*
 
-```{r, om-Source, results = FALSE, echo = TRUE}
+```{r om-Source, results = FALSE, echo = TRUE}
 om@Source
 ```
 
@@ -908,7 +908,7 @@ om@Source
 
 *Common name of the species. Character string.*
 
-```{r, om-Common_Name, results = FALSE, echo = TRUE}
+```{r om-Common_Name, results = FALSE, echo = TRUE}
 om@Common_Name
 ```
 
@@ -916,7 +916,7 @@ om@Common_Name
 
 *Scientific name of the species. Genus and species name. Character string.*
 
-```{r, om-Species, results = FALSE, echo = TRUE}
+```{r om-Species, results = FALSE, echo = TRUE}
 om@Species
 ```
 
@@ -924,7 +924,7 @@ om@Species
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer.*
 
-```{r, om-maxage, results = FALSE, echo = TRUE}
+```{r om-maxage, results = FALSE, echo = TRUE}
 om@maxage
 ```
 
@@ -932,7 +932,7 @@ om@maxage
 
 *The magnitude of unfished recruitment. Single value. Positive real number.*
 
-```{r, om-R0, results = FALSE, echo = TRUE}
+```{r om-R0, results = FALSE, echo = TRUE}
 om@R0
 ```
 
@@ -940,7 +940,7 @@ om@R0
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, om-M, results = FALSE, echo = TRUE}
+```{r om-M, results = FALSE, echo = TRUE}
 om@M
 ```
 
@@ -948,7 +948,7 @@ om@M
 
 *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number.*
 
-```{r, om-M2, results = FALSE, echo = TRUE}
+```{r om-M2, results = FALSE, echo = TRUE}
 om@M2
 ```
 
@@ -956,7 +956,7 @@ om@M2
 
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
 
-```{r, om-Mexp, results = FALSE, echo = TRUE}
+```{r om-Mexp, results = FALSE, echo = TRUE}
 om@Mexp
 ```
 
@@ -964,7 +964,7 @@ om@Mexp
 
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Msd, results = FALSE, echo = TRUE}
+```{r om-Msd, results = FALSE, echo = TRUE}
 om@Msd
 ```
 
@@ -972,7 +972,7 @@ om@Msd
 
 *Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1.*
 
-```{r, om-h, results = FALSE, echo = TRUE}
+```{r om-h, results = FALSE, echo = TRUE}
 om@h
 ```
 
@@ -980,7 +980,7 @@ om@h
 
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer.*
 
-```{r, om-SRrel, results = FALSE, echo = TRUE}
+```{r om-SRrel, results = FALSE, echo = TRUE}
 om@SRrel
 ```
 
@@ -988,7 +988,7 @@ om@SRrel
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Perr, results = FALSE, echo = TRUE}
+```{r om-Perr, results = FALSE, echo = TRUE}
 om@Perr
 ```
 
@@ -996,7 +996,7 @@ om@Perr
 
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-AC, results = FALSE, echo = TRUE}
+```{r om-AC, results = FALSE, echo = TRUE}
 om@AC
 ```
 
@@ -1004,7 +1004,7 @@ om@AC
 
 *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Period, results = FALSE, echo = TRUE}
+```{r om-Period, results = FALSE, echo = TRUE}
 om@Period
 ```
 
@@ -1012,7 +1012,7 @@ om@Period
 
 *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1.*
 
-```{r, om-Amplitude, results = FALSE, echo = TRUE}
+```{r om-Amplitude, results = FALSE, echo = TRUE}
 om@Amplitude
 ```
 
@@ -1020,7 +1020,7 @@ om@Amplitude
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Linf, results = FALSE, echo = TRUE}
+```{r om-Linf, results = FALSE, echo = TRUE}
 om@Linf
 ```
 
@@ -1028,7 +1028,7 @@ om@Linf
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-K, results = FALSE, echo = TRUE}
+```{r om-K, results = FALSE, echo = TRUE}
 om@K
 ```
 
@@ -1036,7 +1036,7 @@ om@K
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers.*
 
-```{r, om-t0, results = FALSE, echo = TRUE}
+```{r om-t0, results = FALSE, echo = TRUE}
 om@t0
 ```
 
@@ -1044,7 +1044,7 @@ om@t0
 
 *Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-LenCV, results = FALSE, echo = TRUE}
+```{r om-LenCV, results = FALSE, echo = TRUE}
 om@LenCV
 ```
 
@@ -1052,7 +1052,7 @@ om@LenCV
 
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Ksd, results = FALSE, echo = TRUE}
+```{r om-Ksd, results = FALSE, echo = TRUE}
 om@Ksd
 ```
 
@@ -1060,7 +1060,7 @@ om@Ksd
 
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Linfsd, results = FALSE, echo = TRUE}
+```{r om-Linfsd, results = FALSE, echo = TRUE}
 om@Linfsd
 ```
 
@@ -1068,7 +1068,7 @@ om@Linfsd
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-L50, results = FALSE, echo = TRUE}
+```{r om-L50, results = FALSE, echo = TRUE}
 om@L50
 ```
 
@@ -1076,7 +1076,7 @@ om@L50
 
 *Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-L50_95, results = FALSE, echo = TRUE}
+```{r om-L50_95, results = FALSE, echo = TRUE}
 om@L50_95
 ```
 
@@ -1084,7 +1084,7 @@ om@L50_95
 
 *Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, om-D, results = FALSE, echo = TRUE}
+```{r om-D, results = FALSE, echo = TRUE}
 om@D
 ```
 
@@ -1092,7 +1092,7 @@ om@D
 
 *Length-weight parameter alpha. Single value. Positive real number.*
 
-```{r, om-a, results = FALSE, echo = TRUE}
+```{r om-a, results = FALSE, echo = TRUE}
 om@a
 ```
 
@@ -1100,7 +1100,7 @@ om@a
 
 *Length-weight parameter beta. Single value. Positive real number.*
 
-```{r, om-b, results = FALSE, echo = TRUE}
+```{r om-b, results = FALSE, echo = TRUE}
 om@b
 ```
 
@@ -1108,7 +1108,7 @@ om@b
 
 *The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Size_area_1, results = FALSE, echo = TRUE}
+```{r om-Size_area_1, results = FALSE, echo = TRUE}
 om@Size_area_1
 ```
 
@@ -1116,7 +1116,7 @@ om@Size_area_1
 
 *The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Frac_area_1, results = FALSE, echo = TRUE}
+```{r om-Frac_area_1, results = FALSE, echo = TRUE}
 om@Frac_area_1
 ```
 
@@ -1124,7 +1124,7 @@ om@Frac_area_1
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 
-```{r, om-Prob_staying, results = FALSE, echo = TRUE}
+```{r om-Prob_staying, results = FALSE, echo = TRUE}
 om@Prob_staying
 ```
 
@@ -1132,7 +1132,7 @@ om@Prob_staying
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Fdisc, results = FALSE, echo = TRUE}
+```{r om-Fdisc, results = FALSE, echo = TRUE}
 om@Fdisc
 ```
 
@@ -1140,7 +1140,7 @@ om@Fdisc
 
 *The number of years for the historical spool-up simulation. Single value. Positive integer.*
 
-```{r, om-nyears, results = FALSE, echo = TRUE}
+```{r om-nyears, results = FALSE, echo = TRUE}
 om@nyears
 ```
 
@@ -1148,7 +1148,7 @@ om@nyears
 
 *Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers.*
 
-```{r, om-Spat_targ, results = FALSE, echo = TRUE}
+```{r om-Spat_targ, results = FALSE, echo = TRUE}
 om@Spat_targ
 ```
 
@@ -1156,7 +1156,7 @@ om@Spat_targ
 
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers.*
 
-```{r, om-EffYears, results = FALSE, echo = TRUE}
+```{r om-EffYears, results = FALSE, echo = TRUE}
 om@EffYears
 ```
 
@@ -1164,7 +1164,7 @@ om@EffYears
 
 *Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-```{r, om-EffLower, results = FALSE, echo = TRUE}
+```{r om-EffLower, results = FALSE, echo = TRUE}
 om@EffLower
 ```
 
@@ -1172,7 +1172,7 @@ om@EffLower
 
 *Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-```{r, om-EffUpper, results = FALSE, echo = TRUE}
+```{r om-EffUpper, results = FALSE, echo = TRUE}
 om@EffUpper
 ```
 
@@ -1180,7 +1180,7 @@ om@EffUpper
 
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Esd, results = FALSE, echo = TRUE}
+```{r om-Esd, results = FALSE, echo = TRUE}
 om@Esd
 ```
 
@@ -1188,7 +1188,7 @@ om@Esd
 
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-qinc, results = FALSE, echo = TRUE}
+```{r om-qinc, results = FALSE, echo = TRUE}
 om@qinc
 ```
 
@@ -1196,7 +1196,7 @@ om@qinc
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-qcv, results = FALSE, echo = TRUE}
+```{r om-qcv, results = FALSE, echo = TRUE}
 om@qcv
 ```
 
@@ -1204,7 +1204,7 @@ om@qcv
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-L5, results = FALSE, echo = TRUE}
+```{r om-L5, results = FALSE, echo = TRUE}
 om@L5
 ```
 
@@ -1212,7 +1212,7 @@ om@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-LFS, results = FALSE, echo = TRUE}
+```{r om-LFS, results = FALSE, echo = TRUE}
 om@LFS
 ```
 
@@ -1220,7 +1220,7 @@ om@LFS
 
 *The vulnerability of fish at Stock@Linf . Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, om-Vmaxlen, results = FALSE, echo = TRUE}
+```{r om-Vmaxlen, results = FALSE, echo = TRUE}
 om@Vmaxlen
 ```
 
@@ -1228,7 +1228,7 @@ om@Vmaxlen
 
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
 
-```{r, om-isRel, results = FALSE, echo = TRUE}
+```{r om-isRel, results = FALSE, echo = TRUE}
 om@isRel
 ```
 
@@ -1236,7 +1236,7 @@ om@isRel
 
 *Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-LR5, results = FALSE, echo = TRUE}
+```{r om-LR5, results = FALSE, echo = TRUE}
 om@LR5
 ```
 
@@ -1244,7 +1244,7 @@ om@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-LFR, results = FALSE, echo = TRUE}
+```{r om-LFR, results = FALSE, echo = TRUE}
 om@LFR
 ```
 
@@ -1252,7 +1252,7 @@ om@LFR
 
 *The retention of fish at Stock@Linf . Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Rmaxlen, results = FALSE, echo = TRUE}
+```{r om-Rmaxlen, results = FALSE, echo = TRUE}
 om@Rmaxlen
 ```
 
@@ -1260,7 +1260,7 @@ om@Rmaxlen
 
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
 
-```{r, om-DR, results = FALSE, echo = TRUE}
+```{r om-DR, results = FALSE, echo = TRUE}
 om@DR
 ```
 
@@ -1268,7 +1268,7 @@ om@DR
 
 *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
 
-```{r, om-SelYears, results = FALSE, echo = TRUE}
+```{r om-SelYears, results = FALSE, echo = TRUE}
 om@SelYears
 ```
 
@@ -1276,7 +1276,7 @@ om@SelYears
 
 *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
 
-```{r, om-AbsSelYears, results = FALSE, echo = TRUE}
+```{r om-AbsSelYears, results = FALSE, echo = TRUE}
 om@AbsSelYears
 ```
 
@@ -1284,7 +1284,7 @@ om@AbsSelYears
 
 *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, om-L5Lower, results = FALSE, echo = TRUE}
+```{r om-L5Lower, results = FALSE, echo = TRUE}
 om@L5Lower
 ```
 
@@ -1292,7 +1292,7 @@ om@L5Lower
 
 *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, om-L5Upper, results = FALSE, echo = TRUE}
+```{r om-L5Upper, results = FALSE, echo = TRUE}
 om@L5Upper
 ```
 
@@ -1300,7 +1300,7 @@ om@L5Upper
 
 *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, om-LFSLower, results = FALSE, echo = TRUE}
+```{r om-LFSLower, results = FALSE, echo = TRUE}
 om@LFSLower
 ```
 
@@ -1308,7 +1308,7 @@ om@LFSLower
 
 *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
-```{r, om-LFSUpper, results = FALSE, echo = TRUE}
+```{r om-LFSUpper, results = FALSE, echo = TRUE}
 om@LFSUpper
 ```
 
@@ -1316,7 +1316,7 @@ om@LFSUpper
 
 *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
-```{r, om-VmaxLower, results = FALSE, echo = TRUE}
+```{r om-VmaxLower, results = FALSE, echo = TRUE}
 om@VmaxLower
 ```
 
@@ -1324,7 +1324,7 @@ om@VmaxLower
 
 *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
-```{r, om-VmaxUpper, results = FALSE, echo = TRUE}
+```{r om-VmaxUpper, results = FALSE, echo = TRUE}
 om@VmaxUpper
 ```
 
@@ -1332,7 +1332,7 @@ om@VmaxUpper
 
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
 
-```{r, om-CurrentYr, results = FALSE, echo = TRUE}
+```{r om-CurrentYr, results = FALSE, echo = TRUE}
 om@CurrentYr
 ```
 
@@ -1340,7 +1340,7 @@ om@CurrentYr
 
 *(Optional) Matrix specifying spatial closures for historical years.*
 
-```{r, om-MPA, results = FALSE, echo = TRUE}
+```{r om-MPA, results = FALSE, echo = TRUE}
 om@MPA
 ```
 
@@ -1348,7 +1348,7 @@ om@MPA
 
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Cobs, results = FALSE, echo = TRUE}
+```{r om-Cobs, results = FALSE, echo = TRUE}
 om@Cobs
 ```
 
@@ -1356,7 +1356,7 @@ om@Cobs
 
 *Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-Cbiascv, results = FALSE, echo = TRUE}
+```{r om-Cbiascv, results = FALSE, echo = TRUE}
 om@Cbiascv
 ```
 
@@ -1364,7 +1364,7 @@ om@Cbiascv
 
 *Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-CAA_nsamp, results = FALSE, echo = TRUE}
+```{r om-CAA_nsamp, results = FALSE, echo = TRUE}
 om@CAA_nsamp
 ```
 
@@ -1372,7 +1372,7 @@ om@CAA_nsamp
 
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, om-CAA_ESS, results = FALSE, echo = TRUE}
+```{r om-CAA_ESS, results = FALSE, echo = TRUE}
 om@CAA_ESS
 ```
 
@@ -1380,7 +1380,7 @@ om@CAA_ESS
 
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, om-CAL_nsamp, results = FALSE, echo = TRUE}
+```{r om-CAL_nsamp, results = FALSE, echo = TRUE}
 om@CAL_nsamp
 ```
 
@@ -1388,7 +1388,7 @@ om@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers.*
 
-```{r, om-CAL_ESS, results = FALSE, echo = TRUE}
+```{r om-CAL_ESS, results = FALSE, echo = TRUE}
 om@CAL_ESS
 ```
 
@@ -1396,7 +1396,7 @@ om@CAL_ESS
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Iobs, results = FALSE, echo = TRUE}
+```{r om-Iobs, results = FALSE, echo = TRUE}
 om@Iobs
 ```
 
@@ -1404,7 +1404,7 @@ om@Iobs
 
 *Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Ibiascv, results = FALSE, echo = TRUE}
+```{r om-Ibiascv, results = FALSE, echo = TRUE}
 om@Ibiascv
 ```
 
@@ -1412,7 +1412,7 @@ om@Ibiascv
 
 *Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Btobs, results = FALSE, echo = TRUE}
+```{r om-Btobs, results = FALSE, echo = TRUE}
 om@Btobs
 ```
 
@@ -1420,7 +1420,7 @@ om@Btobs
 
 *Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Btbiascv, results = FALSE, echo = TRUE}
+```{r om-Btbiascv, results = FALSE, echo = TRUE}
 om@Btbiascv
 ```
 
@@ -1428,7 +1428,7 @@ om@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-beta, results = FALSE, echo = TRUE}
+```{r om-beta, results = FALSE, echo = TRUE}
 om@beta
 ```
 
@@ -1436,7 +1436,7 @@ om@beta
 
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-LenMbiascv, results = FALSE, echo = TRUE}
+```{r om-LenMbiascv, results = FALSE, echo = TRUE}
 om@LenMbiascv
 ```
 
@@ -1444,7 +1444,7 @@ om@LenMbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Mbiascv, results = FALSE, echo = TRUE}
+```{r om-Mbiascv, results = FALSE, echo = TRUE}
 om@Mbiascv
 ```
 
@@ -1452,7 +1452,7 @@ om@Mbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Kbiascv, results = FALSE, echo = TRUE}
+```{r om-Kbiascv, results = FALSE, echo = TRUE}
 om@Kbiascv
 ```
 
@@ -1460,7 +1460,7 @@ om@Kbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-t0biascv, results = FALSE, echo = TRUE}
+```{r om-t0biascv, results = FALSE, echo = TRUE}
 om@t0biascv
 ```
 
@@ -1468,7 +1468,7 @@ om@t0biascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Linfbiascv, results = FALSE, echo = TRUE}
+```{r om-Linfbiascv, results = FALSE, echo = TRUE}
 om@Linfbiascv
 ```
 
@@ -1476,7 +1476,7 @@ om@Linfbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-LFCbiascv, results = FALSE, echo = TRUE}
+```{r om-LFCbiascv, results = FALSE, echo = TRUE}
 om@LFCbiascv
 ```
 
@@ -1484,7 +1484,7 @@ om@LFCbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-LFSbiascv, results = FALSE, echo = TRUE}
+```{r om-LFSbiascv, results = FALSE, echo = TRUE}
 om@LFSbiascv
 ```
 
@@ -1492,7 +1492,7 @@ om@LFSbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-FMSYbiascv, results = FALSE, echo = TRUE}
+```{r om-FMSYbiascv, results = FALSE, echo = TRUE}
 om@FMSYbiascv
 ```
 
@@ -1500,7 +1500,7 @@ om@FMSYbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-FMSY_Mbiascv, results = FALSE, echo = TRUE}
+```{r om-FMSY_Mbiascv, results = FALSE, echo = TRUE}
 om@FMSY_Mbiascv
 ```
 
@@ -1508,7 +1508,7 @@ om@FMSY_Mbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-BMSY_B0biascv, results = FALSE, echo = TRUE}
+```{r om-BMSY_B0biascv, results = FALSE, echo = TRUE}
 om@BMSY_B0biascv
 ```
 
@@ -1516,7 +1516,7 @@ om@BMSY_B0biascv
 
 *Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Irefbiascv, results = FALSE, echo = TRUE}
+```{r om-Irefbiascv, results = FALSE, echo = TRUE}
 om@Irefbiascv
 ```
 
@@ -1524,7 +1524,7 @@ om@Irefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Brefbiascv, results = FALSE, echo = TRUE}
+```{r om-Brefbiascv, results = FALSE, echo = TRUE}
 om@Brefbiascv
 ```
 
@@ -1532,7 +1532,7 @@ om@Brefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Crefbiascv, results = FALSE, echo = TRUE}
+```{r om-Crefbiascv, results = FALSE, echo = TRUE}
 om@Crefbiascv
 ```
 
@@ -1540,7 +1540,7 @@ om@Crefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Dbiascv, results = FALSE, echo = TRUE}
+```{r om-Dbiascv, results = FALSE, echo = TRUE}
 om@Dbiascv
 ```
 
@@ -1548,7 +1548,7 @@ om@Dbiascv
 
 *Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Dobs, results = FALSE, echo = TRUE}
+```{r om-Dobs, results = FALSE, echo = TRUE}
 om@Dobs
 ```
 
@@ -1556,7 +1556,7 @@ om@Dobs
 
 *Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-hbiascv, results = FALSE, echo = TRUE}
+```{r om-hbiascv, results = FALSE, echo = TRUE}
 om@hbiascv
 ```
 
@@ -1564,7 +1564,7 @@ om@hbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-```{r, om-Recbiascv, results = FALSE, echo = TRUE}
+```{r om-Recbiascv, results = FALSE, echo = TRUE}
 om@Recbiascv
 ```
 
@@ -1572,7 +1572,7 @@ om@Recbiascv
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, om-TACFrac, results = FALSE, echo = TRUE}
+```{r om-TACFrac, results = FALSE, echo = TRUE}
 om@TACFrac
 ```
 
@@ -1580,7 +1580,7 @@ om@TACFrac
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-TACSD, results = FALSE, echo = TRUE}
+```{r om-TACSD, results = FALSE, echo = TRUE}
 om@TACSD
 ```
 
@@ -1588,7 +1588,7 @@ om@TACSD
 
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, om-TAEFrac, results = FALSE, echo = TRUE}
+```{r om-TAEFrac, results = FALSE, echo = TRUE}
 om@TAEFrac
 ```
 
@@ -1596,7 +1596,7 @@ om@TAEFrac
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-TAESD, results = FALSE, echo = TRUE}
+```{r om-TAESD, results = FALSE, echo = TRUE}
 om@TAESD
 ```
 
@@ -1604,7 +1604,7 @@ om@TAESD
 
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r, om-SizeLimFrac, results = FALSE, echo = TRUE}
+```{r om-SizeLimFrac, results = FALSE, echo = TRUE}
 om@SizeLimFrac
 ```
 
@@ -1612,7 +1612,7 @@ om@SizeLimFrac
 
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-```{r, om-SizeLimSD, results = FALSE, echo = TRUE}
+```{r om-SizeLimSD, results = FALSE, echo = TRUE}
 om@SizeLimSD
 ```
 
