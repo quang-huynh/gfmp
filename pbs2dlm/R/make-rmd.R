@@ -64,7 +64,9 @@ format_desc <- function(df,
       )
     )
   df <- df[!grepl("No longer used", df$Description), , drop = FALSE]
-  df$Description <- gsub("([A-Za-z0-9])\\*$", "\\1.*", df$Description)
+  df$Description <- gsub("([A-Za-z0-9]+)\\*$", "\\1.*", df$Description)
+  df$Description <- gsub("([A-Za-z0-9]+)@([A-Za-z0-9]+)", "`\\1@\\2`",
+    df$Description)
 
   c(
     toupper(paste0("## ", obj_name, " slot descriptions\n")),

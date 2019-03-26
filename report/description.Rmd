@@ -352,7 +352,7 @@ fleet@LFS
 
 ### Vmaxlen
 
-*The vulnerability of fish at Stock@Linf . Uniform distribution lower and upper bounds. Fraction.*
+*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction.*
 
 ```{r fleet-Vmaxlen, results = FALSE, echo = TRUE}
 fleet@Vmaxlen
@@ -384,7 +384,7 @@ fleet@LFR
 
 ### Rmaxlen
 
-*The retention of fish at Stock@Linf . Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r fleet-Rmaxlen, results = FALSE, echo = TRUE}
 fleet@Rmaxlen
@@ -1218,7 +1218,7 @@ om@LFS
 
 ### Vmaxlen
 
-*The vulnerability of fish at Stock@Linf . Uniform distribution lower and upper bounds. Fraction.*
+*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction.*
 
 ```{r om-Vmaxlen, results = FALSE, echo = TRUE}
 om@Vmaxlen
@@ -1250,7 +1250,7 @@ om@LFR
 
 ### Rmaxlen
 
-*The retention of fish at Stock@Linf . Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r om-Rmaxlen, results = FALSE, echo = TRUE}
 om@Rmaxlen
