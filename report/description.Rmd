@@ -4,6 +4,24 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
+```{r}
+# Set up data - d will contain the data for commercial samples, survey, and catch
+science_name <- "Sebastes borealis"
+species_name <- "shortraker rockfish"
+species_file <- here::here("generated-data", paste0(gsub(" ", "-", species_name), ".rds"))
+if (!file.exists(species_file)) fetch_data(species_name, file = species_file)
+d <- readRDS(species_file)
+```
+
+```{r}
+dat <- pbs2dlm::create_dlm_data(d,
+  area = c("^3C|^3D|^5A|^5B|^5C|^5D|^5E"),
+  survey = c("SYN WCHG", "SYN HS", "SYN QCS", "SYN WCVI"),
+  name = "Shortraker Rockfish")
+
+dat_stock <- pbs2dlm::create_dlm_stock(dat)
+```
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock}
 
 ```{r warnings = FALSE}
@@ -17,7 +35,7 @@ stock <- methods::new('Stock')
 <!-- autogen-end -->
 
 ```{r desc-stock-name, results = knitr_results, echo = knitr_echo}
-stock@Name
+stock@Name <- "Shortraker Rockfish Coastwide Stock"
 ```
 
 <!-- autogen-begin -->
@@ -27,7 +45,7 @@ stock@Name
 <!-- autogen-end -->
 
 ```{r desc-stock-common_name, results = knitr_results, echo = knitr_echo}
-stock@Common_Name
+stock@Common_Name <- "Shortraker Rockfish"
 ```
 
 <!-- autogen-begin -->
@@ -37,7 +55,7 @@ stock@Common_Name
 <!-- autogen-end -->
 
 ```{r desc-stock-species, results = knitr_results, echo = knitr_echo}
-stock@Species
+stock@Species <- "Sebastes borealis"
 ```
 
 <!-- autogen-begin -->
@@ -47,7 +65,7 @@ stock@Species
 <!-- autogen-end -->
 
 ```{r desc-stock-maxage, results = knitr_results, echo = knitr_echo}
-stock@maxage
+stock@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
 ```
 
 <!-- autogen-begin -->
@@ -56,8 +74,10 @@ stock@maxage
 *The magnitude of unfished recruitment. Single value. Positive real number*
 <!-- autogen-end -->
 
+The absolute value is meaningless here. Arbitrarily pick a value.
+
 ```{r desc-stock-r0, results = knitr_results, echo = knitr_echo}
-stock@R0
+stock@R0 <- 1000
 ```
 
 <!-- autogen-begin -->
@@ -66,8 +86,10 @@ stock@R0
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 <!-- autogen-end -->
 
+@echave2015 estimate natural mortality in the Gulf of Alaska to be 0.03. We will place some relatively wide bounds around that.
+
 ```{r desc-stock-m, results = knitr_results, echo = knitr_echo}
-stock@M
+stock@M <- c(0.02, 0.10)
 ```
 
 <!-- autogen-begin -->
@@ -75,6 +97,8 @@ stock@M
 
 *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
 <!-- autogen-end -->
+
+Not used.
 
 ```{r desc-stock-m2, results = knitr_results, echo = knitr_echo}
 stock@M2
@@ -86,6 +110,8 @@ stock@M2
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
 <!-- autogen-end -->
 
+Not used.
+
 ```{r desc-stock-mexp, results = knitr_results, echo = knitr_echo}
 stock@Mexp
 ```
@@ -96,8 +122,10 @@ stock@Mexp
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+Unknown. Picking an arbitrary range.
+
 ```{r desc-stock-msd, results = knitr_results, echo = knitr_echo}
-stock@Msd
+stock@Msd <- c(0.00, 0.05)
 ```
 
 <!-- autogen-begin -->
@@ -106,8 +134,10 @@ stock@Msd
 *Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 <!-- autogen-end -->
 
+FIXME: parameterize this from a meta-analysis
+
 ```{r desc-stock-h, results = knitr_results, echo = knitr_echo}
-stock@h
+stock@h <- c(0.345, 0.720)
 ```
 
 <!-- autogen-begin -->
@@ -116,8 +146,10 @@ stock@h
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 <!-- autogen-end -->
 
+We will choose a Beverton-Holt.
+
 ```{r desc-stock-srrel, results = knitr_results, echo = knitr_echo}
-stock@SRrel
+stock@SRrel <- 1L
 ```
 
 <!-- autogen-begin -->
@@ -126,8 +158,12 @@ stock@SRrel
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+@thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8. Here, we will extend that range slightly.
+
+FIXME: Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
+
 ```{r desc-stock-perr, results = knitr_results, echo = knitr_echo}
-stock@Perr
+stock@Perr <- c(0.5, 0.9)
 ```
 
 <!-- autogen-begin -->
@@ -136,8 +172,10 @@ stock@Perr
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities.
+
 ```{r desc-stock-ac, results = knitr_results, echo = knitr_echo}
-stock@AC
+stock@AC <- c(0.1, 0.9)
 ```
 
 <!-- autogen-begin -->
@@ -145,6 +183,8 @@ stock@AC
 
 *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
+
+Not used.
 
 ```{r desc-stock-period, results = knitr_results, echo = knitr_echo}
 stock@Period
@@ -156,6 +196,8 @@ stock@Period
 *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*
 <!-- autogen-end -->
 
+Not used.
+
 ```{r desc-stock-amplitude, results = knitr_results, echo = knitr_echo}
 stock@Amplitude
 ```
@@ -166,8 +208,32 @@ stock@Amplitude
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6}
+mvb <- suppressWarnings(gfplot::fit_vb(d$survey_samples, sex = "all"))
+mvb_summary <- summary(TMB::sdreport(mvb$model))
+vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
+
+  # obj@vbK <- mvb$pars[["k"]]
+  # obj@vbLinf <- mvb$pars[["linf"]]
+  # obj@vbt0 <- mvb$pars[["t0"]]
+  # obj@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+  # obj@CV_vbK <- cv[["k"]]
+  # obj@CV_vbLinf <- cv[["linf"]]
+  # obj@CV_vbt0 <- cv[["t0"]]
+  
+gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
+```
+
+<!--   # # obj@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]])) -->
+<!--   # obj@CV_vbK <- cv[["k"]] -->
+<!--   # obj@CV_vbLinf <- cv[["linf"]] -->
+<!--   # obj@CV_vbt0 <- cv[["t0"]] -->
+<!-- ``` -->
+
+We will grab this from our data analysis:
+
 ```{r desc-stock-linf, results = knitr_results, echo = knitr_echo}
-stock@Linf
+stock@Linf <- mvb$pars[["linf"]]
 ```
 
 <!-- autogen-begin -->
@@ -176,8 +242,10 @@ stock@Linf
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+We will grab this from our data analysis:
+
 ```{r desc-stock-k, results = knitr_results, echo = knitr_echo}
-stock@K
+stock@K <- mvb$pars[["k"]]
 ```
 
 <!-- autogen-begin -->
@@ -186,8 +254,10 @@ stock@K
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
 <!-- autogen-end -->
 
+We will grab this from our data analysis:
+
 ```{r desc-stock-t0, results = knitr_results, echo = knitr_echo}
-stock@t0
+stock@t0 <- mvb$pars[["t0"]]
 ```
 
 <!-- autogen-begin -->
@@ -196,8 +266,11 @@ stock@t0
 *Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+We will grab this from our data analysis:
+
 ```{r desc-stock-lencv, results = knitr_results, echo = knitr_echo}
-stock@LenCV
+sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
+stock@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
 ```
 
 <!-- autogen-begin -->
@@ -206,8 +279,10 @@ stock@LenCV
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+We will grab this from our data analysis:
+
 ```{r desc-stock-ksd, results = knitr_results, echo = knitr_echo}
-stock@Ksd
+stock@Ksd <- vb_cv[["k"]]
 ```
 
 <!-- autogen-begin -->
@@ -216,8 +291,10 @@ stock@Ksd
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+We will grab this from our data analysis:
+
 ```{r desc-stock-linfsd, results = knitr_results, echo = knitr_echo}
-stock@Linfsd
+stock@Linfsd <- vb_cv[["linf"]]
 ```
 
 <!-- autogen-begin -->
@@ -226,7 +303,22 @@ stock@Linfsd
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+```{r fit-maturity, echo = knitr_echo, out.width="4in", fig.width=6}
+m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
+mat_perc <- pbs2dlm:::extract_maturity_perc(stats::coef(m_mat$model))
+se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = stats::coef(m_mat$model), cov = stats::vcov(m_mat$model))
+  # obj@L50 <- mat_perc$f.p0.5 # TODO, female only?
+  # obj@L95 <- mat_perc$f.p0.95
+  # obj@CV_L50 <- se_l50 / obj@L50
+
+gfplot::plot_mat_ogive(m_mat)
+```
+
+From our model, length that 50% maturity for females is calculated as `r round(mat_perc$f.p0.5, 1)` with a standard error of `r round(se_l50, 1)`. Let's pick a range that is roughly the 95% confidence interval around the estimated length that 50% maturity. Length the maturity looks similar for males and females.
+
 ```{r desc-stock-l50, results = knitr_results, echo = knitr_echo}
+stock@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
 stock@L50
 ```
 
@@ -236,7 +328,16 @@ stock@L50
 *Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+Similarly we will calculate the increment in length from 50% to 95% maturity.
+
 ```{r desc-stock-l50_95, results = knitr_results, echo = knitr_echo}
+# TODO: Yikes! Need to check this delta method implementation.
+se_l50_95m <- pbs2dlm:::delta_method(
+  ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) - 
+    -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = stats::coef(m_mat$model), cov = stats::vcov(m_mat$model))
+
+stock@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
 stock@L50_95
 ```
 
@@ -256,8 +357,19 @@ stock@D
 *Length-weight parameter alpha. Single value. Positive real number*
 <!-- autogen-end -->
 
+We can fit a length-weight growth model with gfplot:
+
+```{r fit-lw, echo = knitr_echo, out.width="4in", fig.width=6}
+mlw <- suppressWarnings(gfplot::fit_length_weight(d$survey_samples, sex = "all"))
+
+gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+```
+
+We can fill this slot from our fitted model.
+
 ```{r desc-stock-a, results = knitr_results, echo = knitr_echo}
-stock@a
+stock@a <- exp(mlw$pars[["log_a"]])
+round(log(stock@a), 2)
 ```
 
 <!-- autogen-begin -->
@@ -266,8 +378,11 @@ stock@a
 *Length-weight parameter beta. Single value. Positive real number*
 <!-- autogen-end -->
 
+We can take this from our fitted model.
+
 ```{r desc-stock-b, results = knitr_results, echo = knitr_echo}
-stock@b
+stock@b <- mlw$pars[["b"]]
+round(stock@b, 2)
 ```
 
 <!-- autogen-begin -->
