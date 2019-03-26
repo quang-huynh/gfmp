@@ -2,6 +2,10 @@
 
 export("%>%")
 export(create_dlm_data)
+export(create_dlm_fleet)
+export(create_dlm_imp)
+export(create_dlm_obs)
+export(create_dlm_stock)
 export(create_rmd)
 export(data_file_exists)
 export(fetch_data)

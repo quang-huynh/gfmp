@@ -82,6 +82,7 @@ data_file_exists <- function(species_name,
 #' @return An S4 object of class DLMtool Stock.
 #'
 #' @export
+#' @examples
 #' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
@@ -185,6 +186,7 @@ create_dlm_stock <- function(dat = NULL,
 #' @return An S4 object of class DLMtool Fleet.
 #'
 #' @export
+#' @examples
 #' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
@@ -271,6 +273,7 @@ create_dlm_fleet <- function(dat = NULL,
 #'
 #' @return An S4 object of class DLMtool Obs.
 #' @export
+#' @examples
 #' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
@@ -362,6 +365,8 @@ create_dlm_obs <- function(dat = NULL,
 #'
 #' @return An S4 object of class DLMtool Imp.
 #' @export
+#'
+#' @examples
 #' \dontrun{
 #' library(gfplot)
 #' species <- "shortraker rockfish"
