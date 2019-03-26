@@ -32,7 +32,7 @@ create_rmd <- function(fn = file.path(here::here("report"),
     df <- df %>%
       mutate(code = paste0("```{r, ",
                            inst_obj_name, "-", Slot,
-                           ", results = FALSE}\n  ",
+                           ", results = FALSE, echo = TRUE}\n  ",
                            inst_obj_name, "@", Slot,
                            "\n```"),
              Slot = paste0("## ",
