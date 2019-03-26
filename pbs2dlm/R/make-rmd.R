@@ -16,7 +16,7 @@ create_rmd <- function(file_name, overwrite = FALSE) {
 
   rmd <- c(
     "```{r message = FALSE}\nlibrary(DLMtool)\n```\n",
-    format_desc(DLMtool::DataDescription, "Data"),
+    # format_desc(DLMtool::DataDescription, "Data"),
     format_desc(DLMtool::StockDescription, "Stock"),
     format_desc(DLMtool::FleetDescription, "Fleet"),
     format_desc(DLMtool::ObsDescription, "Obs"),
