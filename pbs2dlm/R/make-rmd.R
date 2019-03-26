@@ -59,7 +59,8 @@ format_desc <- function(df,
       ),
       Description = paste0(
         "*",
-        Description
+        Description,
+        "*"
       )
     )
   df <- df[!grepl("No longer used", df$Description), , drop = FALSE]
