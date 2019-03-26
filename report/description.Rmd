@@ -1,1618 +1,2016 @@
 ```{r message = FALSE}
 library(DLMtool)
+knitr_results <- TRUE
+knitr_echo <- TRUE
 ```
 
-## STOCK SLOT DESCRIPTIONS
+## STOCK SLOT DESCRIPTIONS {#app:desc-stock}
 
 ```{r warnings = FALSE}
 stock <- methods::new('Stock')
 ```
 
-### Name
+<!-- autogen-begin -->
+### Name {#app:desc-stock-name}
 
-*The name of the Stock object. Single value. Character string.*
+*The name of the Stock object. Single value. Character string*
+<!-- autogen-end -->
 
-```{r stock-Name, results = FALSE, echo = TRUE}
+```{r desc-stock-name, results = knitr_results, echo = knitr_echo}
 stock@Name
 ```
 
-### Common_Name
+<!-- autogen-begin -->
+### Common_Name {#app:desc-stock-common_name}
 
-*Common name of the species. Character string.*
+*Common name of the species. Character string*
+<!-- autogen-end -->
 
-```{r stock-Common_Name, results = FALSE, echo = TRUE}
+```{r desc-stock-common_name, results = knitr_results, echo = knitr_echo}
 stock@Common_Name
 ```
 
-### Species
+<!-- autogen-begin -->
+### Species {#app:desc-stock-species}
 
-*Scientific name of the species. Genus and species name. Character string.*
+*Scientific name of the species. Genus and species name. Character string*
+<!-- autogen-end -->
 
-```{r stock-Species, results = FALSE, echo = TRUE}
+```{r desc-stock-species, results = knitr_results, echo = knitr_echo}
 stock@Species
 ```
 
-### maxage
+<!-- autogen-begin -->
+### maxage {#app:desc-stock-maxage}
 
-*The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer.*
+*The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
+<!-- autogen-end -->
 
-```{r stock-maxage, results = FALSE, echo = TRUE}
+```{r desc-stock-maxage, results = knitr_results, echo = knitr_echo}
 stock@maxage
 ```
 
-### R0
+<!-- autogen-begin -->
+### R0 {#app:desc-stock-r0}
 
-*The magnitude of unfished recruitment. Single value. Positive real number.*
+*The magnitude of unfished recruitment. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r stock-R0, results = FALSE, echo = TRUE}
+```{r desc-stock-r0, results = knitr_results, echo = knitr_echo}
 stock@R0
 ```
 
-### M
+<!-- autogen-begin -->
+### M {#app:desc-stock-m}
 
-*Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number.*
+*Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
+<!-- autogen-end -->
 
-```{r stock-M, results = FALSE, echo = TRUE}
+```{r desc-stock-m, results = knitr_results, echo = knitr_echo}
 stock@M
 ```
 
-### M2
+<!-- autogen-begin -->
+### M2 {#app:desc-stock-m2}
 
-*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number.*
+*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
+<!-- autogen-end -->
 
-```{r stock-M2, results = FALSE, echo = TRUE}
+```{r desc-stock-m2, results = knitr_results, echo = knitr_echo}
 stock@M2
 ```
 
-### Mexp
+<!-- autogen-begin -->
+### Mexp {#app:desc-stock-mexp}
 
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
+<!-- autogen-end -->
 
-```{r stock-Mexp, results = FALSE, echo = TRUE}
+```{r desc-stock-mexp, results = knitr_results, echo = knitr_echo}
 stock@Mexp
 ```
 
-### Msd
+<!-- autogen-begin -->
+### Msd {#app:desc-stock-msd}
 
-*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Msd, results = FALSE, echo = TRUE}
+```{r desc-stock-msd, results = knitr_results, echo = knitr_echo}
 stock@Msd
 ```
 
-### h
+<!-- autogen-begin -->
+### h {#app:desc-stock-h}
 
-*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1.*
+*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+<!-- autogen-end -->
 
-```{r stock-h, results = FALSE, echo = TRUE}
+```{r desc-stock-h, results = knitr_results, echo = knitr_echo}
 stock@h
 ```
 
-### SRrel
+<!-- autogen-begin -->
+### SRrel {#app:desc-stock-srrel}
 
-*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer.*
+*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+<!-- autogen-end -->
 
-```{r stock-SRrel, results = FALSE, echo = TRUE}
+```{r desc-stock-srrel, results = knitr_results, echo = knitr_echo}
 stock@SRrel
 ```
 
-### Perr
+<!-- autogen-begin -->
+### Perr {#app:desc-stock-perr}
 
-*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Perr, results = FALSE, echo = TRUE}
+```{r desc-stock-perr, results = knitr_results, echo = knitr_echo}
 stock@Perr
 ```
 
-### AC
+<!-- autogen-begin -->
+### AC {#app:desc-stock-ac}
 
-*Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-AC, results = FALSE, echo = TRUE}
+```{r desc-stock-ac, results = knitr_results, echo = knitr_echo}
 stock@AC
 ```
 
-### Period
+<!-- autogen-begin -->
+### Period {#app:desc-stock-period}
 
-*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Period, results = FALSE, echo = TRUE}
+```{r desc-stock-period, results = knitr_results, echo = knitr_echo}
 stock@Period
 ```
 
-### Amplitude
+<!-- autogen-begin -->
+### Amplitude {#app:desc-stock-amplitude}
 
-*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1.*
+*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*
+<!-- autogen-end -->
 
-```{r stock-Amplitude, results = FALSE, echo = TRUE}
+```{r desc-stock-amplitude, results = knitr_results, echo = knitr_echo}
 stock@Amplitude
 ```
 
-### Linf
+<!-- autogen-begin -->
+### Linf {#app:desc-stock-linf}
 
-*Maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-Linf, results = FALSE, echo = TRUE}
+```{r desc-stock-linf, results = knitr_results, echo = knitr_echo}
 stock@Linf
 ```
 
-### K
+<!-- autogen-begin -->
+### K {#app:desc-stock-k}
 
-*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers.*
+*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-K, results = FALSE, echo = TRUE}
+```{r desc-stock-k, results = knitr_results, echo = knitr_echo}
 stock@K
 ```
 
-### t0
+<!-- autogen-begin -->
+### t0 {#app:desc-stock-t0}
 
-*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers.*
+*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-t0, results = FALSE, echo = TRUE}
+```{r desc-stock-t0, results = knitr_results, echo = knitr_echo}
 stock@t0
 ```
 
-### LenCV
+<!-- autogen-begin -->
+### LenCV {#app:desc-stock-lencv}
 
-*Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers.*
+*Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-LenCV, results = FALSE, echo = TRUE}
+```{r desc-stock-lencv, results = knitr_results, echo = knitr_echo}
 stock@LenCV
 ```
 
-### Ksd
+<!-- autogen-begin -->
+### Ksd {#app:desc-stock-ksd}
 
-*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Ksd, results = FALSE, echo = TRUE}
+```{r desc-stock-ksd, results = knitr_results, echo = knitr_echo}
 stock@Ksd
 ```
 
-### Linfsd
+<!-- autogen-begin -->
+### Linfsd {#app:desc-stock-linfsd}
 
-*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Linfsd, results = FALSE, echo = TRUE}
+```{r desc-stock-linfsd, results = knitr_results, echo = knitr_echo}
 stock@Linfsd
 ```
 
-### L50
+<!-- autogen-begin -->
+### L50 {#app:desc-stock-l50}
 
-*Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-L50, results = FALSE, echo = TRUE}
+```{r desc-stock-l50, results = knitr_results, echo = knitr_echo}
 stock@L50
 ```
 
-### L50_95
+<!-- autogen-begin -->
+### L50_95 {#app:desc-stock-l50_95}
 
-*Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-L50_95, results = FALSE, echo = TRUE}
+```{r desc-stock-l50_95, results = knitr_results, echo = knitr_echo}
 stock@L50_95
 ```
 
-### D
+<!-- autogen-begin -->
+### D {#app:desc-stock-d}
 
-*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction.*
+*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r stock-D, results = FALSE, echo = TRUE}
+```{r desc-stock-d, results = knitr_results, echo = knitr_echo}
 stock@D
 ```
 
-### a
+<!-- autogen-begin -->
+### a {#app:desc-stock-a}
 
-*Length-weight parameter alpha. Single value. Positive real number.*
+*Length-weight parameter alpha. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r stock-a, results = FALSE, echo = TRUE}
+```{r desc-stock-a, results = knitr_results, echo = knitr_echo}
 stock@a
 ```
 
-### b
+<!-- autogen-begin -->
+### b {#app:desc-stock-b}
 
-*Length-weight parameter beta. Single value. Positive real number.*
+*Length-weight parameter beta. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r stock-b, results = FALSE, echo = TRUE}
+```{r desc-stock-b, results = knitr_results, echo = knitr_echo}
 stock@b
 ```
 
-### Size_area_1
+<!-- autogen-begin -->
+### Size_area_1 {#app:desc-stock-size_area_1}
 
-*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers.*
+*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-Size_area_1, results = FALSE, echo = TRUE}
+```{r desc-stock-size_area_1, results = knitr_results, echo = knitr_echo}
 stock@Size_area_1
 ```
 
-### Frac_area_1
+<!-- autogen-begin -->
+### Frac_area_1 {#app:desc-stock-frac_area_1}
 
-*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers.*
+*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r stock-Frac_area_1, results = FALSE, echo = TRUE}
+```{r desc-stock-frac_area_1, results = knitr_results, echo = knitr_echo}
 stock@Frac_area_1
 ```
 
-### Prob_staying
+<!-- autogen-begin -->
+### Prob_staying {#app:desc-stock-prob_staying}
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
+<!-- autogen-end -->
 
-```{r stock-Prob_staying, results = FALSE, echo = TRUE}
+```{r desc-stock-prob_staying, results = knitr_results, echo = knitr_echo}
 stock@Prob_staying
 ```
 
-### Fdisc
+<!-- autogen-begin -->
+### Fdisc {#app:desc-stock-fdisc}
 
-*Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r stock-Fdisc, results = FALSE, echo = TRUE}
+```{r desc-stock-fdisc, results = knitr_results, echo = knitr_echo}
 stock@Fdisc
 ```
 
-### Source
+<!-- autogen-begin -->
+### Source {#app:desc-stock-source}
 
 *A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
+<!-- autogen-end -->
 
-```{r stock-Source, results = FALSE, echo = TRUE}
+```{r desc-stock-source, results = knitr_results, echo = knitr_echo}
 stock@Source
 ```
 
-## FLEET SLOT DESCRIPTIONS
+## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}
 
 ```{r warnings = FALSE}
 fleet <- methods::new('Fleet')
 ```
 
-### Name
+<!-- autogen-begin -->
+### Name {#app:desc-fleet-name}
 
 *Name of the Fleet object. Single value. Character string.*
+<!-- autogen-end -->
 
-```{r fleet-Name, results = FALSE, echo = TRUE}
+```{r desc-fleet-name, results = knitr_results, echo = knitr_echo}
 fleet@Name
 ```
 
-### nyears
+<!-- autogen-begin -->
+### nyears {#app:desc-fleet-nyears}
 
-*The number of years for the historical spool-up simulation. Single value. Positive integer.*
+*The number of years for the historical spool-up simulation. Single value. Positive integer*
+<!-- autogen-end -->
 
-```{r fleet-nyears, results = FALSE, echo = TRUE}
+```{r desc-fleet-nyears, results = knitr_results, echo = knitr_echo}
 fleet@nyears
 ```
 
-### Spat_targ
+<!-- autogen-begin -->
+### Spat_targ {#app:desc-fleet-spat_targ}
 
-*Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers.*
+*Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers*
+<!-- autogen-end -->
 
-```{r fleet-Spat_targ, results = FALSE, echo = TRUE}
+```{r desc-fleet-spat_targ, results = knitr_results, echo = knitr_echo}
 fleet@Spat_targ
 ```
 
-### EffYears
+<!-- autogen-begin -->
+### EffYears {#app:desc-fleet-effyears}
 
-*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers.*
+*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-EffYears, results = FALSE, echo = TRUE}
+```{r desc-fleet-effyears, results = knitr_results, echo = knitr_echo}
 fleet@EffYears
 ```
 
-### EffLower
+<!-- autogen-begin -->
+### EffLower {#app:desc-fleet-efflower}
 
-*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
+*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-EffLower, results = FALSE, echo = TRUE}
+```{r desc-fleet-efflower, results = knitr_results, echo = knitr_echo}
 fleet@EffLower
 ```
 
-### EffUpper
+<!-- autogen-begin -->
+### EffUpper {#app:desc-fleet-effupper}
 
-*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
+*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-EffUpper, results = FALSE, echo = TRUE}
+```{r desc-fleet-effupper, results = knitr_results, echo = knitr_echo}
 fleet@EffUpper
 ```
 
-### Esd
+<!-- autogen-begin -->
+### Esd {#app:desc-fleet-esd}
 
-*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-Esd, results = FALSE, echo = TRUE}
+```{r desc-fleet-esd, results = knitr_results, echo = knitr_echo}
 fleet@Esd
 ```
 
-### qinc
+<!-- autogen-begin -->
+### qinc {#app:desc-fleet-qinc}
 
-*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-qinc, results = FALSE, echo = TRUE}
+```{r desc-fleet-qinc, results = knitr_results, echo = knitr_echo}
 fleet@qinc
 ```
 
-### qcv
+<!-- autogen-begin -->
+### qcv {#app:desc-fleet-qcv}
 
-*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-qcv, results = FALSE, echo = TRUE}
+```{r desc-fleet-qcv, results = knitr_results, echo = knitr_echo}
 fleet@qcv
 ```
 
-### L5
+<!-- autogen-begin -->
+### L5 {#app:desc-fleet-l5}
 
-*Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r fleet-L5, results = FALSE, echo = TRUE}
+```{r desc-fleet-l5, results = knitr_results, echo = knitr_echo}
 fleet@L5
 ```
 
-### LFS
+<!-- autogen-begin -->
+### LFS {#app:desc-fleet-lfs}
 
-*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r fleet-LFS, results = FALSE, echo = TRUE}
+```{r desc-fleet-lfs, results = knitr_results, echo = knitr_echo}
 fleet@LFS
 ```
 
-### Vmaxlen
+<!-- autogen-begin -->
+### Vmaxlen {#app:desc-fleet-vmaxlen}
 
-*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction.*
+*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r fleet-Vmaxlen, results = FALSE, echo = TRUE}
+```{r desc-fleet-vmaxlen, results = knitr_results, echo = knitr_echo}
 fleet@Vmaxlen
 ```
 
-### isRel
+<!-- autogen-begin -->
+### isRel {#app:desc-fleet-isrel}
 
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
+<!-- autogen-end -->
 
-```{r fleet-isRel, results = FALSE, echo = TRUE}
+```{r desc-fleet-isrel, results = knitr_results, echo = knitr_echo}
 fleet@isRel
 ```
 
-### LR5
+<!-- autogen-begin -->
+### LR5 {#app:desc-fleet-lr5}
 
-*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-LR5, results = FALSE, echo = TRUE}
+```{r desc-fleet-lr5, results = knitr_results, echo = knitr_echo}
 fleet@LR5
 ```
 
-### LFR
+<!-- autogen-begin -->
+### LFR {#app:desc-fleet-lfr}
 
-*Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-LFR, results = FALSE, echo = TRUE}
+```{r desc-fleet-lfr, results = knitr_results, echo = knitr_echo}
 fleet@LFR
 ```
 
-### Rmaxlen
+<!-- autogen-begin -->
+### Rmaxlen {#app:desc-fleet-rmaxlen}
 
-*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-Rmaxlen, results = FALSE, echo = TRUE}
+```{r desc-fleet-rmaxlen, results = knitr_results, echo = knitr_echo}
 fleet@Rmaxlen
 ```
 
-### DR
+<!-- autogen-begin -->
+### DR {#app:desc-fleet-dr}
 
-*Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
+*Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r fleet-DR, results = FALSE, echo = TRUE}
+```{r desc-fleet-dr, results = knitr_results, echo = knitr_echo}
 fleet@DR
 ```
 
-### SelYears
+<!-- autogen-begin -->
+### SelYears {#app:desc-fleet-selyears}
 
-*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
+*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers*
+<!-- autogen-end -->
 
-```{r fleet-SelYears, results = FALSE, echo = TRUE}
+```{r desc-fleet-selyears, results = knitr_results, echo = knitr_echo}
 fleet@SelYears
 ```
 
-### AbsSelYears
+<!-- autogen-begin -->
+### AbsSelYears {#app:desc-fleet-absselyears}
 
-*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
+*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers*
+<!-- autogen-end -->
 
-```{r fleet-AbsSelYears, results = FALSE, echo = TRUE}
+```{r desc-fleet-absselyears, results = knitr_results, echo = knitr_echo}
 fleet@AbsSelYears
 ```
 
-### L5Lower
+<!-- autogen-begin -->
+### L5Lower {#app:desc-fleet-l5lower}
 
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-L5Lower, results = FALSE, echo = TRUE}
+```{r desc-fleet-l5lower, results = knitr_results, echo = knitr_echo}
 fleet@L5Lower
 ```
 
-### L5Upper
+<!-- autogen-begin -->
+### L5Upper {#app:desc-fleet-l5upper}
 
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-L5Upper, results = FALSE, echo = TRUE}
+```{r desc-fleet-l5upper, results = knitr_results, echo = knitr_echo}
 fleet@L5Upper
 ```
 
-### LFSLower
+<!-- autogen-begin -->
+### LFSLower {#app:desc-fleet-lfslower}
 
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-LFSLower, results = FALSE, echo = TRUE}
+```{r desc-fleet-lfslower, results = knitr_results, echo = knitr_echo}
 fleet@LFSLower
 ```
 
-### LFSUpper
+<!-- autogen-begin -->
+### LFSUpper {#app:desc-fleet-lfsupper}
 
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r fleet-LFSUpper, results = FALSE, echo = TRUE}
+```{r desc-fleet-lfsupper, results = knitr_results, echo = knitr_echo}
 fleet@LFSUpper
 ```
 
-### VmaxLower
+<!-- autogen-begin -->
+### VmaxLower {#app:desc-fleet-vmaxlower}
 
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- autogen-end -->
 
-```{r fleet-VmaxLower, results = FALSE, echo = TRUE}
+```{r desc-fleet-vmaxlower, results = knitr_results, echo = knitr_echo}
 fleet@VmaxLower
 ```
 
-### VmaxUpper
+<!-- autogen-begin -->
+### VmaxUpper {#app:desc-fleet-vmaxupper}
 
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- autogen-end -->
 
-```{r fleet-VmaxUpper, results = FALSE, echo = TRUE}
+```{r desc-fleet-vmaxupper, results = knitr_results, echo = knitr_echo}
 fleet@VmaxUpper
 ```
 
-### CurrentYr
+<!-- autogen-begin -->
+### CurrentYr {#app:desc-fleet-currentyr}
 
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
+<!-- autogen-end -->
 
-```{r fleet-CurrentYr, results = FALSE, echo = TRUE}
+```{r desc-fleet-currentyr, results = knitr_results, echo = knitr_echo}
 fleet@CurrentYr
 ```
 
-### MPA
+<!-- autogen-begin -->
+### MPA {#app:desc-fleet-mpa}
 
 *(Optional) Matrix specifying spatial closures for historical years.*
+<!-- autogen-end -->
 
-```{r fleet-MPA, results = FALSE, echo = TRUE}
+```{r desc-fleet-mpa, results = knitr_results, echo = knitr_echo}
 fleet@MPA
 ```
 
-## OBS SLOT DESCRIPTIONS
+## OBS SLOT DESCRIPTIONS {#app:desc-obs}
 
 ```{r warnings = FALSE}
 obs <- methods::new('Obs')
 ```
 
-### Name
+<!-- autogen-begin -->
+### Name {#app:desc-obs-name}
 
 *The name of the observation model object. Single value. Character string.*
+<!-- autogen-end -->
 
-```{r obs-Name, results = FALSE, echo = TRUE}
+```{r desc-obs-name, results = knitr_results, echo = knitr_echo}
 obs@Name
 ```
 
-### Cobs
+<!-- autogen-begin -->
+### Cobs {#app:desc-obs-cobs}
 
-*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r obs-Cobs, results = FALSE, echo = TRUE}
+```{r desc-obs-cobs, results = knitr_results, echo = knitr_echo}
 obs@Cobs
 ```
 
-### Cbiascv
+<!-- autogen-begin -->
+### Cbiascv {#app:desc-obs-cbiascv}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r obs-Cbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-cbiascv, results = knitr_results, echo = knitr_echo}
 obs@Cbiascv
 ```
 
-### CAA_nsamp
+<!-- autogen-begin -->
+### CAA_nsamp {#app:desc-obs-caa_nsamp}
 
-*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-CAA_nsamp, results = FALSE, echo = TRUE}
+```{r desc-obs-caa_nsamp, results = knitr_results, echo = knitr_echo}
 obs@CAA_nsamp
 ```
 
-### CAA_ESS
+<!-- autogen-begin -->
+### CAA_ESS {#app:desc-obs-caa_ess}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers.*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r obs-CAA_ESS, results = FALSE, echo = TRUE}
+```{r desc-obs-caa_ess, results = knitr_results, echo = knitr_echo}
 obs@CAA_ESS
 ```
 
-### CAL_nsamp
+<!-- autogen-begin -->
+### CAL_nsamp {#app:desc-obs-cal_nsamp}
 
-*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers.*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r obs-CAL_nsamp, results = FALSE, echo = TRUE}
+```{r desc-obs-cal_nsamp, results = knitr_results, echo = knitr_echo}
 obs@CAL_nsamp
 ```
 
-### CAL_ESS
+<!-- autogen-begin -->
+### CAL_ESS {#app:desc-obs-cal_ess}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers.*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r obs-CAL_ESS, results = FALSE, echo = TRUE}
+```{r desc-obs-cal_ess, results = knitr_results, echo = knitr_echo}
 obs@CAL_ESS
 ```
 
-### Iobs
+<!-- autogen-begin -->
+### Iobs {#app:desc-obs-iobs}
 
-*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Iobs, results = FALSE, echo = TRUE}
+```{r desc-obs-iobs, results = knitr_results, echo = knitr_echo}
 obs@Iobs
 ```
 
-### Ibiascv
+<!-- autogen-begin -->
+### Ibiascv {#app:desc-obs-ibiascv}
 
-*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Ibiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-ibiascv, results = knitr_results, echo = knitr_echo}
 obs@Ibiascv
 ```
 
-### Btobs
+<!-- autogen-begin -->
+### Btobs {#app:desc-obs-btobs}
 
-*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Btobs, results = FALSE, echo = TRUE}
+```{r desc-obs-btobs, results = knitr_results, echo = knitr_echo}
 obs@Btobs
 ```
 
-### Btbiascv
+<!-- autogen-begin -->
+### Btbiascv {#app:desc-obs-btbiascv}
 
-*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers.*
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Btbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-btbiascv, results = knitr_results, echo = knitr_echo}
 obs@Btbiascv
 ```
 
-### beta
+<!-- autogen-begin -->
+### beta {#app:desc-obs-beta}
 
-*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers.*
+*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-beta, results = FALSE, echo = TRUE}
+```{r desc-obs-beta, results = knitr_results, echo = knitr_echo}
 obs@beta
 ```
 
-### LenMbiascv
+<!-- autogen-begin -->
+### LenMbiascv {#app:desc-obs-lenmbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-LenMbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-lenmbiascv, results = knitr_results, echo = knitr_echo}
 obs@LenMbiascv
 ```
 
-### Mbiascv
+<!-- autogen-begin -->
+### Mbiascv {#app:desc-obs-mbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Mbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-mbiascv, results = knitr_results, echo = knitr_echo}
 obs@Mbiascv
 ```
 
-### Kbiascv
+<!-- autogen-begin -->
+### Kbiascv {#app:desc-obs-kbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Kbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-kbiascv, results = knitr_results, echo = knitr_echo}
 obs@Kbiascv
 ```
 
-### t0biascv
+<!-- autogen-begin -->
+### t0biascv {#app:desc-obs-t0biascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-t0biascv, results = FALSE, echo = TRUE}
+```{r desc-obs-t0biascv, results = knitr_results, echo = knitr_echo}
 obs@t0biascv
 ```
 
-### Linfbiascv
+<!-- autogen-begin -->
+### Linfbiascv {#app:desc-obs-linfbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Linfbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-linfbiascv, results = knitr_results, echo = knitr_echo}
 obs@Linfbiascv
 ```
 
-### LFCbiascv
+<!-- autogen-begin -->
+### LFCbiascv {#app:desc-obs-lfcbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-LFCbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-lfcbiascv, results = knitr_results, echo = knitr_echo}
 obs@LFCbiascv
 ```
 
-### LFSbiascv
+<!-- autogen-begin -->
+### LFSbiascv {#app:desc-obs-lfsbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-LFSbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-lfsbiascv, results = knitr_results, echo = knitr_echo}
 obs@LFSbiascv
 ```
 
-### FMSYbiascv
+<!-- autogen-begin -->
+### FMSYbiascv {#app:desc-obs-fmsybiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-FMSYbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-fmsybiascv, results = knitr_results, echo = knitr_echo}
 obs@FMSYbiascv
 ```
 
-### FMSY_Mbiascv
+<!-- autogen-begin -->
+### FMSY_Mbiascv {#app:desc-obs-fmsy_mbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-FMSY_Mbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-fmsy_mbiascv, results = knitr_results, echo = knitr_echo}
 obs@FMSY_Mbiascv
 ```
 
-### BMSY_B0biascv
+<!-- autogen-begin -->
+### BMSY_B0biascv {#app:desc-obs-bmsy_b0biascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-BMSY_B0biascv, results = FALSE, echo = TRUE}
+```{r desc-obs-bmsy_b0biascv, results = knitr_results, echo = knitr_echo}
 obs@BMSY_B0biascv
 ```
 
-### Irefbiascv
+<!-- autogen-begin -->
+### Irefbiascv {#app:desc-obs-irefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Irefbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-irefbiascv, results = knitr_results, echo = knitr_echo}
 obs@Irefbiascv
 ```
 
-### Brefbiascv
+<!-- autogen-begin -->
+### Brefbiascv {#app:desc-obs-brefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Brefbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-brefbiascv, results = knitr_results, echo = knitr_echo}
 obs@Brefbiascv
 ```
 
-### Crefbiascv
+<!-- autogen-begin -->
+### Crefbiascv {#app:desc-obs-crefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Crefbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-crefbiascv, results = knitr_results, echo = knitr_echo}
 obs@Crefbiascv
 ```
 
-### Dbiascv
+<!-- autogen-begin -->
+### Dbiascv {#app:desc-obs-dbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Dbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-dbiascv, results = knitr_results, echo = knitr_echo}
 obs@Dbiascv
 ```
 
-### Dobs
+<!-- autogen-begin -->
+### Dobs {#app:desc-obs-dobs}
 
-*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Dobs, results = FALSE, echo = TRUE}
+```{r desc-obs-dobs, results = knitr_results, echo = knitr_echo}
 obs@Dobs
 ```
 
-### hbiascv
+<!-- autogen-begin -->
+### hbiascv {#app:desc-obs-hbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-hbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-hbiascv, results = knitr_results, echo = knitr_echo}
 obs@hbiascv
 ```
 
-### Recbiascv
+<!-- autogen-begin -->
+### Recbiascv {#app:desc-obs-recbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r obs-Recbiascv, results = FALSE, echo = TRUE}
+```{r desc-obs-recbiascv, results = knitr_results, echo = knitr_echo}
 obs@Recbiascv
 ```
 
-## IMP SLOT DESCRIPTIONS
+## IMP SLOT DESCRIPTIONS {#app:desc-imp}
 
 ```{r warnings = FALSE}
 imp <- methods::new('Imp')
 ```
 
-### Name
+<!-- autogen-begin -->
+### Name {#app:desc-imp-name}
 
 *The name of the Implementation error object. Single value. Character string.*
+<!-- autogen-end -->
 
-```{r imp-Name, results = FALSE, echo = TRUE}
+```{r desc-imp-name, results = knitr_results, echo = knitr_echo}
 imp@Name
 ```
 
-### TACFrac
+<!-- autogen-begin -->
+### TACFrac {#app:desc-imp-tacfrac}
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r imp-TACFrac, results = FALSE, echo = TRUE}
+```{r desc-imp-tacfrac, results = knitr_results, echo = knitr_echo}
 imp@TACFrac
 ```
 
-### TACSD
+<!-- autogen-begin -->
+### TACSD {#app:desc-imp-tacsd}
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r imp-TACSD, results = FALSE, echo = TRUE}
+```{r desc-imp-tacsd, results = knitr_results, echo = knitr_echo}
 imp@TACSD
 ```
 
-### TAEFrac
+<!-- autogen-begin -->
+### TAEFrac {#app:desc-imp-taefrac}
 
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r imp-TAEFrac, results = FALSE, echo = TRUE}
+```{r desc-imp-taefrac, results = knitr_results, echo = knitr_echo}
 imp@TAEFrac
 ```
 
-### TAESD
+<!-- autogen-begin -->
+### TAESD {#app:desc-imp-taesd}
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r imp-TAESD, results = FALSE, echo = TRUE}
+```{r desc-imp-taesd, results = knitr_results, echo = knitr_echo}
 imp@TAESD
 ```
 
-### SizeLimFrac
+<!-- autogen-begin -->
+### SizeLimFrac {#app:desc-imp-sizelimfrac}
 
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r imp-SizeLimFrac, results = FALSE, echo = TRUE}
+```{r desc-imp-sizelimfrac, results = knitr_results, echo = knitr_echo}
 imp@SizeLimFrac
 ```
 
-### SizeLimSD
+<!-- autogen-begin -->
+### SizeLimSD {#app:desc-imp-sizelimsd}
 
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r imp-SizeLimSD, results = FALSE, echo = TRUE}
+```{r desc-imp-sizelimsd, results = knitr_results, echo = knitr_echo}
 imp@SizeLimSD
 ```
 
-## OM SLOT DESCRIPTIONS
+## OM SLOT DESCRIPTIONS {#app:desc-om}
 
 ```{r warnings = FALSE}
 om <- methods::new('OM')
 ```
 
-### Name
+<!-- autogen-begin -->
+### Name {#app:desc-om-name}
 
-*Name of the operating model.*
+*Name of the operating model*
+<!-- autogen-end -->
 
-```{r om-Name, results = FALSE, echo = TRUE}
+```{r desc-om-name, results = knitr_results, echo = knitr_echo}
 om@Name
 ```
 
-### Agency
+<!-- autogen-begin -->
+### Agency {#app:desc-om-agency}
 
-*Name of the agency responsible for the management of the fishery. Character string.*
+*Name of the agency responsible for the management of the fishery. Character string*
+<!-- autogen-end -->
 
-```{r om-Agency, results = FALSE, echo = TRUE}
+```{r desc-om-agency, results = knitr_results, echo = knitr_echo}
 om@Agency
 ```
 
-### Region
+<!-- autogen-begin -->
+### Region {#app:desc-om-region}
 
-*Name of the general geographic region of the fishery. Character string.*
+*Name of the general geographic region of the fishery. Character string*
+<!-- autogen-end -->
 
-```{r om-Region, results = FALSE, echo = TRUE}
+```{r desc-om-region, results = knitr_results, echo = knitr_echo}
 om@Region
 ```
 
-### Sponsor
+<!-- autogen-begin -->
+### Sponsor {#app:desc-om-sponsor}
 
-*Name of the organization who sponsored the OM. Character string.*
+*Name of the organization who sponsored the OM. Character string*
+<!-- autogen-end -->
 
-```{r om-Sponsor, results = FALSE, echo = TRUE}
+```{r desc-om-sponsor, results = knitr_results, echo = knitr_echo}
 om@Sponsor
 ```
 
-### Latitude
+<!-- autogen-begin -->
+### Latitude {#app:desc-om-latitude}
 
-*Latitude (decimal degrees). Negative values represent the South of the Equator. Numeric. Single value.*
+*Latitude (decimal degrees). Negative values represent the South of the Equator. Numeric. Single value*
+<!-- autogen-end -->
 
-```{r om-Latitude, results = FALSE, echo = TRUE}
+```{r desc-om-latitude, results = knitr_results, echo = knitr_echo}
 om@Latitude
 ```
 
-### Longitude
+<!-- autogen-begin -->
+### Longitude {#app:desc-om-longitude}
 
-*Longitude (decimal degrees). Negative values represent the West of the Prime Meridian. Numeric. Single value.*
+*Longitude (decimal degrees). Negative values represent the West of the Prime Meridian. Numeric. Single value*
+<!-- autogen-end -->
 
-```{r om-Longitude, results = FALSE, echo = TRUE}
+```{r desc-om-longitude, results = knitr_results, echo = knitr_echo}
 om@Longitude
 ```
 
-### nsim
+<!-- autogen-begin -->
+### nsim {#app:desc-om-nsim}
 
-*The number of simulations.*
+*The number of simulations*
+<!-- autogen-end -->
 
-```{r om-nsim, results = FALSE, echo = TRUE}
+```{r desc-om-nsim, results = knitr_results, echo = knitr_echo}
 om@nsim
 ```
 
-### proyears
+<!-- autogen-begin -->
+### proyears {#app:desc-om-proyears}
 
-*The number of projected years.*
+*The number of projected years*
+<!-- autogen-end -->
 
-```{r om-proyears, results = FALSE, echo = TRUE}
+```{r desc-om-proyears, results = knitr_results, echo = knitr_echo}
 om@proyears
 ```
 
-### interval
+<!-- autogen-begin -->
+### interval {#app:desc-om-interval}
 
 *The assessment interval - how often would you like to update the management system?*
+<!-- autogen-end -->
 
-```{r om-interval, results = FALSE, echo = TRUE}
+```{r desc-om-interval, results = knitr_results, echo = knitr_echo}
 om@interval
 ```
 
-### pstar
+<!-- autogen-begin -->
+### pstar {#app:desc-om-pstar}
 
-*The percentile of the sample of the management recommendation for each method.*
+*The percentile of the sample of the management recommendation for each method*
+<!-- autogen-end -->
 
-```{r om-pstar, results = FALSE, echo = TRUE}
+```{r desc-om-pstar, results = knitr_results, echo = knitr_echo}
 om@pstar
 ```
 
-### maxF
+<!-- autogen-begin -->
+### maxF {#app:desc-om-maxf}
 
-*Maximum instantaneous fishing mortality rate that may be simulated for any given age class.*
+*Maximum instantaneous fishing mortality rate that may be simulated for any given age class*
+<!-- autogen-end -->
 
-```{r om-maxF, results = FALSE, echo = TRUE}
+```{r desc-om-maxf, results = knitr_results, echo = knitr_echo}
 om@maxF
 ```
 
-### reps
+<!-- autogen-begin -->
+### reps {#app:desc-om-reps}
 
 *Number of samples of the management recommendation for each method. Note that when this is set to 1, the mean value of the data inputs is used.*
+<!-- autogen-end -->
 
-```{r om-reps, results = FALSE, echo = TRUE}
+```{r desc-om-reps, results = knitr_results, echo = knitr_echo}
 om@reps
 ```
 
-### cpars
+<!-- autogen-begin -->
+### cpars {#app:desc-om-cpars}
 
-*A list of custom parameters. Time series are a matrix nsim rows by nyears columns. Single parameters are a vector nsim long.*
+*A list of custom parameters. Time series are a matrix nsim rows by nyears columns. Single parameters are a vector nsim long*
+<!-- autogen-end -->
 
-```{r om-cpars, results = FALSE, echo = TRUE}
+```{r desc-om-cpars, results = knitr_results, echo = knitr_echo}
 om@cpars
 ```
 
-### seed
+<!-- autogen-begin -->
+### seed {#app:desc-om-seed}
 
-*A random seed to ensure users can reproduce results exactly.*
+*A random seed to ensure users can reproduce results exactly*
+<!-- autogen-end -->
 
-```{r om-seed, results = FALSE, echo = TRUE}
+```{r desc-om-seed, results = knitr_results, echo = knitr_echo}
 om@seed
 ```
 
-### Source
+<!-- autogen-begin -->
+### Source {#app:desc-om-source}
 
-*A reference to a website or article from which parameters were taken to define the operating model.*
+*A reference to a website or article from which parameters were taken to define the operating model*
+<!-- autogen-end -->
 
-```{r om-Source, results = FALSE, echo = TRUE}
+```{r desc-om-source, results = knitr_results, echo = knitr_echo}
 om@Source
 ```
 
-### Common_Name
+<!-- autogen-begin -->
+### Common_Name {#app:desc-om-common_name}
 
-*Common name of the species. Character string.*
+*Common name of the species. Character string*
+<!-- autogen-end -->
 
-```{r om-Common_Name, results = FALSE, echo = TRUE}
+```{r desc-om-common_name, results = knitr_results, echo = knitr_echo}
 om@Common_Name
 ```
 
-### Species
+<!-- autogen-begin -->
+### Species {#app:desc-om-species}
 
-*Scientific name of the species. Genus and species name. Character string.*
+*Scientific name of the species. Genus and species name. Character string*
+<!-- autogen-end -->
 
-```{r om-Species, results = FALSE, echo = TRUE}
+```{r desc-om-species, results = knitr_results, echo = knitr_echo}
 om@Species
 ```
 
-### maxage
+<!-- autogen-begin -->
+### maxage {#app:desc-om-maxage}
 
-*The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer.*
+*The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
+<!-- autogen-end -->
 
-```{r om-maxage, results = FALSE, echo = TRUE}
+```{r desc-om-maxage, results = knitr_results, echo = knitr_echo}
 om@maxage
 ```
 
-### R0
+<!-- autogen-begin -->
+### R0 {#app:desc-om-r0}
 
-*The magnitude of unfished recruitment. Single value. Positive real number.*
+*The magnitude of unfished recruitment. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r om-R0, results = FALSE, echo = TRUE}
+```{r desc-om-r0, results = knitr_results, echo = knitr_echo}
 om@R0
 ```
 
-### M
+<!-- autogen-begin -->
+### M {#app:desc-om-m}
 
-*Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number.*
+*Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
+<!-- autogen-end -->
 
-```{r om-M, results = FALSE, echo = TRUE}
+```{r desc-om-m, results = knitr_results, echo = knitr_echo}
 om@M
 ```
 
-### M2
+<!-- autogen-begin -->
+### M2 {#app:desc-om-m2}
 
-*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number.*
+*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
+<!-- autogen-end -->
 
-```{r om-M2, results = FALSE, echo = TRUE}
+```{r desc-om-m2, results = knitr_results, echo = knitr_echo}
 om@M2
 ```
 
-### Mexp
+<!-- autogen-begin -->
+### Mexp {#app:desc-om-mexp}
 
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
+<!-- autogen-end -->
 
-```{r om-Mexp, results = FALSE, echo = TRUE}
+```{r desc-om-mexp, results = knitr_results, echo = knitr_echo}
 om@Mexp
 ```
 
-### Msd
+<!-- autogen-begin -->
+### Msd {#app:desc-om-msd}
 
-*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Msd, results = FALSE, echo = TRUE}
+```{r desc-om-msd, results = knitr_results, echo = knitr_echo}
 om@Msd
 ```
 
-### h
+<!-- autogen-begin -->
+### h {#app:desc-om-h}
 
-*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1.*
+*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+<!-- autogen-end -->
 
-```{r om-h, results = FALSE, echo = TRUE}
+```{r desc-om-h, results = knitr_results, echo = knitr_echo}
 om@h
 ```
 
-### SRrel
+<!-- autogen-begin -->
+### SRrel {#app:desc-om-srrel}
 
-*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer.*
+*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+<!-- autogen-end -->
 
-```{r om-SRrel, results = FALSE, echo = TRUE}
+```{r desc-om-srrel, results = knitr_results, echo = knitr_echo}
 om@SRrel
 ```
 
-### Perr
+<!-- autogen-begin -->
+### Perr {#app:desc-om-perr}
 
-*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Perr, results = FALSE, echo = TRUE}
+```{r desc-om-perr, results = knitr_results, echo = knitr_echo}
 om@Perr
 ```
 
-### AC
+<!-- autogen-begin -->
+### AC {#app:desc-om-ac}
 
-*Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-AC, results = FALSE, echo = TRUE}
+```{r desc-om-ac, results = knitr_results, echo = knitr_echo}
 om@AC
 ```
 
-### Period
+<!-- autogen-begin -->
+### Period {#app:desc-om-period}
 
-*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Period, results = FALSE, echo = TRUE}
+```{r desc-om-period, results = knitr_results, echo = knitr_echo}
 om@Period
 ```
 
-### Amplitude
+<!-- autogen-begin -->
+### Amplitude {#app:desc-om-amplitude}
 
-*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1.*
+*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*
+<!-- autogen-end -->
 
-```{r om-Amplitude, results = FALSE, echo = TRUE}
+```{r desc-om-amplitude, results = knitr_results, echo = knitr_echo}
 om@Amplitude
 ```
 
-### Linf
+<!-- autogen-begin -->
+### Linf {#app:desc-om-linf}
 
-*Maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Linf, results = FALSE, echo = TRUE}
+```{r desc-om-linf, results = knitr_results, echo = knitr_echo}
 om@Linf
 ```
 
-### K
+<!-- autogen-begin -->
+### K {#app:desc-om-k}
 
-*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers.*
+*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-K, results = FALSE, echo = TRUE}
+```{r desc-om-k, results = knitr_results, echo = knitr_echo}
 om@K
 ```
 
-### t0
+<!-- autogen-begin -->
+### t0 {#app:desc-om-t0}
 
-*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers.*
+*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
+<!-- autogen-end -->
 
-```{r om-t0, results = FALSE, echo = TRUE}
+```{r desc-om-t0, results = knitr_results, echo = knitr_echo}
 om@t0
 ```
 
-### LenCV
+<!-- autogen-begin -->
+### LenCV {#app:desc-om-lencv}
 
-*Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers.*
+*Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-LenCV, results = FALSE, echo = TRUE}
+```{r desc-om-lencv, results = knitr_results, echo = knitr_echo}
 om@LenCV
 ```
 
-### Ksd
+<!-- autogen-begin -->
+### Ksd {#app:desc-om-ksd}
 
-*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Ksd, results = FALSE, echo = TRUE}
+```{r desc-om-ksd, results = knitr_results, echo = knitr_echo}
 om@Ksd
 ```
 
-### Linfsd
+<!-- autogen-begin -->
+### Linfsd {#app:desc-om-linfsd}
 
-*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Linfsd, results = FALSE, echo = TRUE}
+```{r desc-om-linfsd, results = knitr_results, echo = knitr_echo}
 om@Linfsd
 ```
 
-### L50
+<!-- autogen-begin -->
+### L50 {#app:desc-om-l50}
 
-*Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-L50, results = FALSE, echo = TRUE}
+```{r desc-om-l50, results = knitr_results, echo = knitr_echo}
 om@L50
 ```
 
-### L50_95
+<!-- autogen-begin -->
+### L50_95 {#app:desc-om-l50_95}
 
-*Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-L50_95, results = FALSE, echo = TRUE}
+```{r desc-om-l50_95, results = knitr_results, echo = knitr_echo}
 om@L50_95
 ```
 
-### D
+<!-- autogen-begin -->
+### D {#app:desc-om-d}
 
-*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction.*
+*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r om-D, results = FALSE, echo = TRUE}
+```{r desc-om-d, results = knitr_results, echo = knitr_echo}
 om@D
 ```
 
-### a
+<!-- autogen-begin -->
+### a {#app:desc-om-a}
 
-*Length-weight parameter alpha. Single value. Positive real number.*
+*Length-weight parameter alpha. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r om-a, results = FALSE, echo = TRUE}
+```{r desc-om-a, results = knitr_results, echo = knitr_echo}
 om@a
 ```
 
-### b
+<!-- autogen-begin -->
+### b {#app:desc-om-b}
 
-*Length-weight parameter beta. Single value. Positive real number.*
+*Length-weight parameter beta. Single value. Positive real number*
+<!-- autogen-end -->
 
-```{r om-b, results = FALSE, echo = TRUE}
+```{r desc-om-b, results = knitr_results, echo = knitr_echo}
 om@b
 ```
 
-### Size_area_1
+<!-- autogen-begin -->
+### Size_area_1 {#app:desc-om-size_area_1}
 
-*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers.*
+*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Size_area_1, results = FALSE, echo = TRUE}
+```{r desc-om-size_area_1, results = knitr_results, echo = knitr_echo}
 om@Size_area_1
 ```
 
-### Frac_area_1
+<!-- autogen-begin -->
+### Frac_area_1 {#app:desc-om-frac_area_1}
 
-*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers.*
+*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Frac_area_1, results = FALSE, echo = TRUE}
+```{r desc-om-frac_area_1, results = knitr_results, echo = knitr_echo}
 om@Frac_area_1
 ```
 
-### Prob_staying
+<!-- autogen-begin -->
+### Prob_staying {#app:desc-om-prob_staying}
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
+<!-- autogen-end -->
 
-```{r om-Prob_staying, results = FALSE, echo = TRUE}
+```{r desc-om-prob_staying, results = knitr_results, echo = knitr_echo}
 om@Prob_staying
 ```
 
-### Fdisc
+<!-- autogen-begin -->
+### Fdisc {#app:desc-om-fdisc}
 
-*Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Fdisc, results = FALSE, echo = TRUE}
+```{r desc-om-fdisc, results = knitr_results, echo = knitr_echo}
 om@Fdisc
 ```
 
-### nyears
+<!-- autogen-begin -->
+### nyears {#app:desc-om-nyears}
 
-*The number of years for the historical spool-up simulation. Single value. Positive integer.*
+*The number of years for the historical spool-up simulation. Single value. Positive integer*
+<!-- autogen-end -->
 
-```{r om-nyears, results = FALSE, echo = TRUE}
+```{r desc-om-nyears, results = knitr_results, echo = knitr_echo}
 om@nyears
 ```
 
-### Spat_targ
+<!-- autogen-begin -->
+### Spat_targ {#app:desc-om-spat_targ}
 
-*Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers.*
+*Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers*
+<!-- autogen-end -->
 
-```{r om-Spat_targ, results = FALSE, echo = TRUE}
+```{r desc-om-spat_targ, results = knitr_results, echo = knitr_echo}
 om@Spat_targ
 ```
 
-### EffYears
+<!-- autogen-begin -->
+### EffYears {#app:desc-om-effyears}
 
-*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers.*
+*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-EffYears, results = FALSE, echo = TRUE}
+```{r desc-om-effyears, results = knitr_results, echo = knitr_echo}
 om@EffYears
 ```
 
-### EffLower
+<!-- autogen-begin -->
+### EffLower {#app:desc-om-efflower}
 
-*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
+*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-EffLower, results = FALSE, echo = TRUE}
+```{r desc-om-efflower, results = knitr_results, echo = knitr_echo}
 om@EffLower
 ```
 
-### EffUpper
+<!-- autogen-begin -->
+### EffUpper {#app:desc-om-effupper}
 
-*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
+*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-EffUpper, results = FALSE, echo = TRUE}
+```{r desc-om-effupper, results = knitr_results, echo = knitr_echo}
 om@EffUpper
 ```
 
-### Esd
+<!-- autogen-begin -->
+### Esd {#app:desc-om-esd}
 
-*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Esd, results = FALSE, echo = TRUE}
+```{r desc-om-esd, results = knitr_results, echo = knitr_echo}
 om@Esd
 ```
 
-### qinc
+<!-- autogen-begin -->
+### qinc {#app:desc-om-qinc}
 
-*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-qinc, results = FALSE, echo = TRUE}
+```{r desc-om-qinc, results = knitr_results, echo = knitr_echo}
 om@qinc
 ```
 
-### qcv
+<!-- autogen-begin -->
+### qcv {#app:desc-om-qcv}
 
-*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-qcv, results = FALSE, echo = TRUE}
+```{r desc-om-qcv, results = knitr_results, echo = knitr_echo}
 om@qcv
 ```
 
-### L5
+<!-- autogen-begin -->
+### L5 {#app:desc-om-l5}
 
-*Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-L5, results = FALSE, echo = TRUE}
+```{r desc-om-l5, results = knitr_results, echo = knitr_echo}
 om@L5
 ```
 
-### LFS
+<!-- autogen-begin -->
+### LFS {#app:desc-om-lfs}
 
-*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-LFS, results = FALSE, echo = TRUE}
+```{r desc-om-lfs, results = knitr_results, echo = knitr_echo}
 om@LFS
 ```
 
-### Vmaxlen
+<!-- autogen-begin -->
+### Vmaxlen {#app:desc-om-vmaxlen}
 
-*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction.*
+*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r om-Vmaxlen, results = FALSE, echo = TRUE}
+```{r desc-om-vmaxlen, results = knitr_results, echo = knitr_echo}
 om@Vmaxlen
 ```
 
-### isRel
+<!-- autogen-begin -->
+### isRel {#app:desc-om-isrel}
 
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
+<!-- autogen-end -->
 
-```{r om-isRel, results = FALSE, echo = TRUE}
+```{r desc-om-isrel, results = knitr_results, echo = knitr_echo}
 om@isRel
 ```
 
-### LR5
+<!-- autogen-begin -->
+### LR5 {#app:desc-om-lr5}
 
-*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-LR5, results = FALSE, echo = TRUE}
+```{r desc-om-lr5, results = knitr_results, echo = knitr_echo}
 om@LR5
 ```
 
-### LFR
+<!-- autogen-begin -->
+### LFR {#app:desc-om-lfr}
 
-*Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-LFR, results = FALSE, echo = TRUE}
+```{r desc-om-lfr, results = knitr_results, echo = knitr_echo}
 om@LFR
 ```
 
-### Rmaxlen
+<!-- autogen-begin -->
+### Rmaxlen {#app:desc-om-rmaxlen}
 
-*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Rmaxlen, results = FALSE, echo = TRUE}
+```{r desc-om-rmaxlen, results = knitr_results, echo = knitr_echo}
 om@Rmaxlen
 ```
 
-### DR
+<!-- autogen-begin -->
+### DR {#app:desc-om-dr}
 
-*Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
+*Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
+<!-- autogen-end -->
 
-```{r om-DR, results = FALSE, echo = TRUE}
+```{r desc-om-dr, results = knitr_results, echo = knitr_echo}
 om@DR
 ```
 
-### SelYears
+<!-- autogen-begin -->
+### SelYears {#app:desc-om-selyears}
 
-*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
+*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-SelYears, results = FALSE, echo = TRUE}
+```{r desc-om-selyears, results = knitr_results, echo = knitr_echo}
 om@SelYears
 ```
 
-### AbsSelYears
+<!-- autogen-begin -->
+### AbsSelYears {#app:desc-om-absselyears}
 
-*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
+*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-AbsSelYears, results = FALSE, echo = TRUE}
+```{r desc-om-absselyears, results = knitr_results, echo = knitr_echo}
 om@AbsSelYears
 ```
 
-### L5Lower
+<!-- autogen-begin -->
+### L5Lower {#app:desc-om-l5lower}
 
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-L5Lower, results = FALSE, echo = TRUE}
+```{r desc-om-l5lower, results = knitr_results, echo = knitr_echo}
 om@L5Lower
 ```
 
-### L5Upper
+<!-- autogen-begin -->
+### L5Upper {#app:desc-om-l5upper}
 
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-L5Upper, results = FALSE, echo = TRUE}
+```{r desc-om-l5upper, results = knitr_results, echo = knitr_echo}
 om@L5Upper
 ```
 
-### LFSLower
+<!-- autogen-begin -->
+### LFSLower {#app:desc-om-lfslower}
 
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-LFSLower, results = FALSE, echo = TRUE}
+```{r desc-om-lfslower, results = knitr_results, echo = knitr_echo}
 om@LFSLower
 ```
 
-### LFSUpper
+<!-- autogen-begin -->
+### LFSUpper {#app:desc-om-lfsupper}
 
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-LFSUpper, results = FALSE, echo = TRUE}
+```{r desc-om-lfsupper, results = knitr_results, echo = knitr_echo}
 om@LFSUpper
 ```
 
-### VmaxLower
+<!-- autogen-begin -->
+### VmaxLower {#app:desc-om-vmaxlower}
 
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- autogen-end -->
 
-```{r om-VmaxLower, results = FALSE, echo = TRUE}
+```{r desc-om-vmaxlower, results = knitr_results, echo = knitr_echo}
 om@VmaxLower
 ```
 
-### VmaxUpper
+<!-- autogen-begin -->
+### VmaxUpper {#app:desc-om-vmaxupper}
 
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- autogen-end -->
 
-```{r om-VmaxUpper, results = FALSE, echo = TRUE}
+```{r desc-om-vmaxupper, results = knitr_results, echo = knitr_echo}
 om@VmaxUpper
 ```
 
-### CurrentYr
+<!-- autogen-begin -->
+### CurrentYr {#app:desc-om-currentyr}
 
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
+<!-- autogen-end -->
 
-```{r om-CurrentYr, results = FALSE, echo = TRUE}
+```{r desc-om-currentyr, results = knitr_results, echo = knitr_echo}
 om@CurrentYr
 ```
 
-### MPA
+<!-- autogen-begin -->
+### MPA {#app:desc-om-mpa}
 
 *(Optional) Matrix specifying spatial closures for historical years.*
+<!-- autogen-end -->
 
-```{r om-MPA, results = FALSE, echo = TRUE}
+```{r desc-om-mpa, results = knitr_results, echo = knitr_echo}
 om@MPA
 ```
 
-### Cobs
+<!-- autogen-begin -->
+### Cobs {#app:desc-om-cobs}
 
-*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Cobs, results = FALSE, echo = TRUE}
+```{r desc-om-cobs, results = knitr_results, echo = knitr_echo}
 om@Cobs
 ```
 
-### Cbiascv
+<!-- autogen-begin -->
+### Cbiascv {#app:desc-om-cbiascv}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- autogen-end -->
 
-```{r om-Cbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-cbiascv, results = knitr_results, echo = knitr_echo}
 om@Cbiascv
 ```
 
-### CAA_nsamp
+<!-- autogen-begin -->
+### CAA_nsamp {#app:desc-om-caa_nsamp}
 
-*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-CAA_nsamp, results = FALSE, echo = TRUE}
+```{r desc-om-caa_nsamp, results = knitr_results, echo = knitr_echo}
 om@CAA_nsamp
 ```
 
-### CAA_ESS
+<!-- autogen-begin -->
+### CAA_ESS {#app:desc-om-caa_ess}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers.*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r om-CAA_ESS, results = FALSE, echo = TRUE}
+```{r desc-om-caa_ess, results = knitr_results, echo = knitr_echo}
 om@CAA_ESS
 ```
 
-### CAL_nsamp
+<!-- autogen-begin -->
+### CAL_nsamp {#app:desc-om-cal_nsamp}
 
-*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers.*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r om-CAL_nsamp, results = FALSE, echo = TRUE}
+```{r desc-om-cal_nsamp, results = knitr_results, echo = knitr_echo}
 om@CAL_nsamp
 ```
 
-### CAL_ESS
+<!-- autogen-begin -->
+### CAL_ESS {#app:desc-om-cal_ess}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers.*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
+<!-- autogen-end -->
 
-```{r om-CAL_ESS, results = FALSE, echo = TRUE}
+```{r desc-om-cal_ess, results = knitr_results, echo = knitr_echo}
 om@CAL_ESS
 ```
 
-### Iobs
+<!-- autogen-begin -->
+### Iobs {#app:desc-om-iobs}
 
-*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Iobs, results = FALSE, echo = TRUE}
+```{r desc-om-iobs, results = knitr_results, echo = knitr_echo}
 om@Iobs
 ```
 
-### Ibiascv
+<!-- autogen-begin -->
+### Ibiascv {#app:desc-om-ibiascv}
 
-*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Ibiascv, results = FALSE, echo = TRUE}
+```{r desc-om-ibiascv, results = knitr_results, echo = knitr_echo}
 om@Ibiascv
 ```
 
-### Btobs
+<!-- autogen-begin -->
+### Btobs {#app:desc-om-btobs}
 
-*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Btobs, results = FALSE, echo = TRUE}
+```{r desc-om-btobs, results = knitr_results, echo = knitr_echo}
 om@Btobs
 ```
 
-### Btbiascv
+<!-- autogen-begin -->
+### Btbiascv {#app:desc-om-btbiascv}
 
-*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers.*
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Btbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-btbiascv, results = knitr_results, echo = knitr_echo}
 om@Btbiascv
 ```
 
-### beta
+<!-- autogen-begin -->
+### beta {#app:desc-om-beta}
 
-*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers.*
+*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-beta, results = FALSE, echo = TRUE}
+```{r desc-om-beta, results = knitr_results, echo = knitr_echo}
 om@beta
 ```
 
-### LenMbiascv
+<!-- autogen-begin -->
+### LenMbiascv {#app:desc-om-lenmbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-LenMbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-lenmbiascv, results = knitr_results, echo = knitr_echo}
 om@LenMbiascv
 ```
 
-### Mbiascv
+<!-- autogen-begin -->
+### Mbiascv {#app:desc-om-mbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Mbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-mbiascv, results = knitr_results, echo = knitr_echo}
 om@Mbiascv
 ```
 
-### Kbiascv
+<!-- autogen-begin -->
+### Kbiascv {#app:desc-om-kbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Kbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-kbiascv, results = knitr_results, echo = knitr_echo}
 om@Kbiascv
 ```
 
-### t0biascv
+<!-- autogen-begin -->
+### t0biascv {#app:desc-om-t0biascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-t0biascv, results = FALSE, echo = TRUE}
+```{r desc-om-t0biascv, results = knitr_results, echo = knitr_echo}
 om@t0biascv
 ```
 
-### Linfbiascv
+<!-- autogen-begin -->
+### Linfbiascv {#app:desc-om-linfbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Linfbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-linfbiascv, results = knitr_results, echo = knitr_echo}
 om@Linfbiascv
 ```
 
-### LFCbiascv
+<!-- autogen-begin -->
+### LFCbiascv {#app:desc-om-lfcbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-LFCbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-lfcbiascv, results = knitr_results, echo = knitr_echo}
 om@LFCbiascv
 ```
 
-### LFSbiascv
+<!-- autogen-begin -->
+### LFSbiascv {#app:desc-om-lfsbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-LFSbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-lfsbiascv, results = knitr_results, echo = knitr_echo}
 om@LFSbiascv
 ```
 
-### FMSYbiascv
+<!-- autogen-begin -->
+### FMSYbiascv {#app:desc-om-fmsybiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-FMSYbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-fmsybiascv, results = knitr_results, echo = knitr_echo}
 om@FMSYbiascv
 ```
 
-### FMSY_Mbiascv
+<!-- autogen-begin -->
+### FMSY_Mbiascv {#app:desc-om-fmsy_mbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-FMSY_Mbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-fmsy_mbiascv, results = knitr_results, echo = knitr_echo}
 om@FMSY_Mbiascv
 ```
 
-### BMSY_B0biascv
+<!-- autogen-begin -->
+### BMSY_B0biascv {#app:desc-om-bmsy_b0biascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-BMSY_B0biascv, results = FALSE, echo = TRUE}
+```{r desc-om-bmsy_b0biascv, results = knitr_results, echo = knitr_echo}
 om@BMSY_B0biascv
 ```
 
-### Irefbiascv
+<!-- autogen-begin -->
+### Irefbiascv {#app:desc-om-irefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Irefbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-irefbiascv, results = knitr_results, echo = knitr_echo}
 om@Irefbiascv
 ```
 
-### Brefbiascv
+<!-- autogen-begin -->
+### Brefbiascv {#app:desc-om-brefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Brefbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-brefbiascv, results = knitr_results, echo = knitr_echo}
 om@Brefbiascv
 ```
 
-### Crefbiascv
+<!-- autogen-begin -->
+### Crefbiascv {#app:desc-om-crefbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Crefbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-crefbiascv, results = knitr_results, echo = knitr_echo}
 om@Crefbiascv
 ```
 
-### Dbiascv
+<!-- autogen-begin -->
+### Dbiascv {#app:desc-om-dbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Dbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-dbiascv, results = knitr_results, echo = knitr_echo}
 om@Dbiascv
 ```
 
-### Dobs
+<!-- autogen-begin -->
+### Dobs {#app:desc-om-dobs}
 
-*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Dobs, results = FALSE, echo = TRUE}
+```{r desc-om-dobs, results = knitr_results, echo = knitr_echo}
 om@Dobs
 ```
 
-### hbiascv
+<!-- autogen-begin -->
+### hbiascv {#app:desc-om-hbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-hbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-hbiascv, results = knitr_results, echo = knitr_echo}
 om@hbiascv
 ```
 
-### Recbiascv
+<!-- autogen-begin -->
+### Recbiascv {#app:desc-om-recbiascv}
 
-*Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers.*
+*Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
+<!-- autogen-end -->
 
-```{r om-Recbiascv, results = FALSE, echo = TRUE}
+```{r desc-om-recbiascv, results = knitr_results, echo = knitr_echo}
 om@Recbiascv
 ```
 
-### TACFrac
+<!-- autogen-begin -->
+### TACFrac {#app:desc-om-tacfrac}
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r om-TACFrac, results = FALSE, echo = TRUE}
+```{r desc-om-tacfrac, results = knitr_results, echo = knitr_echo}
 om@TACFrac
 ```
 
-### TACSD
+<!-- autogen-begin -->
+### TACSD {#app:desc-om-tacsd}
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r om-TACSD, results = FALSE, echo = TRUE}
+```{r desc-om-tacsd, results = knitr_results, echo = knitr_echo}
 om@TACSD
 ```
 
-### TAEFrac
+<!-- autogen-begin -->
+### TAEFrac {#app:desc-om-taefrac}
 
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r om-TAEFrac, results = FALSE, echo = TRUE}
+```{r desc-om-taefrac, results = knitr_results, echo = knitr_echo}
 om@TAEFrac
 ```
 
-### TAESD
+<!-- autogen-begin -->
+### TAESD {#app:desc-om-taesd}
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r om-TAESD, results = FALSE, echo = TRUE}
+```{r desc-om-taesd, results = knitr_results, echo = knitr_echo}
 om@TAESD
 ```
 
-### SizeLimFrac
+<!-- autogen-begin -->
+### SizeLimFrac {#app:desc-om-sizelimfrac}
 
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
+<!-- autogen-end -->
 
-```{r om-SizeLimFrac, results = FALSE, echo = TRUE}
+```{r desc-om-sizelimfrac, results = knitr_results, echo = knitr_echo}
 om@SizeLimFrac
 ```
 
-### SizeLimSD
+<!-- autogen-begin -->
+### SizeLimSD {#app:desc-om-sizelimsd}
 
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+<!-- autogen-end -->
 
-```{r om-SizeLimSD, results = FALSE, echo = TRUE}
+```{r desc-om-sizelimsd, results = knitr_results, echo = knitr_echo}
 om@SizeLimSD
 ```
 
