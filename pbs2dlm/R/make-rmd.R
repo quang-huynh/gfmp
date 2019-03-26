@@ -26,8 +26,8 @@ create_rmd <- function(file_name, overwrite = FALSE,
     format_desc(DLMtool::StockDescription, "Stock"),
     format_desc(DLMtool::FleetDescription, "Fleet"),
     format_desc(DLMtool::ObsDescription, "Obs"),
-    format_desc(DLMtool::ImpDescription, "Imp"),
-    format_desc(DLMtool::OMDescription, "OM")
+    format_desc(DLMtool::ImpDescription, "Imp")
+    # format_desc(DLMtool::OMDescription, "OM")
   )
 
   conn <- file(fn)
