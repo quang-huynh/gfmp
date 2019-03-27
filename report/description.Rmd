@@ -193,7 +193,7 @@ stock@AC <- c(0.1, 0.9)
 Not used.
 
 ```{r desc-stock-period, results = knitr_results, echo = knitr_echo}
-stock@Period <- c(NA_real_, NA_real_)
+stock@Period
 ```
 
 <!-- autogen-begin -->
@@ -205,7 +205,7 @@ stock@Period <- c(NA_real_, NA_real_)
 Not used.
 
 ```{r desc-stock-amplitude, results = knitr_results, echo = knitr_echo}
-stock@Amplitude <- c(NA_real_, NA_real_)
+stock@Amplitude
 ```
 
 <!-- autogen-begin -->
@@ -214,8 +214,17 @@ stock@Amplitude <- c(NA_real_, NA_real_)
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+```{r load-stan, message=FALSE, warning=FALSE}
+suppressPackageStartupMessages(library("rstan"))
+```
+
 ```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
 mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
+
+# for cpars:
+# mvb_stan <- gfplot::fit_vb(d$survey_samples, sex = "all", method = "mcmc",
+#   control = list(adapt_delta = 0.99), iter = 500, chains = 4)
+
 mvb_summary <- summary(TMB::sdreport(mvb$model))
 vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
 gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
@@ -268,6 +277,7 @@ We will grab this from our data analysis:
 ```{r desc-stock-lencv, results = knitr_results, echo = knitr_echo}
 sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
 stock@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+round(stock@LenCV, 2)
 ```
 
 <!-- autogen-begin -->
@@ -451,7 +461,7 @@ fleet <- DLMtool::Generic_Fleet # TODO: temporary
 <!-- autogen-end -->
 
 ```{r desc-fleet-name, results = knitr_results, echo = knitr_echo}
-fleet@Name <- ""
+fleet@Name <- "BC Fleet"
 ```
 
 <!-- autogen-begin -->
@@ -460,8 +470,10 @@ fleet@Name <- ""
 *The number of years for the historical spool-up simulation. Single value. Positive integer*
 <!-- autogen-end -->
 
+We will set the historical run-up to be approximately the length of the commercial fishery:
+
 ```{r desc-fleet-nyears, results = knitr_results, echo = knitr_echo}
-fleet@nyears
+fleet@nyears <- 50
 ```
 
 <!-- autogen-begin -->
@@ -480,8 +492,12 @@ fleet@Spat_targ
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
 <!-- autogen-end -->
 
+TODO: May need to come up with some plausible scenarios for these effort trajectories.
+
+For now we will start with the simplest trajectory of fairly constant fishing effort at a wide and unknown range:
+
 ```{r desc-fleet-effyears, results = knitr_results, echo = knitr_echo}
-fleet@EffYears
+fleet@EffYears <- c(0, 0.5, 1)
 ```
 
 <!-- autogen-begin -->
@@ -490,8 +506,10 @@ fleet@EffYears
 *Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
 <!-- autogen-end -->
 
+TODO: May need to come up with some plausible scenarios for these effort trajectories.
+
 ```{r desc-fleet-efflower, results = knitr_results, echo = knitr_echo}
-fleet@EffLower
+fleet@EffLower <- c(0, 0.2, 0.2)
 ```
 
 <!-- autogen-begin -->
@@ -500,8 +518,10 @@ fleet@EffLower
 *Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
 <!-- autogen-end -->
 
+TODO: May need to come up with some plausible scenarios for these effort trajectories.
+
 ```{r desc-fleet-effupper, results = knitr_results, echo = knitr_echo}
-fleet@EffUpper
+fleet@EffUpper <- c(0.5, 1, 1)
 ```
 
 <!-- autogen-begin -->
@@ -509,6 +529,8 @@ fleet@EffUpper
 
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
+
+TODO: We don't have a lot of data to go on for this. For now, stick with the default.
 
 ```{r desc-fleet-esd, results = knitr_results, echo = knitr_echo}
 fleet@Esd
@@ -520,6 +542,8 @@ fleet@Esd
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+TODO: We don't have a lot of data to go on for this. For now, stick with the default which is a fairly wide bound.
+
 ```{r desc-fleet-qinc, results = knitr_results, echo = knitr_echo}
 fleet@qinc
 ```
@@ -529,6 +553,8 @@ fleet@qinc
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
+
+TODO: Same as above.
 
 ```{r desc-fleet-qcv, results = knitr_results, echo = knitr_echo}
 fleet@qcv
