@@ -15,7 +15,7 @@ create_rmd <- function(file_name, overwrite = FALSE,
   fn <- file_name
   if (file.exists(fn) && !overwrite)
     stop("File '", fn, "' already exists. ",
-      "Set `overwite = TRUE` if you want to overwite it.", call. = FALSE)
+      "Set `overwrite = TRUE` if you want to overwrite it.", call. = FALSE)
 
   rmd <- c(
     "```{r message = FALSE}\nlibrary(DLMtool)",
