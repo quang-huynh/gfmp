@@ -7,7 +7,7 @@ Let's combine the stock, fleet, observation, and implementation objects into a c
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 mp <- c("DCAC", "DCAC_40")
-om@nsim <- 20L
+om@nsim <- 50L
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
@@ -47,13 +47,13 @@ plot(short_mse)
 oldpar <- par()
 ##DFO_hist(short_mse)
 DFO_plot(short_mse)
-DFO_plot2(short_mse)
+# DFO_plot2(short_mse)
 ```
 
 ```{r, fig.height=9, warning=FALSE}
 DFO_proj(short_mse)
 #DFO_hist(short_om)
-DFO_plot2(short_mse)
+# DFO_plot2(short_mse)
 
 # d <- DFO_plot2(short_mse)
 # ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
