@@ -12,3 +12,9 @@ report/csas-style/*
 *cache
 build
 *.log
+*.RData
+*.rdb
+*.rdx
+report/resdoc.Rmd
+report/knitr-cache-tex/__packages
+*.aux

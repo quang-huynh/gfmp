@@ -1,3 +1,9 @@
+`r if(knitr:::is_latex_output()) '\\Appendices'`
+
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
+
+# OPERATING MODEL SPECIFICATION {#app:desc-om}
+
 ```{r message = FALSE}
 library(DLMtool)
 knitr_results <- TRUE
@@ -113,7 +119,7 @@ stock@M2
 Not used.
 
 ```{r desc-stock-mexp, results = knitr_results, echo = knitr_echo}
-stock@Mexp
+stock@Mexp <- c(NA_real_, NA_real_)
 ```
 
 <!-- autogen-begin -->
@@ -187,7 +193,7 @@ stock@AC <- c(0.1, 0.9)
 Not used.
 
 ```{r desc-stock-period, results = knitr_results, echo = knitr_echo}
-stock@Period
+stock@Period <- c(NA_real_, NA_real_)
 ```
 
 <!-- autogen-begin -->
@@ -199,7 +205,7 @@ stock@Period
 Not used.
 
 ```{r desc-stock-amplitude, results = knitr_results, echo = knitr_echo}
-stock@Amplitude
+stock@Amplitude <- c(NA_real_, NA_real_)
 ```
 
 <!-- autogen-begin -->
@@ -208,19 +214,10 @@ stock@Amplitude
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
-```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6}
-mvb <- suppressWarnings(gfplot::fit_vb(d$survey_samples, sex = "all"))
+```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
+mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
 mvb_summary <- summary(TMB::sdreport(mvb$model))
 vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
-
-  # obj@vbK <- mvb$pars[["k"]]
-  # obj@vbLinf <- mvb$pars[["linf"]]
-  # obj@vbt0 <- mvb$pars[["t0"]]
-  # obj@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
-  # obj@CV_vbK <- cv[["k"]]
-  # obj@CV_vbLinf <- cv[["linf"]]
-  # obj@CV_vbt0 <- cv[["t0"]]
-  
 gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 ```
 
@@ -233,7 +230,7 @@ gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 We will grab this from our data analysis:
 
 ```{r desc-stock-linf, results = knitr_results, echo = knitr_echo}
-stock@Linf <- mvb$pars[["linf"]]
+stock@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
 ```
 
 <!-- autogen-begin -->
@@ -245,7 +242,7 @@ stock@Linf <- mvb$pars[["linf"]]
 We will grab this from our data analysis:
 
 ```{r desc-stock-k, results = knitr_results, echo = knitr_echo}
-stock@K <- mvb$pars[["k"]]
+stock@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
 ```
 
 <!-- autogen-begin -->
@@ -257,7 +254,7 @@ stock@K <- mvb$pars[["k"]]
 We will grab this from our data analysis:
 
 ```{r desc-stock-t0, results = knitr_results, echo = knitr_echo}
-stock@t0 <- mvb$pars[["t0"]]
+stock@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
 ```
 
 <!-- autogen-begin -->
@@ -279,10 +276,10 @@ stock@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-We will grab this from our data analysis:
+FIXME: pick this.
 
 ```{r desc-stock-ksd, results = knitr_results, echo = knitr_echo}
-stock@Ksd <- vb_cv[["k"]]
+stock@Ksd <- c(0, 0.2)
 ```
 
 <!-- autogen-begin -->
@@ -291,10 +288,10 @@ stock@Ksd <- vb_cv[["k"]]
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-We will grab this from our data analysis:
+FIXME: We will grab this from our data analysis:
 
 ```{r desc-stock-linfsd, results = knitr_results, echo = knitr_echo}
-stock@Linfsd <- vb_cv[["linf"]]
+stock@Linfsd <- c(0.05, 0.2)
 ```
 
 <!-- autogen-begin -->
@@ -305,13 +302,9 @@ stock@Linfsd <- vb_cv[["linf"]]
 
 ```{r fit-maturity, echo = knitr_echo, out.width="4in", fig.width=6}
 m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
-mat_perc <- pbs2dlm:::extract_maturity_perc(stats::coef(m_mat$model))
+mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
 se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
-    mean = stats::coef(m_mat$model), cov = stats::vcov(m_mat$model))
-  # obj@L50 <- mat_perc$f.p0.5 # TODO, female only?
-  # obj@L95 <- mat_perc$f.p0.95
-  # obj@CV_L50 <- se_l50 / obj@L50
-
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
 gfplot::plot_mat_ogive(m_mat)
 ```
 
@@ -335,8 +328,7 @@ Similarly we will calculate the increment in length from 50% to 95% maturity.
 se_l50_95m <- pbs2dlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) - 
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
-    mean = stats::coef(m_mat$model), cov = stats::vcov(m_mat$model))
-
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
 stock@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
 stock@L50_95
 ```
@@ -347,8 +339,10 @@ stock@L50_95
 *Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 <!-- autogen-end -->
 
+TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. 
+
 ```{r desc-stock-d, results = knitr_results, echo = knitr_echo}
-stock@D
+stock@D <- c(0.1, 0.8)
 ```
 
 <!-- autogen-begin -->
@@ -360,7 +354,7 @@ stock@D
 We can fit a length-weight growth model with gfplot:
 
 ```{r fit-lw, echo = knitr_echo, out.width="4in", fig.width=6}
-mlw <- suppressWarnings(gfplot::fit_length_weight(d$survey_samples, sex = "all"))
+mlw <- gfplot::fit_length_weight(d$survey_samples, sex = "all")
 
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 ```
@@ -391,8 +385,10 @@ round(stock@b, 2)
 *The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+Area 1 represents habitat outside of the range of fishing. TODO: we may be able to come up with some ballpark numbers from looking at the distribution of commercial effort and the predicted distribution of the species from the spatiotemporal models. For now, we will arbitrarily set this.
+
 ```{r desc-stock-size_area_1, results = knitr_results, echo = knitr_echo}
-stock@Size_area_1
+stock@Size_area_1 <- c(0, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -401,8 +397,10 @@ stock@Size_area_1
 *The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+For now, we will set this to the same fraction as the size of area 1.
+
 ```{r desc-stock-frac_area_1, results = knitr_results, echo = knitr_echo}
-stock@Frac_area_1
+stock@Frac_area_1 <- c(0, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -411,8 +409,10 @@ stock@Frac_area_1
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 <!-- autogen-end -->
 
+We probably don't have a lot of information on this. For now, we will set this to a wide range of possible values.
+
 ```{r desc-stock-prob_staying, results = knitr_results, echo = knitr_echo}
-stock@Prob_staying
+stock@Prob_staying <- c(0.1, 0.9)
 ```
 
 <!-- autogen-begin -->
@@ -421,8 +421,10 @@ stock@Prob_staying
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+TODO: pull from some studies on this but I imagine the value is pretty close to 1.
+
 ```{r desc-stock-fdisc, results = knitr_results, echo = knitr_echo}
-stock@Fdisc
+stock@Fdisc <- 1
 ```
 
 <!-- autogen-begin -->
@@ -432,13 +434,14 @@ stock@Fdisc
 <!-- autogen-end -->
 
 ```{r desc-stock-source, results = knitr_results, echo = knitr_echo}
-stock@Source
+stock@Source <- "" 
 ```
 
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}
 
 ```{r warnings = FALSE}
 fleet <- methods::new('Fleet')
+fleet <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
 <!-- autogen-begin -->
@@ -448,7 +451,7 @@ fleet <- methods::new('Fleet')
 <!-- autogen-end -->
 
 ```{r desc-fleet-name, results = knitr_results, echo = knitr_echo}
-fleet@Name
+fleet@Name <- ""
 ```
 
 <!-- autogen-begin -->
@@ -715,6 +718,7 @@ fleet@MPA
 
 ```{r warnings = FALSE}
 obs <- methods::new('Obs')
+obs <- DLMtool::Imprecise_Unbiased # TODO: temporary
 ```
 
 <!-- autogen-begin -->
@@ -1011,6 +1015,7 @@ obs@Recbiascv
 
 ```{r warnings = FALSE}
 imp <- methods::new('Imp')
+imp <- DLMtool::Perfect_Imp # TODO: temporary
 ```
 
 <!-- autogen-begin -->
