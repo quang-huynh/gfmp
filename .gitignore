@@ -19,3 +19,4 @@ report/resdoc.Rmd
 report/knitr-cache-tex/__packages
 report/knitr-cache-docx/
 *.aux
+report/knitr-cache*

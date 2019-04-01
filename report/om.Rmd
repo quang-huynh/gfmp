@@ -19,32 +19,32 @@ There are a variety of built-in plotting functions to examine the components of 
 
 We may want to develop our own plotting functions.
 
-```{r, eval=TRUE}
-plotStock(om, nsamp = 3, incVB = FALSE)
+```{r, eval=TRUE, fig.asp=1}
+plotStock(om, nsamp = 3, incVB = TRUE)
 ```
 
 ```{r, eval=TRUE}
 plotSelect(om, sim = 1) # one sample, others will look different
 ```
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, fig.asp=1}
 plotFleet(fleet, Stock = stock)
 ```
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, fig.asp=1}
 plotImp(imp)
 ```
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, fig.asp=0.8}
 plotObs(obs)
 ```
 
 Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-DLMtool::setup(cpus = parallel::detectCores())
 file_name <- here::here("generated-data", "shortracker-mse.rds")
 if (!file.exists(file_name)) {
+  DLMtool::setup(cpus = parallel::detectCores())
   short_mse <- runMSE(OM = om, MPs = mp, parallel = TRUE)
   saveRDS(short_mse, file = file_name)
 } else {
@@ -63,7 +63,7 @@ DFO_plot(short_mse)
 # DFO_plot2(short_mse)
 ```
 
-```{r, fig.height=9, warning=FALSE}
+```{r, fig.asp=1, warning=FALSE}
 DFO_proj(short_mse)
 #DFO_hist(short_om)
 # DFO_plot2(short_mse)
@@ -82,7 +82,7 @@ DFO_proj(short_mse)
 
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
-```{r}
+```{r, fig.asp=1}
 yend <- max(short_mse@proyears)
 ffmsy <- short_mse@F_FMSY[,,yend]
 bbmsy <- short_mse@B_BMSY[,,yend]
@@ -100,7 +100,7 @@ n <- data.frame(mp = 1:length(short_mse@MPs), mp_name = short_mse@MPs)
 d <- dplyr::left_join(d, n)
 
 library(ggplot2)
-ggplot(dplyr::filter(d, !mp_name %in% c("CC4", "DBSRA_ML")), aes(bbmsy, ffmsy)) +
+ggplot(dplyr::filter(d), aes(bbmsy, ffmsy)) +
   geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
   geom_hline(yintercept = 1, alpha = 0.2) +
   geom_density_2d(aes(colour = ..level..), bins = 5) +
@@ -115,7 +115,9 @@ ggplot(dplyr::filter(d, !mp_name %in% c("CC4", "DBSRA_ML")), aes(bbmsy, ffmsy)) 
 #ggsave("analysis/short-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
 ```
 
-```{r}
+```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
+library(dplyr)
+library(RColorBrewer)
 ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
 bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>%
@@ -170,12 +172,45 @@ plot_timeseries <- function(dat, dat_median, title = "",
 cols <- brewer.pal(5, "RdBu")
 cols <- c(cols[1], "grey50", cols[length(cols)])
 set.seed(42)
-d_ <- filter(d, iter %in% sample(seq_len(max(d$iter)), 30))
+# d_ <- filter(d, iter %in% sample(seq_len(max(d$iter)), 30))
+d_ <- d
 
 # plot_timeseries(d, d_median,
 # cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)))
 
-mps <- c("DCAC", "DCAC_40")
+# mps <- c("DCAC", "DCAC_40")
+# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
+#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
+#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
+#   labels = TRUE)
+# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
+#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
+#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
+#   labels = TRUE, yaxis = TRUE)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+
+# pdf("analysis/short-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+# dev.off()
+
+# mps <- unique(d_$mp_name)
+# # mps <- mps[-which(mps %in% c("CC4"))]
+# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
+#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
+#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
+#   labels = TRUE)
+# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
+#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
+#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
+#   labels = TRUE, yaxis = TRUE)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+
+# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# gridExtra::grid.arrange(p1, p2, ncol = 2)
+# dev.off()
+
+mps <- unique(d_$mp_name)
+# mps <- mps[-which(mps %in% c("CC4"))]
 p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
@@ -185,38 +220,6 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
   labels = TRUE, yaxis = TRUE)
 gridExtra::grid.arrange(p1, p2, ncol = 2)
-
-# pdf("analysis/short-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
-mps <- unique(d_$mp_name)
-mps <- mps[-which(mps %in% c("CC4"))]
-p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-  filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-  labels = TRUE)
-p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-  filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-  cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-  labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-
-# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
-mps <- unique(d_$mp_name)
-mps <- mps[-which(mps %in% c("CC4"))]
-p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-  filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-  labels = TRUE)
-p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-  filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-  cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-  labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
