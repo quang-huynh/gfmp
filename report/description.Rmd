@@ -285,7 +285,7 @@ round(stock@LenCV, 2)
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-FIXME: pick this.
+FIXME: pick this. For now picking an arbitrary range.
 
 ```{r desc-stock-ksd, results = knitr_results, echo = knitr_echo}
 stock@Ksd <- c(0, 0.2)
@@ -348,7 +348,7 @@ stock@L50_95
 *Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 <!-- autogen-end -->
 
-TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. 
+TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
 ```{r desc-stock-d, results = knitr_results, echo = knitr_echo}
 stock@D <- c(0.1, 0.8)
@@ -481,6 +481,8 @@ fleet@nyears <- 50
 *Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers*
 <!-- autogen-end -->
 
+TODO: Need to dig into the code understand this parameter.
+
 ```{r desc-fleet-spat_targ, results = knitr_results, echo = knitr_echo}
 fleet@Spat_targ
 ```
@@ -529,10 +531,10 @@ fleet@EffUpper <- c(0.5, 1, 1)
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-TODO: We don't have a lot of data to go on for this. For now, stick with the default.
+TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
 
 ```{r desc-fleet-esd, results = knitr_results, echo = knitr_echo}
-fleet@Esd
+fleet@Esd <- c(0.1, 0.4)
 ```
 
 <!-- autogen-begin -->
@@ -541,10 +543,10 @@ fleet@Esd
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-TODO: We don't have a lot of data to go on for this. For now, stick with the default which is a fairly wide bound.
+TODO: We don't have a lot of data to go on for this. We will set this at 0 indicating no expected systematic change in fishing efficiency.
 
 ```{r desc-fleet-qinc, results = knitr_results, echo = knitr_echo}
-fleet@qinc
+fleet@qinc <- c(0, 0)
 ```
 
 <!-- autogen-begin -->
@@ -553,10 +555,10 @@ fleet@qinc
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-TODO: Same as above.
+TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing efficiency.
 
 ```{r desc-fleet-qcv, results = knitr_results, echo = knitr_echo}
-fleet@qcv
+fleet@qcv <- c(0.1, 0.4)
 ```
 
 <!-- autogen-begin -->
@@ -565,8 +567,10 @@ fleet@qcv
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock@L50[[1]]` to `r stock@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock@L50[[2]], 1)` and `r round(min_caught/stock@L50[[1]], 1)`. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught.
+
 ```{r desc-fleet-l5, results = knitr_results, echo = knitr_echo}
-fleet@L5
+fleet@L5 <- c(0.5, 1.0)
 ```
 
 <!-- autogen-begin -->
@@ -575,8 +579,10 @@ fleet@L5
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+Based on the observed commercial length samples this appears to be around are just slightly larger than the length at maturity.
+
 ```{r desc-fleet-lfs, results = knitr_results, echo = knitr_echo}
-fleet@LFS
+fleet@LFS <- c(1.0, 1.2)
 ```
 
 <!-- autogen-begin -->
@@ -585,8 +591,10 @@ fleet@LFS
 *The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
 <!-- autogen-end -->
 
+We don't have a lot of information to go on for this. There is likely some proportion of the population that is not vulnerable because of MPAs, the frozen footprint, and the extreme depths that the slow-moving nature of shortrocker rockfish live at.
+
 ```{r desc-fleet-vmaxlen, results = knitr_results, echo = knitr_echo}
-fleet@Vmaxlen
+fleet@Vmaxlen <- c(0.05, 0.95)
 ```
 
 <!-- autogen-begin -->
@@ -605,6 +613,8 @@ fleet@isRel
 *Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+Since we can assume that no shortraker rockfish will survive if caught, we will set this to 0.
+
 ```{r desc-fleet-lr5, results = knitr_results, echo = knitr_echo}
 fleet@LR5
 ```
@@ -614,6 +624,8 @@ fleet@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
+
+We will use the vector of selectivity breakpoints below to allow for historical changes. Therefore the we will leave this slot empty.
 
 ```{r desc-fleet-lfr, results = knitr_results, echo = knitr_echo}
 fleet@LFR
@@ -726,7 +738,7 @@ fleet@VmaxUpper
 <!-- autogen-end -->
 
 ```{r desc-fleet-currentyr, results = knitr_results, echo = knitr_echo}
-fleet@CurrentYr
+fleet@CurrentYr <- 2018
 ```
 
 <!-- autogen-begin -->
@@ -734,6 +746,8 @@ fleet@CurrentYr
 
 *(Optional) Matrix specifying spatial closures for historical years.*
 <!-- autogen-end -->
+
+We will not use this functionality.
 
 ```{r desc-fleet-mpa, results = knitr_results, echo = knitr_echo}
 fleet@MPA
@@ -743,7 +757,7 @@ fleet@MPA
 
 ```{r warnings = FALSE}
 obs <- methods::new('Obs')
-obs <- DLMtool::Imprecise_Unbiased # TODO: temporary
+obs <- DLMtool::Precise_Unbiased # TODO: temporary
 ```
 
 <!-- autogen-begin -->
@@ -753,7 +767,7 @@ obs <- DLMtool::Imprecise_Unbiased # TODO: temporary
 <!-- autogen-end -->
 
 ```{r desc-obs-name, results = knitr_results, echo = knitr_echo}
-obs@Name
+obs@Name <- "BC Obs"
 ```
 
 <!-- autogen-begin -->
@@ -762,8 +776,12 @@ obs@Name
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+At least since 1996, observation error on catch should be very small.
+
+TODO: does this affect historical build up because there was certainly much larger observation are on catch before 1996.
+
 ```{r desc-obs-cobs, results = knitr_results, echo = knitr_echo}
-obs@Cobs
+obs@Cobs <- c(0.05, 0.15)
 ```
 
 <!-- autogen-begin -->
@@ -772,8 +790,10 @@ obs@Cobs
 *Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+We will keep the possible sampling bias quite small because observation error on catch should be very small with 100% on board and dockside monitoring.
+
 ```{r desc-obs-cbiascv, results = knitr_results, echo = knitr_echo}
-obs@Cbiascv
+obs@Cbiascv <- 0.05
 ```
 
 <!-- autogen-begin -->
@@ -781,6 +801,10 @@ obs@Cbiascv
 
 *Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
+
+We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that important. They will only be used if we also explore some more data-rich management procedures.
+
+TODO: Therefore, for now, I will not adjust these.
 
 ```{r desc-obs-caa_nsamp, results = knitr_results, echo = knitr_echo}
 obs@CAA_nsamp
@@ -822,8 +846,17 @@ obs@CAL_ESS
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+```{r}
+average_cv <- dplyr::filter(d$survey_index, survey_abbrev == "SYN WCHG") %>% 
+  dplyr::pull(re) %>%
+  mean() %>% 
+  round(2)
+```
+
+This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's place a range around that for now.
+
 ```{r desc-obs-iobs, results = knitr_results, echo = knitr_echo}
-obs@Iobs
+obs@Iobs <- c(0.3, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -832,8 +865,10 @@ obs@Iobs
 *Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: I believe this refers to bias from simulation run to run but I'm not sure. For now I will set it to  zero.
+
 ```{r desc-obs-ibiascv, results = knitr_results, echo = knitr_echo}
-obs@Ibiascv
+obs@Ibiascv <- c(0.333, 3.00)
 ```
 
 <!-- autogen-begin -->
@@ -842,8 +877,10 @@ obs@Ibiascv
 *Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
+
 ```{r desc-obs-btobs, results = knitr_results, echo = knitr_echo}
-obs@Btobs
+obs@Btobs <- obs@Iobs
 ```
 
 <!-- autogen-begin -->
@@ -853,7 +890,7 @@ obs@Btobs
 <!-- autogen-end -->
 
 ```{r desc-obs-btbiascv, results = knitr_results, echo = knitr_echo}
-obs@Btbiascv
+obs@Btbiascv <- obs@Ibiascv
 ```
 
 <!-- autogen-begin -->
@@ -862,8 +899,10 @@ obs@Btbiascv
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+We probably don't have a lot to go on here so let's allow for a wide range:
+
 ```{r desc-obs-beta, results = knitr_results, echo = knitr_echo}
-obs@beta
+obs@beta <- c(0.666, 1.500)
 ```
 
 <!-- autogen-begin -->
@@ -872,8 +911,10 @@ obs@beta
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+We don't have a large number of biological samples for the species. It is possible there is some persistent bias in like that 50% maturity. Let's set this to a range from a little to a fair bit.
+
 ```{r desc-obs-lenmbiascv, results = knitr_results, echo = knitr_echo}
-obs@LenMbiascv
+obs@LenMbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -882,8 +923,10 @@ obs@LenMbiascv
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock@M[[1]]` and `r stock@M[[2]]`.
+
 ```{r desc-obs-mbiascv, results = knitr_results, echo = knitr_echo}
-obs@Mbiascv
+obs@Mbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -892,8 +935,10 @@ obs@Mbiascv
 *Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
+
 ```{r desc-obs-kbiascv, results = knitr_results, echo = knitr_echo}
-obs@Kbiascv
+obs@Kbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -902,8 +947,10 @@ obs@Kbiascv
 *Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+As above:
+
 ```{r desc-obs-t0biascv, results = knitr_results, echo = knitr_echo}
-obs@t0biascv
+obs@t0biascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -912,8 +959,10 @@ obs@t0biascv
 *Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+As above:
+
 ```{r desc-obs-linfbiascv, results = knitr_results, echo = knitr_echo}
-obs@Linfbiascv
+obs@Linfbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -922,8 +971,10 @@ obs@Linfbiascv
 *Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+As above:
+
 ```{r desc-obs-lfcbiascv, results = knitr_results, echo = knitr_echo}
-obs@LFCbiascv
+obs@LFCbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -932,8 +983,10 @@ obs@LFCbiascv
 *Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+As above:
+
 ```{r desc-obs-lfsbiascv, results = knitr_results, echo = knitr_echo}
-obs@LFSbiascv
+obs@LFSbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -942,8 +995,10 @@ obs@LFSbiascv
 *Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-fmsybiascv, results = knitr_results, echo = knitr_echo}
-obs@FMSYbiascv
+obs@FMSYbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -952,8 +1007,10 @@ obs@FMSYbiascv
 *Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-fmsy_mbiascv, results = knitr_results, echo = knitr_echo}
-obs@FMSY_Mbiascv
+obs@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -962,8 +1019,10 @@ obs@FMSY_Mbiascv
 *Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-bmsy_b0biascv, results = knitr_results, echo = knitr_echo}
-obs@BMSY_B0biascv
+obs@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -972,8 +1031,10 @@ obs@BMSY_B0biascv
 *Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-irefbiascv, results = knitr_results, echo = knitr_echo}
-obs@Irefbiascv
+obs@Irefbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -982,8 +1043,10 @@ obs@Irefbiascv
 *Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-brefbiascv, results = knitr_results, echo = knitr_echo}
-obs@Brefbiascv
+obs@Brefbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -992,8 +1055,10 @@ obs@Brefbiascv
 *Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: Not sure where this gets used.
+
 ```{r desc-obs-crefbiascv, results = knitr_results, echo = knitr_echo}
-obs@Crefbiascv
+obs@Crefbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -1002,8 +1067,10 @@ obs@Crefbiascv
 *Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
+TODO: 
+
 ```{r desc-obs-dbiascv, results = knitr_results, echo = knitr_echo}
-obs@Dbiascv
+obs@Dbiascv <- c(0.1, 0.3)
 ```
 
 <!-- autogen-begin -->
@@ -1023,7 +1090,7 @@ obs@Dobs
 <!-- autogen-end -->
 
 ```{r desc-obs-hbiascv, results = knitr_results, echo = knitr_echo}
-obs@hbiascv
+obs@hbiascv <- c(0.05, 0.20)
 ```
 
 <!-- autogen-begin -->
@@ -1033,15 +1100,16 @@ obs@hbiascv
 <!-- autogen-end -->
 
 ```{r desc-obs-recbiascv, results = knitr_results, echo = knitr_echo}
-obs@Recbiascv
+obs@Recbiascv <- c(0.05, 0.20)
 ```
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp}
 
 ```{r warnings = FALSE}
 imp <- methods::new('Imp')
-imp <- DLMtool::Perfect_Imp # TODO: temporary
 ```
+
+Implementation should be very accurate for the groundfish fleet so we will use the perfect implementation object and make it just slightly less perfect for now.
 
 <!-- autogen-begin -->
 ### Name {#app:desc-imp-name}
@@ -1050,7 +1118,7 @@ imp <- DLMtool::Perfect_Imp # TODO: temporary
 <!-- autogen-end -->
 
 ```{r desc-imp-name, results = knitr_results, echo = knitr_echo}
-imp@Name
+imp@Name <- "BC Implementation"
 ```
 
 <!-- autogen-begin -->
@@ -1060,7 +1128,7 @@ imp@Name
 <!-- autogen-end -->
 
 ```{r desc-imp-tacfrac, results = knitr_results, echo = knitr_echo}
-imp@TACFrac
+imp@TACFrac <- c(0.8, 1.0)
 ```
 
 <!-- autogen-begin -->
@@ -1070,7 +1138,7 @@ imp@TACFrac
 <!-- autogen-end -->
 
 ```{r desc-imp-tacsd, results = knitr_results, echo = knitr_echo}
-imp@TACSD
+imp@TACSD <- c(0, 0)
 ```
 
 <!-- autogen-begin -->
@@ -1080,7 +1148,7 @@ imp@TACSD
 <!-- autogen-end -->
 
 ```{r desc-imp-taefrac, results = knitr_results, echo = knitr_echo}
-imp@TAEFrac
+imp@TAEFrac <- c(0.8, 1.0)
 ```
 
 <!-- autogen-begin -->
@@ -1090,7 +1158,7 @@ imp@TAEFrac
 <!-- autogen-end -->
 
 ```{r desc-imp-taesd, results = knitr_results, echo = knitr_echo}
-imp@TAESD
+imp@TAESD <- c(0, 0)
 ```
 
 <!-- autogen-begin -->
@@ -1100,7 +1168,7 @@ imp@TAESD
 <!-- autogen-end -->
 
 ```{r desc-imp-sizelimfrac, results = knitr_results, echo = knitr_echo}
-imp@SizeLimFrac
+imp@SizeLimFrac <- c(1, 1)
 ```
 
 <!-- autogen-begin -->
@@ -1110,6 +1178,6 @@ imp@SizeLimFrac
 <!-- autogen-end -->
 
 ```{r desc-imp-sizelimsd, results = knitr_results, echo = knitr_echo}
-imp@SizeLimSD
+imp@SizeLimSD <- c(1, 1)
 ```
 
