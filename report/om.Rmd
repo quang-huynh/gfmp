@@ -4,13 +4,20 @@
 
 Let's combine the stock, fleet, observation, and implementation objects into a complete operating model:
 
+For now I am going to pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
+
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
-mp <- c("DCAC", "DCAC_40")
-om@nsim <- 50L
+mp <- c("DCAC", "DCAC_40", "DBSRA4010", "DBSRA", "DBSRA_40", 
+  "DCAC4010", "AvC", "CC1", "CC2", "CC3", "CC4", "CC5", 
+  "SPSRA", "SPMSY")
+mp <- sort(mp)
+om@nsim <- 100L
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
+
+We may want to develop our own plotting functions.
 
 ```{r, eval=TRUE}
 plotStock(om, nsamp = 3, incVB = FALSE)
@@ -36,7 +43,13 @@ Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 DLMtool::setup(cpus = parallel::detectCores())
-short_mse <- runMSE(OM = om, MPs = mp)
+file_name <- here::here("generated-data", "shortracker-mse.rds")
+if (!file.exists(file_name)) {
+  short_mse <- runMSE(OM = om, MPs = mp, parallel = TRUE)
+  saveRDS(short_mse, file = file_name)
+} else {
+  short_mse <- readRDS(file_name)
+}
 ```
 
 And examine the output.
@@ -66,6 +79,8 @@ DFO_proj(short_mse)
 #   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
 #   xlim(0, 1) + ylim(0, 1)
 ```
+
+The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
 ```{r}
 yend <- max(short_mse@proyears)
