@@ -6,13 +6,33 @@ Let's combine the stock, fleet, observation, and implementation objects into a c
 
 For now I am going to pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
 
+Available management procedures
+
+```{r}
+DLMtool::avail("MP")
+```
+
+```{r, results='asis'}
+csasdown::csas_table(DLMtool::MPtype(DLMtool::avail('MP')))
+```
+
+```{r}
+avail("Output")
+avail("Reference")
+```
+
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 mp <- c("DCAC", "DCAC_40", "DBSRA4010", "DBSRA", "DBSRA_40", 
   "DCAC4010", "AvC", "CC1", "CC2", "CC3", "CC4", "CC5", 
-  "SPSRA", "SPMSY")
+  "SPSRA", "SPMSY", "NFref", "FMSYref", "FMSYref50", "DD",
+  "DD4010", "GB_CC")
 mp <- sort(mp)
-om@nsim <- 100L
+om@nsim <- 200L
+```
+
+```{r, results='asis'}
+csasdown::csas_table(MPtype(mp))
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
@@ -20,6 +40,7 @@ There are a variety of built-in plotting functions to examine the components of 
 We may want to develop our own plotting functions.
 
 ```{r, eval=TRUE, fig.asp=1}
+oldpar <- par()
 plotStock(om, nsamp = 3, incVB = TRUE)
 ```
 
@@ -52,13 +73,52 @@ if (!file.exists(file_name)) {
 }
 ```
 
+Check convergence:
+
+```{r}
+DLMtool::Converge(short_mse)
+```
+
+```{r}
+summary(short_mse)
+```
+
+Illustrating the built-in plotting functions:
+
+```{r}
+Tplot(short_mse)
+Tplot2(short_mse)
+```
+
+
+```{r}
+wormplot(short_mse)
+```
+
+```{r}
+Pplot(short_mse)
+Pplot2(short_mse)
+```
+
+```{r}
+Pplot2(short_mse, traj="quant", quants=c(0.2, 0.8))
+```
+
+```{r}
+Kplot(short_mse)
+```
+
+```{r}
+Cplot(short_mse)
+```
+
 And examine the output.
 
 ```{r}
-oldpar <- par()
-plot(short_mse)
-oldpar <- par()
+# plot(short_mse)
+# oldpar <- par()
 ##DFO_hist(short_mse)
+par(mfrow = c(1, 1))
 DFO_plot(short_mse)
 # DFO_plot2(short_mse)
 ```
@@ -78,6 +138,7 @@ DFO_proj(short_mse)
 #   xlab(expression(Pr(B>0.5~B[MSY]))) +
 #   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
 #   xlim(0, 1) + ylim(0, 1)
+par(oldpar)
 ```
 
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
