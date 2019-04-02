@@ -275,3 +275,8 @@ g <- ggplot(d_sum, aes_string("year", "median_value")) +
   # viridis::scale_colour_viridis()
 g
 ```
+
+```{r, fig.asp=1.2}
+voi_out <- DLMtool::VOI(short_mse)
+```
+
