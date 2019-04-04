@@ -229,12 +229,6 @@ vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
 gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 ```
 
-<!--   # # obj@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]])) -->
-<!--   # obj@CV_vbK <- cv[["k"]] -->
-<!--   # obj@CV_vbLinf <- cv[["linf"]] -->
-<!--   # obj@CV_vbt0 <- cv[["t0"]] -->
-<!-- ``` -->
-
 We will grab this from our data analysis:
 
 ```{r desc-stock-linf, results = knitr_results, echo = knitr_echo}
