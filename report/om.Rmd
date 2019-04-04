@@ -60,6 +60,35 @@ plotImp(imp)
 plotObs(obs)
 ```
 
+```{r, fig.asp=0.8}
+short_historical <- runMSE(om, Hist = TRUE)
+
+names(short_historical@TSdata)
+dim(short_historical@TSdata$Catch)
+
+set.seed(1567)
+short_historical@TSdata$Catch %>% 
+  reshape2::melt() %>%
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>% 
+  ggplot(aes(Var2, value)) + 
+  geom_line() +
+  facet_wrap(~Var1) +
+  ylab("Simulated historical catch") + 
+  xlab("Year")
+
+short_historical@TSdata$B %>% 
+  reshape2::melt() %>%
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>% 
+  ggplot(aes(Var2, value)) + 
+  geom_line() +
+  facet_wrap(~Var1) +
+  ylab("Simulated historical biomass") + 
+  xlab("Year")
+
+# short_data <- pbs2dlm::create_dlm_data(d)
+# DLMtool::Turing(OM = om, Data = short_data, wait = FALSE)
+```
+
 Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
@@ -155,13 +184,13 @@ bbmsy <- reshape2::melt(bbmsy) %>%
 
 d <- dplyr::inner_join(ffmsy, bbmsy)
 
-n <- data.frame(mp = 1:length(short_mse@MPs), mp_name = short_mse@MPs)
+n <- data.frame(mp = seq_along(short_mse@MPs), mp_name = short_mse@MPs)
 # n$mp_name <- paste(1:nrow(n), n$mp_name)
 
 d <- dplyr::left_join(d, n)
 
 library(ggplot2)
-ggplot(dplyr::filter(d), aes(bbmsy, ffmsy)) +
+ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
   geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
   geom_hline(yintercept = 1, alpha = 0.2) +
   geom_density_2d(aes(colour = ..level..), bins = 5) +
