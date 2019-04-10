@@ -1,0 +1,203 @@
+## EXPLORING COMMERCIAL EFFORT TIMESERIES FOR SHORTRAKER ROCKFISH
+
+Here we attempt to come up with a consistent measure of commercial fishing effort that is relevant to shortraker rockfish. To do this we will look at effort for depths and localities that have the highest catches of the species.
+
+First, let's look at the raw commercial effort over time across the entire bottom trawl fleet:
+
+```{r effort-get-data}
+.f <- here::here("report/data/cpue-historical.rds")
+if (!file.exists(.f)) {
+  dat_historical <- gfplot::get_cpue_historical(species = NULL, end_year = 2018)
+  saveRDS(dat_historical, file = .f)
+} else {
+  dat_historical <- readRDS(.f)
+}
+```
+
+```{r effort-load-packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r effort-plot-raw-data}
+dat_historical %>% 
+  group_by(year) %>% 
+  summarize(effort = sum(hours_fished )) %>% 
+  ggplot(aes(year, effort)) + 
+  geom_line()
+```
+
+<!-- We will process the data the way we have before. This tidies the data so that we can work with it and puts the depths into bins. -->
+
+```{r effort-tidy-data}
+dat <- gfplot::tidy_cpue_historical(dat_historical,
+  species_common = "shortraker rockfish",
+  use_alt_year = FALSE,
+  year_range = range(dat_historical$year),
+  depth_band_width = 25,
+  area_grep_pattern = "^3C|^3D|^5A|^5B|^5C|^5D|^5E",
+  depth_bin_quantiles = c(0, 1),
+  min_bin_prop = 0)
+```
+
+Let's look at the distribution of trips by depth by year in terms of which trips caught shortraker rockfish:
+
+```{r effort-depth-distribution}
+g <- dat %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  mutate(`Trip\ncaught this species` = 
+      ifelse(pos_catch == 1, "Yes", "No")) %>%
+  filter(best_depth < 1200) %>% 
+  ggplot(aes(best_depth, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE)
+g
+
+g + facet_wrap(~time_bin)
+```
+
+Obviously, shortraker rockfish are usually caught in fairly deep waters---usually deeper than around 250m. By around 400m it looks like approximately half of all trips include some shortraker rockfish.
+
+We can look at a bubble plot of positive trips by year and locality. We will only show localities with at least 10 positive trips.
+
+```{r effort-locality-bubble-plot}
+dat %>% group_by(locality) %>% 
+  mutate(total_positive_trips = sum(pos_catch)) %>% 
+  filter(total_positive_trips > 10) %>% 
+  gfplot:::plot_predictor_bubbles("locality",
+    group = "trip_id") %>% print()
+```
+
+Let's look at the effort for the localities and depths that make up 80% of the shortraker rockfish catch. 
+
+```{r effort-find-major-localities-and-depths}
+locality_keep <- dat %>% group_by(locality) %>%
+  summarize(locality_shortraker_catch = sum(spp_catch)) %>% 
+  arrange(-locality_shortraker_catch) %>% 
+  mutate(cumulative_catch = cumsum(locality_shortraker_catch)/
+      sum(locality_shortraker_catch)) %>% 
+  arrange(cumulative_catch) %>% 
+  filter(cumulative_catch > 0) %>% 
+  filter(cumulative_catch < 0.8)
+
+depth_keep <- dat %>%
+  group_by(depth) %>% 
+  summarize(depth_shortraker_catch = sum(spp_catch)) %>% 
+  mutate(depth = as.numeric(as.character(depth))) %>% 
+  arrange(-depth) %>% 
+  mutate(cumulative_catch = cumsum(depth_shortraker_catch)/
+      sum(depth_shortraker_catch)) %>%
+  filter(cumulative_catch > 0) %>% 
+  arrange(-depth) %>% 
+  filter(cumulative_catch < 0.8)
+```
+
+```{r effort-locality-and-depth-tables}
+csasdown::csas_table(locality_keep, digits = c(0, 0, 2))
+csasdown::csas_table(depth_keep, digits = c(0, 0, 2))
+```
+
+```{r effort-pull}
+depth_keep <- depth_keep %>% pull(depth)
+locality_keep <- locality_keep %>% pull(locality)
+```
+
+Let's define a relevant "fleet" by trips that are recorded at our included depths and localities and look at the distribution of trips that did and did not catch shortraker rockfish in our filtered data set:
+
+```{r effort-histogram-relevant-fleet}
+dat_keep <- filter(dat, best_depth > min(depth_keep) & locality %in% locality_keep)
+dat_keep %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  mutate(`Trip\ncaught this species` = 
+      ifelse(pos_catch == 1, "Yes", "No")) %>%
+  filter(best_depth < 1200) %>% 
+  ggplot(aes(best_depth, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE)
+```
+
+Defined as we have here, our "feet" represents approximately `r round(sum(dat_keep$spp_catch) / sum(dat$spp_catch) * 100, 0)`% of the total shortraker rockfish catch in our databases from `r min(dat$year)` to `r max(dat$year)`.
+
+Finally, we can look at the effort trajectory from our filtered data set:
+
+```{r effort-basic-ts}
+dat_keep %>% 
+  group_by(year) %>% 
+  summarize(hours_fished = sum(hours_fished)) %>% 
+  ggplot(aes(year, hours_fished)) + 
+  geom_line()
+```
+
+We can also try jackknifing out individual localities to look at the sensitivity to any individual locality:
+
+```{r effort-locality-sensitivity}
+get_effort <- function(excluded_locality) {
+  dat_keep %>%
+    filter(locality != excluded_locality) %>% 
+    group_by(year) %>% 
+    summarize(hours_fished = sum(hours_fished), excluded_locality = excluded_locality)
+}
+purrr::map_df(unique(dat_keep$locality), ~get_effort(.x)) %>% 
+  ggplot(aes(year, hours_fished, colour = excluded_locality)) + 
+  geom_line() +
+  guides(colour = FALSE)
+```
+
+So the timeseries of effort does not seem too sensitive to any one locality.
+
+How sensitive is it to our definition of common depths for shortraker rockfish assuming we work with these same localities?
+
+```{r effort-depth-sensitivity}
+get_effort <- function(depth_threshold) {
+  filter(dat, best_depth > depth_threshold & locality %in% locality_keep) %>% 
+    group_by(year) %>% 
+    summarize(hours_fished = sum(hours_fished), depth_threshold = depth_threshold)
+}
+g <- purrr::map_df(seq(150, 800, 50), ~get_effort(.x)) %>%
+  ggplot(aes(year, hours_fished, 
+    group = as.factor(depth_threshold), colour = depth_threshold)) + 
+  geom_line() +
+  scale_color_viridis_c()
+g
+
+g + scale_y_continuous(trans = "sqrt")
+```
+
+So, the depth threshold does affect the ramp-up in effort to 1996, but it doesn't have a big effect on the perceived effort timeseries after 1996. This can help us bound our operating model.  There is certainly some omitted effort prior to 1996. FIXME: Need to discuss with industry ballpark how much may be missing and whether this is changing over time. FIXME: Also how much foreign effort might be missed here.
+
+FIXME: Need to learn more about what was happening right around 1996 in terms of effort, but presumably this may be real prior to the onset of TACs.
+
+Perhaps we can parameterize an operating model with slowly increasing effort until around 1990, effort that increases approximately 3-fold from around 1990 to 1995 before declining to approximately the same level at 2000 and remaining relatively constant since.
+
+## COMMERCIAL CATCH PER UNIT EFFORT
+
+Previously we've always conducted catch per unit effort analyses separately for the historical and modern time periods. Since it's important to try to figure out very approximately what has been happening over the entire timeseries for the purposes of parameter rising our operating model, here I will try to combine the two. Because there is not sufficient data in each depth bin for each year we will work with a quadratic function for depth instead of the binned factor predictors that has been used in similar analyses at PBS in the past.
+
+```{r effort-fit-cpue}
+d <- filter(dat_keep, year >= 1980, best_depth <= 800)
+d$year_locality <- paste0(d$year, d$locality)
+d$depth <- as.factor(d$depth)
+d$month <- as.factor(d$month)
+d$locality <- as.factor(d$locality)
+d$year_locality <- as.factor(d$year_locality)
+d$year_factor <- as.factor(d$year_factor)
+d$depth_scaled <- d$best_depth - mean(d$best_depth)
+
+m <- gfplot::fit_cpue_index_glmmtmb(d,
+  cpue ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
+    (1 | locality) + (1 | year_locality), verbose = FALSE)
+```
+
+```{r effort-plot-cpue}
+gfplot::predict_cpue_index_tweedie(m) %>%
+  ggplot(aes(year, est, ymin = lwr, ymax = upr)) + 
+  geom_ribbon(alpha = .5) + 
+  geom_line() +
+  geom_vline(xintercept = 1996, lty = 2)
+```
+
+So, there was a fair bit of variability in this standardized CPUE prior to 1990. The standardized CPUE then ramped up in the 1990s, fell sharply (FIXME: and suspiciously) in 1996, and has remained relatively constant or declining slightly since then. This relatively steady CPUE or slight decline in CPUE since 1996 can also be seen in the synopsis report working with the full fishing-event-level data set.
+
+FIXME: still need to talk with industry about what was happening right around 1996.

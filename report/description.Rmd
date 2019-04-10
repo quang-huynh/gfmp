@@ -489,7 +489,9 @@ fleet@Spat_targ
 
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
-For now we will start with the simplest trajectory of fairly constant fishing effort at a wide and unknown range:
+For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. 
+
+**TODO: START HERE**
 
 ```{r desc-fleet-effyears, results = knitr_results, echo = knitr_echo}
 fleet@EffYears <- c(0, 0.5, 1)
