@@ -1,0 +1,28 @@
+# OVERVIEW OF THE DATA AVAILABLE FOR SHORTRAKER ROCKFISH
+
+```{r data-get-data, message=FALSE, warning=FALSE}
+.fd <- here::here("report/data/shortraker-rockfish.rds")
+if (!file.exists(.fd)) {
+  gfplot::cache_pbs_data(
+    unsorted_only = TRUE, 
+    species = "shortraker rockfish", 
+    compress = FALSE, 
+    path = here::here("report/data/"), 
+    survey_sets = TRUE, historical_cpue = FALSE, 
+    verbose = TRUE
+  )
+} else {
+  dat_historical <- readRDS(.fd)
+}
+```
+
+```{r data-load-packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+Here's our thoughts:
+
+- The aging data has a lot of between aging error.
+
+- 
