@@ -4,7 +4,7 @@ rmd_files: ["index.Rmd",
             "introduction.Rmd",
             "effort.Rmd",
             "description.Rmd",
-            #"om.Rmd",
+            "om.Rmd",
             "references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true

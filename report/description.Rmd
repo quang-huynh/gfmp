@@ -1,11 +1,8 @@
-`r if(knitr:::is_latex_output()) '\\Appendices'`
-
-`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
-
 # OPERATING MODEL SPECIFICATION {#app:desc-om}
 
-```{r message = FALSE}
+```{r message = FALSE, warning=FALSE}
 library(DLMtool)
+library(dplyr)
 knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
@@ -579,10 +576,10 @@ fleet@qcv <- c(0.1, 0.4)
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock@L50[[1]]` to `r stock@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock@L50[[2]], 1)` and `r round(min_caught/stock@L50[[1]], 1)`. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught.
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock@L50[[1]]` to `r stock@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock@L50[[2]], 1)`- and `r round(min_caught/stock@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5, results = knitr_results, echo = knitr_echo}
-fleet@L5 <- c(0.5, 1.0)
+fleet@L5 <- c(0.6, 1.0)
 ```
 
 <!-- autogen-begin -->
@@ -591,7 +588,7 @@ fleet@L5 <- c(0.5, 1.0)
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
-Based on the observed commercial length samples this appears to be around are just slightly larger than the length at maturity.
+Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs, results = knitr_results, echo = knitr_echo}
 fleet@LFS <- c(1.0, 1.2)
