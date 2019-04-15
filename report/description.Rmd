@@ -91,7 +91,7 @@ stock@R0 <- 1000
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 <!-- autogen-end -->
 
-@echave2015 estimate natural mortality in the Gulf of Alaska to be 0.03. We will place some relatively wide bounds around that.
+@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. Since shortraker rockfish are a very long-lived species, it makes sense for natural mortality to be relatively low. We will place some relatively wide bounds around the value from @echave2015.
 
 ```{r desc-stock-m, results = knitr_results, echo = knitr_echo}
 stock@M <- c(0.02, 0.10)
@@ -139,10 +139,12 @@ stock@Msd <- c(0.00, 0.05)
 *Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 <!-- autogen-end -->
 
-FIXME: parameterize this from a meta-analysis
+FIXME: maybe there's an assessment in Alaska we could draw on?
+
+Unless there is a shortraker-specific estimate from assessment elsewhere, we can draw on the posterior predictive distribution from @forrest2010. FIXME: do better than eyeballing the plot. Based on that analysis, let's allow for range that encompasses the mean values for the species considered in that meta-analysis with some additional uncertainty:
 
 ```{r desc-stock-h, results = knitr_results, echo = knitr_echo}
-stock@h <- c(0.345, 0.720)
+stock@h <- c(0.4, 0.9)
 ```
 
 <!-- autogen-begin -->
@@ -151,7 +153,7 @@ stock@h <- c(0.345, 0.720)
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 <!-- autogen-end -->
 
-We will choose a Beverton-Holt.
+We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME.
 
 ```{r desc-stock-srrel, results = knitr_results, echo = knitr_echo}
 stock@SRrel <- 1L
@@ -163,12 +165,12 @@ stock@SRrel <- 1L
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-@thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8. Here, we will extend that range slightly.
+@thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8.
 
 FIXME: Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
 
 ```{r desc-stock-perr, results = knitr_results, echo = knitr_echo}
-stock@Perr <- c(0.5, 0.9)
+stock@Perr <- c(0.6, 0.8)
 ```
 
 <!-- autogen-begin -->
@@ -180,7 +182,7 @@ stock@Perr <- c(0.5, 0.9)
 FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities.
 
 ```{r desc-stock-ac, results = knitr_results, echo = knitr_echo}
-stock@AC <- c(0.1, 0.9)
+stock@AC <- c(0.0, 0.7)
 ```
 
 <!-- autogen-begin -->
@@ -291,10 +293,10 @@ stock@Ksd <- c(0, 0.2)
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-FIXME: We will grab this from our data analysis:
+FIXME: We don't have much to go on here without some kind of a meta-analysis across other species. 
 
 ```{r desc-stock-linfsd, results = knitr_results, echo = knitr_echo}
-stock@Linfsd <- c(0.05, 0.2)
+stock@Linfsd <- c(0, 0.2)
 ```
 
 <!-- autogen-begin -->
@@ -343,6 +345,8 @@ stock@L50_95
 <!-- autogen-end -->
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
+
+This is an important value that we may want to think more deeply about.
 
 ```{r desc-stock-d, results = knitr_results, echo = knitr_echo}
 stock@D <- c(0.1, 0.8)
@@ -424,7 +428,7 @@ stock@Prob_staying <- c(0.1, 0.9)
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-TODO: pull from some studies on this but I imagine the value is pretty close to 1.
+We can assume that nearly 100% of the discarded shortraker rockfish die from barotrauma.
 
 ```{r desc-stock-fdisc, results = knitr_results, echo = knitr_echo}
 stock@Fdisc <- 1
@@ -489,12 +493,24 @@ fleet@Spat_targ
 
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
-For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. 
-
-**TODO: START HERE**
+For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
 
 ```{r desc-fleet-effyears, results = knitr_results, echo = knitr_echo}
-fleet@EffYears <- c(0, 0.5, 1)
+fleet_effort <- read.csv(here::here("report/data/shortraker-fleet-effort.csv"))
+all_years <- data.frame(year = (2018 - fleet@nyears):2018)
+fleet_effort <- dplyr::left_join(all_years, fleet_effort)
+fleet_effort <- mutate(fleet_effort, 
+  effort = ifelse(is.na(hours_fished), 50, hours_fished),
+  effort_upper = effort * 1.5, effort_lower = effort * 0.667
+  )
+fleet_effort <- mutate(fleet_effort, 
+  effort_lower = effort_lower/max(effort_upper, na.rm = TRUE),
+  effort_upper = effort_upper/max(effort_upper, na.rm = TRUE))
+
+ggplot(fleet_effort, aes(year, ymin = effort_lower, ymax = effort_upper)) + 
+  geom_ribbon()
+
+fleet@EffYears <- fleet_effort$year
 ```
 
 <!-- autogen-begin -->
@@ -506,7 +522,7 @@ fleet@EffYears <- c(0, 0.5, 1)
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-efflower, results = knitr_results, echo = knitr_echo}
-fleet@EffLower <- c(0, 0.2, 0.2)
+fleet@EffLower <- fleet_effort$effort_lower
 ```
 
 <!-- autogen-begin -->
@@ -518,7 +534,7 @@ fleet@EffLower <- c(0, 0.2, 0.2)
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-effupper, results = knitr_results, echo = knitr_echo}
-fleet@EffUpper <- c(0.5, 1, 1)
+fleet@EffUpper <- fleet_effort$effort_upper
 ```
 
 <!-- autogen-begin -->
