@@ -133,6 +133,14 @@ dat_keep %>%
   geom_line()
 ```
 
+```{r effort-save-csv}
+dat_keep %>% 
+  group_by(year) %>% 
+  summarize(hours_fished = sum(hours_fished)) %>% 
+  readr::write_csv(path = here::here("report/data/shortraker-fleet-effort.csv"))
+```
+
+
 ```{r effort-basic-ts-catch}
 dat_keep %>%
   # filter(best_depth <= 800, year >= 1970) %>% 
@@ -353,14 +361,17 @@ correction <- group_by(d_modern, year) %>%
   facet_wrap(~after_1995) +
   geom_abline(intercept = 0, slope = 1)
 
-g <- .d %>% group_by(year) %>%
+corrected_catch <- .d %>% group_by(year) %>%
   summarise(
     spp_catch_predicted = sum(pred_spp_catch_gbm),
     spp_catch_observed = sum(spp_catch)) %>% 
   transmute(
     Year = year,
     `Predicted catch` = spp_catch_predicted / correction / 1e6,
-    `Observed catch` = spp_catch_observed / 1e6) %>% 
+    `Observed catch` = spp_catch_observed / 1e6)
+readr::write_csv(corrected_catch, path = here::here("report/data/shortraker-corrected-catch.csv"))
+
+g <- corrected_catch %>% 
   reshape2::melt(id.vars = "Year", variable.name = "Type", value.name = "Catch") %>% 
   ggplot(aes(
     x = Year, 
