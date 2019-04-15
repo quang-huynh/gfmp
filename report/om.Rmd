@@ -23,12 +23,29 @@ avail("Reference")
 
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
-mp <- c("DCAC", "DCAC_40", "DBSRA4010", "DBSRA", "DBSRA_40", 
-  "DCAC4010", "AvC", "CC1", "CC2", "CC3", "CC4", "CC5", 
-  "SPSRA", "SPMSY", "NFref", "FMSYref", "FMSYref50", "DD",
-  "DD4010", "GB_CC")
+mp <- c(
+  # "DCAC", 
+  # "DCAC_40",
+  "DBSRA4010",
+  # "DBSRA",
+  # "DBSRA_40", 
+  "DCAC4010",
+  "AvC",
+  "CC1",
+  # "CC2",
+  # "CC3",
+  # "CC4",
+  # "CC5", 
+  "SPSRA",
+  "SPMSY",
+  "NFref",
+  "FMSYref",
+  "FMSYref50",
+  # "DD",
+  "DD4010",
+  "GB_CC")
 mp <- sort(mp)
-om@nsim <- 200L
+om@nsim <- 250L
 ```
 
 ```{r, results='asis'}
@@ -66,14 +83,25 @@ short_historical <- runMSE(om, Hist = TRUE)
 names(short_historical@TSdata)
 dim(short_historical@TSdata$Catch)
 
+real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
+real_catch <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, Observed.catch))
+
 set.seed(1567)
-short_historical@TSdata$Catch %>% 
+catch <- short_historical@TSdata$Catch %>% 
   reshape2::melt() %>%
-  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>% 
-  ggplot(aes(Var2, value)) + 
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>% 
+  transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
+    catch = value, type = "Simulated") %>% 
+  bind_rows(tibble::tibble(sample_id = 0, year = real_catch$Year, 
+    catch = real_catch$synthetic, type = "Observed"))
+
+catch %>% 
+  group_by(sample_id) %>% 
+  mutate(catch = catch/max(catch)) %>% 
+  ggplot(aes(year, catch, colour = type)) + 
   geom_line() +
-  facet_wrap(~Var1) +
-  ylab("Simulated historical catch") + 
+  facet_wrap(~sample_id) +
+  ylab("Historical catch") + 
   xlab("Year")
 
 short_historical@TSdata$B %>% 
@@ -81,7 +109,7 @@ short_historical@TSdata$B %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>% 
   ggplot(aes(Var2, value)) + 
   geom_line() +
-  facet_wrap(~Var1) +
+  facet_wrap(~Var1, scales = "free_y") +
   ylab("Simulated historical biomass") + 
   xlab("Year")
 
