@@ -6,25 +6,15 @@ Let's combine the stock, fleet, observation, and implementation objects into a c
 
 For now I am going to pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
 
-<<<<<<< Updated upstream
-<!-- Available management procedures -->
-
-```{r}
-# DLMtool::avail("MP")
-```
-=======
 Available management procedures from DLMtool have been filtered to only include TAC-based procedures which seem plausible to use given the data we have. The details of each are summarazied below.
->>>>>>> Stashed changes
 
 ```{r, results='asis'}
-mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>% 
+mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
   dplyr::filter(Recs == "TAC")
 csasdown::csas_table(mps)
 ```
-
-<<<<<<< Updated upstream
-Available output and reference management procedures:
 =======
+
 *AvC* - Average Catch
 The mean historical catch is calculated and used to set a constant catch limit (TAC). If the number of stochastic samples of the MP recommendation(s) is greater than 1 then those samples are drawn from a log-normal distribution with mean TAC and standard deviation (in log-space) of 0.2.
 
@@ -44,7 +34,7 @@ The TAC is the average historical catch over the last N years (default 5), multi
 The TAC is the average historical catch over the last N years (default 5), multiplied by 0.6.
 
 *DCAC* - Depletion Corrected Average Catch
-Calculates a catch limit (dcac; intended as an MSY proxy) based on average historical catch while accounting for the windfall catch that got the stock down to its current depletion level (D). 
+Calculates a catch limit (dcac; intended as an MSY proxy) based on average historical catch while accounting for the windfall catch that got the stock down to its current depletion level (D).
 Depletion is not updated in the future projections. The TAC is static and not updated in the future years. This represents an application of the DCAC method where a catch limit is calculated based on current estimate of depletion and time-series of catch from the beginning of the fishery, and the TAC is fixed at this level for all future projections.
 
 *DCAC_40* - Depletion Corrected Average Catch
@@ -59,9 +49,6 @@ DCAC (with updated Depletion) divided by BMSY/B0 (Bpeak) (Harford and Carruthers
 *HDAAC* - Hybrid Depletion Corrected Average Catch
 Same as DAAC when below BMSY, and DCAC above BMSY (Harford and Carruthers 2017).
 
-
->>>>>>> Stashed changes
-
 ```{r}
 avail("Output")
 avail("Reference")
@@ -70,18 +57,18 @@ avail("Reference")
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 mp <- c(
-  # "DCAC", 
+  # "DCAC",
   # "DCAC_40",
   "DBSRA4010",
   # "DBSRA",
-  # "DBSRA_40", 
+  # "DBSRA_40",
   "DCAC4010",
   "AvC",
   "CC1",
   # "CC2",
   # "CC3",
   # "CC4",
-  # "CC5", 
+  # "CC5",
   "SPSRA",
   "SPMSY",
   "NFref",
@@ -123,7 +110,7 @@ plotImp(imp)
 plotObs(obs)
 ```
 
-One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries. 
+One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
 
 ```{r, fig.asp=0.8}
 # DLMtool::setup(cpus = parallel::detectCores())
@@ -141,31 +128,31 @@ all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
 real_catch <- dplyr::left_join(all_years, real_catch)
 
 set.seed(1567)
-catch <- short_historical@TSdata$Catch %>% 
+catch <- short_historical@TSdata$Catch %>%
   reshape2::melt() %>%
-  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>% 
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
   transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
-    catch = value, type = "Simulated") %>% 
-  bind_rows(data.frame(sample_id = 0, year = real_catch$Year, 
+    catch = value, type = "Simulated") %>%
+  bind_rows(data.frame(sample_id = 0, year = real_catch$Year,
     catch = real_catch$synthetic, type = "Observed", stringsAsFactors = FALSE))
 
 catch %>%
-  filter(!is.na(catch)) %>% 
-  group_by(sample_id) %>% 
-  mutate(catch = catch/max(catch)) %>% 
-  ggplot(aes(year, catch, colour = type)) + 
+  filter(!is.na(catch)) %>%
+  group_by(sample_id) %>%
+  mutate(catch = catch/max(catch)) %>%
+  ggplot(aes(year, catch, colour = type)) +
   geom_line() +
   facet_wrap(~sample_id) +
-  ylab("Historical catch") + 
+  ylab("Historical catch") +
   xlab("Year")
 
-short_historical@TSdata$B %>% 
+short_historical@TSdata$B %>%
   reshape2::melt() %>%
-  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>% 
-  ggplot(aes(Var2, value)) + 
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
+  ggplot(aes(Var2, value)) +
   geom_line() +
   facet_wrap(~Var1, scales = "free_y") +
-  ylab("Simulated historical biomass") + 
+  ylab("Simulated historical biomass") +
   xlab("Year")
 
 # short_data <- pbs2dlm::create_dlm_data(d)
@@ -452,4 +439,3 @@ g
 ```{r, fig.asp=1.2}
 voi_out <- DLMtool::VOI(short_mse)
 ```
-
