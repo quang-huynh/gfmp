@@ -10,28 +10,16 @@ Available management procedures from DLMtool have been filtered to only include 
 
 ```{r, results='asis'}
 mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
-  dplyr::filter(Recs == "TAC")
+  dplyr::filter(Recs == "TAC") %>% 
+  dplyr::filter(!MP %in% grep("CC[2-9]+", .$MP, value = TRUE) )
 csasdown::csas_table(mps)
 ```
-=======
 
 *AvC* - Average Catch
 The mean historical catch is calculated and used to set a constant catch limit (TAC). If the number of stochastic samples of the MP recommendation(s) is greater than 1 then those samples are drawn from a log-normal distribution with mean TAC and standard deviation (in log-space) of 0.2.
 
 *CC1* - Geromont and Butterworth (2015) Constant Catch
-The TAC is the average historical catch over the last N years (default 5).
-
-*CC2* - Geromont and Butterworth (2015) Constant Catch
-The TAC is the average historical catch over the last N years (default 5), multiplied by 0.9.
-
-*CC3* - Geromont and Butterworth (2015) Constant Catch
-The TAC is the average historical catch over the last N years (default 5), multiplied by 0.8.
-
-*CC4* - Geromont and Butterworth (2015) Constant Catch
-The TAC is the average historical catch over the last N years (default 5), multiplied by 0.7.
-
-*CC5* - Geromont and Butterworth (2015) Constant Catch
-The TAC is the average historical catch over the last N years (default 5), multiplied by 0.6.
+The TAC is the average historical catch over the last N years (default 5). Note CC2, CC3 CC4, CC5 represent the same MP but with the catch multiplied by 0.9, 0.8, 0.7, and 0.6 respectively.
 
 *DCAC* - Depletion Corrected Average Catch
 Calculates a catch limit (dcac; intended as an MSY proxy) based on average historical catch while accounting for the windfall catch that got the stock down to its current depletion level (D).
