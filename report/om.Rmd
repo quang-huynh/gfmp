@@ -84,10 +84,31 @@ TAC = M \frac{F_{MSY}}{M} DB_0
 A simple delay-difference assessment with UMSY and MSY as leading parameters that estimates the TAC using a time-series of catches and a relative. This model includes observation error only and has does not estimate process error (recruitment deviations). Assumption is that knife-edge selectivity occurs at the age of 50 models it depends on assumptions such as temporally stationary productivity and proportionality between the abundance index and real abundance. The extent to which these assumptions are violated tends to be the biggest driver of performance for this method. See @carruthers2012 and @hilborn1992\.
 
 
-**Fratio** - Calculates the overfishing limit based on a fixed ratio of FMSY to M multiplied by a current estimate of abundance. This method requires as estimate of current abundance. Special case management procedures *Fratio_CC* and *Fratio_ML* estimate current abundance using average catch and an estimate of F from an age-based catch curve and mean lengths respectively. See @gulland1971 and @martell2013\.
+**Fratio** - $F_{MSY}/M$ ratio methods
+
+Calculates the overfishing limit based on a fixed ratio of FMSY to M multiplied by a current estimate of abundance. This method requires as estimate of current abundance. Special case management procedures *Fratio_CC* and *Fratio_ML* estimate current abundance using average catch and an estimate of F from an age-based catch curve and mean lengths respectively. See @gulland1971 and @martell2013\. The TAC is calculated as:
+
+\begin{equation}
+TAC = F_{MSY}A
+\end{equation}
+
+where $F_{MSY}$ is calculated as $\frac{F_{MSY}}{M}M$ and $A$ is an estimate of current abundance.
 
 
-**GB_CC** - Geromont and Butterworth Constant Catch is a simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY.
+**GB_CC** - Geromont and Butterworth Constant Catch
+
+A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY. The TAC is calculated as:
+
+\begin{equation}
+TAC = C_{ref}
+\end{equation}
+
+where $C_{ref}$ s a reference catch assumed to be a proxy for MSY. In the MSE $C_{ref}$ is the calculated MSY subject to observation error. See @geromont2015\.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then TAC = 1.2 last catch
+- if next TAC < 0.8 last catch, then TAC = 0.8 last catch
 
 
 ```{r}
