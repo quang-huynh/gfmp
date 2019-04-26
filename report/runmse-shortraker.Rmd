@@ -95,7 +95,7 @@ short_historical@TSdata$B %>%
 Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-file_name <- here::here("generated-data", "shortracker-mse.rds")
+file_name <- here::here("generated-data", "shortraker-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
   short_mse <- runMSE(OM = om, MPs = mp, parallel = FALSE)
