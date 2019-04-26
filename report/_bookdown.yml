@@ -1,10 +1,12 @@
 book_filename: "resdoc"
 chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
-            #"introduction.Rmd",
-            #"effort.Rmd",
-            "description.Rmd",
-            "om.Rmd"]
+            "introduction.Rmd",
+            "mp-descriptions.Rmd",
+            #"effort-shortraker.Rmd",
+            "om-specification-shortraker.Rmd",
+            "mp-specifications-shortraker.Rmd",
+            "runmse-shortraker.Rmd"]
             #"references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true
