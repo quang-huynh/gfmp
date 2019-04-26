@@ -98,7 +98,7 @@ Now we can run closed-loop simulation:
 file_name <- here::here("generated-data", "shortracker-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  short_mse <- runMSE(OM = om, MPs = mp, parallel = TRUE)
+  short_mse <- runMSE(OM = om, MPs = mp, parallel = FALSE)
   saveRDS(short_mse, file = file_name)
 } else {
   short_mse <- readRDS(file_name)
