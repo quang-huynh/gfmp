@@ -1,0 +1,500 @@
+`r if(knitr:::is_latex_output()) '\\Appendices'`
+
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
+
+# EXPLORING CATCH AND EFFORT TIMESERIES FOR SHORTRAKER ROCKFISH
+
+This appendix has three purposes:
+
+1. Derive a consistent measure of (bottom trawl) commercial fishing effort that is relevant to shortraker rockfish. To do this we will look at effort for depths and localities that have the highest proportion of shortraker rockfish catches. FIXME: Note that there is considerable hook and line effort that we should look at separately.
+
+2. Attempt an historical catch reconstruction to check whether the large spike in catch around 1990--1995 seems reasonable and check whether there is evidence of substantial under-reporting (or over-reporting) before 1996.
+
+3. Combine the effort and catch timeseries to derive a standardized catch per unit effort index.
+
+The effort times will be used to parameterize the operating model. The catch time series will be used as part of checking the calibration of the operating model. The catch timeseries and CPUE timeseries may be used when applying a management procedure to the observed data.
+
+## EFFORT
+
+```{r effort-get-data}
+.f <- here::here("report/data/cpue-historical.rds")
+if (!file.exists(.f)) {
+  dat_historical <- gfplot::get_cpue_historical(species = NULL, end_year = 2018)
+  saveRDS(dat_historical, file = .f)
+} else {
+  dat_historical <- readRDS(.f)
+}
+```
+
+```{r effort-load-packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r effort-plot-raw-data}
+dat_historical %>% 
+  group_by(year) %>% 
+  summarize(effort = sum(hours_fished )) %>% 
+  ggplot(aes(year, effort)) + 
+  geom_line()
+```
+
+<!-- We will process the data the way we have before. This tidies the data so that we can work with it and puts the depths into bins. -->
+
+```{r effort-tidy-data}
+dat <- gfplot::tidy_cpue_historical(dat_historical,
+  species_common = "shortraker rockfish",
+  use_alt_year = FALSE,
+  year_range = range(dat_historical$year),
+  depth_band_width = 25,
+  area_grep_pattern = "^3C|^3D|^5A|^5B|^5C|^5D|^5E",
+  depth_bin_quantiles = c(0, 1),
+  min_bin_prop = 0,
+  type = "trip-level-data")
+```
+
+Let's look at the distribution of trips by depth by year in terms of which trips caught shortraker rockfish:
+
+```{r effort-depth-distribution}
+g <- dat %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  mutate(`Trip\ncaught this species` = 
+      ifelse(pos_catch == 1, "Yes", "No")) %>%
+  filter(best_depth < 1200) %>% 
+  ggplot(aes(best_depth, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE)
+g
+
+g + facet_wrap(~time_bin)
+```
+
+Shortraker rockfish are usually caught in fairly deep waters---usually deeper than around 250m. By around 400m it looks like approximately half of all trips include some shortraker rockfish.
+
+We can look at a bubble plot of positive trips by year and locality. We will only show localities with at least 10 positive trips. The outside circle represents the number of trips. The inside coloured circle represents the number of trips that that reported catching at least shortraker rockfish. 
+
+```{r effort-locality-bubble-plot}
+dat %>% group_by(locality) %>% 
+  mutate(total_positive_trips = sum(pos_catch)) %>% 
+  filter(total_positive_trips > 10) %>% 
+  gfplot:::plot_predictor_bubbles("locality",
+    group = "trip_id") %>% print()
+```
+
+There are a number of localities in which shortraker rockfish positive trips make up a much higher proportion of the total trips each year after 1996. This may suggest that they were systematically underreported prior to 1996 and we therefore may be missing a large portion of the effort prior to 1996. We should account for that scenario when parameterize in our operating models.
+
+Let's look at the effort for the localities and depths that make up 80% of the shortraker rockfish catch. 
+
+```{r effort-find-major-localities-and-depths}
+locality_keep <- dat %>% group_by(locality) %>%
+  summarize(locality_shortraker_catch = sum(spp_catch)) %>% 
+  arrange(-locality_shortraker_catch) %>% 
+  mutate(cumulative_catch = cumsum(locality_shortraker_catch)/
+      sum(locality_shortraker_catch)) %>% 
+  arrange(cumulative_catch) %>% 
+  filter(cumulative_catch > 0) %>% 
+  filter(cumulative_catch < 0.8)
+
+depth_keep <- dat %>%
+  group_by(depth) %>% 
+  summarize(depth_shortraker_catch = sum(spp_catch)) %>% 
+  mutate(depth = as.numeric(as.character(depth))) %>% 
+  arrange(-depth) %>% 
+  mutate(cumulative_catch = cumsum(depth_shortraker_catch)/
+      sum(depth_shortraker_catch)) %>%
+  filter(cumulative_catch > 0) %>% 
+  arrange(-depth) %>% 
+  filter(cumulative_catch < 0.8)
+```
+
+```{r effort-locality-and-depth-tables}
+csasdown::csas_table(locality_keep, digits = c(0, 0, 2))
+csasdown::csas_table(depth_keep, digits = c(0, 0, 2))
+```
+
+```{r effort-pull}
+depth_keep <- depth_keep %>% pull(depth)
+locality_keep <- locality_keep %>% pull(locality)
+```
+
+Let's define a relevant "fleet" based on trips that are recorded at our filtered "prime shortraker" depths and localities and look at the distribution of trips that did and did not catch shortraker rockfish in our filtered data set:
+
+```{r effort-histogram-relevant-fleet}
+dat_keep <- filter(dat, best_depth > min(depth_keep) & locality %in% locality_keep)
+dat_keep %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  mutate(`Trip\ncaught this species` = 
+      ifelse(pos_catch == 1, "Yes", "No")) %>%
+  filter(best_depth < 1200) %>% 
+  ggplot(aes(best_depth, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE)
+```
+
+Defined as we have here, our "feet" represents approximately `r round(sum(dat_keep$spp_catch) / sum(dat$spp_catch) * 100, 0)`% of the total shortraker rockfish catch in our databases from `r min(dat$year)` to `r max(dat$year)`.
+
+Finally, we can look at the effort trajectory from our filtered data set:
+
+```{r effort-basic-ts}
+dat_keep %>% 
+  group_by(year) %>% 
+  summarize(hours_fished = sum(hours_fished)) %>% 
+  ggplot(aes(year, hours_fished)) + 
+  geom_line()
+```
+
+```{r effort-save-csv}
+dat_keep %>% 
+  group_by(year) %>% 
+  summarize(hours_fished = sum(hours_fished)) %>% 
+  readr::write_csv(path = here::here("report/data/shortraker-fleet-effort.csv"))
+```
+
+
+```{r effort-basic-ts-catch}
+dat_keep %>%
+  # filter(best_depth <= 800, year >= 1970) %>% 
+  group_by(year) %>% 
+  summarize(spp_catch = sum(spp_catch)) %>% 
+  ggplot(aes(year, spp_catch)) + 
+  geom_line()
+```
+
+We can also try jackknifing out individual localities to look at the sensitivity to any individual locality:
+
+```{r effort-locality-sensitivity}
+get_effort <- function(excluded_locality) {
+  dat_keep %>%
+    filter(locality != excluded_locality) %>% 
+    group_by(year) %>% 
+    summarize(hours_fished = sum(hours_fished), excluded_locality = excluded_locality)
+}
+purrr::map_df(unique(dat_keep$locality), ~get_effort(.x)) %>% 
+  ggplot(aes(year, hours_fished, colour = excluded_locality)) + 
+  geom_line() +
+  guides(colour = FALSE)
+```
+
+The timeseries of effort does not seem too sensitive to any one locality.
+
+How sensitive is the effort timeseries to our definition of common depths for shortraker rockfish assuming we work with these same localities?
+
+```{r effort-depth-sensitivity}
+get_effort <- function(depth_threshold) {
+  filter(dat, best_depth > depth_threshold & locality %in% locality_keep) %>% 
+    group_by(year) %>% 
+    summarize(hours_fished = sum(hours_fished), depth_threshold = depth_threshold)
+}
+g <- purrr::map_df(seq(150, 800, 50), ~get_effort(.x)) %>%
+  ggplot(aes(year, hours_fished, 
+    group = as.factor(depth_threshold), colour = depth_threshold)) + 
+  geom_line() +
+  scale_color_viridis_c()
+g
+
+# g + scale_y_continuous(trans = "sqrt")
+```
+
+The depth threshold does affect the perceived ramp-up in effort to 1996, but it does not have a big effect on the perceived effort timeseries after 1996. This can help us bound our operating models. There is certainly some omitted effort prior to 1996. FIXME: Need to discuss with industry ballpark how much may be missing and whether this is changing over time. FIXME: Also how much foreign effort might be missed here.
+
+FIXME: Need to learn more about what was happening right around 1996 in terms of effort, but presumably this may be real prior to policy changes.
+
+Perhaps we can parameterize an operating model with slowly increasing effort until around 1990, effort that increases approximately 3-fold from around 1990 to 1995 before declining to approximately the same level at 2000 and remaining relatively constant since. In the operating model, the effort prior to 1990 may need to be increased by some multiplier with a fair bit of uncertainty.
+
+```{r, eval=FALSE, include=FALSE}
+library(glmmTMB)
+
+d <- filter(dat_keep, year >= 1996, best_depth <= 800)
+d$month <- as.numeric(d$month)
+d$locality <- as.character(d$locality)
+mean_best_depth <- mean(d$best_depth)
+d$depth_scaled <- d$best_depth - mean_best_depth
+m1 <- glmmTMB(
+  spp_catch ~ 1 + month + I(month^2) + I(month^3) + 
+    depth_scaled + I(depth_scaled^2) + as.factor(locality) + 
+    depth_scaled * as.factor(locality) +
+    I(depth_scaled^2) * as.factor(locality) +
+    hours_fished * as.factor(locality) +
+    hours_fished + I(hours_fished^2), 
+  data = d, family = tweedie(link = "log"),
+  control = glmmTMBControl(
+    optCtrl = list(iter.max = 2000, eval.max = 2000),
+    profile = TRUE, collect = FALSE),
+  verbose = TRUE)
+
+d$pred_spp_catch <- predict(m1, type = "response")
+d %>% mutate(after_1995 = year > 1995) %>%
+  ggplot(aes(log(pred_spp_catch + 1), log(spp_catch + 1))) + geom_point() + 
+  facet_wrap(~after_1995) +
+  geom_abline(intercept = 0, slope = 1)
+cor(d$pred_spp_catch, d$spp_catch) ^ 2
+
+
+# d_old <- filter(dat_keep, year < 1996, best_depth <= 800, year >= 1970)
+d_old <- filter(dat_keep, best_depth <= 800, year >= 1970)
+d_old$month <- as.numeric(d_old$month)
+d_old$locality <- as.character(d_old$locality)
+d_old <- filter(d_old, locality %in% d$locality)
+d_old$depth_scaled <- d_old$best_depth - mean_best_depth
+
+d_old$spp_catch_pred <- predict(m1, newdata = d_old, type = "response")
+
+get_tweedie_mean <- function(y) {
+  # message(length(y))
+  # mm <- glmmTMB(y ~ 1, family = tweedie(link = "log"),
+  #   control = glmmTMBControl(
+  #   optCtrl = list(iter.max = 2000, eval.max = 2000),
+  #   profile = TRUE, collect = FALSE))
+  # browser()
+  # fixef(mm)[[1]][[1]]
+  mean(y)
+}
+
+d_old %>% group_by(year) %>%
+  summarise(
+    spp_catch_pred = sum(spp_catch_pred), 
+    # sd_spp_catch = sd(log(spp_catch_pred)),
+    spp_catch = sum(spp_catch)) %>% 
+  ggplot(aes(
+    x = year, 
+    y = spp_catch_pred, 
+    ymin = spp_catch_pred, 
+    ymax = spp_catch_pred)) + geom_line() +
+  geom_ribbon(alpha = 0.4) +
+  geom_vline(xintercept = 1996, lty = 2) +
+  scale_y_continuous(trans = "sqrt") +
+  geom_line(aes(y = spp_catch), lty = 2)
+```
+
+## HISTORICAL CATCH RECONSTRUCTION
+
+Here we will fit a model that predicts trawl catch based on hours fished, depth, locality, and month with the modern data and then try to predict the historical data with those same covariates. This represents the catch you would expect if abundance was relatively constant and those variables largely capture changes in fishing behaviour. This is not meant to represent the truth but an exploration of what you would expect under those assumptions. This may give some indication of how much under- or over-reporting there was at various points in time in the past.
+
+To do this we will fit a Gradient Boosting Machine (GBM) machine learning model. This, or a similar machine learning model, is likely to give us the best predictive power based on our covariates without assuming any parametric relationship between the covariates and of the response. We will use the caret R package to perform 10-fold cross validation to evaluate what tuning parameters in our model give us the best out-of-sample productive performance.
+
+FIXME: Give more details if we actually use this.
+
+Here are the cross validation results for a number of tuning parameters first for the positive catch model and second for the catch vs. no catch model:
+
+```{r effort-gbm-catch-train, warning=FALSE, message=FALSE, eval=TRUE, results='hide'}
+library(gbm)
+
+.d <- filter(dat_keep, best_depth <= 900, year > 1975)
+.d$month <- as.numeric(.d$month)
+.d$locality <- as.factor(as.character(.d$locality))
+d_modern <- filter(.d, year >= 1996)
+
+d_pos_modern <- filter(d_modern, spp_catch > 0)
+
+library(caret)
+library(doParallel)
+doParallel::registerDoParallel(parallel::detectCores())
+.grid <- expand.grid(shrinkage = c(0.01), interaction.depth = 1:4, 
+  n.trees = c(100, 500, 1000, 2000), n.minobsinnode = 10)
+ctrl <- trainControl(method = "repeatedcv",
+  repeats = 1, number = 10)
+mm <- caret::train(log(spp_catch) ~
+    month + best_depth + locality + hours_fished, 
+  data = d_pos_modern, method = "gbm", tuneGrid = .grid, trControl = ctrl)
+plot(mm)
+
+d_modern$pos_catch <- as.factor(d_modern$pos_catch)
+mm_bin <- caret::train(pos_catch ~
+    month + best_depth + locality + hours_fished, 
+  data = d_modern, method = "gbm", tuneGrid = .grid, trControl = ctrl)
+plot(mm_bin)
+# mm_bin$bestTune
+```
+
+
+```{r effort-gbm-fit}
+NTREES <- 2000
+INT_DEPTH <- 4
+SHRINK <- 0.01
+m_pos <- gbm(log(spp_catch) ~
+    month + best_depth + locality + hours_fished, 
+  data = d_pos_modern, distribution = "gaussian", 
+  n.trees = NTREES, interaction.depth = INT_DEPTH, shrinkage = SHRINK)
+d_modern$pos_catch <- as.integer(d_modern$pos_catch) - 1
+m_bin <- gbm(pos_catch ~
+    month + best_depth + locality + hours_fished, data = d_modern,
+  distribution = "bernoulli", n.trees = NTREES, interaction.depth = INT_DEPTH,
+  shrinkage = SHRINK)
+d_modern$pred_spp_catch_pos <- 
+  exp(predict(m_pos, type = "response", n.trees = NTREES, newdata = d_modern))
+d_modern$pred_spp_catch_bin <- predict(m_bin, type = "response", n.trees = NTREES)
+d_modern$pred_spp_catch <- d_modern$pred_spp_catch_bin *
+  d_modern$pred_spp_catch_pos
+# cor(d_modern$pred_spp_catch, d_modern$spp_catch) ^ 2
+```
+
+We can look at the marginal effects of the various predictors and the marginal effects of interactions between various predictors. First, these are the effects from the positive catch model:
+
+```{r effort-plot-gbm-positive}
+plot(m_pos, i.var = c(2))
+plot(m_pos, i.var = c(1))
+plot(m_pos, i.var = c(1, 2))
+plot(m_pos, i.var = c(2, 3))
+plot(m_pos, i.var = c(1, 3))
+plot(m_pos, i.var = c(2, 4))
+plot(m_pos, i.var = c(3, 4))
+```
+
+These are the marginal effects from the binary model (shortraker catch vs. no shortraker catch):
+
+```{r effort-plot-gbm-binary}
+plot(m_bin, i.var = c(2))
+plot(m_bin, i.var = c(1))
+plot(m_bin, i.var = c(1, 2))
+plot(m_bin, i.var = c(2, 3))
+plot(m_bin, i.var = c(1, 3))
+plot(m_bin, i.var = c(2, 4))
+plot(m_bin, i.var = c(3, 4))
+```
+
+We can then use our model to predict on these full data set. In the following plot, the model was fit to the observed catch after 1995 at the trip level (orange after 1995). The model was then used to predict catch at the trip level for the entire data set (green). It was then summed within each year to come up with the total catch for both the observed and predicted trip-level catch.
+
+This suggests that there may not be a lot of missing (underreported) shortraker catch from the Canadian trawl fleet before 1996. The fleet may have just been fishing at depths and at locations and at times of the year when you wouldn't expect to catch much of them. However, in the 1990s there may be substantial over reporting, which would make sense if there wasn't a TAC on shortraker and they were catching too much of some other species that did have a limit when there was some effort increase prior to the impending policy changes.
+
+The next plot shows the predicted log catch on the x axis. The y axis axis shows recorded log catch. The model was fitted to the data after 1995.
+
+```{r effort-plot-corrected-catch-predictive-performance}
+correction <- group_by(d_modern, year) %>%
+  summarise(
+    spp_catch_predicted = sum(pred_spp_catch),
+    spp_catch_observed = sum(spp_catch)) %>% 
+  mutate(correction = spp_catch_predicted / spp_catch_observed) %>% 
+  pull(correction) %>% mean()
+
+.d$pred_spp_catch_gbm <- 
+  exp(predict(m_pos, type = "response", n.trees = NTREES, newdata = .d)) * 
+  predict(m_bin, type = "response", n.trees = NTREES, newdata = .d)
+
+.d %>% mutate(time_period = 
+    ifelse(year > 1995, "(c) post 1995", 
+      ifelse(year <= 1995 & year >= 1990, 
+        "(b) 1990 to 1995", 
+        "(a) before 1990"))) %>%
+  ggplot(aes(log(pred_spp_catch_gbm + 1), log(spp_catch + 1))) + 
+  geom_point(alpha = 0.6) + 
+  facet_wrap(~time_period) +
+  geom_abline(intercept = 0, slope = 1)
+```
+
+Here is our predicted and observed catch:
+
+```{r effort-plot-corrected-catch}
+corrected_catch <- .d %>% group_by(year) %>%
+  summarise(
+    spp_catch_predicted = sum(pred_spp_catch_gbm),
+    spp_catch_observed = sum(spp_catch)) %>% 
+  transmute(
+    Year = year,
+    `Predicted catch` = spp_catch_predicted / correction / 1e6,
+    `Observed catch` = spp_catch_observed / 1e6)
+readr::write_csv(corrected_catch, path = here::here("report/data/shortraker-corrected-catch.csv"))
+
+g <- corrected_catch %>% 
+  reshape2::melt(id.vars = "Year", variable.name = "Type", value.name = "Catch") %>% 
+  ggplot(aes(
+    x = Year, 
+    y = Catch, colour = Type)) + 
+  # geom_vline(xintercept = 1996, lty = 2) + gfplot::theme_pbs() +
+  geom_rect(xmin = 1900, xmax = 1996, ymin = 0, ymax = 1e9,
+    fill = "grey90", inherit.aes = FALSE, alpha = 0.1) + 
+  geom_line(lwd = 1) +
+  gfplot::theme_pbs() + coord_cartesian(expand = FALSE) +
+  scale_color_brewer(palette = "Set2") + ylab("Catch (1000 t)")
+print(g)
+
+# g + coord_cartesian(ylim = c(0, 6e4/1e6))
+```
+
+We can potentially use that predicted/corrected catch for the 1990--1995 period in any commercial CPUE standardization analysis. I have attempted that but for now the plot in the next section just omits the data from 1990 to 1995.
+
+## COMMERCIAL CATCH PER UNIT EFFORT
+
+Previously we have always conducted catch per unit effort analyses separately for the historical and modern time periods. Since it's important to try to figure out (very approximately) what has been happening over the entire timeseries for the purposes of parameterizing our operating model, here I will try to combine the two. Because there is not sufficient data in each depth bin for each year we will work with a quadratic function for depth instead of the binned factor predictors that has been used in similar analyses at PBS in the past. The form of our model (in a quick draft R format) is:
+
+```
+cpue = Tweedie(mu, phi, power),
+mu ~ exp(0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
+  (1 | locality) + (1 | year_locality)).
+```
+
+```{r effort-fit-cpue, warning=FALSE}
+d <- filter(dat_keep, year >= 1978, best_depth <= 800)
+d$year_locality <- paste0(d$year, d$locality)
+d$depth <- as.factor(d$depth)
+d$month <- as.factor(d$month)
+d$locality <- as.factor(d$locality)
+d$year_locality <- as.factor(d$year_locality)
+d$year_factor <- as.factor(d$year_factor)
+d$depth_scaled <- d$best_depth - mean(d$best_depth)
+
+d <- left_join(d, select(.d, year, area, trip_id, locality, pred_spp_catch_gbm))
+
+correction <- group_by(d_modern, year) %>%
+  mutate(correction = spp_catch / pred_spp_catch) %>% 
+  pull(correction) %>% mean()
+
+# FIXME: correction!
+d <- mutate(d, spp_catch_synthetic = ifelse(year >= 1990 & year <= 1995, pred_spp_catch_gbm * correction, spp_catch)) %>% 
+  mutate(cpue_synthetic = spp_catch_synthetic * hours_fished)
+
+d %>% group_by(year) %>%
+  summarise(catch_synthetic = sum(spp_catch_synthetic), 
+    effort = sum(hours_fished),
+    catch_observed = sum(spp_catch)
+    ) %>%
+  select(year, catch_synthetic, catch_observed) %>% 
+  reshape2::melt(id.vars = "year", variable.name = "Type") %>% 
+  ggplot(aes(year, value, colour = Type)) + geom_line()
+
+d %>% group_by(year) %>%
+  summarise(effort = sum(hours_fished)) %>%
+  ggplot(aes(year, effort)) + geom_line()
+
+d_no_1990 <- filter(d, year < 1990 | year > 1995)
+
+d_no_1990$year_locality <- paste0(d_no_1990$year, d_no_1990$locality)
+d_no_1990$year_factor <- as.factor(d_no_1990$year_factor)
+d_no_1990$year_locality <- as.factor(d_no_1990$year_locality)
+d_no_1990$locality <- as.factor(d_no_1990$locality)
+
+m2 <- gfplot::fit_cpue_index_glmmtmb(d_no_1990,
+  cpue ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
+    (1 | locality) + (1 | year_locality), verbose = FALSE)
+```
+
+
+```{r effort-plot-cpue}
+gfplot::predict_cpue_index_tweedie(m2) %>%
+  ggplot(aes(year, est, ymin = lwr, ymax = upr)) + 
+  geom_ribbon(alpha = .5) + 
+  geom_line() +
+  geom_vline(xintercept = 1996, lty = 2)
+```
+
+Note that in the above plot there is no data from 1990 to 1995 and the plot is just connecting the points for now.
+
+And here is what the standardized CPUE would look like with the original data set:
+
+```{r effort-plot-cpue-uncorrected}
+m <- gfplot::fit_cpue_index_glmmtmb(d,
+  cpue ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
+    (1 | locality) + (1 | year_locality), verbose = FALSE)
+
+gfplot::predict_cpue_index_tweedie(m) %>%
+  ggplot(aes(year, est, ymin = lwr, ymax = upr)) + 
+  geom_ribbon(alpha = .5) + 
+  geom_line() +
+  geom_vline(xintercept = 1996, lty = 2)
+```
+
+<!-- So, there was a fair bit of variability in this standardized CPUE prior to 1990. The standardized CPUE then ramped up in the 1990s, fell sharply (FIXME: and suspiciously) in 1996, and has remained relatively constant or declining slightly since then.  -->
+
+Without that correction the standardized CPUE experiences a massive spike in those 5 years. The relatively steady CPUE or slight decline in CPUE since 1996 can also be seen in the synopsis report working with the full fishing-event-level data set.
+
