@@ -5,7 +5,7 @@ rmd_files: ["index.Rmd",
             "mp-descriptions.Rmd",
             #"effort-shortraker.Rmd",
             "om-specification-shortraker.Rmd",
-            "mp-specifications-shortraker.Rmd",
+            "mp-specification-shortraker.Rmd",
             "runmse-shortraker.Rmd"]
             #"references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
