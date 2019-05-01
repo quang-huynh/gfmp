@@ -1,0 +1,38 @@
+\newpage
+
+# PACIFIC COD: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
+
+For now pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
+
+```{r}
+mppc <- c(
+  # "DCAC",
+  # "DCAC_40",
+  "DBSRA4010",
+  # "DBSRA",
+  # "DBSRA_40",
+  "DCAC4010",
+  "AvC",
+  "CC1",
+  # "CC2",
+  # "CC3",
+  # "CC4",
+  # "CC5",
+  "SPSRA",
+  "SPMSY",
+  "NFref",
+  "FMSYref",
+  "FMSYref50",
+  # "DD",
+  "DD4010",
+  "GB_CC")
+mppc <- sort(mppc)
+
+```
+
+
+```{r, results='asis'}
+csasdown::csas_table(MPtype(mp))
+```
+
+

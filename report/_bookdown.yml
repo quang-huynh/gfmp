@@ -7,7 +7,9 @@ rmd_files: ["index.Rmd",
             "om-specification-shortraker.Rmd",
             "mp-specification-shortraker.Rmd",
             "runmse-shortraker.Rmd",
-            "om-specification-pcod.Rmd"]
+            "om-specification-pcod.Rmd",
+            "mp-specification-pcod.Rmd",
+            "runmse-pcod.Rmd"]
             #"references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true
