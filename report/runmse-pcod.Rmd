@@ -8,8 +8,8 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 
 
 ```{r}
-availpc("Output")
-availpc("Reference")
+avail("Output")
+avail("Reference")
 ```
 
 ```{r echo = TRUE}
@@ -24,7 +24,7 @@ We may want to develop our own plotting functions.
 
 ```{r, eval=TRUE, fig.asp=1}
 oldparpc <- par()
-plotStockpc(ompc, nsamp = 3, incVB = TRUE)
+plotStock(ompc, nsamp = 3, incVB = TRUE)
 ```
 
 ```{r, eval=TRUE}
@@ -32,15 +32,15 @@ plotSelect(ompc, sim = 1) # one sample, others will look different
 ```
 
 ```{r, eval=TRUE, fig.asp=1}
-plotFleetpc(fleetpc, Stock = stockpc)
+plotFleet(fleetpc, Stock = stockpc)
 ```
 
 ```{r, eval=TRUE, fig.asp=1}
-plotImppc(imppc)
+plotImp(imppc)
 ```
 
 ```{r, eval=TRUE, fig.asp=0.8}
-plotObspc(obspc)
+plotObs(obspc)
 ```
 
 One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
