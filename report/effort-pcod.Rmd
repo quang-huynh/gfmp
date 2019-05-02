@@ -14,7 +14,7 @@ The effort times will be used to parameterize the operating model. The catch tim
 
 ## EFFORT
 
-```{r effort-get-data}
+```{r effort-get-data-pc}
 .f <- here::here("report/data/cpue-historical-pcod.rds")
 if (!file.exists(.f)) {
   dat_historicalpc <- gfplot::get_cpue_historical(species = NULL, end_year = 2018)
@@ -24,7 +24,7 @@ if (!file.exists(.f)) {
 }
 ```
 
-```{r effort-load-packages, warning=FALSE, message=FALSE, echo=FALSE}
+```{r effort-load-packages-pc, warning=FALSE, message=FALSE, echo=FALSE}
 library(dplyr)
 library(ggplot2)
 ```

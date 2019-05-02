@@ -1,6 +1,6 @@
 \newpage
 
-# PACIFIC COD: RESULTS
+# PACIFIC COD: RESULTS --- NOT PARAMETERISED FOR PACIFIC COD YET
 
 ## Constructing the operating model
 

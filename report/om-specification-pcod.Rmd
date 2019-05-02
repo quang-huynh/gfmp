@@ -1,6 +1,6 @@
 \newpage
 
-# PACIFIC COD: OPERATING MODEL SPECIFICATION {#app:desc-om}
+# PACIFIC COD: OPERATING MODEL SPECIFICATION  NOT PARAMETERISED YET {#app:desc-om}
 
 ```{r message = FALSE, warning=FALSE}
 library(DLMtool)

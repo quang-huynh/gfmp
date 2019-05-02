@@ -3,10 +3,11 @@ chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             "introduction.Rmd",
             "mp-descriptions.Rmd",
-            #"effort-shortraker.Rmd",
+            "effort-shortraker.Rmd",
             "om-specification-shortraker.Rmd",
             "mp-specification-shortraker.Rmd",
             "runmse-shortraker.Rmd",
+            "effort-pcod.Rmd",
             "om-specification-pcod.Rmd",
             "mp-specification-pcod.Rmd",
             "runmse-pcod.Rmd"]
