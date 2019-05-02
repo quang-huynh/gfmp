@@ -20,7 +20,7 @@ if (!file.exists(.f)) {
   dat_historicalpc <- gfplot::get_cpue_historical(species = NULL, end_year = 2018)
   saveRDS(dat_historicalpc, file = .f)
 } else {
-  dat_historical <- readRDS(.f)
+  dat_historicalpc <- readRDS(.f)
 }
 ```
 
