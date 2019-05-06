@@ -64,6 +64,31 @@ group_by(d, year, fishery_sector) %>%
   as.data.frame()
 ```
 
+Let's look at which species tend to co-occur with catch of shortraker and what depths they are caught:
+
+```{r}
+# g <- d %>%
+#   mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+#   group_by(fishery_sector, time_bin, trip_id) %>% 
+#   summarize(`Trip\ncaught this species` = 
+#       ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, 1, 0))
+
+d %>%
+  filter(year >= 1995, year <= 2018) %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  group_by(fishery_sector, time_bin, trip_id) %>%
+  summarize(`Trip\ncaught this species` = 
+     ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, "yes", "no"),
+    best_depth_m = mean(best_depth_m, na.rm = TRUE)) %>% 
+  filter(best_depth_m < 1200) %>% 
+  filter(best_depth_m > 25) %>% 
+  ggplot(aes(best_depth_m, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE) + facet_wrap(~fishery_sector, scales = "free_y")
+```
+
+
 ```{r}
 # m_hl <- gfplot::fit_cpue_index_glmmtmb(d,
 #   cpue ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
