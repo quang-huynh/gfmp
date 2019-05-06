@@ -88,6 +88,52 @@ d %>%
   coord_cartesian(expand = FALSE) + facet_wrap(~fishery_sector, scales = "free_y")
 ```
 
+```{r}
+plot_predictor_bubbles <- function(dat, variable,
+  group_id = "fishing_event_id", ncol = 2) {
+  temp_pos <- dat %>%
+    filter(spp_catch > 0) %>%
+    group_by(area, year, fishery_sector, locality) %>% 
+    summarise(n = length(unique(!!rlang::sym(group_id)))) %>%
+    group_by(area, fishery_sector, locality) %>%
+    mutate(n_tot = sum(n)) %>%
+    ungroup()
+
+  temp_all <- dat %>%
+    group_by(area, year, fishery_sector, locality) %>% 
+    summarise(n = length(unique(!!rlang::sym(group_id)))) %>%
+    group_by(area, fishery_sector, locality) %>%
+    mutate(n_tot = sum(n)) %>%
+    ungroup()
+
+  temp_pos %>%
+    ggplot(aes_string("as.factor(year)", y = variable)) +
+    geom_point(aes_string(size = "n", fill = "n"), alpha = 0.4, pch = 21) +
+    geom_point(data = temp_all, aes_string(size = "n"), alpha = 0.4, pch = 21) +
+    facet_wrap(~area, scales = "free", ncol = ncol) +
+    ggplot2::scale_x_discrete(breaks = seq(1950, 2020, 5)) +
+    xlab("") + ylab(gsub("_", " ", variable)) +
+    labs(size = paste0("Number of\n", group_id)) +
+    labs(fill = paste0("Number of\n", group_id)) +
+    ggplot2::scale_size_continuous(range = c(0, 7)) +
+    ggplot2::scale_fill_viridis_c(trans = "log", breaks = c(1, 10, 100, 500)) +
+    gfplot::theme_pbs()
+}
+```
+
+```{r}
+d %>% filter(year >= 1995, year <= 2018) %>%
+  rename(locality = loc_desc) %>% 
+  group_by(fishery_sector, year, trip_id, locality) %>%
+  summarize(pos_catch = 
+     ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, 1, 0),
+    spp_catch = sum(totcatch_kg[species_common_name == "SHORTRAKER ROCKFISH"], na.rm = TRUE)) %>%
+  mutate(area = "Coastwide") %>% 
+  mutate(total_positive_trips = sum(pos_catch)) %>% 
+  filter(total_positive_trips > 5) %>% 
+  plot_predictor_bubbles(c("locality"),
+    group = "trip_id") + facet_wrap(~fishery_sector) %>% print()
+```
 
 ```{r}
 # m_hl <- gfplot::fit_cpue_index_glmmtmb(d,
