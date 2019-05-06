@@ -90,12 +90,16 @@ stock@R0 <- 1000
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 <!-- autogen-end -->
 
-@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. Since shortraker rockfish are a very long-lived species, it makes sense for natural mortality to be relatively low. We will place some relatively wide bounds around the value from @echave2015.
+@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. We could also use t{he linear regression model from [@hoenig1983], which estimates $\ln(\hat{M})$ as $\ln(\hat{M}) = 1.44 - 0.982 \cdot \ln(t_\mathrm{max})$. If we assume that the maximum age is the oldest age in our samples, `r stock@maxage`, then we can estimate $M$ as
 
-FIXME: Consider using one of the life-history invariant equations here.
+```{r}
+exp(1.44 - 0.982 * log(stock@maxage))
+```
+
+which corresponds very closely to that used in @echave2015. We will add some uncertainty around this value by allowing for half or double 0.03:
 
 ```{r desc-stock-m, results = knitr_results, echo = knitr_echo}
-stock@M <- c(0.02, 0.10)
+stock@M <- c(0.015, 0.06)
 ```
 
 <!-- autogen-begin -->
@@ -154,7 +158,7 @@ stock@h <- c(0.4, 0.9)
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 <!-- autogen-end -->
 
-We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME.
+We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME citations.
 
 ```{r desc-stock-srrel, results = knitr_results, echo = knitr_echo}
 stock@SRrel <- 1L
@@ -180,7 +184,7 @@ stock@Perr <- c(0.6, 0.8)
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities.
+FIXME: look into meta-analyses. For now we will bound this with a wide range of possibilities.
 
 ```{r desc-stock-ac, results = knitr_results, echo = knitr_echo}
 stock@AC <- c(0.0, 0.7)
