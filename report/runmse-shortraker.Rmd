@@ -8,8 +8,8 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 
 
 ```{r}
-avail("Output")
-avail("Reference")
+# avail("Output")
+# avail("Reference")
 ```
 
 ```{r echo = TRUE}
@@ -22,9 +22,30 @@ There are a variety of built-in plotting functions to examine the components of 
 
 We may want to develop our own plotting functions.
 
-```{r, eval=TRUE, fig.asp=1}
-oldpar <- par()
-plotStock(om, nsamp = 3, incVB = TRUE)
+What are the essential plots to show?
+
+* M as a distribution (and a timeseries if we were letting it change through time)
+* vonB curves (this takes care of linf, K, t0 parameters)
+
+Debatably these are already indicated by the filling of the slots before.
+
+Selection and retention curves are a bit more important perhaps to visualize other slots translate into a shape.
+
+Only need to show for one year unless there are time varying effects.
+
+
+```{r, eval=TRUE, fig.asp=1, eval=FALSE}
+pdf(here::here("report/ignore.pdf"))
+x <- plotStock(om, nsamp = 5)
+dev.off()
+
+nsamp <- 3
+nsim <- length(x$M)
+its <- sample(seq_len(nsim), nsamp)
+x$Marray
+x$M_ageArray
+x$Len_age
+x$Wt_age
 ```
 
 ```{r, eval=TRUE}
