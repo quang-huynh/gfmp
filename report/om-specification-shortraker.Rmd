@@ -92,6 +92,8 @@ stock@R0 <- 1000
 
 @echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. Since shortraker rockfish are a very long-lived species, it makes sense for natural mortality to be relatively low. We will place some relatively wide bounds around the value from @echave2015.
 
+FIXME: Consider using one of the life-history invariant equations here.
+
 ```{r desc-stock-m, results = knitr_results, echo = knitr_echo}
 stock@M <- c(0.02, 0.10)
 ```
