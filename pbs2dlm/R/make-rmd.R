@@ -72,7 +72,7 @@ create_rmd <- function(file_name,
 #' @export
 #'
 #' @examples
-#' create_rmd(here::here("report/om-specification.rmd"))
+#' create_default_rmd(here::here("report/om-specification.rmd"))
 create_default_rmd <- function(file_name, overwrite = FALSE,
   knitr_results = TRUE, knitr_echo = TRUE) {
   if (file.exists(file_name) && !overwrite)
