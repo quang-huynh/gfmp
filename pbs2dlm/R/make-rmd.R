@@ -1,3 +1,57 @@
+#' Create .rmd file describing DLMtool Objects and Slots and inject custom descriptions into it
+#'
+#' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
+#'  it will be created using create_default_rmd()
+#' @param cust_desc_file_name Filename/path of the .csv file containing the custom descriptions.
+#'  Use generate_default_custom_descriptions_file() in scratch.R to auto-generate it.
+#'
+#' @return Nothing
+#' @export
+#'
+#' @examples
+#' createt_rmd(here::here("report/om-specification.rmd"))
+create_rmd <- function(file_name,
+                       cust_desc_file_name = here::here("inst/alt-slot-descriptions.csv"),
+                       ...){
+
+  if (!file.exists(file_name)){
+    create_default_rmd(file_name, ...)
+  }
+
+  cust_desc <- readr::read_csv(cust_desc_file_name)
+  cust_desc[,c(1,2)] <- apply(cust_desc[,c(1,2)], c(1,2), tolower)
+
+  rmd <- readLines(file_name)
+  beg <- grep("<!-- autogen-begin -->", rmd)
+  end <- grep("<!-- autogen-end -->", rmd)
+  if(length(beg) != length(end)){
+    stop("Error - mismatch between number of autogen start tags (", length(beg), ") and ",
+         "end tags (", length(end), ").\nLine numbers for start tags are:\n", paste(beg, collapse = " "),
+         "\nLine numbers for end tags are:\n", paste(end, collapse = " "), "\n")
+  }
+  lapply(seq_along(beg), function(y){
+    j <- rmd[beg[y]:end[y]]
+    k <- stringr::str_split(regmatches(j, regexpr("(?<=desc-)[\\w-]+(?=\\})", j, perl = TRUE)), "-")[[1]]
+
+    kk <- cust_desc %>%
+      dplyr::filter(slot_type == k[1]) %>%
+      dplyr::filter(slot == k[2])
+    if(nrow(kk) != 1){
+      stop("Error trying to find slot_type '",
+           k[1], "', slot '", k[2], "' in the descriptions file: ",
+           cust_desc_fn)
+    }
+    if(kk$use_custom_description){
+      j[4] <- paste0("*", kk$custom_description, "*")
+      rmd[beg[y]:end[y]] <<- j
+    }
+  })
+
+  conn <- file(file_name)
+  write(rmd, conn)
+  close(conn)
+}
+
 #' Create template Rmd file describing DLMtool Objects and Slots
 #'
 #' @param file_name Filename/path of where to save the .Rmd file.
@@ -9,12 +63,11 @@
 #' @export
 #'
 #' @examples
-#' create_rmd()
-create_rmd <- function(file_name, overwrite = FALSE,
+#' create_rmd(here::here("report/om-specification.rmd"))
+create_default_rmd <- function(file_name, overwrite = FALSE,
   knitr_results = TRUE, knitr_echo = TRUE) {
-  fn <- file_name
-  if (file.exists(fn) && !overwrite)
-    stop("File '", fn, "' already exists. ",
+  if (file.exists(file_name) && !overwrite)
+    stop("File '", file_name, "' already exists. ",
       "Set `overwrite = TRUE` if you want to overwrite it.", call. = FALSE)
 
   rmd <- c(
@@ -30,7 +83,7 @@ create_rmd <- function(file_name, overwrite = FALSE,
     # format_desc(DLMtool::OMDescription, "OM")
   )
 
-  conn <- file(fn)
+  conn <- file(file_name)
   write(rmd, conn)
   close(conn)
 }
@@ -54,7 +107,7 @@ format_desc <- function(df,
   df$chunk_name <- tolower(paste0("desc-", inst_obj_name, "-", df$Slot))
 
   df <- df %>%
-    mutate(
+    dplyr::mutate(
       code = paste0(
         "```{r ",
         chunk_name,

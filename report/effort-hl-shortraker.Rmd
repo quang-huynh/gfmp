@@ -1,0 +1,153 @@
+# HOOK AND LINE EFFORT AND CATCH PER UNIT EFFORT
+
+```{r, eval=FALSE}
+# d <- gfdata:::get_cpue_historical_hl()
+# saveRDS(d, file = here::here("data/hl.rds"))
+d <- readRDS(here::here("data/hl.rds"))
+
+library(ggplot2)
+library(dplyr)
+
+d %>% dplyr::filter(species_common_name == "SHORTRAKER ROCKFISH") %>% group_by(year) %>% summarize(catch = sum(landed_kg)) %>% ggplot(aes(year, catch/1e3)) + geom_line()
+```
+
+So there isn't any shortraker catch in the data before 1990.
+
+```{r}
+d %>% dplyr::filter(species_common_name == "SHORTRAKER ROCKFISH") %>%
+  group_by(year) %>%
+  summarize(hooks_set = sum(hooks_set, na.rm = TRUE)) %>%
+  ggplot(aes(year, hooks_set)) + geom_line()
+```
+
+```{r}
+d %>% #dplyr::filter(species_common_name == "SHORTRAKER ROCKFISH") %>%
+  dplyr::filter(fishery_sector != "FOREIGN") %>% 
+  dplyr::filter(fishery_sector != "ROCKFISH INSIDE") %>% 
+  select(year, month, loc_desc, lat, lon, gear, gear_type, 
+    hooks_set, best_depth_m, vessel, fishery_sector) %>%
+  mutate(vessel = ifelse(vessel == "0", NA, vessel)) %>% 
+  reshape2::melt(id.vars = c("year", "fishery_sector")) %>% 
+  group_by(year, variable, fishery_sector) %>%
+  summarize(num_available = sum(!is.na(value)), num_total = n()) %>% 
+  mutate(fraction_available = num_available / num_total) %>% 
+  ggplot(aes(year, fraction_available, colour = fishery_sector)) + geom_line() +
+  facet_wrap(~variable) + 
+  scale_color_brewer(type = "qual")
+```
+
+Month is always available.
+
+Locality name is almost always available.
+
+Latitude is fairly regularly available except for a couple years in ZN and the first five years of sablefish. Same for longitude.
+
+Gear type `r unique(d$gear_type)` is regularly available from about 2006 or 2007 onwards.
+
+Vessel is almost always available.
+
+Best depth is available most of the time except for lingcod, which seems to have some years missing (2014 and 2015?).
+
+Hoax set is fairly regularly available from about 2006 onwards. Fairly consistently across fisheries sectors it's only available in about 90% of fishing events. Spiny dogfish fishery sector seems to be missing hooksett data in 2011.
+
+In summary, we can probably do a CPUE standardization analysis on data from about 2008 onwards (as we already planned). For the most part, it looks like we can use all these variables, but will have to discard some data that is missing any one of these covariates used in the model.
+
+```{r}
+group_by(d, fishery_sector) %>% 
+  summarize(n = n())
+```
+
+```{r}
+group_by(d, year, fishery_sector) %>% 
+  summarize(n = n()) %>%
+  filter(year >= 1990, year <= 2018) %>% 
+  as.data.frame()
+```
+
+Let's look at which species tend to co-occur with catch of shortraker and what depths they are caught:
+
+```{r}
+# g <- d %>%
+#   mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+#   group_by(fishery_sector, time_bin, trip_id) %>% 
+#   summarize(`Trip\ncaught this species` = 
+#       ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, 1, 0))
+
+d %>%
+  filter(year >= 1995, year <= 2018) %>%
+  mutate(time_bin = seq(1930, 2020, 5)[findInterval(year, vec = seq(1930, 2020, 5))]) %>% 
+  group_by(fishery_sector, time_bin, trip_id) %>%
+  summarize(`Trip\ncaught this species` = 
+     ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, "yes", "no"),
+    best_depth_m = mean(best_depth_m, na.rm = TRUE)) %>% 
+  filter(best_depth_m < 1200) %>% 
+  filter(best_depth_m > 25) %>% 
+  ggplot(aes(best_depth_m, fill = `Trip\ncaught this species`)) +
+  geom_histogram(binwidth = 25) +
+  ylim(0, NA) +
+  coord_cartesian(expand = FALSE) + facet_wrap(~fishery_sector, scales = "free_y")
+```
+
+```{r}
+plot_predictor_bubbles <- function(dat, variable,
+  group_id = "fishing_event_id", ncol = 2) {
+  temp_pos <- dat %>%
+    filter(spp_catch > 0) %>%
+    group_by(area, year, fishery_sector, locality) %>% 
+    summarise(n = length(unique(!!rlang::sym(group_id)))) %>%
+    group_by(area, fishery_sector, locality) %>%
+    mutate(n_tot = sum(n)) %>%
+    ungroup()
+
+  temp_all <- dat %>%
+    group_by(area, year, fishery_sector, locality) %>% 
+    summarise(n = length(unique(!!rlang::sym(group_id)))) %>%
+    group_by(area, fishery_sector, locality) %>%
+    mutate(n_tot = sum(n)) %>%
+    ungroup()
+
+  temp_pos %>%
+    ggplot(aes_string("as.factor(year)", y = variable)) +
+    geom_point(aes_string(size = "n", fill = "n"), alpha = 0.4, pch = 21) +
+    geom_point(data = temp_all, aes_string(size = "n"), alpha = 0.4, pch = 21) +
+    facet_wrap(~area, scales = "free", ncol = ncol) +
+    ggplot2::scale_x_discrete(breaks = seq(1950, 2020, 5)) +
+    xlab("") + ylab(gsub("_", " ", variable)) +
+    labs(size = paste0("Number of\n", group_id)) +
+    labs(fill = paste0("Number of\n", group_id)) +
+    ggplot2::scale_size_continuous(range = c(0, 7)) +
+    ggplot2::scale_fill_viridis_c(trans = "log", breaks = c(1, 10, 100, 500)) +
+    gfplot::theme_pbs()
+}
+```
+
+```{r}
+g <- d %>% filter(year >= 1990, year <= 2018) %>%
+  filter(loc_desc != "UNKNOWN") %>% 
+  rename(locality = loc_desc) %>% 
+  group_by(fishery_sector, year, trip_id, locality) %>%
+  summarize(pos_catch = 
+     ifelse("SHORTRAKER ROCKFISH" %in% species_common_name, 1, 0),
+    spp_catch = sum(totcatch_kg[species_common_name == "SHORTRAKER ROCKFISH"], na.rm = TRUE)) %>%
+  mutate(area = "Coastwide") %>% 
+  group_by(fishery_sector, locality) %>%
+  mutate(total_positive_trips = sum(pos_catch)) %>% 
+  ungroup() %>%
+  filter(total_positive_trips >= 0) %>% 
+  plot_predictor_bubbles(c("locality"),
+    group = "trip_id") + facet_wrap(~fishery_sector, nrow = 1)
+g
+ggsave(g, file = here::here("report/figure/locality-bubble-shortraker-hl.pdf"), width = 20, height = 20)
+```
+
+```{r}
+# m_hl <- gfplot::fit_cpue_index_glmmtmb(d,
+#   cpue ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) + 
+#     (1 | locality) + (1 | year_locality), verbose = FALSE)
+# 
+# gfplot::predict_cpue_index_tweedie(m) %>%
+#   ggplot(aes(year, est, ymin = lwr, ymax = upr)) + 
+#   geom_ribbon(alpha = .5) + 
+#   geom_line() +
+#   geom_vline(xintercept = 1996, lty = 2)
+```
