@@ -18,10 +18,6 @@ ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 ompc@nsim <- 50L
 ```
 
-There are a variety of built-in plotting functions to examine the components of the operating model:
-
-We may want to develop our own plotting functions.
-
 ```{r, eval=TRUE, fig.asp=1}
 oldparpc <- par()
 plotStock(ompc, nsamp = 3, incVB = TRUE)
@@ -55,25 +51,25 @@ ompc@nsim <- 250L #Why is this set again?
 # dim(pcod_historical@TSdata$Catch)
 
 real_catchpc <- read.csv(here::here("report/data/pcod-corrected-catch.csv"))
-real_catchpc <- mutate(real_catch, synthetic = ifelse(Year >= 1950 & Year <= 2018, Observed.catch, Predicted.catch)) #Don't use predicted catch for P cod
+real_catchpc <- mutate(real_catchpc, synthetic = real_catchpc$Observed.catch) #Don't use predicted catchpc for P cod
 
 all_years <- data.frame(Year = (2018 - fleetpc@nyears):2018)
-real_catch <- dplyr::left_join(all_years, real_catch)
+real_catchpc <- dplyr::left_join(all_years, real_catchpc)
 
 set.seed(1938)
-catch <- pcod_historical@TSdata$Catch %>%
+catchpc <- pcod_historical@TSdata$Catch %>%
   reshape2::melt() %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
-  transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
-    catch = value, type = "Simulated") %>%
-  bind_rows(data.frame(sample_id = 0, year = real_catch$Year,
-    catch = real_catch$synthetic, type = "Observed", stringsAsFactors = FALSE))
+  transmute(sample_id = Var1, year = Var2 + min(real_catchpc$Year) - 1,
+    catchpc = value, type = "Simulated") %>%
+  bind_rows(data.frame(sample_id = 0, year = real_catchpc$Year,
+    catchpc = real_catchpc$synthetic, type = "Observed", stringsAsFactors = FALSE))
 
-catch %>%
-  filter(!is.na(catch)) %>%
+catchpc %>%
+  filter(!is.na(catchpc)) %>%
   group_by(sample_id) %>%
-  mutate(catch = catch/max(catch)) %>%
-  ggplot(aes(year, catch, colour = type)) +
+  mutate(catchpc = catchpc/max(catchpc)) %>%
+  ggplot(aes(year, catchpc, colour = type)) +
   geom_line() +
   facet_wrap(~sample_id) +
   ylab("Historical catch") +
@@ -139,7 +135,7 @@ Kplot(pcod_mse)
 ```
 
 ```{r}
-Cplot(pcod_mse)
+#Cplot(pcod_mse)
 ```
 
 And examine the output.
@@ -168,7 +164,7 @@ DFO_proj(pcod_mse)
 #   xlab(expression(Pr(B>0.5~B[MSY]))) +
 #   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
 #   xlim(0, 1) + ylim(0, 1)
-par(oldpar)
+#par(oldpar)
 ```
 
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.

@@ -407,7 +407,7 @@ round(stockpc@b, 2)
 <!-- autogen-begin -->
 ### Size_area_1 {#app:desc-stock-size_area_1}
 
-*The size of area 1 relative to total area. OMx has two default areas. Set to 0.5 to approximate single area model*
+*The default OM has two areas. size_area_1 is the geographical size of the area relative to the TOTAL area.Set to 0.5 to approximate single area model*
 <!-- autogen-end -->
 
 
@@ -419,7 +419,7 @@ stockpc@Size_area_1 <- c(0.49,0.51)
 <!-- autogen-begin -->
 ### Frac_area_1 {#app:desc-stock-frac_area_1}
 
-*The fraction of the unfished biomass in area 1. Uniform distribution lower and upper bounds. Positive real numbers*
+*frac_area_1 is the amount of unfished habitat in that area, expressed as a fraction of the TOTAL habitat.Set to 0.5 to approximate single area model*
 <!-- autogen-end -->
 
 For now, we will set this to the same fraction as the size of area 1.
@@ -434,10 +434,10 @@ stockpc@Frac_area_1 <- c(0.49,0.51)
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 <!-- autogen-end -->
 
-Let's assume Pacific cod is vulnerable in almost all of its range - set a high probability of being in area 1, assuming area 1 is a refuge.
+Let's assume Pacific cod is vulnerable in almost all of its range - set a 50% prob of staying in each area.
 
 ```{r desc-stock-prob_staying-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Prob_staying <- c(0.9, 0.99)
+stockpc@Prob_staying <- c(0.49,0.51)
 ```
 
 <!-- autogen-begin -->
@@ -612,7 +612,7 @@ fleetpc@L5 <- c(0.2, 0.4)
 Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFS <- c(0.9, 1.)
+fleetpc@LFS <- c(0.95, 1.1)#c(1.0, 1.2) #
 ```
 
 <!-- autogen-begin -->
@@ -624,7 +624,7 @@ fleetpc@LFS <- c(0.9, 1.)
 Assume all large fish are vulnerable.
 
 ```{r desc-fleet-vmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Vmaxlen <- c(0.99, 1.5)
+fleetpc@Vmaxlen <- c(0.95, 0.99) #c(0.05, 0.95) #
 ```
 
 <!-- autogen-begin -->
@@ -646,7 +646,7 @@ fleetpc@isRel
 Since we can assume that no Pacific Cod will survive if caught, we will set this to same as L5. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lr5-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LR5 <- c(0.2, 0.4)
+fleetpc@LR5 #<- c(0.2, 0.4)
 ```
 
 <!-- autogen-begin -->
@@ -658,7 +658,7 @@ fleetpc@LR5 <- c(0.2, 0.4)
 Use same as LFS. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lfr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFR <- c(0.95, 0.99) 
+fleetpc@LFR #<- c(0.95, 0.99) 
 ```
 
 <!-- autogen-begin -->
@@ -670,7 +670,7 @@ fleetpc@LFR <- c(0.95, 0.99)
 Use same as VmaxLen. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-rmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Rmaxlen <- c(0.99, 1.5) 
+fleetpc@Rmaxlen #<- c(0.99, 1.5) 
 ```
 
 <!-- autogen-begin -->
@@ -680,7 +680,7 @@ fleetpc@Rmaxlen <- c(0.99, 1.5)
 <!-- autogen-end -->
 
 ```{r desc-fleet-dr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@DR <- c(0.01,0.05)
+fleetpc@DR #<- c(0.01,0.05)
 ```
 
 <!-- autogen-begin -->
