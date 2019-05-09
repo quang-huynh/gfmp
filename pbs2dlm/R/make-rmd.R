@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' createt_rmd(here::here("report/om-specification.rmd"))
+#' create_rmd(here::here("report/om-specification.rmd"))
 create_rmd <- function(file_name,
                        cust_desc_file_name = here::here("pbs2dlm/inst/alt-slot-descriptions.csv"),
                        ...){
