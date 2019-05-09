@@ -9,14 +9,14 @@ dir.create(testing_path, showWarnings = FALSE)
 if (getwd() != testing_path) setwd(testing_path)
 
 ## ------------------------------------------------------------------------------------------------
-context("check that the package files are present")
+context("Check that the package files are present")
 
 test_that("Custom description csv is present", {
   expect_true(file.exists(file.path(system.file(package = "pbs2dlm"), "alt-slot-descriptions.csv")))
 })
 
 ## ------------------------------------------------------------------------------------------------
-context("create a default .rmd file")
+context("Create a default .rmd file")
 
 if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
 create_default_rmd("test-desc.rmd")
@@ -26,7 +26,7 @@ test_that("New .rmd description file is present", {
 })
 
 ## ------------------------------------------------------------------------------------------------
-context("Wrong slot name in description .csv file gives error")
+context("Check if wrong slot name in description .csv file gives error")
 df <- tibble(slot_type = c("Stock", "Stock"),
              slot = c("name", "nonexistent-slot-name-should-give-error"),
              use_custom_description = c(TRUE, TRUE),
@@ -57,4 +57,19 @@ test_that("Removal of an autogen tag results in error", {
 })
 
 ## ------------------------------------------------------------------------------------------------
+context("Check if a description header was manually or accidentally removed from the file")
+if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
+create_default_rmd("test-desc.rmd")
+rmd <- readLines("test-desc.rmd")
+## Remove last description from file
+rmd <- rmd[-964]
+unlink("test-desc.rmd")
+conn <- file("test-desc.rmd")
+write(rmd, conn)
+close(conn)
+
+test_that("Removal of adescription results in error", {
+  expect_error(create_rmd("test-desc.rmd", "test-slot-descriptions.csv"))
+})
+
 

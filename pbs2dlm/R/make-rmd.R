@@ -11,7 +11,7 @@
 #' @examples
 #' createt_rmd(here::here("report/om-specification.rmd"))
 create_rmd <- function(file_name,
-                       cust_desc_file_name = here::here("inst/alt-slot-descriptions.csv"),
+                       cust_desc_file_name = here::here("pbs2dlm/inst/alt-slot-descriptions.csv"),
                        ...){
 
   if (!file.exists(file_name)){
@@ -42,7 +42,12 @@ create_rmd <- function(file_name,
            cust_desc_fn)
     }
     if(kk$use_custom_description){
-      j[4] <- paste0("*", kk$custom_description, "*")
+      val <- grep("^\\*.*\\p$", j)
+      if(!length(val)){
+        stop("Error trying to find the header inside autogen chunk:\n",
+             paste0(j, collapse = "\n"))
+      }
+      j[val] <- paste0("*", kk$custom_description, "*")
       rmd[beg[y]:end[y]] <<- j
     }
   })
