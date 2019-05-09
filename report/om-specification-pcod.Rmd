@@ -2,8 +2,11 @@
 
 # PACIFIC COD: OPERATING MODEL SPECIFICATION  NOT PARAMETERISED YET {#app:desc-om}
 
+This operating model is for Pacific Cod in PFMC management areas 5ABCD (Queen Charlotte Sound, Hecate Strait and Dixon Entrance). Parameter values extracted from the 2018 stock assessment of Pacific Cod in Area 5ABCD [@forrest2019]. 
+
 ```{r message = FALSE, warning=FALSE}
 library(DLMtool)
+library(MSEtool)
 library(dplyr)
 knitr_results <- TRUE
 knitr_echo <- TRUE
@@ -86,19 +89,20 @@ stockpc@Name <- "Pacific Cod 5ABCD Stock"
 <!-- autogen-end -->
 
 ```{r desc-stock-maxage-pc, results = knitr_results, echo = knitr_echo}
-stockpc@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
+stockpc@maxage <- max(d$survey_samples$age, na.rm = TRUE)
 ```
 
 <!-- autogen-begin -->
 ### R0 {#app:desc-stock-r0}
 
+
 *The magnitude of unfished recruitment. Single value. Positive real number*
 <!-- autogen-end -->
 
-The absolute value is meaningless here. Arbitrarily pick a value.
+Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-r0-pc, results = knitr_results, echo = knitr_echo}
-stockpc@R0 <- 1000
+stockpc@R0 <- c(2331,3902)
 ```
 
 <!-- autogen-begin -->
@@ -107,10 +111,10 @@ stockpc@R0 <- 1000
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 <!-- autogen-end -->
 
-@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. Since shortraker rockfish are a very long-lived species, it makes sense for natural mortality to be relatively low. We will place some relatively wide bounds around the value from @echave2015.
+Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-m-pc, results = knitr_results, echo = knitr_echo}
-stockpc@M <- c(0.02, 0.10)
+stockpc@M <- c(0.28, 0.347)
 ```
 
 <!-- autogen-begin -->
@@ -146,7 +150,7 @@ stockpc@Mexp <- c(NA_real_, NA_real_)
 Unknown. Picking an arbitrary range.
 
 ```{r desc-stock-msd-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Msd <- c(0.00, 0.05)
+stockpc@Msd <- c(0.00, 0.1)
 ```
 
 <!-- autogen-begin -->
@@ -155,12 +159,10 @@ stockpc@Msd <- c(0.00, 0.05)
 *Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 <!-- autogen-end -->
 
-FIXME: maybe there's an assessment in Alaska we could draw on?
-
-Unless there is a shortraker-specific estimate from assessment elsewhere, we can draw on the posterior predictive distribution from @forrest2010. FIXME: do better than eyeballing the plot. Based on that analysis, let's allow for range that encompasses the mean values for the species considered in that meta-analysis with some additional uncertainty:
+Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-h-pc, results = knitr_results, echo = knitr_echo}
-stockpc@h <- c(0.4, 0.9)
+stockpc@h <- c(0.432, 0.931)
 ```
 
 <!-- autogen-begin -->
@@ -169,7 +171,7 @@ stockpc@h <- c(0.4, 0.9)
 *Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 <!-- autogen-end -->
 
-We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME.
+Beverton-Holt as in stock assessment [@forrest2019].
 
 ```{r desc-stock-srrel-pc, results = knitr_results, echo = knitr_echo}
 stockpc@SRrel <- 1L
@@ -183,10 +185,10 @@ stockpc@SRrel <- 1L
 
 @thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8.
 
-FIXME: Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
+@forrest2018 fixed this at 0.8 - choose arbitrary range between 0.6 and 1.0 (sensitivity tests were done on these values)
 
 ```{r desc-stock-perr-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Perr <- c(0.6, 0.8)
+stockpc@Perr <- c(0.6, 1.0)
 ```
 
 <!-- autogen-begin -->
@@ -195,7 +197,7 @@ stockpc@Perr <- c(0.6, 0.8)
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities.
+FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities. See Thorson paper.
 
 ```{r desc-stock-ac-pc, results = knitr_results, echo = knitr_echo}
 stockpc@AC <- c(0.0, 0.7)
@@ -207,7 +209,7 @@ stockpc@AC <- c(0.0, 0.7)
 *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-Not used.
+Not used. BUT COULD LOOK AT THIS AS ALTERNATIVE OM for Pacific Cod.
 
 ```{r desc-stock-period-pc, results = knitr_results, echo = knitr_echo}
 stockpc@Period
@@ -247,10 +249,10 @@ vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
 gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 ```
 
-We will grab this from our data analysis:
+Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-linf-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+stockpc@Linf <- c(88.7,103.4) 
 ```
 
 <!-- autogen-begin -->
@@ -259,10 +261,10 @@ stockpc@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["lin
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
-We will grab this from our data analysis:
+Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-k-pc, results = knitr_results, echo = knitr_echo}
-stockpc@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+stockpc@K <-c(0.17,0.22)
 ```
 
 <!-- autogen-begin -->
@@ -271,10 +273,10 @@ stockpc@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
 <!-- autogen-end -->
 
-We will grab this from our data analysis:
+Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-t0-pc, results = knitr_results, echo = knitr_echo}
-stockpc@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+stockpc@t0 <- c(-0.91, -0.72) 
 ```
 
 <!-- autogen-begin -->
@@ -362,10 +364,10 @@ stockpc@L50_95
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
-This is an important value that we may want to think more deeply about.
+Lower and upper values of the 95% credibility interval of posterior distribution of B2019/B0 [@forrest2019].
 
 ```{r desc-stock-d-pc, results = knitr_results, echo = knitr_echo}
-stockpc@D <- c(0.1, 0.8)
+stockpc@D <- c(0.45, 0.92)
 ```
 
 <!-- autogen-begin -->
@@ -405,25 +407,25 @@ round(stockpc@b, 2)
 <!-- autogen-begin -->
 ### Size_area_1 {#app:desc-stock-size_area_1}
 
-*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers*
+*The size of area 1 relative to total area. OMx has two default areas. Set to 0.5 to approximate single area model*
 <!-- autogen-end -->
 
-Area 1 represents habitat outside of the range of fishing. TODO: we may be able to come up with some ballpark numbers from looking at the distribution of commercial effort and the predicted distribution of the species from the spatiotemporal models. For now, we will arbitrarily set this.
+
 
 ```{r desc-stock-size_area_1-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Size_area_1 <- c(0, 0.5)
+stockpc@Size_area_1 <- c(0.49,0.51)
 ```
 
 <!-- autogen-begin -->
 ### Frac_area_1 {#app:desc-stock-frac_area_1}
 
-*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers*
+*The fraction of the unfished biomass in area 1. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
 For now, we will set this to the same fraction as the size of area 1.
 
 ```{r desc-stock-frac_area_1-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Frac_area_1 <- c(0, 0.5)
+stockpc@Frac_area_1 <- c(0.49,0.51)
 ```
 
 <!-- autogen-begin -->
@@ -432,10 +434,10 @@ stockpc@Frac_area_1 <- c(0, 0.5)
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 <!-- autogen-end -->
 
-We probably don't have a lot of information on this. For now, we will set this to a wide range of possible values.
+Let's assume Pacific cod is vulnerable in almost all of its range - set a high probability of being in area 1, assuming area 1 is a refuge.
 
 ```{r desc-stock-prob_staying-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Prob_staying <- c(0.1, 0.9)
+stockpc@Prob_staying <- c(0.9, 0.99)
 ```
 
 <!-- autogen-begin -->
@@ -444,10 +446,10 @@ stockpc@Prob_staying <- c(0.1, 0.9)
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-We can assume that nearly 100% of the discarded shortraker rockfish die from barotrauma.
+We can assume that nearly 100% of the discarded Pacific Cod die.
 
 ```{r desc-stock-fdisc-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Fdisc <- 1
+stockpc@Fdisc <- 0.99
 ```
 
 <!-- autogen-begin -->
@@ -474,7 +476,7 @@ fleetpc <- DLMtool::Generic_Fleet # TODO: temporary
 <!-- autogen-end -->
 
 ```{r desc-fleet-name-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Name <- "BC Fleet"
+fleetpc@Name <- "BC Trawl Fleet"
 ```
 
 <!-- autogen-begin -->
@@ -486,7 +488,7 @@ fleetpc@Name <- "BC Fleet"
 We will set the historical run-up to be approximately the length of the commercial fishery:
 
 ```{r desc-fleet-nyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@nyears <- 50
+fleetpc@nyears <- 63
 ```
 
 <!-- autogen-begin -->
@@ -509,11 +511,11 @@ fleetpc@Spat_targ
 
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
-For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
+For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet" that is most relevant to catching Pacific Cod. 
 
 ```{r desc-fleet-effyears-pc, results = knitr_results, echo = knitr_echo}
-fleet_effort <- read.csv(here::here("report/data/shortraker-fleet-effort.csv"))
-all_years <- data.frame(year = (2018 - fleetpc@nyears):2018)
+fleet_effort <- read.csv(here::here("report/data/pcod-fleet-effort.csv"))
+all_years <- data.frame(year = (2018 - fleetpc@nyears+1):2018)
 fleet_effort <- dplyr::left_join(all_years, fleet_effort)
 fleet_effort <- mutate(fleet_effort, 
   effort = ifelse(is.na(hours_fished), 50, hours_fished),
@@ -598,7 +600,7 @@ fleetpc@qcv <- c(0.1, 0.4)
 Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockpc@L50[[1]]` to `r stockpc@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockpc@L50[[2]], 1)`- and `r round(min_caught/stockpc@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@L5 <- c(0.6, 1.0)
+fleetpc@L5 <- c(0.2, 0.4)
 ```
 
 <!-- autogen-begin -->
@@ -610,7 +612,7 @@ fleetpc@L5 <- c(0.6, 1.0)
 Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFS <- c(1.0, 1.2)
+fleetpc@LFS <- c(0.9, 1.)
 ```
 
 <!-- autogen-begin -->
@@ -619,10 +621,10 @@ fleetpc@LFS <- c(1.0, 1.2)
 *The vulnerability of fish at `stockpc@Linf` . Uniform distribution lower and upper bounds. Fraction*
 <!-- autogen-end -->
 
-We don't have a lot of information to go on for this. There is likely some proportion of the population that is not vulnerable because of MPAs, the frozen footprint, and the extreme depths that the slow-moving nature of shortrocker rockfish live at.
+Assume all large fish are vulnerable.
 
 ```{r desc-fleet-vmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Vmaxlen <- c(0.05, 0.95)
+fleetpc@Vmaxlen <- c(0.99, 1.5)
 ```
 
 <!-- autogen-begin -->
@@ -638,13 +640,13 @@ fleetpc@isRel
 <!-- autogen-begin -->
 ### LR5 {#app:desc-fleet-lr5}
 
-*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Shortest length corresponding to 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-Since we can assume that no shortraker rockfish will survive if caught, we will set this to 0.
+Since we can assume that no Pacific Cod will survive if caught, we will set this to same as L5. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lr5-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LR5
+fleetpc@LR5 <- c(0.2, 0.4)
 ```
 
 <!-- autogen-begin -->
@@ -653,10 +655,10 @@ fleetpc@LR5
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-We will use the vector of selectivity breakpoints below to allow for historical changes. Therefore the we will leave this slot empty.
+Use same as LFS. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lfr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFR
+fleetpc@LFR <- c(0.95, 0.99) 
 ```
 
 <!-- autogen-begin -->
@@ -665,8 +667,10 @@ fleetpc@LFR
 *The retention of fish at `stockpc@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
+Use same as VmaxLen. Assume this is still relative to length at maturity??
+
 ```{r desc-fleet-rmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Rmaxlen
+fleetpc@Rmaxlen <- c(0.99, 1.5) 
 ```
 
 <!-- autogen-begin -->
@@ -676,7 +680,7 @@ fleetpc@Rmaxlen
 <!-- autogen-end -->
 
 ```{r desc-fleet-dr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@DR
+fleetpc@DR <- c(0.01,0.05)
 ```
 
 <!-- autogen-begin -->

@@ -32,7 +32,7 @@ mppc <- sort(mppc)
 
 
 ```{r, results='asis'}
-csasdown::csas_table(MPtype(mp))
+csasdown::csas_table(MPtype(mppc))
 ```
 
 

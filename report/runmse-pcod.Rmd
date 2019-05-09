@@ -1,6 +1,6 @@
 \newpage
 
-# PACIFIC COD: RESULTS --- NOT PARAMETERISED FOR PACIFIC COD YET
+# PACIFIC COD: RESULTS 
 
 ## Constructing the operating model
 
@@ -15,7 +15,7 @@ avail("Reference")
 ```{r echo = TRUE}
 ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 
-ompc@nsim <- 250L
+ompc@nsim <- 50L
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
@@ -48,20 +48,20 @@ One thing we can do to check our operating model calibration is checksum random 
 ```{r, fig.asp=0.8}
 # DLMtool::setup(cpus = parallel::detectCores())
 ompc@nsim <- 30
-short_historicalpc <- runMSE(ompc, Hist = TRUE, parallel = FALSE)
-ompc@nsim <- 250L
+pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = FALSE)
+ompc@nsim <- 250L #Why is this set again?
 
-# names(short_historical@TSdata)
-# dim(short_historical@TSdata$Catch)
+# names(pcod_historical@TSdata)
+# dim(pcod_historical@TSdata$Catch)
 
-real_catchpc <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
-real_catchpc <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, Observed.catch))
+real_catchpc <- read.csv(here::here("report/data/pcod-corrected-catch.csv"))
+real_catchpc <- mutate(real_catch, synthetic = ifelse(Year >= 1950 & Year <= 2018, Observed.catch, Predicted.catch)) #Don't use predicted catch for P cod
 
-all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
+all_years <- data.frame(Year = (2018 - fleetpc@nyears):2018)
 real_catch <- dplyr::left_join(all_years, real_catch)
 
-set.seed(1567)
-catch <- short_historical@TSdata$Catch %>%
+set.seed(1938)
+catch <- pcod_historical@TSdata$Catch %>%
   reshape2::melt() %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
   transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
@@ -79,7 +79,7 @@ catch %>%
   ylab("Historical catch") +
   xlab("Year")
 
-short_historical@TSdata$B %>%
+pcod_historical@TSdata$B %>%
   reshape2::melt() %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
   ggplot(aes(Var2, value)) +
@@ -88,79 +88,77 @@ short_historical@TSdata$B %>%
   ylab("Simulated historical biomass") +
   xlab("Year")
 
-# short_data <- pbs2dlm::create_dlm_data(d)
-# DLMtool::Turing(OM = om, Data = short_data, wait = FALSE)
 ```
 
 Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-file_name <- here::here("generated-data", "shortraker-mse.rds")
+file_name <- here::here("generated-data", "pcod-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  short_mse <- runMSE(OM = om, MPs = mp, parallel = FALSE)
-  saveRDS(short_mse, file = file_name)
+  pcod_mse <- runMSE(OM = ompc, MPs = mppc, parallel = FALSE)
+  saveRDS(pcod_mse, file = file_name)
 } else {
-  short_mse <- readRDS(file_name)
+  pcod_mse <- readRDS(file_name)
 }
 ```
 
 Check convergence:
 
 ```{r}
-DLMtool::Converge(short_mse)
+DLMtool::Converge(pcod_mse)
 ```
 
 ```{r}
-summary(short_mse)
+summary(pcod_mse)
 ```
 
 Illustrating the built-in plotting functions:
 
 ```{r}
-Tplot(short_mse)
-Tplot2(short_mse)
+Tplot(pcod_mse)
+Tplot2(pcod_mse)
 ```
 
 
 ```{r}
-wormplot(short_mse)
+wormplot(pcod_mse)
 ```
 
 ```{r}
-Pplot(short_mse)
-Pplot2(short_mse)
+Pplot(pcod_mse)
+Pplot2(pcod_mse)
 ```
 
 ```{r}
-Pplot2(short_mse, traj="quant", quants=c(0.2, 0.8))
+Pplot2(pcod_mse, traj="quant", quants=c(0.2, 0.8))
 ```
 
 ```{r}
-Kplot(short_mse)
+Kplot(pcod_mse)
 ```
 
 ```{r}
-Cplot(short_mse)
+Cplot(pcod_mse)
 ```
 
 And examine the output.
 
 ```{r}
-# plot(short_mse)
+# plot(pcod_mse)
 # oldpar <- par()
-##DFO_hist(short_mse)
+##DFO_hist(pcod_mse)
 par(mfrow = c(1, 1))
-DFO_plot(short_mse)
-# DFO_plot2(short_mse)
+DFO_plot(pcod_mse)
+# DFO_plot2(pcod_mse)
 ```
 
 ```{r, fig.asp=1, warning=FALSE}
-DFO_proj(short_mse)
-#DFO_hist(short_om)
-# DFO_plot2(short_mse)
+DFO_proj(pcod_mse)
+#DFO_hist(pcod_om)
+# DFO_plot2(pcod_mse)
 
-# d <- DFO_plot2(short_mse)
+# d <- DFO_plot2(pcod_mse)
 # ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
 #   geom_vline(xintercept = 0.5, col = "grey50") +
 #   geom_hline(yintercept = 0.5, col = "grey50") +
@@ -176,9 +174,9 @@ par(oldpar)
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
 ```{r, fig.asp=1}
-yend <- max(short_mse@proyears)
-ffmsy <- short_mse@F_FMSY[,,yend]
-bbmsy <- short_mse@B_BMSY[,,yend]
+yend <- max(pcod_mse@proyears)
+ffmsy <- pcod_mse@F_FMSY[,,yend]
+bbmsy <- pcod_mse@B_BMSY[,,yend]
 
 ffmsy <- reshape2::melt(ffmsy) %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
@@ -187,7 +185,7 @@ bbmsy <- reshape2::melt(bbmsy) %>%
 
 d <- dplyr::inner_join(ffmsy, bbmsy)
 
-n <- data.frame(mp = seq_along(short_mse@MPs), mp_name = short_mse@MPs)
+n <- data.frame(mp = seq_along(pcod_mse@MPs), mp_name = pcod_mse@MPs)
 # n$mp_name <- paste(1:nrow(n), n$mp_name)
 
 d <- dplyr::left_join(d, n)
@@ -205,15 +203,15 @@ ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
   labs(colour = "Prob. density", x = expression(B/B[MSY]),
     y = expression(F/F[MSY])) +
   guides(colour = FALSE)
-#ggsave("analysis/short-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
+#ggsave("analysis/pcod-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
 ```
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
 library(dplyr)
 library(RColorBrewer)
-ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
@@ -282,7 +280,7 @@ d_ <- d
 #   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/short-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
+# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
@@ -298,7 +296,7 @@ d_ <- d
 #   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
@@ -314,14 +312,14 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   labels = TRUE, yaxis = TRUE)
 gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
 #########3
-ffmsy <- short_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- short_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
@@ -370,5 +368,5 @@ g
 ```
 
 ```{r, fig.asp=1.2}
-voi_out <- DLMtool::VOI(short_mse)
+voi_out <- DLMtool::VOI(pcod_mse)
 ```
