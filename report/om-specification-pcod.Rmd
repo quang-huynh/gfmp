@@ -1,6 +1,6 @@
 \newpage
 
-# PACIFIC COD: OPERATING MODEL SPECIFICATION  NOT PARAMETERISED YET {#app:desc-om}
+# PACIFIC COD: OPERATING MODEL SPECIFICATION  {#app:desc-om-pc}
 
 This operating model is for Pacific Cod in PFMC management areas 5ABCD (Queen Charlotte Sound, Hecate Strait and Dixon Entrance). Parameter values extracted from the 2018 stock assessment of Pacific Cod in Area 5ABCD [@forrest2019]. 
 
@@ -10,40 +10,6 @@ library(MSEtool)
 library(dplyr)
 knitr_results <- TRUE
 knitr_echo <- TRUE
-```
-
-```{r download-data-pc}
-#Make sure these two area descriptions match up
-pcod_areas <- c("05","06","07","08") #QCS and HS for comm samples, surv samples and catch
-pcod_survey_areas <- c("Queen Charlotte Sound Synoptic Bottom Trawl" ,"Hecate Strait Synoptic Bottom Trawl") #QCS and HS for survey index
-science_name <- "Gadus macrocephalus"
-species_name <- "Pacific Cod"
-species_file <- here::here("generated-data",
-  paste0(gsub(" ", "-", species_name), ".rds"))
-if (!file.exists(species_file)) {
-  d <- list()
-  d$commercial_samples <- gfplot::get_commercial_samples(species_name)
-  d$survey_samples <- gfplot::get_survey_samples(species_name)
-  d$catch <- gfplot::get_catch(species_name)
-  d$survey_index <- gfplot::get_survey_index(species_name)
-  saveRDS(d, file = species_file)
-} else {
-  d <- readRDS(species_file)
-}
-
-#Get only 5ABCD data
-d$commercial_samples <- d$commercial_samples %>% 
-  filter(major_stat_area_code %in% pcod_areas)
-
-d$survey_samples <- d$survey_samples %>% 
-  filter(major_stat_area_code %in% pcod_areas)
-
-d$catch <- d$catch %>% 
-  filter(major_stat_area_code %in% pcod_areas)
-
-d$survey_index <- d$survey_index %>% 
-  filter(survey_series_desc %in% pcod_survey_areas)
-
 ```
 
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-pc}
@@ -89,7 +55,7 @@ stockpc@Name <- "Pacific Cod 5ABCD Stock"
 <!-- autogen-end -->
 
 ```{r desc-stock-maxage-pc, results = knitr_results, echo = knitr_echo}
-stockpc@maxage <- max(d$survey_samples$age, na.rm = TRUE)
+stockpc@maxage <- max(.dpc$survey_samples$age, na.rm = TRUE)
 ```
 
 <!-- autogen-begin -->
@@ -238,10 +204,10 @@ suppressPackageStartupMessages(library("rstan"))
 ```
 
 ```{r fit-vb-pc, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
-mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
+mvb <- gfplot::fit_vb(.dpc$survey_samples, sex = "all")
 
 # for cpars:
-# mvb_stan <- gfplot::fit_vb(d$survey_samples, sex = "all", method = "mcmc",
+# mvb_stan <- gfplot::fit_vb(.dpc$survey_samples, sex = "all", method = "mcmc",
 #   control = list(adapt_delta = 0.99), iter = 500, chains = 4)
 
 mvb_summary <- summary(TMB::sdreport(mvb$model))
@@ -324,7 +290,7 @@ stockpc@Linfsd <- c(0, 0.2)
 <!-- autogen-end -->
 
 ```{r fit-maturity-pc, echo = knitr_echo, out.width="4in", fig.width=6}
-m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
+m_mat <- gfplot::fit_mat_ogive(.dpc$survey_samples, type = "length")
 mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
 se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
@@ -379,7 +345,7 @@ stockpc@D <- c(0.45, 0.92)
 We can fit a length-weight growth model with gfplot:
 
 ```{r fit-lw-pc, echo = knitr_echo, out.width="4in", fig.width=6}
-mlw <- gfplot::fit_length_weight(d$survey_samples, sex = "all")
+mlw <- gfplot::fit_length_weight(.dpc$survey_samples, sex = "all")
 
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 ```
@@ -509,9 +475,7 @@ fleetpc@Spat_targ
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
 <!-- autogen-end -->
 
-TODO: May need to come up with some plausible scenarios for these effort trajectories.
-
-For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet" that is most relevant to catching Pacific Cod. 
+For now, derive these as approximations of the effort timeseries from the CPUE standardization analyses. Use the time series from our "fleet" that is most relevant to catching Pacific Cod. 
 
 ```{r desc-fleet-effyears-pc, results = knitr_results, echo = knitr_echo}
 fleet_effort <- read.csv(here::here("report/data/pcod-fleet-effort.csv"))
@@ -588,7 +552,7 @@ fleetpc@qinc <- c(0, 0)
 TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing efficiency.
 
 ```{r desc-fleet-qcv-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@qcv <- c(0.1, 0.4)
+fleetpc@qcv <- c(0.1, 0.2)
 ```
 
 <!-- autogen-begin -->
@@ -597,7 +561,7 @@ fleetpc@qcv <- c(0.1, 0.4)
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 <!-- autogen-end -->
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockpc@L50[[1]]` to `r stockpc@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockpc@L50[[2]], 1)`- and `r round(min_caught/stockpc@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+Based on the slot `isRel` below, this slot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockpc@L50[[1]]` to `r stockpc@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(.dpc$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockpc@L50[[2]], 1)`- and `r round(min_caught/stockpc@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-pc, results = knitr_results, echo = knitr_echo}
 fleetpc@L5 <- c(0.2, 0.4)
@@ -879,7 +843,7 @@ obspc@CAL_ESS
 <!-- autogen-end -->
 
 ```{r}
-average_cv <- dplyr::filter(d$survey_index, survey_abbrev == "SYN WCHG") %>% 
+average_cv <- dplyr::filter(.dpc$survey_index, survey_abbrev == "SYN WCHG") %>% 
   dplyr::pull(re) %>%
   mean() %>% 
   round(2)

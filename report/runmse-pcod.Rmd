@@ -141,8 +141,8 @@ Kplot(pcod_mse)
 And examine the output.
 
 ```{r}
-# plot(pcod_mse)
-# oldpar <- par()
+ plot(pcod_mse)
+ oldpar <- par()
 ##DFO_hist(pcod_mse)
 par(mfrow = c(1, 1))
 DFO_plot(pcod_mse)
@@ -164,7 +164,7 @@ DFO_proj(pcod_mse)
 #   xlab(expression(Pr(B>0.5~B[MSY]))) +
 #   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
 #   xlim(0, 1) + ylim(0, 1)
-#par(oldpar)
+par(oldpar)
 ```
 
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
