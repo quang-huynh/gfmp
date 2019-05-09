@@ -42,7 +42,7 @@ create_rmd <- function(file_name,
            cust_desc_fn)
     }
     if(kk$use_custom_description){
-      val <- grep("^\\*.*\\p$", j)
+      val <- grep("^\\*.*\\*$", j)
       if(!length(val)){
         stop("Error trying to find the header inside autogen chunk:\n",
              paste0(j, collapse = "\n"))
