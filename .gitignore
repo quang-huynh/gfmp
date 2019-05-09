@@ -16,6 +16,7 @@ build
 *.rdb
 *.rdx
 report/resdoc.Rmd
+report/resdoc.tex
 report/knitr-cache-tex/__packages
 report/knitr-cache-docx/
 *.aux

@@ -10,7 +10,7 @@ rmd_files: ["index.Rmd",
             "effort-pcod.Rmd",
             "om-specification-pcod.Rmd",
             "mp-specification-pcod.Rmd",
-            "runmse-pcod.Rmd"]
-            #"references.Rmd"]
+            "runmse-pcod.Rmd",
+            "references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true
