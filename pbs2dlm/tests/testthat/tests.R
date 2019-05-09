@@ -68,8 +68,23 @@ conn <- file("test-desc.rmd")
 write(rmd, conn)
 close(conn)
 
-test_that("Removal of adescription results in error", {
+test_that("Removal of a description results in error", {
   expect_error(create_rmd("test-desc.rmd", "test-slot-descriptions.csv"))
 })
 
+## ------------------------------------------------------------------------------------------------
+context("Check if more than one description header in an autogen chunk")
+if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
+create_default_rmd("test-desc.rmd")
+rmd <- readLines("test-desc.rmd")
+## Add duplicate description to file
+rmd <- append(rmd, rmd[964], after = 964)
+unlink("test-desc.rmd")
+conn <- file("test-desc.rmd")
+write(rmd, conn)
+close(conn)
+
+test_that("Duplicate description results in error", {
+  expect_error(create_rmd("test-desc.rmd", "test-slot-descriptions.csv"))
+})
 

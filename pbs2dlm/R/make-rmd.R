@@ -44,7 +44,11 @@ create_rmd <- function(file_name,
     if(kk$use_custom_description){
       val <- grep("^\\*.*\\*$", j)
       if(!length(val)){
-        stop("Error trying to find the header inside autogen chunk:\n",
+        stop("Error trying to find the description inside autogen chunk. Note it needs to start and end with an asterisk:\n",
+             paste0(j, collapse = "\n"))
+      }
+      if(length(val) > 1){
+        stop("Error - more than one line matches as a description inside autogen chunk:\n",
              paste0(j, collapse = "\n"))
       }
       j[val] <- paste0("*", kk$custom_description, "*")
