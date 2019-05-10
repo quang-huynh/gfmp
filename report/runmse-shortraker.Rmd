@@ -168,8 +168,8 @@ Cplot(short_mse)
 And examine the output.
 
 ```{r}
-# plot(short_mse)
-# oldpar <- par()
+ plot(short_mse)
+ oldpar <- par()
 ##DFO_hist(short_mse)
 par(mfrow = c(1, 1))
 DFO_plot(short_mse)

@@ -454,7 +454,7 @@ fleetpc@Name <- "BC Trawl Fleet"
 We will set the historical run-up to be approximately the length of the commercial fishery:
 
 ```{r desc-fleet-nyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@nyears <- 63
+fleetpc@nyears <- 62
 ```
 
 <!-- autogen-begin -->

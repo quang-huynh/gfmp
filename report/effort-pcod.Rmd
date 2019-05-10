@@ -239,6 +239,7 @@ Just use observed catch for Pacific Cod.
 
 ```{r plot-corrected-catch-pc}
 corrected_catch <- .dpc$catch %>% group_by(year) %>%
+  filter(year >=1956) %>% 
   summarise(
     spp_catch_observed = sum(landed_kg)) %>% 
   transmute(
