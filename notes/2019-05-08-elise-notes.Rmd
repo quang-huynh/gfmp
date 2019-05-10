@@ -1,0 +1,76 @@
+# Hook and line effort for Shortraker
+
+Quick glance at catches in merged catch gffos table for relevant fisheries:
+
+```{r}
+.d <- gfdata::run_sql(database = "GFFOS", "SELECT FISHERY_SECTOR
+		, CAST(SUM(LANDED_KG) AS INT) LANDED_KG
+	FROM GF_MERGED_CATCH C
+	WHERE C.SPECIES_CODE = '403' 
+		AND GEAR = 'HOOK AND LINE'
+	GROUP BY FISHERY_SECTOR
+	ORDER BY LANDED_KG DESC")
+tot_catch <- sum(.d$LANDED_KG)
+prop <- .d %>% mutate(landed_prop = LANDED_KG/tot_catch)
+prop
+```
+
+So several of the fisheries only catch minimal Shortraker and wouldn't be 
+included calculating effort. We will continue on with the top shortraker-
+catching fisheries: ZN/Rockfish outside, Halibut and sablefish, Sabelfish, and
+Halibut.
+
+Looking at the catch of shortraker by these fisheries by year:
+
+```{r}
+.d <- gfdata::run_sql(database = "GFFOS", "SELECT YEAR(BEST_DATE) YEAR
+		, FISHERY_SECTOR
+		, CAST(SUM(LANDED_KG) AS INT) LANDED_KG
+	FROM GF_MERGED_CATCH C
+	WHERE C.SPECIES_CODE = '403' 
+		AND GEAR = 'HOOK AND LINE'
+		AND FISHERY_SECTOR IN ('HALIBUT', 'ZN', 'HALIBUT AND SABLEFISH', 'ROCKFISH OUTSIDE', 'SABLEFISH')
+	GROUP BY FISHERY_SECTOR
+		, YEAR(BEST_DATE)
+	ORDER BY YEAR, FISHERY_SECTOR")
+tot_catch <- .d %>% group_by(YEAR) %>%
+  summarize(sum(LANDED_KG))
+tot_catch
+join <- inner_join(.d, tot_catch, by = "YEAR")
+join %>% mutate(prop = formatC(LANDED_KG/sum(LANDED_KG), digits = 2))
+
+```
+
+Fishing event level data are not available for the Halibut fishery prior to 2006.
+These data do exist and are held by the IPHC; however, we do not have access
+to them. Therefore, we must look at effort in terms of trips.
+
+(Alternatively, could look at fishing event level data and exclude Halibut fishery.
+This could include depth and locality.)
+
+To define the fleet, we can look at how much of the annual Shortraker catch is
+encompassed by different combinations of threshold min catch in a threshold 
+number of trips catching. The combination of thresholds that account for perhaps
+~80% of catch may define the vessels that are targetting shortraker.
+
+We could additionally examine other species caught with shortraker to define the
+fleet that is targetting shortraker (with or without targetting other species
+simultaneously).
+
+Latitude is missing for > 181,500 out of 1,704,952 records so will not filter on 
+latitudinal bounds.
+SR, in a threshold number of years.
+
+Removed fe_start_date and fe_end_date qualifiers - these are often not available
+and we would lose a lot of data. Were relevant for trawl to calculate tow time. 
+Not necessary for hl.
+
+Note years each fishery was active:
+ZN 1985-2006 / Outside RF 2006-present
+Halibut 1991-present
+Sablefish 1995-present
+Halibut and sablefish 2006-present
+
+
+Not sure why tidy_cpue_index was selecting only 5CDE. Changed to include 3CD and 5AB.
+
