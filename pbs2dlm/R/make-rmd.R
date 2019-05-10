@@ -9,9 +9,11 @@
 #' @export
 #'
 #' @examples
-#' create_rmd(here::here("report/om-specification.rmd"))
+#' testing_path <- tempdir()
+#' dir.create(testing_path, showWarnings = FALSE)
+#' create_rmd(file.path(testing_path, "test.Rmd"))
 create_rmd <- function(file_name,
-                       cust_desc_file_name = here::here("pbs2dlm/inst/alt-slot-descriptions.csv"),
+                       cust_desc_file_name = system.file("alt-slot-descriptions.csv", package = "pbs2dlm"),
                        ...){
 
   if (!file.exists(file_name)){
@@ -27,7 +29,8 @@ create_rmd <- function(file_name,
   if(length(beg) != length(end)){
     stop("Error - mismatch between number of autogen start tags (", length(beg), ") and ",
          "end tags (", length(end), ").\nLine numbers for start tags are:\n", paste(beg, collapse = " "),
-         "\nLine numbers for end tags are:\n", paste(end, collapse = " "), "\n")
+         "\nLine numbers for end tags are:\n", paste(end, collapse = " "), "\n",
+         call. = FALSE)
   }
   lapply(seq_along(beg), function(y){
     j <- rmd[beg[y]:end[y]]
@@ -39,17 +42,20 @@ create_rmd <- function(file_name,
     if(nrow(kk) != 1){
       stop("Error trying to find slot_type '",
            k[1], "', slot '", k[2], "' in the descriptions file: ",
-           cust_desc_fn)
+           cust_desc_fn,
+           call. = FALSE)
     }
     if(kk$use_custom_description){
       val <- grep("^\\*.*\\*$", j)
       if(!length(val)){
         stop("Error trying to find the description inside autogen chunk. Note it needs to start and end with an asterisk:\n",
-             paste0(j, collapse = "\n"))
+             paste0(j, collapse = "\n"),
+             call. = FALSE)
       }
       if(length(val) > 1){
         stop("Error - more than one line matches as a description inside autogen chunk:\n",
-             paste0(j, collapse = "\n"))
+             paste0(j, collapse = "\n"),
+             call. = FALSE)
       }
       j[val] <- paste0("*", kk$custom_description, "*")
       rmd[beg[y]:end[y]] <<- j
@@ -72,12 +78,15 @@ create_rmd <- function(file_name,
 #' @export
 #'
 #' @examples
-#' create_default_rmd(here::here("report/om-specification.rmd"))
+#' testing_path <- tempdir()
+#' dir.create(testing_path, showWarnings = FALSE)
+#' create_default_rmd(file.path(testing_path, "test.Rmd"))
 create_default_rmd <- function(file_name, overwrite = FALSE,
   knitr_results = TRUE, knitr_echo = TRUE) {
   if (file.exists(file_name) && !overwrite)
     stop("File '", file_name, "' already exists. ",
-      "Set `overwrite = TRUE` if you want to overwrite it.", call. = FALSE)
+      "Set `overwrite = TRUE` if you want to overwrite it.",
+      call. = FALSE)
 
   rmd <- c(
     "```{r message = FALSE}\nlibrary(DLMtool)",
