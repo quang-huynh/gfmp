@@ -70,7 +70,7 @@ One thing we can do to check our operating model calibration is checksum random 
 # DLMtool::setup(cpus = parallel::detectCores())
 om@nsim <- 30
 short_historical <- runMSE(om, Hist = TRUE, parallel = FALSE)
-om@nsim <- 250L
+om@nsim <- 250L  #Why is this set again?
 
 # names(short_historical@TSdata)
 # dim(short_historical@TSdata$Catch)

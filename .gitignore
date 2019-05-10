@@ -16,6 +16,7 @@ build
 *.rdb
 *.rdx
 report/resdoc.Rmd
+report/resdoc.tex
 report/knitr-cache-tex/__packages
 report/knitr-cache-docx/
 *.aux
@@ -23,3 +24,4 @@ report/knitr-cache*
 data/shortraker-fleet-effort.csv
 report/data/shortraker-corrected-catch.csv
 report/data/shortraker-fleet-effort.csv
+
