@@ -394,10 +394,8 @@ round(stock@b, 2)
 <!-- autogen-begin -->
 ### Size_area_1 {#app:desc-stock-size_area_1}
 
-*The size of area 1 relative to area 2. Uniform distribution lower and upper bounds. Positive real numbers*
+*The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
 <!-- autogen-end -->
-
-Area 1 represents habitat outside of the range of fishing. TODO: we may be able to come up with some ballpark numbers from looking at the distribution of commercial effort and the predicted distribution of the species from the spatiotemporal models. For now, we will arbitrarily set this.
 
 ```{r desc-stock-size_area_1, results = knitr_results, echo = knitr_echo}
 stock@Size_area_1 <- c(0, 0.5)
@@ -406,10 +404,8 @@ stock@Size_area_1 <- c(0, 0.5)
 <!-- autogen-begin -->
 ### Frac_area_1 {#app:desc-stock-frac_area_1}
 
-*The fraction of the unfished biomass in stock 1. Uniform distribution lower and upper bounds. Positive real numbers*
+*The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
 <!-- autogen-end -->
-
-For now, we will set this to the same fraction as the size of area 1.
 
 ```{r desc-stock-frac_area_1, results = knitr_results, echo = knitr_echo}
 stock@Frac_area_1 <- c(0, 0.5)
