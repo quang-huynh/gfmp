@@ -103,26 +103,26 @@ stock@M <- c(0.015, 0.06)
 ```
 
 <!-- autogen-begin -->
-### M2 {#app:desc-stock-m2}
+<!-- ### M2 {#app:desc-stock-m2} -->
 
-*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
+<!-- *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number* -->
 <!-- autogen-end -->
 
-Not used.
+<!-- Not used. -->
 
-```{r desc-stock-m2, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-m2, results = knitr_results, echo = FALSE}
 stock@M2
 ```
 
 <!-- autogen-begin -->
-### Mexp {#app:desc-stock-mexp}
+<!-- ### Mexp {#app:desc-stock-mexp} -->
 
-*Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
+<!-- *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.* -->
 <!-- autogen-end -->
 
 Not used.
 
-```{r desc-stock-mexp, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-mexp, results = knitr_results, echo = FALSE}
 stock@Mexp <- c(NA_real_, NA_real_)
 ```
 
@@ -132,7 +132,7 @@ stock@Mexp <- c(NA_real_, NA_real_)
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-Unknown. Picking an arbitrary range.
+Unknown. Picking an arbitrary relatively small range.
 
 ```{r desc-stock-msd, results = knitr_results, echo = knitr_echo}
 stock@Msd <- c(0.00, 0.05)
@@ -191,26 +191,26 @@ stock@AC <- c(0.0, 0.7)
 ```
 
 <!-- autogen-begin -->
-### Period {#app:desc-stock-period}
+<!-- ### Period {#app:desc-stock-period} -->
 
-*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
+<!-- *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers* -->
 <!-- autogen-end -->
 
-Not used.
+<!-- Not used. -->
 
-```{r desc-stock-period, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-period, results = knitr_results, echo = FALSE}
 stock@Period
 ```
 
 <!-- autogen-begin -->
-### Amplitude {#app:desc-stock-amplitude}
+<!-- ### Amplitude {#app:desc-stock-amplitude} -->
 
-*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*
+<!-- *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1* -->
 <!-- autogen-end -->
 
-Not used.
+<!-- Not used. -->
 
-```{r desc-stock-amplitude, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-amplitude, results = knitr_results, echo = FALSE}
 stock@Amplitude
 ```
 
@@ -397,8 +397,10 @@ round(stock@b, 2)
 *The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
 <!-- autogen-end -->
 
+We will set this to 0.5 to approximate a single area model.
+
 ```{r desc-stock-size_area_1, results = knitr_results, echo = knitr_echo}
-stock@Size_area_1 <- c(0, 0.5)
+stock@Size_area_1 <- c(0.499, 0.501)
 ```
 
 <!-- autogen-begin -->
@@ -407,8 +409,10 @@ stock@Size_area_1 <- c(0, 0.5)
 *The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
 <!-- autogen-end -->
 
+We will set this to 0.5 to approximate a single area model.
+
 ```{r desc-stock-frac_area_1, results = knitr_results, echo = knitr_echo}
-stock@Frac_area_1 <- c(0, 0.5)
+stock@Frac_area_1 <- c(0.499, 0.501)
 ```
 
 <!-- autogen-begin -->
@@ -417,10 +421,10 @@ stock@Frac_area_1 <- c(0, 0.5)
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 <!-- autogen-end -->
 
-We probably don't have a lot of information on this. For now, we will set this to a wide range of possible values.
+We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-prob_staying, results = knitr_results, echo = knitr_echo}
-stock@Prob_staying <- c(0.1, 0.9)
+stock@Prob_staying <- c(0.499, 0.501)
 ```
 
 <!-- autogen-begin -->
@@ -665,82 +669,82 @@ fleet@DR
 ```
 
 <!-- autogen-begin -->
-### SelYears {#app:desc-fleet-selyears}
+<!-- ### SelYears {#app:desc-fleet-selyears} -->
 
-*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers*
+<!-- *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-selyears, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-selyears, results = knitr_results, echo = FALSE}
 fleet@SelYears
 ```
 
 <!-- autogen-begin -->
-### AbsSelYears {#app:desc-fleet-absselyears}
+<!-- ### AbsSelYears {#app:desc-fleet-absselyears} -->
 
-*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers*
+<!-- *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-absselyears, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-absselyears, results = knitr_results, echo = FALSE}
 fleet@AbsSelYears
 ```
 
 <!-- autogen-begin -->
-### L5Lower {#app:desc-fleet-l5lower}
+<!-- ### L5Lower {#app:desc-fleet-l5lower} -->
 
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-l5lower, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-l5lower, results = knitr_results, echo = FALSE}
 fleet@L5Lower
 ```
 
 <!-- autogen-begin -->
-### L5Upper {#app:desc-fleet-l5upper}
+<!-- ### L5Upper {#app:desc-fleet-l5upper} -->
 
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-l5upper, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-l5upper, results = knitr_results, echo = FALSE}
 fleet@L5Upper
 ```
 
 <!-- autogen-begin -->
-### LFSLower {#app:desc-fleet-lfslower}
+<!-- ### LFSLower {#app:desc-fleet-lfslower} -->
 
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-lfslower, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-lfslower, results = knitr_results, echo = FALSE}
 fleet@LFSLower
 ```
 
 <!-- autogen-begin -->
-### LFSUpper {#app:desc-fleet-lfsupper}
+<!-- ### LFSUpper {#app:desc-fleet-lfsupper} -->
 
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
+<!-- *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-lfsupper, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-lfsupper, results = knitr_results, echo = FALSE}
 fleet@LFSUpper
 ```
 
 <!-- autogen-begin -->
-### VmaxLower {#app:desc-fleet-vmaxlower}
+<!-- ### VmaxLower {#app:desc-fleet-vmaxlower} -->
 
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-vmaxlower, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-vmaxlower, results = knitr_results, echo = FALSE}
 fleet@VmaxLower
 ```
 
 <!-- autogen-begin -->
-### VmaxUpper {#app:desc-fleet-vmaxupper}
+<!-- ### VmaxUpper {#app:desc-fleet-vmaxupper} -->
 
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
+<!-- *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
 <!-- autogen-end -->
 
-```{r desc-fleet-vmaxupper, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-vmaxupper, results = knitr_results, echo = FALSE}
 fleet@VmaxUpper
 ```
 
@@ -755,14 +759,14 @@ fleet@CurrentYr <- 2018
 ```
 
 <!-- autogen-begin -->
-### MPA {#app:desc-fleet-mpa}
+<!-- ### MPA {#app:desc-fleet-mpa} -->
 
-*(Optional) Matrix specifying spatial closures for historical years.*
+<!-- *(Optional) Matrix specifying spatial closures for historical years.* -->
 <!-- autogen-end -->
 
-We will not use this functionality.
+<!-- We will not use this functionality. -->
 
-```{r desc-fleet-mpa, results = knitr_results, echo = knitr_echo}
+```{r desc-fleet-mpa, results = knitr_results, echo = FALSE}
 fleet@MPA
 ```
 
