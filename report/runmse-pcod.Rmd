@@ -15,7 +15,7 @@ avail("Reference")
 ```{r echo = TRUE}
 ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 
-ompc@nsim <- 50L
+ompc@nsim <- 250L
 ```
 
 ```{r, eval=TRUE, fig.asp=1}
@@ -135,7 +135,7 @@ Kplot(pcod_mse)
 ```
 
 ```{r}
-#Cplot(pcod_mse)
+Cplot(pcod_mse)
 ```
 
 And examine the output.

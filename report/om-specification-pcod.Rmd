@@ -206,6 +206,12 @@ suppressPackageStartupMessages(library("rstan"))
 ```{r fit-vb-pc, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
 mvb <- gfplot::fit_vb(.dpc$survey_samples, sex = "all")
 
+#RF just testing the mcmc version here. Returns similar results to mvb above
+# mvb2 <- fit_vb(.dpc$survey_samples, sex = "all", method = "mcmc", chains = 4L, iter = 2000L,
+#         uniform_priors = TRUE, seed = 1,
+#         cores = parallel::detectCores(),
+#         control = list(adapt_delta = 0.99, max_treedepth = 20L))
+
 # for cpars:
 # mvb_stan <- gfplot::fit_vb(.dpc$survey_samples, sex = "all", method = "mcmc",
 #   control = list(adapt_delta = 0.99), iter = 500, chains = 4)
