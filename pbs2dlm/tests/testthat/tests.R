@@ -1,12 +1,9 @@
-is_windows <- function() {
-  identical(.Platform$OS.type, "windows")
-}
-
-# create temporary directory in file system
+## Create temporary directory in file system
 testing_path <- paste0(tempdir(), "/testing_directory")
-#testing_path <- paste0("C:/junk/testing_directory")
 dir.create(testing_path, showWarnings = FALSE)
-if (getwd() != testing_path) setwd(testing_path)
+if(getwd() != testing_path){
+  setwd(testing_path)
+}
 
 ## ------------------------------------------------------------------------------------------------
 context("Check that the package files are present")
@@ -88,3 +85,18 @@ test_that("Duplicate description results in error", {
   expect_error(create_rmd("test-desc.rmd", "test-slot-descriptions.csv"))
 })
 
+## ------------------------------------------------------------------------------------------------
+context("Check that adding a zero-length suffix to the chunk names works")
+if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
+create_default_rmd("test-desc.rmd")
+change_chunk_suffix("test-desc.rmd", "testme")
+rmd <- readLines("test-desc.rmd")
+chunk_name_regex <- "(?<=desc-)[\\w-]+(?=\\}| *,)"
+val <- grep(chunk_name_regex, rmd, perl = TRUE)
+mtch <- grep("testme", rmd[val])
+
+test_that("All lines that should have had sufixes added do", {
+  expect_equal(length(val), length(mtch))
+})
+
+## ------------------------------------------------------------------------------------------------

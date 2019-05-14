@@ -1,4 +1,55 @@
-#' Create .rmd file describing DLMtool Objects and Slots and inject custom descriptions into it
+#' Change the chunk and tag suffixes for a .Rmd file
+#'
+#' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
+#'  an error will be given
+#' @param chunk_suffix A string to be appended to the chunk names and tags with a preceding dash.
+#'  If a name has already been appended this new suffix will replace it. If this is the empty
+#'  string, any previous suffixes will be removed.
+#'
+#' @return Nothing
+#' @export
+#'
+#' @examples
+#' testing_path <- tempdir()
+#' dir.create(testing_path, showWarnings = FALSE)
+#' create_default_rmd(file.path(testing_path, "test.Rmd"))
+#' change_chunk_suffix(file.path(testing_path, "test.Rmd"), "test-suffix")
+change_chunk_suffix <- function(file_name,
+                                chunk_suffix = ""){
+  if (!file.exists(file_name)){
+    stop("Error - file '", file_name, "' does not exist. Run create_default_rmd(file_name) ",
+         "to create it.",
+         call. = FALSE)
+  }
+
+  ## Regex will find both tags and code chunk names (| part in lookbehind)
+  chunk_name_regex <- "(?<=desc-)[\\w-]+(?=\\}| *,)"
+  rmd <- readLines(file_name)
+  val <- grep(chunk_name_regex, rmd, perl = TRUE)
+  lapply(val, function(x){
+    k <- stringr::str_split(regmatches(rmd[x], regexpr(chunk_name_regex, rmd[x], perl = TRUE)), "-")[[1]]
+    if(length(k) >= 3){
+      ## Remove old suffix if it exists
+      k <- k[c(1,2)]
+    }
+    if(chunk_suffix != ""){
+      # If the last part of the chunk name is already the chunk_suffix it is
+      # likely that the function was run before and that chunk had only 1 chunk label (no dashes)
+      # In that case, ignore the replacement so there are not two of them at the end.
+      if(k[length(k)] != chunk_suffix){
+        k[length(k) + 1] <- chunk_suffix
+      }
+    }
+    rmd[x] <<- sub(chunk_name_regex, paste(k, collapse = "-"), rmd[x], perl = TRUE)
+  })
+
+  conn <- file(file_name)
+  write(rmd, conn)
+  close(conn)
+
+}
+
+#' Create .Rmd file describing DLMtool Objects and Slots and inject custom descriptions into it
 #'
 #' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
 #'  it will be created using create_default_rmd()
@@ -34,7 +85,6 @@ create_rmd <- function(file_name,
   }
   lapply(seq_along(beg), function(y){
     j <- rmd[beg[y]:end[y]]
-    k <- stringr::str_split(regmatches(j, regexpr("(?<=desc-)[\\w-]+(?=\\})", j, perl = TRUE)), "-")[[1]]
 
     kk <- cust_desc %>%
       dplyr::filter(slot_type == k[1]) %>%
