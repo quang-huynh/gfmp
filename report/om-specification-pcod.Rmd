@@ -594,7 +594,7 @@ fleetpc@LFS <- c(0.95, 1.1)#c(1.0, 1.2) #
 Assume all large fish are vulnerable.
 
 ```{r desc-fleet-vmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Vmaxlen <- c(0.95, 0.99) #c(0.05, 0.95) #
+fleetpc@Vmaxlen <-  c(1, 1) #c(0.05, 0.95) #
 ```
 
 <!-- autogen-begin -->
