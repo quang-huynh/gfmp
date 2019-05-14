@@ -400,7 +400,7 @@ round(stock@b, 2)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-size_area_1, results = knitr_results, echo = knitr_echo}
-stock@Size_area_1 <- c(0.499, 0.501)
+stock@Size_area_1 <- c(0.5, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -412,7 +412,7 @@ stock@Size_area_1 <- c(0.499, 0.501)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-frac_area_1, results = knitr_results, echo = knitr_echo}
-stock@Frac_area_1 <- c(0.499, 0.501)
+stock@Frac_area_1 <- c(0.5, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -424,7 +424,7 @@ stock@Frac_area_1 <- c(0.499, 0.501)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-prob_staying, results = knitr_results, echo = knitr_echo}
-stock@Prob_staying <- c(0.499, 0.501)
+stock@Prob_staying <- c(0.5, 0.5)
 ```
 
 <!-- autogen-begin -->
@@ -433,7 +433,7 @@ stock@Prob_staying <- c(0.499, 0.501)
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-We can assume that nearly 100% of the discarded shortraker rockfish die from barotrauma.
+We can assume that nearly 100% of the discarded shortraker rockfish die from barotrauma. However, we have assumed no discarding elsewhere in our operating model so this will have no effect.
 
 ```{r desc-stock-fdisc, results = knitr_results, echo = knitr_echo}
 stock@Fdisc <- 1
@@ -608,10 +608,10 @@ fleet@LFS <- c(1.0, 1.2)
 *The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
 <!-- autogen-end -->
 
-We don't have a lot of information to go on for this. There is likely some proportion of the population that is not vulnerable because of MPAs, the frozen footprint, and the extreme depths that the slow-moving nature of shortrocker rockfish live at.
+We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
 
 ```{r desc-fleet-vmaxlen, results = knitr_results, echo = knitr_echo}
-fleet@Vmaxlen <- c(0.05, 0.95)
+fleet@Vmaxlen <- c(1, 1)
 ```
 
 <!-- autogen-begin -->
@@ -630,8 +630,6 @@ fleet@isRel
 *Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
 
-Since we can assume that no shortraker rockfish will survive if caught, we will set this to 0.
-
 ```{r desc-fleet-lr5, results = knitr_results, echo = knitr_echo}
 fleet@LR5
 ```
@@ -641,8 +639,6 @@ fleet@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 <!-- autogen-end -->
-
-We will use the vector of selectivity breakpoints below to allow for historical changes. Therefore the we will leave this slot empty.
 
 ```{r desc-fleet-lfr, results = knitr_results, echo = knitr_echo}
 fleet@LFR
@@ -665,7 +661,7 @@ fleet@Rmaxlen
 <!-- autogen-end -->
 
 ```{r desc-fleet-dr, results = knitr_results, echo = knitr_echo}
-fleet@DR
+fleet@DR <- c(0, 0)
 ```
 
 <!-- autogen-begin -->
