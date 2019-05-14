@@ -85,6 +85,7 @@ create_rmd <- function(file_name,
   }
   lapply(seq_along(beg), function(y){
     j <- rmd[beg[y]:end[y]]
+    k <- stringr::str_split(regmatches(j, regexpr("(?<=desc-)[\\w-]+(?=\\})", j, perl = TRUE)), "-")[[1]]
 
     kk <- cust_desc %>%
       dplyr::filter(slot_type == k[1]) %>%
