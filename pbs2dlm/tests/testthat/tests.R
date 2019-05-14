@@ -86,7 +86,7 @@ test_that("Duplicate description results in error", {
 })
 
 ## ------------------------------------------------------------------------------------------------
-context("Check that adding a zero-length suffix to the chunk names works")
+context("Check that adding a suffix to the chunk names works")
 if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
 create_default_rmd("test-desc.rmd")
 change_chunk_suffix("test-desc.rmd", "testme")
