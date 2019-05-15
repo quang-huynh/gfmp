@@ -32,13 +32,31 @@ change_chunk_suffix <- function(file_name,
       ## Remove old suffix if it exists
       k <- k[c(1,2)]
     }
-    if(chunk_suffix != ""){
-      # If the last part of the chunk name is already the chunk_suffix it is
-      # likely that the function was run before and that chunk had only 1 chunk label (no dashes)
-      # In that case, ignore the replacement so there are not two of them at the end.
-      if(k[length(k)] != chunk_suffix){
-        k[length(k) + 1] <- chunk_suffix
+    ## Must check the second part to see if it is a legal slot name. This is for tags for base
+    ## types such as 'stock' and 'fleet' which may have a previously added suffix
+    if(length(k) == 2){
+      if(k[1] == "stock"){
+        if(!any(k[2] == tolower(DLMtool::StockDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "fleet"){
+        if(!any(k[2] == tolower(DLMtool::FleetDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "obs"){
+        if(!any(k[2] == tolower(DLMtool::ObsDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "imp"){
+        if(!any(k[2] == tolower(DLMtool::ImpDescription$Slot))){
+          k <- k[-2]
+        }
+      }else{
+        k <- k[-2]
       }
+    }
+    if(chunk_suffix != ""){
+      k[length(k) + 1] <- chunk_suffix
     }
     rmd[x] <<- sub(chunk_name_regex, paste(k, collapse = "-"), rmd[x], perl = TRUE)
   })
