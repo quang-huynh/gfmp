@@ -24,12 +24,9 @@ change_chunk_suffix <- function(file_name,
     stop("Error - chunk_suffix must be a single string, not a vector.",
          call. = FALSE)
   }
-  pattern <- "/|:|\\?|!|~|;|\\.|\\+|&|\\||<|>|@|\\$|\\^|`|'|\\(|\\)|\\[|\\]|\\{|\\}|\\|\\\\|\\\\\\\\|\\*"
-  if(chunk_suffix != ""){
-    if(chunk_suffix == "\\" | grepl(pattern, chunk_suffix)){
-      stop("Error - chunk_suffix can only contain letters, numbers, dashes (-), ",
-           "or underscores (_).", call. = FALSE)
-    }
+  if(gfutilities::has_specials(chunk_suffix, white = TRUE)){
+    stop("Error - chunk_suffix can only contain letters, numbers, dashes (-), ",
+         "or underscores (_).", call. = FALSE)
   }
   ## Regex will find both tags and code chunk names (| part in lookbehind)
   chunk_name_regex <- "(?<=desc-)[\\w-]+(?=\\}| *,)"
