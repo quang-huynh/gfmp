@@ -24,7 +24,7 @@ change_chunk_suffix <- function(file_name,
     stop("Error - chunk_suffix must be a single string, not a vector.",
          call. = FALSE)
   }
-  pattern <- "/|:|\\?|!|\\.|&|\\||<|>|@|\\$|\\^|\\|\\\\|\\\\\\\\|\\*"
+  pattern <- "/|:|\\?|!|~|;|\\.|\\+|&|\\||<|>|@|\\$|\\^|`|'|\\(|\\)|\\[|\\]|\\{|\\}|\\|\\\\|\\\\\\\\|\\*"
   if(chunk_suffix != ""){
     if(chunk_suffix == "\\" | grepl(pattern, chunk_suffix)){
       stop("Error - chunk_suffix can only contain letters, numbers, dashes (-), ",
