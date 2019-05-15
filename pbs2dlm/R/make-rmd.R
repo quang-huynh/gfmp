@@ -18,10 +18,19 @@ change_chunk_suffix <- function(file_name,
                                 chunk_suffix = ""){
   if (!file.exists(file_name)){
     stop("Error - file '", file_name, "' does not exist. Run create_default_rmd(file_name) ",
-         "to create it.",
+         "to create it.", call. = FALSE)
+  }
+  if(length(chunk_suffix) > 1){
+    stop("Error - chunk_suffix must be a single string, not a vector.",
          call. = FALSE)
   }
-
+  pattern <- "/|:|\\?|!|\\.|&|\\||<|>|@|\\$|\\^|\\|\\\\|\\\\\\\\|\\*"
+  if(chunk_suffix != ""){
+    if(chunk_suffix == "\\" | grepl(pattern, chunk_suffix)){
+      stop("Error - chunk_suffix can only contain letters, numbers, dashes (-), ",
+           "or underscores (_).", call. = FALSE)
+    }
+  }
   ## Regex will find both tags and code chunk names (| part in lookbehind)
   chunk_name_regex <- "(?<=desc-)[\\w-]+(?=\\}| *,)"
   rmd <- readLines(file_name)

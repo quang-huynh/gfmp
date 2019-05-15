@@ -100,3 +100,25 @@ test_that("All lines that should have had sufixes added do", {
 })
 
 ## ------------------------------------------------------------------------------------------------
+context("Check that adding a suffix with special characters or a vector of suffixes gives an error")
+if(file.exists("test-desc.rmd")) unlink("test-desc.rmd")
+create_default_rmd("test-desc.rmd")
+
+test_that("All lines that should have had sufixes added do", {
+  expect_error(change_chunk_suffix("test-desc.rmd", "hello?"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "world!"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "foo."))
+  expect_error(change_chunk_suffix("test-desc.rmd", "."))
+  expect_error(change_chunk_suffix("test-desc.rmd", "0<1"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "1>0"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "\\"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "\\\\"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "\\\\\\\\"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "\\\\\\\\\\"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "\\\\\\\\\\\\"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "1|2"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "3&4"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "5:6"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "7^8"))
+  expect_error(change_chunk_suffix("test-desc.rmd", "hello@worldcom"))
+})
