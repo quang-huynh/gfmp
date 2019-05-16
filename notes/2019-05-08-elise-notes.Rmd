@@ -113,6 +113,56 @@ is based on vessel reg number, year, trip id and catch. 2670 records removed (1,
 There are many records where the same vessel catches the same weight of the
 same species multiple times in a month. This is in the merged catch and PacHarvHL
 official catch tables, too. But may be worth checking the original catches to be sure.
+Could be due to dividing up catch over multiple trips?
+
+# Species caught with Shortraker
+
+The following sql code gives a count and catch of all species caught in the top
+5 (by landed weight) in a 'shortraker trip'. Longline fisheries and hook and 
+line gear only.
+
+```{r}
+other_species <-  gfplot::run_sql("GFFOS", "
+-- COUNT HOW MANY SHORTRAKER TRIPS CAUGHT EACH OF THE SPECIES IN THEIR TOP 5
+-- OR SUM OF LANDED_KG FOR SHORTRAKER TRIPS WHERE A SPECIES WAS IN THE TOP 5 CAUGHT
+SELECT C.SPECIES_CODE
+	,SPECIES_COMMON_NAME
+	,COUNT(TRIP_ID) COUNT_TRIPS
+	,SUM(SUM_LANDED_KG) TOTAL_LANDED_KG
+	,COUNT(DISTINCT(YEAR)) NUM_YEARS
+	
+FROM(
+
+	-- Select top 5 species caught in each trip with shortraker
+	SELECT YEAR, TRIP_ID, SPECIES_CODE, SUM_LANDED_KG
+	FROM (
+
+		-- Rank each species by landed_kg for each trip which caugth shortraker
+		SELECT YEAR(BEST_DATE) YEAR, MC.TRIP_ID, SPECIES_CODE, CAST(SUM(LANDED_KG) AS INT) SUM_LANDED_KG, ROW_NUMBER() 
+			OVER (Partition BY MC.TRIP_ID
+				ORDER BY SUM(LANDED_KG) DESC) AS RANK
+		FROM GF_MERGED_CATCH MC
+			RIGHT JOIN
+
+			-- HL trips which caught shortraker
+				(SELECT TRIP_ID
+				FROM GF_MERGED_CATCH MC
+				WHERE  MC.SPECIES_CODE = '403' AND
+					FISHERY_SECTOR IN ('HALIBUT', 'SABLEFISH', 'HALIBUT AND SABLEFISH', 'ZN', 'ROCKFISH OUTSIDE') AND
+					GEAR = 'HOOK AND LINE' AND LANDED_KG > 10
+				GROUP BY TRIP_ID) A ON A.TRIP_ID = MC.TRIP_ID
+		
+		WHERE LANDED_KG > 0	
+		GROUP BY YEAR(BEST_DATE), MC.TRIP_ID, SPECIES_CODE) B
+
+	WHERE RANK <=10
+	) C
+		INNER JOIN SPECIES S ON S.SPECIES_CODE = C.SPECIES_CODE
+GROUP BY 
+	C.SPECIES_CODE
+	,SPECIES_COMMON_NAME
+ORDER BY TOTAL_LANDED_KG DESC, NUM_YEARS DESC")
+```
 
 
 
