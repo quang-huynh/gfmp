@@ -1,4 +1,79 @@
-#' Create .rmd file describing DLMtool Objects and Slots and inject custom descriptions into it
+#' Change the chunk and tag suffixes for a .Rmd file
+#'
+#' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
+#'  an error will be given
+#' @param chunk_suffix A string to be appended to the chunk names and tags with a preceding dash.
+#'  If a name has already been appended this new suffix will replace it. If this is the empty
+#'  string, any previous suffixes will be removed.
+#'
+#' @return Nothing
+#' @export
+#'
+#' @examples
+#' testing_path <- tempdir()
+#' dir.create(testing_path, showWarnings = FALSE)
+#' create_default_rmd(file.path(testing_path, "test.Rmd"))
+#' change_chunk_suffix(file.path(testing_path, "test.Rmd"), "test-suffix")
+change_chunk_suffix <- function(file_name,
+                                chunk_suffix = ""){
+  if (!file.exists(file_name)){
+    stop("Error - file '", file_name, "' does not exist. Run create_default_rmd(file_name) ",
+         "to create it.", call. = FALSE)
+  }
+  if(length(chunk_suffix) > 1){
+    stop("Error - chunk_suffix must be a single string, not a vector.",
+         call. = FALSE)
+  }
+  if(gfutilities::has_specials(chunk_suffix, white = TRUE)){
+    stop("Error - chunk_suffix can only contain letters, numbers, dashes (-), ",
+         "or underscores (_).", call. = FALSE)
+  }
+  ## Regex will find both tags and code chunk names (| part in lookbehind)
+  chunk_name_regex <- "(?<=desc-)[\\w-]+(?=\\}| *,)"
+  rmd <- readLines(file_name)
+  val <- grep(chunk_name_regex, rmd, perl = TRUE)
+  lapply(val, function(x){
+    k <- stringr::str_split(regmatches(rmd[x], regexpr(chunk_name_regex, rmd[x], perl = TRUE)), "-")[[1]]
+    if(length(k) >= 3){
+      ## Remove old suffix if it exists
+      k <- k[c(1,2)]
+    }
+    ## Must check the second part to see if it is a legal slot name. This is for tags for base
+    ## types such as 'stock' and 'fleet' which may have a previously added suffix
+    if(length(k) == 2){
+      if(k[1] == "stock"){
+        if(!any(k[2] == tolower(DLMtool::StockDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "fleet"){
+        if(!any(k[2] == tolower(DLMtool::FleetDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "obs"){
+        if(!any(k[2] == tolower(DLMtool::ObsDescription$Slot))){
+          k <- k[-2]
+        }
+      }else if(k[1] == "imp"){
+        if(!any(k[2] == tolower(DLMtool::ImpDescription$Slot))){
+          k <- k[-2]
+        }
+      }else{
+        k <- k[-2]
+      }
+    }
+    if(chunk_suffix != ""){
+      k[length(k) + 1] <- chunk_suffix
+    }
+    rmd[x] <<- sub(chunk_name_regex, paste(k, collapse = "-"), rmd[x], perl = TRUE)
+  })
+
+  conn <- file(file_name)
+  write(rmd, conn)
+  close(conn)
+
+}
+
+#' Create .Rmd file describing DLMtool Objects and Slots and inject custom descriptions into it
 #'
 #' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
 #'  it will be created using create_default_rmd()
