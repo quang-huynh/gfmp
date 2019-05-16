@@ -1,6 +1,6 @@
 library(tidyverse)
 
-#' Make a defualt custom descriptions CSV file in the inst directory
+#' Make a default custom descriptions CSV file in the pbs2dlm/inst directory
 #' This shouldn't be run unless you want to change the structure of the file
 generate_default_custom_descriptions_file <- function(){
   ds <- as_tibble(DLMtool::StockDescription) %>% mutate(SlotType = "Stock")
@@ -11,7 +11,9 @@ generate_default_custom_descriptions_file <- function(){
   d <- bind_rows(ds, df, do, di) %>%
     transmute(slot_type = SlotType,
               slot = Slot,
+              slot_order = row_number(),
+              show_slot = TRUE,
               use_custom_description = FALSE,
               custom_description = Description)
-  readr::write_csv(d, "inst/alt-slot-descriptions.csv")
+  readr::write_csv(d, here::here("pbs2dlm/inst/alt-slot-descriptions.csv"))
 }
