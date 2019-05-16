@@ -61,7 +61,9 @@ Latitude is missing for > 181,500 out of 1,704,952 records so will not filter on
 latitudinal bounds.
 SR, in a threshold number of years.
 
-Removed fe_start_date and fe_end_date qualifiers - these are often not available
+Separate within function between trip-level and fishing event-level dataset.
+
+For fe-level, removed fe_start_date and fe_end_date qualifiers - these are often not available
 and we would lose a lot of data. Were relevant for trawl to calculate tow time. 
 Not necessary for hl.
 
@@ -71,6 +73,47 @@ Halibut 1991-present
 Sablefish 1995-present
 Halibut and sablefish 2006-present
 
+Many trips report fishing in multiple fishery areas, so 
+cannot use major/minor/locality for trip-level.
 
-Not sure why tidy_cpue_index was selecting only 5CDE. Changed to include 3CD and 5AB.
+TO DO: Some trips can cross over the boundary of fishing year (fishing events falling on different sides of the first day of the 'fishing year' on the same trip) and so the trip falls into two years when an alternate fishing year (to the calendar year) is specified. This probably shouldn't happen, and when looking at a fishery with alt-start-date individually instead of all fisheries which do not have the same start date it's probably fine. I have left alt-year out for now. I imagine just a filter for the max or min of alt-year by trip would fix it, but not sure at this point if it should be the min or max (max = offload, but min = fishing season open/not open).
+
+When data are rolled up by everything trip related (376,829): 
+-	Trip id
+-	Year
+-	Month (no duplicate records for a trip in different months)
+-	Fishery sector
+-	Vessel name and reg number
+-	And species
+-	With catch, landed and discarded columns summed
+
+
+To check for duplicate trip_id's:
+    check_trip_ids <- catch[!duplicated(catch$trip_id), , drop = FALSE]
+
+If above reduces records from 'catch',...
+To investigate:
+  check_trip_ids <- catch[duplicated(catch$trip_id), , drop = FALSE]
+    dup_trip_ids = check_trip_ids$trip_id
+    check_trip_ids = catch %>% filter(trip_id %in% dup_trip_ids)
+    
+After much digging, several trips had records with the species of interest
+and zero catch. This was throwing off the positive trips calculation (inflating it)
+and throwing off balance the total trips returned. I filtered out 0 species
+catch early in function to deal with this.
+
+In addition, some trips go over a break between months or years, leading to
+multiple records for a trip (2 years or 2 months or some combination). I set 
+year and month to be the min year or month for a trip.
+
+Note that records without a vessel registration number (for all of these there
+is also no vessel name) are not included in the analysis as the fleet definition
+is based on vessel reg number, year, trip id and catch. 2670 records removed (1,282,918 remain)
+
+There are many records where the same vessel catches the same weight of the
+same species multiple times in a month. This is in the merged catch and PacHarvHL
+official catch tables, too. But may be worth checking the original catches to be sure.
+
+
+
 
