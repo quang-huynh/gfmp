@@ -99,8 +99,8 @@ create_rmd <- function(file_name,
   cust_desc[,c(1,2)] <- apply(cust_desc[,c(1,2)], c(1,2), tolower)
 
   rmd <- readLines(file_name)
-  beg <- grep("<!-- autogen-begin -->", rmd)
-  end <- grep("<!-- autogen-end -->", rmd)
+  beg <- grep("<!-- slot-chunk-begin -->", rmd)
+  end <- grep("<!-- slot-chunk-end -->", rmd)
   if(length(beg) != length(end)){
     stop("Error - mismatch between number of autogen start tags (", length(beg), ") and ",
          "end tags (", length(end), ").\nLine numbers for start tags are:\n", paste(beg, collapse = " "),
@@ -206,10 +206,11 @@ format_desc <- function(df,
         chunk_name,
         ", results = knitr_results, echo = knitr_echo}\n",
         inst_obj_name, "@", Slot,
-        "\n```\n"
+        "\n```\n",
+        "<!-- slot-chunk-end -->\n"
       ),
       Slot = paste0(
-        "<!-- autogen-begin -->\n",
+        "<!-- slot-chunk-begin -->\n",
         "### ",
         Slot,
         paste0(" {#app:", chunk_name, "}")
@@ -217,8 +218,7 @@ format_desc <- function(df,
       Description = paste0(
         "*",
         Description,
-        "*\n",
-        "<!-- autogen-end -->"
+        "*\n"
       )
     )
 
