@@ -5,13 +5,13 @@ species_name <- "shortraker rockfish"
 species_file <- here::here("generated-data",
                            paste0(gsub(" ", "-", species_name), ".rds"))
 if (!file.exists(species_file)) {
-  d <- list()
-  d$commercial_samples <- gfplot::get_commercial_samples(species_name)
-  d$survey_samples <- gfplot::get_survey_samples(species_name)
-  d$catch <- gfplot::get_catch(species_name)
-  d$survey_index <- gfplot::get_survey_index(species_name)
-  saveRDS(d, file = species_file)
+  .dshort <- list()
+  .dshort$commercial_samples <- gfplot::get_commercial_samples(species_name)
+  .dshort$survey_samples <- gfplot::get_survey_samples(species_name)
+  .dshort$catch <- gfplot::get_catch(species_name)
+  .dshort$survey_index <- gfplot::get_survey_index(species_name)
+  saveRDS(.dshort, file = species_file)
 } else {
-  d <- readRDS(species_file)
+  .dshort <- readRDS(species_file)
 }
 ```

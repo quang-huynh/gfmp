@@ -51,7 +51,7 @@ stock@Species <- "Sebastes borealis"
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
 ```{r desc-stock-maxage-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-stock@maxage <- max(d$survey_samples$age, d$commercial_samples$age, na.rm = TRUE)
+stock@maxage <- max(.dshort$survey_samples$age, .dshort$commercial_samples$age, na.rm = TRUE)
 ```
 <!-- slot-chunk-end -->
 
@@ -208,10 +208,10 @@ suppressPackageStartupMessages(library("rstan"))
 ```
 
 ```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
-mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
+mvb <- gfplot::fit_vb(.dshort$survey_samples, sex = "all")
 
 # for cpars:
-# mvb_stan <- gfplot::fit_vb(d$survey_samples, sex = "all", method = "mcmc",
+# mvb_stan <- gfplot::fit_vb(.dshort$survey_samples, sex = "all", method = "mcmc",
 #   control = list(adapt_delta = 0.99), iter = 500, chains = 4)
 
 mvb_summary <- summary(TMB::sdreport(mvb$model))
@@ -294,7 +294,7 @@ stock@Linfsd <- c(0, 0.2)
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r fit-maturity, echo = knitr_echo, out.width="4in", fig.width=6}
-m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
+m_mat <- gfplot::fit_mat_ogive(.dshort$survey_samples, type = "length")
 mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
 se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
@@ -349,7 +349,7 @@ stock@D <- c(0.1, 0.8)
 We can fit a length-weight growth model with gfplot:
 
 ```{r fit-lw, echo = knitr_echo, out.width="4in", fig.width=6}
-mlw <- gfplot::fit_length_weight(d$survey_samples, sex = "all")
+mlw <- gfplot::fit_length_weight(.dshort$survey_samples, sex = "all")
 
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 ```
@@ -569,7 +569,7 @@ fleet@qcv <- c(0, 0)
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock@L50[[1]]` to `r stock@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(d$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock@L50[[2]], 1)`- and `r round(min_caught/stock@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock@L50[[1]]` to `r stock@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(.dshort$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock@L50[[2]], 1)`- and `r round(min_caught/stock@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
 fleet@L5 <- c(0.6, 1.0)
@@ -847,7 +847,7 @@ obs@CAL_ESS
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r}
-average_cv <- dplyr::filter(d$survey_index, survey_abbrev == "SYN WCHG") %>%
+average_cv <- dplyr::filter(.dshort$survey_index, survey_abbrev == "SYN WCHG") %>%
   dplyr::pull(re) %>%
   mean() %>%
   round(2)

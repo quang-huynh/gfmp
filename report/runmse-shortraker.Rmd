@@ -431,7 +431,7 @@ voi_out <- DLMtool::VOI(short_mse)
 ```
 
 ```{r}
-# AvC <- d$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
+# AvC <- .dshort$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
 #   summarize(catch = sum(value)) %>% pull(catch) %>% mean()
 # AvC <- AvC / 1000
 
@@ -472,7 +472,7 @@ abline(h = median(na.omit(tac)), col = "red")
 
 
 ```{r}
-# AvC <- d$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
+# AvC <- .dshort$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
 #   summarize(catch = sum(value)) %>% pull(catch) %>% mean()
 # AvC <- AvC / 1000
 
@@ -511,7 +511,7 @@ short_dat@CV_Mort <- 0.2
 # short_dat@FMSY_M <- 0.75                            #  Ratio of FMSY/M
 # short_dat@CV_FMSY_M <- 0.2
 
-mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
+mvb <- gfplot::fit_vb(.dshort$survey_samples, sex = "all")
 mvb_summary <- summary(TMB::sdreport(mvb$model))
 se <- mvb_summary[,"Std. Error"]
 cv <- se / abs(mvb_summary[,"Estimate"])
@@ -524,12 +524,12 @@ short_dat@CV_vbK <- cv[["k"]]
 short_dat@CV_vbLinf <- cv[["linf"]]
 short_dat@CV_vbt0 <- cv[["t0"]]
 
-m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
+m_mat <- gfplot::fit_mat_ogive(.dshort$survey_samples, type = "length")
 mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
 short_dat@L50 <- mat_perc$f.p0.5
 short_dat@L95 <- mat_perc$f.p0.95
 
-mlw <- gfplot::fit_length_weight(d$survey_samples, sex = "all")
+mlw <- gfplot::fit_length_weight(.dshort$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 .summary <- summary(TMB::sdreport(mlw$model))
 se <- .summary[,"Std. Error"]
