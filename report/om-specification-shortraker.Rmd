@@ -89,7 +89,7 @@ stock@R0 <- 1000
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
-@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. We could also use t{he linear regression model from [@hoenig1983], which estimates $\ln(\hat{M})$ as $\ln(\hat{M}) = 1.44 - 0.982 \cdot \ln(t_\mathrm{max})$. If we assume that the maximum age is the oldest age in our samples, `r stock@maxage`, then we can estimate $M$ as
+@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. We could also use the linear regression model from [@hoenig1983], which estimates $\ln(\hat{M})$ as $\ln(\hat{M}) = 1.44 - 0.982 \cdot \ln(t_\mathrm{max})$. If we assume that the maximum age is the oldest age in our samples, `r stock@maxage`, then we can estimate $M$ as
 
 ```{r}
 exp(1.44 - 0.982 * log(stock@maxage))
@@ -132,10 +132,10 @@ stock@Mexp <- c(NA_real_, NA_real_)
 
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-Unknown. Picking an arbitrary relatively small range.
+Setting this to 0 to turn off this functionality for simplicity.
 
 ```{r desc-stock-msd-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-stock@Msd <- c(0.00, 0.05)
+stock@Msd <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -170,12 +170,12 @@ stock@SRrel <- 1L
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-@thorson2014 finds the mean SD of recruitment deviations in log space to be ballpark 0.6--0.8.
+@thorson2014 finds the mean SD of recruitment deviations in log space for Scorpaeniformes to be about 0.78 with a standard deviation of about 0.35.
 
 FIXME: Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
 
 ```{r desc-stock-perr-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-stock@Perr <- c(0.6, 0.8)
+stock@Perr <- c(0.5, 0.9)
 ```
 <!-- slot-chunk-end -->
 
@@ -184,10 +184,10 @@ stock@Perr <- c(0.6, 0.8)
 
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-FIXME: look into meta-analyses. For now we will bound this with a wide range of possibilities.
+@thorson2014 finds the mean autocorrelation for Scorpaeniformes to be about 0.44 with a standard deviation of about 0.28.
 
 ```{r desc-stock-ac-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-stock@AC <- c(0.0, 0.7)
+stock@AC <- c(0.2, 0.6)
 ```
 <!-- slot-chunk-end -->
 
@@ -351,7 +351,7 @@ stock@L50_95
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
-This is an important value that we may want to think more deeply about.
+FIXME: This is an important value that we may want to think more deeply about.
 
 ```{r desc-stock-d-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
 stock@D <- c(0.1, 0.8)
@@ -472,10 +472,11 @@ fleet@Name <- "BC Fleet"
 
 *The number of years for the historical spool-up simulation. Single value. Positive integer*
 
-We will set the historical run-up to be approximately the length of the commercial fishery:
+We will set the historical run-up to be approximately the length of the commercial fishery. We have catches from 1978.
 
 ```{r desc-fleet-nyears-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-fleet@nyears <- 50
+fleet@nyears <- 2018 - 1978
+fleet@nyears
 ```
 <!-- slot-chunk-end -->
 
@@ -484,7 +485,7 @@ fleet@nyears <- 50
 
 *Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers*
 
-TODO: Need to dig into the code understand this parameter.
+TODO: Need to dig into the code understand this parameter. Perhaps this only comes into play with the multiple areas model?
 
 ```{r desc-fleet-spat_targ-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
 fleet@Spat_targ
@@ -571,10 +572,12 @@ fleet@qinc <- c(0, 0)
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing efficiency.
+TODO: We don't have a lot of data to go on for this.
+
+We will set this to 0 to indicate no interannual variability in fishing efficiency for simplicity.
 
 ```{r desc-fleet-qcv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-fleet@qcv <- c(0.1, 0.4)
+fleet@qcv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -788,12 +791,12 @@ obs@Name <- "BC Obs"
 
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-At least since 1996, observation error on catch should be very small.
+At least since 1996, observation error on catch should be very small. Setting this to 0.
 
-TODO: does this affect historical build up because there was certainly much larger observation are on catch before 1996.
+TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
 
 ```{r desc-obs-cobs-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Cobs <- c(0.05, 0.15)
+obs@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -802,10 +805,12 @@ obs@Cobs <- c(0.05, 0.15)
 
 *Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We will keep the possible sampling bias quite small because observation error on catch should be very small with 100% on board and dockside monitoring.
+We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
+
+FIXME: what about the historical period?
 
 ```{r desc-obs-cbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Cbiascv <- 0.05
+obs@Cbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -865,10 +870,10 @@ average_cv <- dplyr::filter(d$survey_index, survey_abbrev == "SYN WCHG") %>%
   round(2)
 ```
 
-This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's place a range around that for now.
+This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
 ```{r desc-obs-iobs-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Iobs <- c(0.3, 0.5)
+obs@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
 
@@ -877,10 +882,12 @@ obs@Iobs <- c(0.3, 0.5)
 
 *Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
 
-TODO: I believe this refers to bias from simulation run to run but I'm not sure. For now I will set it to  zero.
+TODO: I believe this refers to bias from simulation run to run.
+
+For simplicity we will set this to 0.
 
 ```{r desc-obs-ibiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Ibiascv <- c(0.333, 3.00)
+obs@Ibiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -923,10 +930,10 @@ obs@beta <- c(0.666, 1.500)
 
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have a large number of biological samples for the species. It is possible there is some persistent bias in like that 50% maturity. Let's set this to a range from a little to a fair bit.
+We don't have a large number of biological samples for the species. It is possible there is some persistent bias in estimates such as length at 50% maturity. Let's set this to a range from a little bit to a moderate amount:
 
 ```{r desc-obs-lenmbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@LenMbiascv <- c(0.05, 0.20)
+obs@LenMbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -950,7 +957,7 @@ obs@Mbiascv <- c(0.05, 0.20)
 Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
 
 ```{r desc-obs-kbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Kbiascv <- c(0.05, 0.20)
+obs@Kbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -962,7 +969,7 @@ obs@Kbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-t0biascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@t0biascv <- c(0.05, 0.20)
+obs@t0biascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -974,7 +981,7 @@ obs@t0biascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-linfbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@Linfbiascv <- c(0.05, 0.20)
+obs@Linfbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -986,7 +993,7 @@ obs@Linfbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-lfcbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@LFCbiascv <- c(0.05, 0.20)
+obs@LFCbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -998,7 +1005,7 @@ obs@LFCbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-lfsbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@LFSbiascv <- c(0.05, 0.20)
+obs@LFSbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -1102,7 +1109,7 @@ obs@Dobs
 *Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-hbiascv-shortraker-rockfish, results = knitr_results, echo = knitr_echo}
-obs@hbiascv <- c(0.05, 0.20)
+obs@hbiascv <- c(0.1)
 ```
 <!-- slot-chunk-end -->
 
