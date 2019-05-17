@@ -42,10 +42,12 @@ plotObs(obspc)
 One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
 
 ```{r, fig.asp=0.8}
-# DLMtool::setup(cpus = parallel::detectCores())
-ompc@nsim <- 30
+
+DLMtool::setup(cpus = parallel::detectCores())
+ompc@nsim <- 50
 pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = FALSE)
 ompc@nsim <- 250L #Why is this set again?
+#saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
 
 # names(pcod_historical@TSdata)
 # dim(pcod_historical@TSdata$Catch)

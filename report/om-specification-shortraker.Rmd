@@ -9,23 +9,6 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
-```{r download-data}
-science_name <- "Sebastes borealis"
-species_name <- "shortraker rockfish"
-species_file <- here::here("generated-data",
-  paste0(gsub(" ", "-", species_name), ".rds"))
-if (!file.exists(species_file)) {
-  d <- list()
-  d$commercial_samples <- gfplot::get_commercial_samples(species_name)
-  d$survey_samples <- gfplot::get_survey_samples(species_name)
-  d$catch <- gfplot::get_catch(species_name)
-  d$survey_index <- gfplot::get_survey_index(species_name)
-  saveRDS(d, file = species_file)
-} else {
-  d <- readRDS(species_file)
-}
-```
-
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-shortraker-rockfish}
 
 ```{r warnings = FALSE}
