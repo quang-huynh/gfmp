@@ -164,6 +164,7 @@ create_dlm_data <- function(dat,
 #'   [get_survey_samples()].
 #' @param unsorted_only Logical for whether to only include the unsorted samples.
 #'   Only applies to the commercial data.
+#' @export
 tidy_mean_length <- function(dat, unsorted_only = FALSE) {
   dat <- dat[!duplicated(dat$specimen_id), , drop = FALSE]
   if ("sampling_desc" %in% names(dat) && unsorted_only) {
@@ -207,7 +208,6 @@ tidy_cal <- function(dat, yrs, unsorted_only = TRUE, interval = 1,
 #'
 #' @return A catch at age or catch at length matrix as an array.
 #'   1 x nyears x nage/nlength
-#' @export
 #' \donttest{
 #' d_commercial <- gfdata::get_commercial_samples(222)
 #' cal <- tidy_cal(d_commercial, yrs = 2005:2010, interval = 5)
@@ -219,6 +219,7 @@ tidy_cal <- function(dat, yrs, unsorted_only = TRUE, interval = 1,
 #' caa[1, , ]
 #'
 #' }
+#' @export
 tidy_caa <- function(dat, yrs, unsorted_only = FALSE, interval = 1,
   sex = c(1, 2)) {
   dat <- dat[!duplicated(dat$specimen_id), , drop = FALSE]
