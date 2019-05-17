@@ -82,7 +82,7 @@ One thing we can do to check our operating model calibration is checksum random 
 ```{r, fig.asp=0.8}
 
 DLMtool::setup(cpus = parallel::detectCores())
-ompc@nsim <- 50
+ompc@nsim <- 150
 pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = FALSE)
 ompc@nsim <- 250L #Why is this set again?
 #saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
