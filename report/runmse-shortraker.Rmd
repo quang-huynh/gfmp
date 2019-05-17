@@ -1,11 +1,44 @@
-\newpage
+\clearpage
+
+# SHORTRAKER ROCKFISH: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
+
+For now pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
+
+```{r}
+mp <- c(
+  # "DCAC",
+  # "DCAC_40",
+  "DBSRA4010",
+  # "DBSRA",
+  # "DBSRA_40",
+  "DCAC4010",
+  "AvC",
+  "CC1",
+  # "CC2",
+  # "CC3",
+  # "CC4",
+  # "CC5",
+  "SPSRA",
+  "SPMSY",
+  "NFref",
+  "FMSYref",
+  "FMSYref50",
+  # "DD",
+  "DD4010",
+  "GB_CC")
+mp <- sort(mp)
+
+```
+
+```{r, results='asis'}
+csasdown::csas_table(MPtype(mp))
+```
 
 # SHORTRAKER ROCKFISH: RESULTS
 
 ## Constructing the operating model
 
 First, let's combine the stock, fleet, observation, and mp objects into a complete operating model:
-
 
 ```{r}
 # avail("Output")
@@ -15,7 +48,7 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 
-om@nsim <- 250L
+om@nsim <- 200
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
@@ -64,13 +97,13 @@ plotImp(imp)
 plotObs(obs)
 ```
 
-One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
+One thing we can do to check our operating model calibration is check some random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
 
 ```{r, fig.asp=0.8}
-# DLMtool::setup(cpus = parallel::detectCores())
-om@nsim <- 30
+original_nsim <- om@nsim
+om@nsim <- 12L
 short_historical <- runMSE(om, Hist = TRUE, parallel = FALSE)
-om@nsim <- 250L  #Why is this set again?
+om@nsim <- original_nsim
 
 # names(short_historical@TSdata)
 # dim(short_historical@TSdata$Catch)
@@ -116,10 +149,12 @@ short_historical@TSdata$B %>%
 Now we can run closed-loop simulation:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+.parallel <- !identical(.Platform$OS.type, "windows")
 file_name <- here::here("generated-data", "shortraker-mse.rds")
+om@seed <- 2849281
 if (!file.exists(file_name)) {
-  DLMtool::setup(cpus = parallel::detectCores())
-  short_mse <- runMSE(OM = om, MPs = mp, parallel = FALSE)
+  if (.parallel) DLMtool::setup(cpus = parallel::detectCores())
+  short_mse <- runMSE(OM = om, MPs = mp, parallel = .parallel)
   saveRDS(short_mse, file = file_name)
 } else {
   short_mse <- readRDS(file_name)
@@ -168,8 +203,8 @@ Cplot(short_mse)
 And examine the output.
 
 ```{r}
- plot(short_mse)
- oldpar <- par()
+plot(short_mse)
+oldpar <- par()
 ##DFO_hist(short_mse)
 par(mfrow = c(1, 1))
 DFO_plot(short_mse)
@@ -324,16 +359,17 @@ d_ <- d
 # dev.off()
 
 mps <- unique(d_$mp_name)
+iters <- sample(unique(d_$iter), 50L)
 # mps <- mps[-which(mps %in% c("CC4"))]
-p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
+p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps, iter %in% iters),
   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
   labels = TRUE)
-p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
+p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps, iter %in% iters),
   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
   labels = TRUE, yaxis = TRUE)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
+gridExtra::grid.arrange(p2, p1, ncol = 2)
 
 # pdf("analysis/short-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
@@ -392,4 +428,195 @@ g
 
 ```{r, fig.asp=1.2}
 voi_out <- DLMtool::VOI(short_mse)
+```
+
+```{r}
+# AvC <- d$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
+#   summarize(catch = sum(value)) %>% pull(catch) %>% mean()
+# AvC <- AvC / 1000
+
+.c <- readr::read_csv(here::here("report/data/shortraker-corrected-catch.csv"))
+AvC <- .c$`Predicted catch` * 1e3
+plot(AvC)
+AvC <- mean(AvC)
+
+short_dat <- new('Data')                            #  Create a blank DLM object
+short_dat@Name <- 'Shortraker Rockfish'             #  Name it
+short_dat@Units <- "T"                              #  units of catch
+short_dat@AvC <- AvC                                #  Average catches for time t (DCAC)
+short_dat@t <- 41
+short_dat@Year <- 1977:2018
+short_dat@t <- 2018 - 1977
+short_dat@LHYear <- 2018
+
+short_dat@Mort <- 0.03                              #  Natural mortality rate
+short_dat@CV_Mort <- 0.2
+
+short_dat@BMSY_B0 <- 0.40                           #  BMSY relative to unfished
+short_dat@CV_BMSY_B0 <- 0.045
+
+short_dat@Dt <- 0.6                                 #  Depletion over time t (DCAC)
+short_dat@CV_Dt <- 0.4
+
+short_dat@FMSY_M <- 0.75                            #  Ratio of FMSY/M
+short_dat@CV_FMSY_M <- 0.2
+
+# Fease(short_dat)
+xx <- runMP(short_dat, MPs = "DCAC4010", reps = 10000)
+tac <- as.vector(xx@TAC)
+hist(tac, breaks = 40)
+plot(.c$`Predicted catch` * 1e3)
+abline(h = na.omit(tac), col = "#00000001")
+abline(h = median(na.omit(tac)), col = "red")
+```
+
+
+```{r}
+# AvC <- d$catch %>% gfplot::tidy_catch() %>% group_by(year) %>%
+#   summarize(catch = sum(value)) %>% pull(catch) %>% mean()
+# AvC <- AvC / 1000
+
+.c <- readr::read_csv(here::here("report/data/shortraker-corrected-catch.csv"))
+.c <- .c$`Predicted catch` * 1e3
+plot(.c)
+AvC <- mean(AvC)
+
+short_dat <- new('Data')                            #  Create a blank DLM object
+short_dat@Name <- 'Shortraker Rockfish'             #  Name it
+short_dat@Units <- "T"                              #  units of catch
+short_dat@AvC <- AvC                                #  Average catches for time t (DCAC)
+short_dat@Cat <- matrix(.c, nrow = 1)
+# short_dat@t <- 42
+short_dat@Year <- 1977:2018
+short_dat@t <- 2018 - 1977 + 1
+short_dat@LHYear <- 2018
+
+# FIXME: fake for now: {
+short_dat@Ind <- matrix(rlnorm(short_dat@t, sdlog = 0.2), nrow = 1)
+plot(t(short_dat@Ind))
+short_dat@CV_Ind <- 0.5
+# }
+
+short_dat@sigmaR <- 0.78 # from meta-analysis
+
+short_dat@Mort <- 0.03                              #  Natural mortality rate
+short_dat@CV_Mort <- 0.2
+
+# short_dat@BMSY_B0 <- 0.40                           #  BMSY relative to unfished
+# short_dat@CV_BMSY_B0 <- 0.045
+
+# short_dat@Dt <- 0.6                                 #  Depletion over time t (DCAC)
+# short_dat@CV_Dt <- 0.4
+
+# short_dat@FMSY_M <- 0.75                            #  Ratio of FMSY/M
+# short_dat@CV_FMSY_M <- 0.2
+
+mvb <- gfplot::fit_vb(d$survey_samples, sex = "all")
+mvb_summary <- summary(TMB::sdreport(mvb$model))
+se <- mvb_summary[,"Std. Error"]
+cv <- se / abs(mvb_summary[,"Estimate"])
+gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
+short_dat@vbLinf <- mvb$pars[["linf"]]
+short_dat@vbK <- mvb$pars[["k"]]
+short_dat@vbt0 <- mvb$pars[["t0"]]
+
+short_dat@CV_vbK <- cv[["k"]]
+short_dat@CV_vbLinf <- cv[["linf"]]
+short_dat@CV_vbt0 <- cv[["t0"]]
+
+m_mat <- gfplot::fit_mat_ogive(d$survey_samples, type = "length")
+mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
+short_dat@L50 <- mat_perc$f.p0.5
+short_dat@L95 <- mat_perc$f.p0.95
+
+mlw <- gfplot::fit_length_weight(d$survey_samples, sex = "all")
+gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+.summary <- summary(TMB::sdreport(mlw$model))
+se <- .summary[,"Std. Error"]
+sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
+short_dat@wlb <- mlw$pars[["b"]]
+short_dat@wla <- exp(mlw$pars[["log_a"]])
+short_dat@CV_wla <- sd2cv(se[["log_a"]]) # log scale
+short_dat@CV_wlb <- se[["b"]] / mlw$pars[["b"]]
+
+short_dat@MaxAge <- om@maxage
+
+# GB_CC needs Cref and optionally define CV_Cref
+
+Fease(short_dat)
+
+library(MSEtool)
+# xx <- runMP(short_dat, MPs = "DD_TMB", reps = 1)
+
+m <- DD_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.3))
+m <- SP_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.3))
+# m <- SP_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.3))
+
+m <- SP_75MSY(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.3))
+
+m
+
+mp <- c(
+  # "DCAC",
+  # "DCAC_40",
+  # "DBSRA4010",
+  # "DBSRA",
+  # "DBSRA_40",
+  # "DCAC4010",
+  "AvC",
+  "CC1",
+  # "CC2",
+  # "CC3",
+  # "CC4",
+  # "CC5",
+  "SPSRA",
+  "SPMSY",
+  "NFref",
+  "FMSYref",
+  "FMSYref50",
+  # "DD",
+  # "DD4010",
+  "GB_CC",
+  # "DDSS_75MSY",
+  # "SCA_75MSY",
+  # "SP_75MSY"
+  )
+o <- runMSE(om, MPs = mp, parallel = .parallel)
+
+# xx <- runMP(short_dat, MPs = "DCAC4010", reps = 10000)
+tac <- as.vector(xx@TAC)
+hist(tac, breaks = 40)
+plot(.c)
+abline(h = na.omit(tac), col = "#00000001")
+abline(h = median(na.omit(tac)), col = "red")
+```
+
+Try to fit the delay difference model to our simulation data:
+
+```{r}
+library(MSEtool)
+om <- new('OM', stock, fleet, obs, imp)
+.parallel <- !identical(.Platform$OS.type, "windows")
+if (.parallel) DLMtool::setup(cpus = parallel::detectCores())
+om@nsim <- 100
+DD_MSY <- MSEtool::make_MP(DD_TMB, HCR_MSY, diagnostic = "full")
+
+x <- MSEtool::prelim_AM(x = om, Assess = DD_TMB)
+
+myMSE <- runMSE(OM = om, MPs = "DD_MSY", PPD = TRUE)
+diagnostic_AM(myMSE)
+retrospective_AM(myMSE, sim = 1, MP = "DD_MSY")
+
+cpue <- readr::read_csv(here::here("report/data/shortraker-cpue.csv"))
+
+short_dat@Ind <- matrix(c(13, cpue$est) / mean(c(13, cpue$est)), nrow = 1)
+short_dat@CV_Ind <- mean(cpue$se_link)
+
+system.time({
+  m <- DD_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.7))
+})
+plot(m)
+m
+m1 <- DD_TMB(Data = short_dat)
+plot(m1)
 ```
