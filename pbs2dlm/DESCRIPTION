@@ -16,8 +16,9 @@ Imports:
     reshape2,
     methods,
     rlang
+Suggests: gfdata
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
-Remotes: github::pbs-assess/gfplot
+Remotes: github::pbs-assess/gfplot, github::pbs-assess/gfdata
