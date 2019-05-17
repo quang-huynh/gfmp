@@ -1,0 +1,241 @@
+---
+title: "Get data for testing SRA scoping function"
+author: "Robyn Forrest, Sean Anderson"
+date: "May 17, 2019"
+output: html_document
+link-citations: true
+bibliography: "C:/GitHub/gfmp/report/bib/refs.bib"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Purpose
+
+Using code from pbs2dlm to build datasets for testing Quang's SRA scoping function. This function will use SRA to condition an operating model on historical catches, plus one or more indices, composition data and life history data from the OM object. Trawl caught species in Area 5ABCD for now. Inside YE in Area 4B.
+
+**Test species**
+
+*Species for which we already have OMs:*
+
+Shortraker Rockfish
+
+Pacific Cod (currently assessed with delay difference model assuming knife-edged selectivity and maturity at age 2 y).
+
+Inside YE Rockfish
+
+
+```{r load-libraries, cache=FALSE, echo=FALSE,  message=FALSE, results='hide', warning=FALSE}
+# add other packages here:
+library(gfplot)
+library(gfdata)
+library(gfutilities)
+library(pbs2dlm)
+library(csasdown)
+library(DLMtool)
+library(MSEtool)
+library(rfishbase)
+library(RColorBrewer)
+library(tidyverse)
+```
+
+## Pacific Cod
+
+First get the data and filter it for Area 5ABCD only
+
+```{r download-data-pc, warning=FALSE, message=FALSE}
+#Make sure these two area descriptions match up
+pcod_areas <- c("05","06","07","08") #QCS and HS for comm samples, surv samples and catch
+pcod_survey_areas <- c("Queen Charlotte Sound Synoptic Bottom Trawl" ,"Hecate Strait Synoptic Bottom Trawl") #QCS and HS for survey index
+pcod_survey_gear <- c("HS MSA","SYN HS","SYN QCS")
+pcod_commercial_gear_catch <- "BOTTOM TRAWL"
+pcod_commercial_gear_samples <- 1
+
+science_name <- "Gadus macrocephalus"
+species_name <- "Pacific Cod"
+species_file <- here::here("generated-data",
+  paste0(gsub(" ", "-", species_name), ".rds"))
+if (!file.exists(species_file)) {
+  d_pc <- list()
+  d_pc$commercial_samples <- gfdata::get_commercial_samples(species_name)
+  d_pc$survey_samples <- gfdata::get_survey_samples(species_name)
+  d_pc$catch <- gfdata::get_catch(species_name)
+  d_pc$survey_index <- gfdata::get_survey_index(species_name)
+  saveRDS(d_pc, file = species_file)
+} else {
+  d_pc <- readRDS(species_file)
+}
+
+#Get only 5ABCD data
+d_pc$commercial_samples <- d_pc$commercial_samples %>% 
+  filter(major_stat_area_code %in% pcod_areas)
+
+d_pc$survey_samples <- d_pc$survey_samples %>% 
+  filter(major_stat_area_code %in% pcod_areas)
+
+d_pc$catch <- d_pc$catch %>% 
+  filter(major_stat_area_code %in% pcod_areas)
+
+d_pc$survey_index <- d_pc$survey_index %>% 
+  filter(survey_series_desc %in% pcod_survey_areas)
+
+#Get only data from trawl
+d_pc$commercial_samples <- d_pc$commercial_samples %>% 
+ filter(gear %in% pcod_commercial_gear_samples)
+
+d_pc$survey_samples <- d_pc$survey_samples %>% 
+  filter(survey_abbrev %in% pcod_survey_gear)
+
+d_pc$catch <- d_pc$catch %>% 
+  filter(gear %in% pcod_commercial_gear_catch)
+
+d_pc$survey_index <- d_pc$survey_index %>% 
+  filter(survey_abbrev %in% pcod_survey_gear)
+
+```
+
+Next make and fill a stock object to contain the life history parameters. Parameter values from @forrest2019 unless otherwise stated. See GFMP resdoc for documentation.
+TO DO: Looks like they want the fleet and obs objects as well 
+
+```{r make-stock-object-pc, warning=FALSE, message=FALSE}
+stockpc <- methods::new('Stock')
+stockpc@Name <- "Pacific Cod 5ABCD Stock"
+stockpc@Common_Name <- species_name
+stockpc@Species <- science_name
+stockpc@maxage <- max(d_pc$survey_samples$age, na.rm = TRUE)
+
+#Parameters from stock assessment
+stockpc@R0 <- c(2331,3902)
+stockpc@M <- c(0.28, 0.347)
+stockpc@Msd <- c(0.00, 0.1)
+stockpc@h <- c(0.432, 0.931)
+stockpc@SRrel <- 1L
+stockpc@Perr <- c(0.6, 1.0)
+#Use values from the data for now until we figure out why assessment results are different
+#stockpc@Linf <- c(88.7,103.4)
+#stockpc@K <-c(0.17,0.22)
+#stockpc@t0 <- c(-0.91, -0.72)
+
+#Guess, based on Thorson review
+stockpc@AC <- c(0.0, 0.7)
+
+#Fit growth curve
+suppressPackageStartupMessages(library("rstan"))
+mvb <- gfplot::fit_vb(d_pc$survey_samples, sex = "all")
+mvb_summary <- summary(TMB::sdreport(mvb$model))
+
+stockpc@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+stockpc@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+stockpc@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+
+vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
+gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
+sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
+stockpc@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+round(stockpc@LenCV, 2)
+
+#Guesses
+stockpc@Ksd <- c(0, 0.2)
+stockpc@Linfsd <- c(0, 0.2)
+
+#Maturity
+m_mat <- gfplot::fit_mat_ogive(d_pc$survey_samples, type = "length")
+mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
+se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
+gfplot::plot_mat_ogive(m_mat)
+
+stockpc@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
+stockpc@L50
+
+se_l50_95m <- pbs2dlm:::delta_method(
+  ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
+    -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
+stockpc@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
+stockpc@L50_95
+
+#Depletion from stock assessment -- Quang will get a different trajectory because the stock not assumed to be at BO in 1956
+stockpc@D <- c(0.45, 0.92)
+
+#Length Weight
+mlw <- gfplot::fit_length_weight(d_pc$survey_samples, sex = "all")
+gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+stockpc@a <- exp(mlw$pars[["log_a"]])
+round(log(stockpc@a), 2)
+stockpc@b <- mlw$pars[["b"]]
+round(stockpc@b, 2)
+
+#Stock distribution
+stockpc@Size_area_1 <- c(0.49,0.51)
+stockpc@Frac_area_1 <- c(0.49,0.51)
+stockpc@Prob_staying <- c(0.49,0.51)
+
+#Assumed DMR (assume all die)
+stockpc@Fdisc <- 0.99
+
+```
+
+Now build and fill the data object
+
+```{r make-data-object-pc, warning=FALSE, message=FALSE}
+datapc <- methods::new('Data')
+
+starting_year <- 1956
+ending_year <- 2018
+all_years <- seq(starting_year, ending_year)
+
+#Catch at length
+#Identify obviously wrong samples
+# plot(d_pc$survey_samples$length, col="darkblue", pch=19)
+# giant_cod <- d_pc$survey_samples %>% 
+#   dplyr::filter(length>200)
+# readr::write_csv(giant_cod, "C:/GitHub/gfmp/Giant_Pcod.csv")
+# 
+# #These all came from the Hard Bottom Longline Outside South survey
+# #Check whether all samples from this survey were measured in mm
+# hblloss_cod <- d_pc$survey_samples %>% 
+#   dplyr::filter(survey_abbrev=="HBLL OUT S")
+# readr::write_csv(hblloss_cod, "C:/GitHub/gfmp/hblloss_Pcod.csv")
+#   
+# unique(d_pc$survey_samples$survey_abbrev)
+
+#First of all get generic survey samples ... don't break out by survey
+calpc <- dplyr::filter(d_pc$survey_samples) %>%
+  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+(length_bins <- get_cal_bins(calpc, length_bin_interval = 5))
+(calpc <- calpc[1, , ])
+
+datapc@CAL <- calpc
+  
+#Catch at age
+caapc <- dplyr::filter(d_pc$survey_samples) %>%
+  pbs2dlm::tidy_caa(yrs = all_years)
+caapc[1, , ]
+
+datapc@CAA <- caapc
+
+#Mean length in commercial data
+mean_length <- dplyr::filter(d_pc$commercial_samples) %>%
+  pbs2dlm::tidy_mean_length() %>%
+  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
+  right_join(tibble(year = all_years), by = "year")
+as.data.frame(mean_length)
+
+#Having type-casting problems here
+#datapc@ML <- as.vector(mean_length[,3])
+
+```
+
+
+
+## References {-}
+<!--This manually sets the header for this unnumbered chapter.-->
+\markboth{References}{References}
+
+\noindent
+\vspace{-2em}
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
