@@ -89,6 +89,7 @@ change_chunk_suffix <- function(file_name,
 #' create_rmd(file.path(testing_path, "test.Rmd"))
 create_rmd <- function(file_name,
                        cust_desc_file_name = system.file("alt-slot-descriptions.csv", package = "pbs2dlm"),
+                       slot_type_order_file_name = system.file("slot-type-order.csv", package = "pbs2dlm"),
                        ...){
 
   if (!file.exists(file_name)){
@@ -98,30 +99,41 @@ create_rmd <- function(file_name,
   cust_desc <- readr::read_csv(cust_desc_file_name)
   cust_desc[,c(1,2)] <- apply(cust_desc[,c(1,2)], c(1,2), tolower)
 
+  slot_type_order <- readr::read_csv(slot_type_order_file_name)
+
   rmd <- readLines(file_name)
   beg <- grep("<!-- slot-chunk-begin -->", rmd)
   end <- grep("<!-- slot-chunk-end -->", rmd)
   if(length(beg) != length(end)){
-    stop("Error - mismatch between number of autogen start tags (", length(beg), ") and ",
-         "end tags (", length(end), ").\nLine numbers for start tags are:\n", paste(beg, collapse = " "),
+    stop("Error - mismatch between number of slot begin tags (", length(beg), ") and ",
+         "end tags (", length(end), ").\nLine numbers for begin tags are:\n", paste(beg, collapse = " "),
          "\nLine numbers for end tags are:\n", paste(end, collapse = " "), "\n",
          call. = FALSE)
   }
-  lapply(seq_along(beg), function(y){
-    j <- rmd[beg[y]:end[y]]
-    k <- stringr::str_split(regmatches(j, regexpr("(?<=desc-)[\\w-]+(?=\\})", j, perl = TRUE)), "-")[[1]]
+  pre <- rmd[1:(beg[1] - 1)]
+  ## Remove Initial slot type header and code from pre
+  hash <- grep("##", pre)
+  hash <- hash[length(hash)]
+  pre <- pre[1:(hash - 1)]
+  post <- rmd[(end[length(end)] + 1):length(rmd)]
+  ## Create list of slot chunks and between slot chunks
+  slots <- lapply(seq_along(beg), function(x){
+    rmd[beg[x]:end[x]]
+  })
 
+  ## Add custom definitions to slots which are set to have them, and check if they are to
+  ## be shown in the document. List elements will be slot chunks that are set to be shown,
+  ## or NULLs for those which are not
+  slots <- lapply(slots, function(x){
+    k <- stringr::str_split(regmatches(x, regexpr("(?<=desc-)[\\w-]+(?=\\})", x, perl = TRUE)), "-")[[1]]
     kk <- cust_desc %>%
       dplyr::filter(slot_type == k[1]) %>%
       dplyr::filter(slot == k[2])
     if(nrow(kk) != 1){
-      stop("Error trying to find slot_type '",
-           k[1], "', slot '", k[2], "' in the descriptions file: ",
-           cust_desc_fn,
-           call. = FALSE)
+      return(NULL)
     }
     if(kk$use_custom_description){
-      val <- grep("^\\*.*\\*$", j)
+      val <- grep("^\\*.*\\*$", x)
       if(!length(val)){
         stop("Error trying to find the description inside autogen chunk. Note it needs to start and end with an asterisk:\n",
              paste0(j, collapse = "\n"),
@@ -132,13 +144,119 @@ create_rmd <- function(file_name,
              paste0(j, collapse = "\n"),
              call. = FALSE)
       }
-      j[val] <- paste0("*", kk$custom_description, "*")
-      rmd[beg[y]:end[y]] <<- j
+      x[val] <- paste0("*", kk$custom_description, "*")
     }
+    if(!kk$show_slot){
+      return(NULL)
+    }
+    x
   })
 
-  conn <- file(file_name)
-  write(rmd, conn)
+  ## Remove any list elements that became NULL do to non-inclusion ini the above lapply
+  slots[sapply(slots, is.null)] <- NULL
+
+  if(length(unique(slot_type_order$order)) != nrow(slot_type_order)){
+    stop("Error - all values in the order column in '", slot_type_order_file_name, "' must be unique.",
+         call. = FALSE)
+  }
+  ## Reorder the slot list by slot_type first as found in slot_type_order_file_name,
+  ## then order as found in cust_desc_file_name.
+  jj <- slot_type_order %>%
+    dplyr::arrange(order) %>%
+    dplyr::pull(slot_type) %>%
+    tolower()
+
+  xxx <- do.call(rbind, lapply(jj, function(x){
+    kk <- cust_desc %>%
+      dplyr::filter(slot_type == x) %>%
+      dplyr::arrange(slot_order)
+
+    if(length(unique(kk$slot_order)) != nrow(kk)){
+      stop("Error - all values in the slot_order column in '", cust_desc_file_name,
+           "' for slot_type '", x, "' must be unique.",
+           call. = FALSE)
+    }
+    kk
+  })) %>%
+     dplyr::transmute(slot_type, slot, order = row_number())
+
+  last_slot_type <- "none"
+  ## Check every row in the ordered description table and if it is in the slots list,
+  ## insert it in order
+  s_in_list <- function(nm){
+    # Get logical vector of where the slot name nm is in the slots list
+    nm_str <- paste(nm$slot_type, nm$slot, sep = "-")
+    whr <- sapply(slots, function(x){
+      k <- stringr::str_split(regmatches(x, regexpr("(?<=desc-)[\\w-]+(?=\\})", x, perl = TRUE)), "-")[[1]]
+      g <- paste(k[1], k[2], sep = "-")
+      if(g == nm_str){
+        return(TRUE)
+      }
+      FALSE
+    })
+    if(sum(whr) > 1){
+      stop("Error - More than one chunk matches the name '", nm_str, "'.",
+           call. = FALSE)
+    }
+
+    if(last_slot_type != nm$slot_type){
+      if(nm$slot_type == "stock"){
+        slots[whr][[1]] <- c("",
+                          "## STOCK SLOT DESCRIPTIONS {#app:desc-stock}",
+                          "",
+                          "```{r warnings = FALSE}",
+                          "stock <- methods::new('Stock')",
+                          "```",
+                          "",
+                          slots[whr][[1]])
+      }else if(nm$slot_type == "fleet"){
+        slots[whr][[1]] <- c("",
+                          "## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}",
+                          "",
+                          "```{r warnings = FALSE}",
+                          "fleet <- DLMtool::Generic_Fleet # TODO: temporary",
+                          "```",
+                          "",
+                          slots[whr][[1]])
+      }else if(nm$slot_type == "obs"){
+        slots[whr][[1]] <- c("",
+                          "## OBS SLOT DESCRIPTIONS {#app:desc-obs}",
+                          "",
+                          "```{r warnings = FALSE}",
+                          "obs <- methods::new('Obs')",
+                          "```",
+                          "",
+                          slots[whr][[1]])
+      }else if(nm$slot_type == "imp"){
+        slots[whr][[1]] <- c("",
+                          "## IMP SLOT DESCRIPTIONS {#app:desc-imp}",
+                          "",
+                          "```{r warnings = FALSE}",
+                          "imp <- methods::new('Imp')",
+                          "```",
+                          "",
+                          slots[whr][[1]])
+      }else{
+        slots[whr][[1]] <- c("", slots[whr][[1]])
+      }
+      last_slot_type <<- nm$slot_type
+    }
+    if(any(whr)){
+      return(slots[whr])
+    }
+    NULL
+  }
+
+  ordered_slots <- list()
+  for(i in seq(1, nrow(xxx))){
+    new_slot <- s_in_list(xxx[i,])
+    ordered_slots <- c(ordered_slots, new_slot)
+  }
+
+  new_rmd <- unlist(c(pre, ordered_slots, post))
+
+  conn <- file(paste0("new-", file_name))
+  write(new_rmd, conn)
   close(conn)
 }
 
