@@ -576,7 +576,7 @@ mp <- c(
   "FMSYref50",
   # "DD",
   # "DD4010",
-  "GB_CC",
+  "GB_CC"
   # "DDSS_75MSY",
   # "SCA_75MSY",
   # "SP_75MSY"
