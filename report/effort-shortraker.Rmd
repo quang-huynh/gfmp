@@ -494,6 +494,22 @@ gfplot::predict_cpue_index_tweedie(m) %>%
   geom_vline(xintercept = 1996, lty = 2)
 ```
 
+```{r, echo=FALSE}
+m <- gfplot::fit_cpue_index_glmmtmb(d,
+  cpue_synthetic ~ 0 + year_factor + month + depth_scaled + I(depth_scaled^2) +
+    (1 | locality) + (1 | year_locality), verbose = FALSE)
+
+gfplot::predict_cpue_index_tweedie(m) %>%
+  ggplot(aes(year, est, ymin = lwr, ymax = upr)) +
+  geom_ribbon(alpha = .5) +
+  geom_line() +
+  geom_vline(xintercept = 1996, lty = 2)
+
+gfplot::predict_cpue_index_tweedie(m) %>%
+  readr::write_csv(path = here::here("report/data/shortraker-cpue.csv"))
+```
+
+
 <!-- So, there was a fair bit of variability in this standardized CPUE prior to 1990. The standardized CPUE then ramped up in the 1990s, fell sharply (FIXME: and suspiciously) in 1996, and has remained relatively constant or declining slightly since then.  -->
 
 Without that correction the standardized CPUE experiences a massive spike in those 5 years. The relatively steady CPUE or slight decline in CPUE since 1996 can also be seen in the synopsis report working with the full fishing-event-level data set.
