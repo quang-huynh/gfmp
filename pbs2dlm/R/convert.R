@@ -49,7 +49,7 @@ create_dlm_data <- function(dat,
   common_name = "",
   area = "3[CD]+",
   survey = "SYN WCVI",
-  max_year = max_year_from_all_data,
+  max_year = max_year_dat,
   min_mean_length = 10,
   length_bin_interval = 2,
   unsorted_only = FALSE) {
@@ -60,12 +60,12 @@ create_dlm_data <- function(dat,
   obj@Common_Name <- common_name
   obj@Units <- "kg"
 
-  max_year <- max(dat$survey_samples$year,
-                  dat$commercial_samples$year,
-                  dat$catch$year,
-                  dat$survey_index$year)
+  max_year_dat <- max(dat$survey_samples$year,
+                      dat$commercial_samples$year,
+                      dat$catch$year,
+                      dat$survey_index$year)
   dat <- purrr::map(dat, ~filter(.x, year <= max_year))
-
+browser()
   # Catch ----------
   catch <- tidy_catch(dat$catch, areas = area)
   catch <- catch %>%
