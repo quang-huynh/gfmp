@@ -83,7 +83,7 @@ One thing we can do to check our operating model calibration is checksum random 
 
 DLMtool::setup(cpus = parallel::detectCores())
 ompc@nsim <- 150
-pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = FALSE)
+pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = TRUE, ntrials=1000)
 ompc@nsim <- 250L #Why is this set again?
 #saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
 
@@ -132,7 +132,7 @@ Now we can run closed-loop simulation:
 file_name <- here::here("generated-data", "pcod-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  pcod_mse <- runMSE(OM = ompc, MPs = mppc, parallel = FALSE)
+  pcod_mse <- runMSE(OM = ompc, MPs = mppc, parallel = TRUE, ntrials=1000)
   saveRDS(pcod_mse, file = file_name)
 } else {
   pcod_mse <- readRDS(file_name)
