@@ -9,7 +9,7 @@ d_survey <- gfdata::get_survey_samples(species, ssid = c(1, 3, 4, 16))
 
 cal_wchg <- dplyr::filter(d_survey, survey_abbrev == "SYN WCHG") %>%
   pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
-(length_bins <- get_cal_bins(cal, length_bin_interval = 5))
+(length_bins <- get_cal_bins(cal_wchg, length_bin_interval = 5))
 (cal_wchg <- cal_wchg[1, , ])
 
 caa <- dplyr::filter(d_survey, survey_abbrev == "SYN WCHG") %>%
