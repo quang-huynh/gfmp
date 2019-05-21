@@ -60,10 +60,10 @@ create_dlm_data <- function(dat,
   obj@Common_Name <- common_name
   obj@Units <- "kg"
 
-  max_year_from_all_data <- max(dat$survey_samples$year,
-    dat$commercial_samples$year,
-    dat$catch$year,
-    dat$survey_index$year)
+  max_year <- max(dat$survey_samples$year,
+                  dat$commercial_samples$year,
+                  dat$catch$year,
+                  dat$survey_index$year)
   dat <- purrr::map(dat, ~filter(.x, year <= max_year))
 
   # Catch ----------
@@ -154,6 +154,27 @@ create_dlm_data <- function(dat,
 
   obj
 }
+
+init_dlm_data <- function(d,
+                          name = "",
+                          common_name = "",
+                          units = "kg"){
+  obj <- methods::new("Data")
+  obj@Name <- name
+  obj@Common_Name <- common_name
+  obj@Units <- units
+
+  max_year <- max(d$survey_samples$year,
+                  d$commercial_samples$year,
+                  d$catch$year,
+                  d$survey_index$year)
+  d <- purrr::map(d, ~filter(.x, year <= max_year))
+
+  browser()
+  obj
+}
+
+
 
 #' Generate mean-length time series
 #'
