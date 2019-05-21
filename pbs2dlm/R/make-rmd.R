@@ -1,3 +1,14 @@
+#' Get the actual name of the object for the base name object. e.g. stock
+#' object may have a suffix and be stockpc <- new('Stock') or similar
+#' Assumes the first instance of stock* <- contains the object name
+get_obj_name <- function(rmd, obj_base_name){
+  paste0(obj_base_name,
+         regmatches(rmd,
+                    regexpr(paste0("(?<=", obj_base_name,")[\\w-]+(?= *\\<-.*)"),
+                            rmd,
+                            perl = TRUE)))[1]
+}
+
 #' Change the chunk and tag suffixes for a .Rmd file
 #'
 #' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
