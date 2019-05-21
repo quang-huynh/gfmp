@@ -24,8 +24,14 @@ report/knitr-cache*
 data/shortraker-fleet-effort.csv
 report/data/shortraker-corrected-catch.csv
 report/data/shortraker-fleet-effort.csv
-
 report/data/shortraker-cpue.csv
-
+data/pcod-fleet-effort.csv
+report/data/pcod-corrected-catch.csv
+report/data/pcod-fleet-effort.csv
+report/data/pcod-cpue.csv
 report/_bookdown.yml
 junk/
+sra/knitr-cache*
+sra/knitr-figs*
+
+

@@ -10,27 +10,27 @@ species_name <- "Pacific Cod"
 species_file <- here::here("generated-data",
   paste0(gsub(" ", "-", species_name), ".rds"))
 if (!file.exists(species_file)) {
-  .dpc <- list()
-  .dpc$commercial_samples <- gfplot::get_commercial_samples(species_name)
-  .dpc$survey_samples <- gfplot::get_survey_samples(species_name)
-  .dpc$catch <- gfplot::get_catch(species_name)
-  .dpc$survey_index <- gfplot::get_survey_index(species_name)
-  saveRDS(.dpc, file = species_file)
+  dpc <- list()
+  dpc$commercial_samples <- gfplot::get_commercial_samples(species_name)
+  dpc$survey_samples <- gfplot::get_survey_samples(species_name)
+  dpc$catch <- gfplot::get_catch(species_name)
+  dpc$survey_index <- gfplot::get_survey_index(species_name)
+  saveRDS(dpc, file = species_file)
 } else {
-  .dpc <- readRDS(species_file)
+  dpc <- readRDS(species_file)
 }
 
 #Get only 5ABCD data
-.dpc$commercial_samples <- .dpc$commercial_samples %>% 
+dpc$commercial_samples <- dpc$commercial_samples %>% 
   filter(major_stat_area_code %in% pcod_areas)
 
-.dpc$survey_samples <- .dpc$survey_samples %>% 
+dpc$survey_samples <- dpc$survey_samples %>% 
   filter(major_stat_area_code %in% pcod_areas)
 
-.dpc$catch <- .dpc$catch %>% 
+dpc$catch <- dpc$catch %>% 
   filter(major_stat_area_code %in% pcod_areas)
 
-.dpc$survey_index <- .dpc$survey_index %>% 
+dpc$survey_index <- dpc$survey_index %>% 
   filter(survey_series_desc %in% pcod_survey_areas)
 
 ```

@@ -1,16 +1,30 @@
-book_filename: "resdoc"
+#book_filename: "resdoc"
+#chapter_name: "Chapter "
+#rmd_files: ["index.Rmd",
+#            "introduction.Rmd",
+#            "mp-descriptions.Rmd",
+#            "get-data-shortraker.Rmd",
+#            #"effort-shortraker.Rmd",
+#            #"om-specification-shortraker.Rmd",
+#            #"runmse-shortraker.Rmd",
+#            "get-data-pcod.Rmd",
+#            #"effort-pcod.Rmd",
+#            "om-specification-pcod.Rmd",
+#            "runmse-pcod.Rmd",
+#            "references.Rmd"]
+#download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
+#delete_merged_file: true
+
+book_filename: "sradata"
 chapter_name: "Chapter "
-rmd_files: ["index.Rmd",
-            "introduction.Rmd",
-            "mp-descriptions.Rmd",
-            "get-data-shortraker.Rmd",
+rmd_files: ["index_sradata.Rmd",
+            #"get-data-shortraker.Rmd",
             #"effort-shortraker.Rmd",
             #"om-specification-shortraker.Rmd",
-            #"runmse-shortraker.Rmd",
             "get-data-pcod.Rmd",
-            #"effort-pcod.Rmd",
-            "om-specification-pcod.Rmd",
-            "runmse-pcod.Rmd",
-            "references.Rmd"]
-download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
+            "effort-pcod.Rmd"] #,
+            #"om-specification-pcod.Rmd",
+            #]
+            #"get-data-SRA-test.Rmd"]            ]
+download: [["sradata.pdf", "PDF"], ["sradata.html", "html"]]
 delete_merged_file: true
