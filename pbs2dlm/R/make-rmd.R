@@ -207,38 +207,42 @@ create_rmd <- function(file_name,
     if(any(whr)){
       if(last_slot_type != nm$slot_type){
         if(nm$slot_type == "stock"){
+          stock_obj_name <- paste0("stock", regmatches(rmd, regexpr("(?<=stock)[\\w-]+(?= *\\<-.*)", rmd, perl = TRUE)))[1]
           slots[whr][[1]] <- c("",
                                "## STOCK SLOT DESCRIPTIONS {#app:desc-stock}",
                                "",
                                "```{r warnings = FALSE}",
-                               "stock <- methods::new('Stock')",
+                               paste0(stock_obj_name, " <- methods::new('Stock')"),
                                "```",
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "fleet"){
+          fleet_obj_name <- paste0("fleet", regmatches(rmd, regexpr("(?<=fleet)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
           slots[whr][[1]] <- c("",
                                "## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}",
                                "",
                                "```{r warnings = FALSE}",
-                               "fleet <- DLMtool::Generic_Fleet # TODO: temporary",
+                               paste0(fleet_obj_name, " <- DLMtool::Generic_Fleet # TODO: temporary"),
                                "```",
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "obs"){
+          obs_obj_name <- paste0("obs", regmatches(rmd, regexpr("(?<=obs)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
           slots[whr][[1]] <- c("",
                                "## OBS SLOT DESCRIPTIONS {#app:desc-obs}",
                                "",
                                "```{r warnings = FALSE}",
-                               "obs <- methods::new('Obs')",
+                               paste0(obs_obj_name, " <- methods::new('Obs')"),
                                "```",
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "imp"){
+          imp_obj_name <- paste0("imp", regmatches(rmd, regexpr("(?<=imp)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
           slots[whr][[1]] <- c("",
                                "## IMP SLOT DESCRIPTIONS {#app:desc-imp}",
                                "",
                                "```{r warnings = FALSE}",
-                               "imp <- methods::new('Imp')",
+                               paste0(imp_obj_name, " <- methods::new('Imp')"),
                                "```",
                                "",
                                slots[whr][[1]])
