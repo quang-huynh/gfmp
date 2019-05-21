@@ -115,7 +115,12 @@ create_rmd <- function(file_name,
   hash <- grep("##", pre)
   hash <- hash[length(hash)]
   pre <- pre[1:(hash - 1)]
-  post <- rmd[(end[length(end)] + 1):length(rmd)]
+
+  if(end[length(end)] == length(rmd)){
+    post <- ""
+  }else{
+    post <- rmd[(end[length(end)] + 1):length(rmd)]
+  }
   ## Create list of slot chunks and between slot chunks
   slots <- lapply(seq_along(beg), function(x){
     rmd[beg[x]:end[x]]
