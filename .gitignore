@@ -26,3 +26,5 @@ report/data/shortraker-corrected-catch.csv
 report/data/shortraker-fleet-effort.csv
 
 report/data/shortraker-cpue.csv
+
+report/_bookdown.yml
