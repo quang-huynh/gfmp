@@ -1,21 +1,8 @@
-#' Get the actual name of the object for the base name object. e.g. stock
-#' object may have a suffix and be stockpc <- new('Stock') or similar
-#' Assumes the first instance of stock* <- contains the object name
-get_obj_name <- function(rmd, obj_base_name){
-  paste0(obj_base_name,
-         regmatches(rmd,
-                    regexpr(paste0("(?<=", obj_base_name,")[\\w-]+(?= *\\<-.*)"),
-                            rmd,
-                            perl = TRUE)))[1]
-}
-
-#' Change the chunk and tag names, and all instances of the stock, fleet, obs, and imp
-#' objects to have a suffix added to them for a .Rmd file
+#' Change the chunk and tag suffixes for a .Rmd file
 #'
 #' @param file_name Filename/path of the .rmd file to create/modify. If it does not exist,
 #'  an error will be given
 #' @param chunk_suffix A string to be appended to the chunk names and tags with a preceding dash.
-#'  Code objects will have the suffix added but without a preceding dash.
 #'  If a name has already been appended this new suffix will replace it. If this is the empty
 #'  string, any previous suffixes will be removed.
 #'
@@ -218,15 +205,15 @@ create_rmd <- function(file_name,
       }
       FALSE
     })
-    if(sum(whr) > 1){
-      stop("Error - More than one chunk matches the name '", nm_str, "'.",
-           call. = FALSE)
-    }
 
     if(any(whr)){
+      if(sum(whr) > 1){
+        stop("Error - More than one chunk matches the name '", nm_str, "'.",
+             call. = FALSE)
+      }
       if(last_slot_type != nm$slot_type){
         if(nm$slot_type == "stock"){
-          stock_obj_name <- paste0("stock", regmatches(rmd, regexpr("(?<=stock)[\\w-]+(?= *\\<-.*)", rmd, perl = TRUE)))[1]
+          stock_obj_name <- get_obj_name(rmd, "stock")
           slots[whr][[1]] <- c("",
                                "## STOCK SLOT DESCRIPTIONS {#app:desc-stock}",
                                "",
@@ -236,7 +223,7 @@ create_rmd <- function(file_name,
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "fleet"){
-          fleet_obj_name <- paste0("fleet", regmatches(rmd, regexpr("(?<=fleet)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
+          fleet_obj_name <- get_obj_name(rmd, "Fleet")
           slots[whr][[1]] <- c("",
                                "## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}",
                                "",
@@ -246,7 +233,7 @@ create_rmd <- function(file_name,
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "obs"){
-          obs_obj_name <- paste0("obs", regmatches(rmd, regexpr("(?<=obs)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
+          obs_obj_name <- get_obj_name(rmd, "obs")
           slots[whr][[1]] <- c("",
                                "## OBS SLOT DESCRIPTIONS {#app:desc-obs}",
                                "",
@@ -256,7 +243,7 @@ create_rmd <- function(file_name,
                                "",
                                slots[whr][[1]])
         }else if(nm$slot_type == "imp"){
-          imp_obj_name <- paste0("imp", regmatches(rmd, regexpr("(?<=imp)[\\w-]+(?= *<-.*)", rmd, perl = TRUE)))[1]
+          imp_obj_name <- get_obj_name(rmd, "imp")
           slots[whr][[1]] <- c("",
                                "## IMP SLOT DESCRIPTIONS {#app:desc-imp}",
                                "",
@@ -283,7 +270,7 @@ create_rmd <- function(file_name,
 
   new_rmd <- unlist(c(pre, ordered_slots, post))
 
-  conn <- file(paste0("new-", file_name))
+  conn <- file(file_name)
   write(new_rmd, conn)
   close(conn)
 }
