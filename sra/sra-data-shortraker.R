@@ -5,8 +5,14 @@ ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
 science_name <- "Sebastes borealis"
-species_file <- here::here("generated-data", paste0(gsub(" ", "-", species_name), ".rds"))
-species_file_privacy <- here::here("generated-data", paste0(gsub(" ", "-", species_name), "-privacy.rds"))
+species_file <- here::here(
+  "generated-data",
+  paste0(gsub(" ", "-", species_name), ".rds")
+)
+species_file_privacy <- here::here(
+  "generated-data",
+  paste0(gsub(" ", "-", species_name), "-privacy.rds")
+)
 
 if (!file.exists(species_file)) {
   d_short <- list()
@@ -45,7 +51,7 @@ make_raker_cal <- function(dat, survey, length_bin = 5) {
   dat <- filter(dat, survey_abbrev == survey)
   cal <- pbs2dlm::tidy_cal(dat, yrs = all_years, interval = length_bin)
   length_bins <- pbs2dlm::get_cal_bins(cal, length_bin_interval = length_bin)
-  list(cal = cal[1,,], length_bins = length_bins)
+  list(cal = cal[1, , ], length_bins = length_bins)
 }
 
 cal_wchg <- make_raker_cal(d_short$survey_samples, "SYN WCHG")
@@ -68,16 +74,18 @@ mean_length <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN WCHG"
 
 mean_length
 
-# note that we should correcting catch between 1990 and 1995.
+# note that we be should correcting catch between 1990 and 1995.
 # For now just do that by dividing the catch in those years by 3:
 
+# bottom trawl catch:
 if ("catch" %in% names(d_short)) {
-  catch <- d_short$catch %>% filter(gear == "BOTTOM TRAWL") %>%
+  catch <- d_short$catch %>%
+    filter(gear == "BOTTOM TRAWL") %>%
     gfplot::tidy_catch() %>%
     group_by(year) %>%
-    summarize(value=sum(value)) %>%
+    summarize(value = sum(value)) %>%
     right_join(tibble(year = all_years), by = "year") %>%
-    mutate(value = ifelse(year >= 1990 & year <= 1995, value/3, value)) %>%
+    mutate(value = ifelse(year >= 1990 & year <= 1995, value / 3, value)) %>%
     pull(value)
   saveRDS(catch, file = here::here("generated-data", "shortraker-catch.rds"))
 } else {
@@ -85,9 +93,30 @@ if ("catch" %in% names(d_short)) {
 }
 
 catch
-plot(catch, type = "o")
+plot(all_years, catch, type = "o")
 
+# hook and line catch:
+if ("catch" %in% names(d_short)) {
+  catch_hl <- d_short$catch %>%
+    filter(gear == "HOOK AND LINE") %>%
+    gfplot::tidy_catch() %>%
+    group_by(year) %>%
+    summarize(value = sum(value)) %>%
+    right_join(tibble(year = all_years), by = "year") %>%
+    mutate(value = ifelse(year >= 1990 & year <= 1995, value / 3, value)) %>%
+    pull(value)
+  saveRDS(catch_hl, file = here::here("generated-data", "shortraker-catch-hl.rds"))
+} else {
+  catch_hl <- readRDS(here::here("generated-data", "shortraker-catch-hl.rds"))
+}
+
+catch_hl
+plot(all_years, catch_hl, type = "o")
+
+# catch per unit effort from the trawl fleet only for now:
 cpue <- read.csv(here::here("generated-data", "shortraker-cpue.csv"))
+
+# we are working on something similar for the hook and line fleet
 
 indexes <- gfplot::tidy_survey_index(d_short$survey_index) %>%
   filter(survey_abbrev %in% c("SYN WCHG", "SYN QCS", "SYN WCVI", "IPHC FISS")) %>%
