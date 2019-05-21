@@ -175,8 +175,9 @@ tidy_mean_length <- function(dat, unsorted_only = FALSE) {
 #' @export
 #' @rdname tidy_caa
 get_cal_bins <- function(cal_dat, length_bin_interval) {
-  seq(length_bin_interval, ncol(cal_dat[1, , ]) *
-      length_bin_interval) - length_bin_interval / 2 # mid points
+  seq(length_bin_interval,
+    ncol(cal_dat[1, , ]) * length_bin_interval,
+    length_bin_interval) - length_bin_interval / 2 # mid points
 }
 
 #' @export
