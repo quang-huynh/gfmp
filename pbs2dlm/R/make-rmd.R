@@ -199,49 +199,49 @@ create_rmd <- function(file_name,
            call. = FALSE)
     }
 
-    if(last_slot_type != nm$slot_type){
-      if(nm$slot_type == "stock"){
-        slots[whr][[1]] <- c("",
-                          "## STOCK SLOT DESCRIPTIONS {#app:desc-stock}",
-                          "",
-                          "```{r warnings = FALSE}",
-                          "stock <- methods::new('Stock')",
-                          "```",
-                          "",
-                          slots[whr][[1]])
-      }else if(nm$slot_type == "fleet"){
-        slots[whr][[1]] <- c("",
-                          "## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}",
-                          "",
-                          "```{r warnings = FALSE}",
-                          "fleet <- DLMtool::Generic_Fleet # TODO: temporary",
-                          "```",
-                          "",
-                          slots[whr][[1]])
-      }else if(nm$slot_type == "obs"){
-        slots[whr][[1]] <- c("",
-                          "## OBS SLOT DESCRIPTIONS {#app:desc-obs}",
-                          "",
-                          "```{r warnings = FALSE}",
-                          "obs <- methods::new('Obs')",
-                          "```",
-                          "",
-                          slots[whr][[1]])
-      }else if(nm$slot_type == "imp"){
-        slots[whr][[1]] <- c("",
-                          "## IMP SLOT DESCRIPTIONS {#app:desc-imp}",
-                          "",
-                          "```{r warnings = FALSE}",
-                          "imp <- methods::new('Imp')",
-                          "```",
-                          "",
-                          slots[whr][[1]])
-      }else{
-        slots[whr][[1]] <- c("", slots[whr][[1]])
-      }
-      last_slot_type <<- nm$slot_type
-    }
     if(any(whr)){
+      if(last_slot_type != nm$slot_type){
+        if(nm$slot_type == "stock"){
+          slots[whr][[1]] <- c("",
+                               "## STOCK SLOT DESCRIPTIONS {#app:desc-stock}",
+                               "",
+                               "```{r warnings = FALSE}",
+                               "stock <- methods::new('Stock')",
+                               "```",
+                               "",
+                               slots[whr][[1]])
+        }else if(nm$slot_type == "fleet"){
+          slots[whr][[1]] <- c("",
+                               "## FLEET SLOT DESCRIPTIONS {#app:desc-fleet}",
+                               "",
+                               "```{r warnings = FALSE}",
+                               "fleet <- DLMtool::Generic_Fleet # TODO: temporary",
+                               "```",
+                               "",
+                               slots[whr][[1]])
+        }else if(nm$slot_type == "obs"){
+          slots[whr][[1]] <- c("",
+                               "## OBS SLOT DESCRIPTIONS {#app:desc-obs}",
+                               "",
+                               "```{r warnings = FALSE}",
+                               "obs <- methods::new('Obs')",
+                               "```",
+                               "",
+                               slots[whr][[1]])
+        }else if(nm$slot_type == "imp"){
+          slots[whr][[1]] <- c("",
+                               "## IMP SLOT DESCRIPTIONS {#app:desc-imp}",
+                               "",
+                               "```{r warnings = FALSE}",
+                               "imp <- methods::new('Imp')",
+                               "```",
+                               "",
+                               slots[whr][[1]])
+        }else{
+          slots[whr][[1]] <- c("", slots[whr][[1]])
+        }
+        last_slot_type <<- nm$slot_type
+      }
       return(slots[whr])
     }
     NULL
