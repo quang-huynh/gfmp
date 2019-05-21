@@ -64,10 +64,7 @@ create_dlm_data <- function(dat,
     dat$commercial_samples$year,
     dat$catch$year,
     dat$survey_index$year)
-  dat$commercial_samples <- dplyr::filter(dat$commercial_samples, year <= max_year)
-  dat$survey_samples <- dplyr::filter(dat$survey_samples, year <= max_year)
-  dat$catch <- dplyr::filter(dat$catch, year <= max_year)
-  dat$survey_index <- dplyr::filter(dat$survey_index, year <= max_year)
+  dat <- purrr::map(dat, ~filter(.x, year <= max_year))
 
   # Catch ----------
   catch <- tidy_catch(dat$catch, areas = area)
