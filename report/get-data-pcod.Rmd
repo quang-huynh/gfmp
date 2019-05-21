@@ -11,7 +11,7 @@ species_file <- here::here("generated-data",
   paste0(gsub(" ", "-", species_name), ".rds"))
 if (!file.exists(species_file)) {
   dpc <- list()
-  dpc$commercial_samples <- gfdata::get_commercial_samples(species_name)
+  dpc$commercial_samples <- gfdata::get_commercial_samples(species_name, unsorted_only = FALSE)
   dpc$survey_samples <- gfdata::get_survey_samples(species_name)
   dpc$catch <- gfdata::get_catch(species_name)
   dpc$survey_index <- gfdata::get_survey_index(species_name)

@@ -1,9 +1,21 @@
 
 ## Pacific Cod
 
-Build and fill the data object
+## Constructing the operating model
 
-```{r make-data-object-pc, warning=FALSE, message=FALSE, echo=TRUE}
+First, combine the stock, fleet, observation, and mp objects into a complete operating model and output it to file.
+
+```{r echo = TRUE}
+ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+ompc@nsim <- 250L
+plotStock(ompc, nsamp = 3, incVB = TRUE)
+saveRDS(ompc, "Pacific_Cod_OM.RDS")
+
+```
+
+Now build and fill the data object
+
+```{r make-data-object-pc, warning=FALSE, message=FALSE, echo=FALSE}
 datapc <- methods::new('Data')
 
 starting_year <- 1956
@@ -40,12 +52,18 @@ caapc[1, , ]
 
 datapc@CAA <- caapc
 
+#Commercial catch at length
+comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
+  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+(length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
+(comcalpc <- comcalpc[1, , ])
+
 #Mean length in commercial data
-mean_length <- dplyr::filter(dpc$commercial_samples) %>%
+mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
   pbs2dlm::tidy_mean_length() %>%
   dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year")
-as.data.frame(mean_length)
+as.data.frame(mean_lengthpc)
 
 #Having type-casting problems here
 #datapc@ML <- as.vector(mean_length[,3])
