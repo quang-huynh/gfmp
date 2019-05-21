@@ -14,7 +14,7 @@ species_file_privacy <- here::here(
   paste0(gsub(" ", "-", species_name), "-privacy.rds")
 )
 
-if (!file.exists(species_file)) {
+if (!file.exists(species_file) && !file.exists(species_file_privacy)) {
   d_short <- list()
   d_short$commercial_samples <- gfdata::get_commercial_samples(species_name)
   d_short$survey_samples <- gfdata::get_survey_samples(species_name)
@@ -28,7 +28,11 @@ if (!file.exists(species_file)) {
   d_privacy@catch <- NULL
   saveRDS(d_privacy, file = species_file_privacy)
 } else {
-  d_short <- readRDS(species_file)
+  if (file.exists(species_file)) {
+    d_short <- readRDS(species_file)
+  } else {
+    d_short <- readRDS(species_file_privacy)
+  }
 }
 
 short_om <- readRDS(here::here("generated-data", "shortraker-om.rds"))
