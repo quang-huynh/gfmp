@@ -65,7 +65,7 @@ create_dlm_data <- function(dat,
                       dat$catch$year,
                       dat$survey_index$year)
   dat <- purrr::map(dat, ~filter(.x, year <= max_year))
-browser()
+
   # Catch ----------
   catch <- tidy_catch(dat$catch, areas = area)
   catch <- catch %>%
