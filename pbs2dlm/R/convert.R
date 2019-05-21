@@ -72,9 +72,8 @@ browser()
     group_by(.data$year) %>%
     summarise(value = sum(.data$value)) %>%
     ungroup()
-  last_year <- max_year
   ind <- tidy_survey_index(dat$survey_index, survey = survey)
-  all_years <- tibble(year = seq(min(c(catch$year, ind$year)), last_year))
+  all_years <- tibble(year = seq(min(c(catch$year, ind$year)), max_year))
   catch <- left_join(all_years, catch, by = "year")
 
   obj@Cat <- t(matrix(catch$value))
@@ -154,27 +153,6 @@ browser()
 
   obj
 }
-
-init_dlm_data <- function(d,
-                          name = "",
-                          common_name = "",
-                          units = "kg"){
-  obj <- methods::new("Data")
-  obj@Name <- name
-  obj@Common_Name <- common_name
-  obj@Units <- units
-
-  max_year <- max(d$survey_samples$year,
-                  d$commercial_samples$year,
-                  d$catch$year,
-                  d$survey_index$year)
-  d <- purrr::map(d, ~filter(.x, year <= max_year))
-
-  browser()
-  obj
-}
-
-
 
 #' Generate mean-length time series
 #'
