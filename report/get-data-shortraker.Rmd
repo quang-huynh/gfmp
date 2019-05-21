@@ -6,10 +6,10 @@ species_file <- here::here("generated-data",
                            paste0(gsub(" ", "-", species_name), ".rds"))
 if (!file.exists(species_file)) {
   .dshort <- list()
-  .dshort$commercial_samples <- gfplot::get_commercial_samples(species_name)
-  .dshort$survey_samples <- gfplot::get_survey_samples(species_name)
-  .dshort$catch <- gfplot::get_catch(species_name)
-  .dshort$survey_index <- gfplot::get_survey_index(species_name)
+  .dshort$commercial_samples <- gfdata::get_commercial_samples(species_name)
+  .dshort$survey_samples <- gfdata::get_survey_samples(species_name)
+  .dshort$catch <- gfdata::get_catch(species_name)
+  .dshort$survey_index <- gfdata::get_survey_index(species_name)
   saveRDS(.dshort, file = species_file)
 } else {
   .dshort <- readRDS(species_file)

@@ -1181,7 +1181,3 @@ imppc@SizeLimFrac <- c(1, 1)
 imppc@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
-
-```{r desc-obs-mbiascv-pacific-cod, results = knitr_results, echo = knitr_echo}
-obspc@Mbiascv <- c(0.05, 0.20)
-```
