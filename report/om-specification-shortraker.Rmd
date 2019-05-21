@@ -203,10 +203,6 @@ stock@Amplitude
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
-```{r load-stan, message=FALSE, warning=FALSE}
-suppressPackageStartupMessages(library("rstan"))
-```
-
 ```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
 mvb <- gfplot::fit_vb(.dshort$survey_samples, sex = "all")
 

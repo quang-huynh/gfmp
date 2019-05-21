@@ -49,6 +49,8 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 om <- new('OM', stock, fleet, obs, imp)
 
 om@nsim <- 200
+
+saveRDS(om, file = here::here("generated-data", "shortraker-om.rds"))
 ```
 
 There are a variety of built-in plotting functions to examine the components of the operating model:
