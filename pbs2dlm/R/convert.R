@@ -153,7 +153,7 @@ create_dlm_data <- function(dat,
     yrs = all_years$year)
   # CAL_bins The values delimiting the length bins for the catch-at-length
   # data. Vector. Non-negative real numbers
-  obj@CAL_bins <- get_cal_bins(obj$CAL, length_bin_interval = length_bin_interval) # mid points
+  obj@CAL_bins <- get_cal_bins(obj@CAL, length_bin_interval = length_bin_interval) # mid points
 
   obj
 }
