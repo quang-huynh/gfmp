@@ -79,10 +79,9 @@ change_chunk_suffix <- function(file_name,
   })
 
   ## Now change all instances of stock, fleet, obs, and impl objects in code chunks to have suffix
-  rmd <- gsub(get_obj_name(rmd, "stock"), paste0("stock", chunk_suffix), rmd)
-  rmd <- gsub(get_obj_name(rmd, "fleet"), paste0("fleet", chunk_suffix), rmd)
-  rmd <- gsub(get_obj_name(rmd, "obs"), paste0("obs", chunk_suffix), rmd)
-  rmd <- gsub(get_obj_name(rmd, "imp"), paste0("imp", chunk_suffix), rmd)
+  purrr::map(c("stock", "fleet", "obs", "imp"), function(x){
+    rmd <<- gsub(get_obj_name(rmd, x), paste0(x, chunk_suffix), rmd)
+  })
 
   conn <- file(file_name)
   write(rmd, conn)
