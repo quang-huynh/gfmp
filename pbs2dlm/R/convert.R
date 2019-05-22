@@ -166,7 +166,7 @@ tidy_mean_length <- function(dat, unsorted_only = FALSE) {
   if ("sampling_desc" %in% names(dat) && unsorted_only) {
     dat <- filter(dat, .data$sampling_desc == "UNSORTED")
   }
-  dat <- filter(dat, !is.na(.data$sex), !is.na(.data$length), .data$sex %in% 2) # female only
+  dat <- filter(dat, !is.na(.data$sex), !is.na(.data$length)) #RF removed female filtering #female only, .data$sex %in% 2
   group_by(dat, .data$year) %>%
     summarise(n = n(), mean_length = mean(.data$length)) %>%
     ungroup()

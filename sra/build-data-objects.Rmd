@@ -22,21 +22,6 @@ starting_year <- 1956
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
-#Catch at length
-#Identify obviously wrong samples
-# plot(dpc$survey_samples$length, col="darkblue", pch=19)
-# giant_cod <- dpc$survey_samples %>% 
-#   dplyr::filter(length>200)
-# readr::write_csv(giant_cod, "C:/GitHub/gfmp/Giant_Pcod.csv")
-# 
-# #These all came from the Hard Bottom Longline Outside South survey
-# #Check whether all samples from this survey were measured in mm
-# hblloss_cod <- dpc$survey_samples %>% 
-#   dplyr::filter(survey_abbrev=="HBLL OUT S")
-# readr::write_csv(hblloss_cod, "C:/GitHub/gfmp/hblloss_Pcod.csv")
-#   
-# unique(dpc$survey_samples$survey_abbrev)
-
 #First of all get generic survey samples ... don't break out by survey
 calpc <- dplyr::filter(dpc$survey_samples) %>%
   pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
@@ -54,13 +39,13 @@ datapc@CAA <- caapc
 
 #Commercial catch at length
 comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+  pbs2dlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
 (length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
 (comcalpc <- comcalpc[1, , ])
 
 #Mean length in commercial data
 mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_mean_length() %>%
+  pbs2dlm::tidy_mean_length(unsorted_only=FALSE) %>%
   dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year")
 as.data.frame(mean_lengthpc)
