@@ -2,11 +2,8 @@
 book_filename: "sradata-report"
 chapter_name: "Chapter "
 rmd_files: ["index_sradata.Rmd",
-            #"../report/get-data-shortraker.Rmd",
-            #"../report/effort-shortraker.Rmd",
-            #"../report/om-specification-shortraker.Rmd",
             "../report/get-data-pcod.Rmd",
-            #"../report/effort-pcod.Rmd",
+            "../report/effort-pcod.Rmd",
             "../report/om-specification-pcod.Rmd",
             "build-data-objects.Rmd"]
 download: [["sradata.pdf", "PDF"], ["sradata.html", "html"]]

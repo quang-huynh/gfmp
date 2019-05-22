@@ -204,7 +204,7 @@ Perhaps we can parameterize an operating model with slowly increasing effort unt
 Just use observed catch for Pacific Cod.
 
 ```{r plot-corrected-catch-pc}
-corrected_catch <- .dpc$catch %>% group_by(year) %>%
+corrected_catch <- dpc$catch %>% group_by(year) %>%
   filter(year >=1956) %>% 
   summarise(
     spp_catch_observed = sum(landed_kg)) %>% 
@@ -277,6 +277,8 @@ gfplot::predict_cpue_index_tweedie(m) %>%
   geom_ribbon(alpha = .5) + 
   geom_line() +
   geom_vline(xintercept = 1996, lty = 2)
-```
 
+gfplot::predict_cpue_index_tweedie(m) %>%
+  readr::write_csv(path = here::here("generated-data", "pcod-cpue.csv"))
+```
 
