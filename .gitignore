@@ -1,5 +1,6 @@
 .Rhistory
 .Rproj.user
+.cmsg
 *.pdf
 *.png
 *.rda
@@ -33,5 +34,3 @@ report/_bookdown.yml
 junk/
 sra/knitr-cache*
 sra/knitr-figs*
-
-
