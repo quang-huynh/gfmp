@@ -103,7 +103,7 @@ One thing we can do to check our operating model calibration is check some rando
 
 ```{r, fig.asp=0.8}
 original_nsim <- om@nsim
-om@nsim <- 12L
+om@nsim <- 50L
 short_historical <- runMSE(om, Hist = TRUE, parallel=TRUE, ntrials=1000)
 om@nsim <- original_nsim
 
@@ -170,14 +170,14 @@ DLMtool::Converge(short_mse)
 ```
 
 ```{r}
-summary(short_mse)
+summary(short_mse, PMlist = c("PNOF", "P40", "Punder80", "AAVY", "LTY"))
 ```
 
 Illustrating the built-in plotting functions:
 
 ```{r}
-Tplot(short_mse)
-Tplot2(short_mse)
+#Tplot(short_mse)
+#Tplot2(short_mse)
 ```
 
 
@@ -205,10 +205,10 @@ Cplot(short_mse)
 And examine the output.
 
 ```{r}
-plot(short_mse)
+#plot(short_mse)
 oldpar <- par()
 ##DFO_hist(short_mse)
-par(mfrow = c(1, 1))
+#par(mfrow = c(1, 1))
 DFO_plot(short_mse)
 # DFO_plot2(short_mse)
 ```
@@ -593,32 +593,32 @@ abline(h = na.omit(tac), col = "#00000001")
 abline(h = median(na.omit(tac)), col = "red")
 ```
 
-Try to fit the delay difference model to our simulation data:
+<!-- Try to fit the delay difference model to our simulation data: -->
 
-```{r}
-library(MSEtool)
-om <- new('OM', stock, fleet, obs, imp)
-.parallel <- !identical(.Platform$OS.type, "windows")
-if (.parallel) DLMtool::setup(cpus = parallel::detectCores())
-om@nsim <- 100
-DD_MSY <- MSEtool::make_MP(DD_TMB, HCR_MSY, diagnostic = "full")
+<!-- ```{r} -->
+<!-- library(MSEtool) -->
+<!-- om <- new('OM', stock, fleet, obs, imp) -->
+<!-- .parallel <- !identical(.Platform$OS.type, "windows") -->
+<!-- if (.parallel) DLMtool::setup(cpus = parallel::detectCores()) -->
+<!-- om@nsim <- 100 -->
+<!-- DD_MSY <- MSEtool::make_MP(DD_TMB, HCR_MSY, diagnostic = "full") -->
 
-x <- MSEtool::prelim_AM(x = om, Assess = DD_TMB)
+<!-- x <- MSEtool::prelim_AM(x = om, Assess = DD_TMB) -->
 
-myMSE <- runMSE(OM = om, MPs = "DD_MSY", PPD = TRUE)
-diagnostic_AM(myMSE)
-retrospective_AM(myMSE, sim = 1, MP = "DD_MSY")
+<!-- myMSE <- runMSE(OM = om, MPs = "DD_MSY", PPD = TRUE) -->
+<!-- diagnostic_AM(myMSE) -->
+<!-- retrospective_AM(myMSE, sim = 1, MP = "DD_MSY") -->
 
-cpue <- readr::read_csv(here::here("report/data/shortraker-cpue.csv"))
+<!-- cpue <- readr::read_csv(here::here("report/data/shortraker-cpue.csv")) -->
 
-short_dat@Ind <- matrix(c(13, cpue$est) / mean(c(13, cpue$est)), nrow = 1)
-short_dat@CV_Ind <- mean(cpue$se_link)
+<!-- short_dat@Ind <- matrix(c(13, cpue$est) / mean(c(13, cpue$est)), nrow = 1) -->
+<!-- short_dat@CV_Ind <- mean(cpue$se_link) -->
 
-system.time({
-  m <- DD_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.7))
-})
-plot(m)
-m
-m1 <- DD_TMB(Data = short_dat)
-plot(m1)
-```
+<!-- system.time({ -->
+<!--   m <- DD_SS(Data = short_dat, fix_tau = TRUE, start = list(tau = 0.7)) -->
+<!-- }) -->
+<!-- plot(m) -->
+<!-- m -->
+<!-- m1 <- DD_TMB(Data = short_dat) -->
+<!-- plot(m1) -->
+<!-- ``` -->

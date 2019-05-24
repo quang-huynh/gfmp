@@ -59,4 +59,7 @@ library(DLMtool)
 library(rfishbase)
 library(RColorBrewer)
 library(tidyverse)
+source(here::here("R/summary.R"))
+source(here::here("R/pm-functions.R"))
+source(here::here("R/plots.R"))
 ```

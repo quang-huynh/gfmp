@@ -3,14 +3,14 @@ chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             "introduction.Rmd",
             "mp-descriptions.Rmd",
-            #"get-data-shortraker.Rmd",
+            "get-data-shortraker.Rmd",
             #"effort-shortraker.Rmd",
-            #"om-specification-shortraker.Rmd",
-            #"runmse-shortraker.Rmd",
-            "get-data-pcod.Rmd",
+            "om-specification-shortraker.Rmd",
+            "runmse-shortraker.Rmd",
+            #"get-data-pcod.Rmd",
             #"effort-pcod.Rmd",
-            "om-specification-pcod.Rmd",
-            "runmse-pcod.Rmd",
+            #"om-specification-pcod.Rmd",
+            #"runmse-pcod.Rmd",
             "references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true
