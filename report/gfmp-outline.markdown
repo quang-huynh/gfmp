@@ -135,6 +135,8 @@
 
 ### Give examples of where they have been used
 
+## Appendix: A summary of the important features of the DLMtool operating model
+
 ## Appendix: Case study towards more data rich/moderate spectrum (English sole?)
 
 ## Appendix: Case study towards the more data limited spectrum (shortraker rockfish)
