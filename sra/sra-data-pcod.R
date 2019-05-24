@@ -55,7 +55,9 @@ indicespc <- dpc$survey_index
 #Survey catch at age - combined HS and QCS synoptic surveys
 caapc <- dplyr::filter(dpc$survey_samples) %>%
   pbs2dlm::tidy_caa(yrs = all_years)
-caapc[1, , ]
+caapc <- caapc[1, , ]
+colnames(caapc) <- 1:ncol(caapc)
+rownames(caapc) <- all_years
 
 #########################################################
 #Survey CAL by survey
@@ -89,6 +91,8 @@ comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
   pbs2dlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
 (length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
 (comcalpc <- comcalpc[1, , ])
+colnames(comcalpc) <- length_bins
+rownames(comcalpc) <- all_years
 
 #Mean length in commercial data
 mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
@@ -109,6 +113,10 @@ saveRDS(catchpc, file = here::here("generated-data", "pcod-catch.rds"))
 } else {
   catchpc <- readRDS(here::here("generated-data", "pcod-catch.rds"))
 }
+
+  as.matrix(catchpc)
+  colnames(catchpc) <- c("year", "catch_t")
+  catchpc$catch_t <- catchpc$catch_t/1000
 
 # catch per unit effort from the trawl fleet only for now:
 cpuepc <- readr::read_csv(here::here("generated-data", "pcod-cpue.csv"))
