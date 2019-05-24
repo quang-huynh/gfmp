@@ -137,9 +137,9 @@
 
 ## Appendix: A summary of the important features of the DLMtool operating model
 
-## Appendix: Case study towards more data rich/moderate spectrum (English sole?)
-
 ## Appendix: Case study towards the more data limited spectrum (shortraker rockfish)
+
+## Appendix: Case study towards more data rich/moderate spectrum (English sole?)
 
 ## Appendix: a mocked up SAR based on one of the case studies? 
 
