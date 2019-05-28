@@ -4,7 +4,7 @@
 #' @param ... a list of names of PM methods
 #' @param Refs An optional named list (matching the PM names) with numeric values to override the default `Ref` values. See examples.
 #' @rdname summary-MSE
-setMethod('summary', signature = "MSE", function(object, ..., Refs = NULL) {
+plot_probs <- function(object, ..., Refs = NULL){
   PMlist <- unlist(list(...))
 
   if(length(PMlist) == 0) PMlist <- c("PNOF", "P50", "AAVY", "LTY")
@@ -57,4 +57,4 @@ setMethod('summary', signature = "MSE", function(object, ..., Refs = NULL) {
                        align = align,
                        escape = FALSE,
                        col.names = col.names)
-})
+}
