@@ -1,8 +1,7 @@
-#' Summary of MSE object - PBS-specific version overwrites DLMtool version
+#' Summary of MSE object in a colored tile table format
 #'
 #' @param object object of class MSE
 #' @param ... a list of names of PM methods
-#' @param silent Should summary be printed to console? Logical.
 #' @param Refs An optional named list (matching the PM names) with numeric values to override the default `Ref` values. See examples.
 #' @rdname summary-MSE
 setMethod('summary', signature = "MSE", function(object, ..., Refs = NULL) {
