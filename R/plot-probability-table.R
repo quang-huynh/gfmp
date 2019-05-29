@@ -10,9 +10,11 @@
 plot_probs <- function(object,
                        ...,
                        refs = NULL,
-                       digits = 3,
+                       digits = 2,
                        sort_by = "decreasing",
-                       value_size = 3.1){
+                       value_size = 4.1,
+                       relative_max = FALSE,
+                       scale_0_1 = FALSE){
   pm_list <- unlist(list(...))
 
   if(!length(pm_list)) pm_list <- c("PNOF", "P50", "AAVY", "LTY")
@@ -39,12 +41,9 @@ plot_probs <- function(object,
                    signif(do.call('cbind', storeMean),2), stringsAsFactors = FALSE)
   colnames(df)[2:(length(pm_list) + 1)] <- pm_list
   df <- as_tibble(df)
-  df[,-1] <- apply(df[,-1], c(1, 2), function(x){
-    gfutilities::f(x, digits)
-  })
 
   if(sort_by == "decreasing"){
-    df$MP <- factor(df$MP, levels = df$MP[order(df[2] %>% pull())])
+    df$MP <- factor(df$MP, levels = df$MP[do.call(order, df[-1])])
   }else if(sort_by == "increasing"){
     df$MP <- factor(df$MP, levels = df$MP[rev(order(df[2] %>% pull()))])
   }else{
@@ -70,19 +69,33 @@ plot_probs <- function(object,
   ## Note that yrs contains years string which is not shown on the plot
   ## All seem to be years 1-50 except LTY which is years 41-50
   #probs <- paste0(probs, "  ", yrs)
+
   probs <- unlist(lapply(probs, latex2exp::TeX))
+  df$txt <- vapply(df$value, function(x){
+    gfutilities::f(x, digits)
+  }, FUN.VALUE = character(1L))
+  if(relative_max){
+    df <- group_by(df, type) %>%
+      mutate(value = value / max(value)) %>%
+      ungroup()
+  }
+  if(scale_0_1){
+    df <- group_by(df, type) %>%
+      mutate(value = (value - min(value)) / (max(value) - min(value))) %>%
+      ungroup()
+  }
 
   g <- ggplot(df, aes(x = type, y = MP)) +
-    geom_tile(aes(fill = value), width = 0.95, height = 0.95) +
+    geom_tile(aes(fill = value), color = "white") +
     gfplot::theme_pbs() +
     theme(panel.border=element_blank(),
           axis.ticks.x = element_blank(),
           axis.ticks.y = element_blank(),
           axis.text.x = element_text(face = "bold", size = 10),
           axis.text.y = element_text(face = "bold", size = 10)) +
-    scale_colour_viridis_d() +
+    scale_fill_gradient(low = "white", high = "grey50", limits = c(0, 1)) +
     guides(fill = FALSE) + xlab("") + ylab("") +
-    geom_text(aes(x = type, label = value),
+    geom_text(aes(x = type, label = txt),
               colour = "black",
               size = value_size, alpha = 1) +
     scale_x_discrete(labels = parse(text = probs), position = "left")

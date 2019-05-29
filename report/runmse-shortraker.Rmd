@@ -169,8 +169,12 @@ Check convergence:
 DLMtool::Converge(short_mse)
 ```
 
-```{r probability-table}
-plot_probs(short_mse, PMlist = c("P40", "Punder80", "PNOF", "AAVY", "LTY"))
+```{r probability-table-abs, fig.width = 9, fig.asp = 1, out.width = "4in"}
+plot_probs(short_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+```
+
+```{r probability-table-0-1, fig.width = 9, fig.asp = 1, out.width = "4in"}
+plot_probs(short_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"), scale_0_1 = TRUE)
 ```
 
 Illustrating the built-in plotting functions:
