@@ -41,6 +41,8 @@
 
 - clarify the exact decision, decide on the timeframe, decide on the boundaries of the project, decide on collaborative roles, clarify how final decision will be made
 
+- give examples throughout
+
 ### define specific objectives and performance indicators
 
 - suggested starting points for objectives and performance indicators across most stocks this will apply to
@@ -53,7 +55,7 @@
 
 ### define a set of operating models that capture main uncertainties
 
-- what are the common main uncertainties that we should make to capture
+- what are the common main uncertainties that we should make sure to capture
 
 - defining robustness sets
 
@@ -65,9 +67,9 @@
 
 	- Why using it
 
-	- Note that the approach is software agnostic
-
 	- What it can do
+
+	- Note that the approach is software agnostic
 
 	- Examples of where it has been used
 
@@ -93,7 +95,7 @@
 
 ### how this can still fit into the precautionary framework, sustainable fisheries framework and bill C68
 
-### not just a backup solution, could be argued that this is a better solution then the usual explicit knowledge
+### not just a backup solution, could be argued that this is a better solution then the usual "explicit" knowledge
 
 ## Suggested format of the advice
 
@@ -113,7 +115,7 @@
 
 ## Suggestions for including environmental effects
 
-### tie into bill C68
+### tie into bill C68 and ecosystem approach to fisheries management working group
 
 ### Perhaps one of the most feasible ways to include environmental effects is via operating models
 
