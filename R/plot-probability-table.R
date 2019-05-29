@@ -67,7 +67,9 @@ plot_probs <- function(object,
   probs <- gsub("MSY", "_{MSY}", probs)
   probs <- gsub("%", "\\\\%", probs)
   probs <- paste0("$", probs, "$")
-  probs <- paste0(probs, "  ", yrs)
+  ## Note that yrs contains years string which is not shown on the plot
+  ## All seem to be years 1-50 except LTY which is years 41-50
+  #probs <- paste0(probs, "  ", yrs)
   probs <- unlist(lapply(probs, latex2exp::TeX))
 
   g <- ggplot(df, aes(x = type, y = MP)) +

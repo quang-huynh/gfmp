@@ -169,7 +169,7 @@ Check convergence:
 DLMtool::Converge(short_mse)
 ```
 
-```{r}
+```{r probability-table}
 plot_probs(short_mse, PMlist = c("P40", "Punder80", "PNOF", "AAVY", "LTY"))
 ```
 
