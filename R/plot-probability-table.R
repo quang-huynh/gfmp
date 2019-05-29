@@ -71,7 +71,7 @@ plot_probs <- function(object,
   probs <- unlist(lapply(probs, latex2exp::TeX))
 
   g <- ggplot(df, aes(x = type, y = MP)) +
-    geom_tile(aes(fill = value)) +
+    geom_tile(aes(fill = value), width = 0.95, height = 0.95) +
     gfplot::theme_pbs() +
     theme(panel.border=element_blank(),
           axis.ticks.x = element_blank(),
