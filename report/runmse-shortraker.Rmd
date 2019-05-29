@@ -176,8 +176,8 @@ plot_probs(short_mse, PMlist = c("P40", "Punder80", "PNOF", "AAVY", "LTY"))
 Illustrating the built-in plotting functions:
 
 ```{r}
-#Tplot(short_mse)
-#Tplot2(short_mse)
+Tplot(short_mse)
+Tplot2(short_mse)
 ```
 
 
@@ -233,37 +233,8 @@ par(oldpar)
 
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
-```{r, fig.asp=1}
-yend <- max(short_mse@proyears)
-ffmsy <- short_mse@F_FMSY[,,yend]
-bbmsy <- short_mse@B_BMSY[,,yend]
-
-ffmsy <- reshape2::melt(ffmsy) %>%
-  dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
-bbmsy <- reshape2::melt(bbmsy) %>%
-  dplyr::rename(iter = Var1, mp = Var2, bbmsy = value)
-
-d <- dplyr::inner_join(ffmsy, bbmsy)
-
-n <- data.frame(mp = seq_along(short_mse@MPs), mp_name = short_mse@MPs)
-# n$mp_name <- paste(1:nrow(n), n$mp_name)
-
-d <- dplyr::left_join(d, n)
-
-library(ggplot2)
-ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
-  geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
-  geom_hline(yintercept = 1, alpha = 0.2) +
-  geom_density_2d(aes(colour = ..level..), bins = 5) +
-  viridis::scale_colour_viridis() +
-  ggsidekick::theme_sleek() +
-  facet_wrap(~mp_name) +
-  ylim(0, 3.5) + xlim(0, 3.5) +
-  geom_point(alpha = 0.2) +
-  labs(colour = "Prob. density", x = expression(B/B[MSY]),
-    y = expression(F/F[MSY])) +
-  guides(colour = FALSE)
-#ggsave("analysis/short-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
+```{r, mp-contour, fig.asp=1}
+plot_contours(short_mse, dontshow_mp = "NFref")
 ```
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
