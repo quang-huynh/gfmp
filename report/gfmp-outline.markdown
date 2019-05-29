@@ -11,8 +11,8 @@
 
 # Best practices for setting up a management procedure approach from the literature
 
-<!-- (draw on Punt et al. 2016 and/or Rob's work and/or herring roadmap?) -->
-<!-- Briefly list suggested steps, for example (from herring roadmap for now) -->
+*draw on Punt et al. 2016 and/or Rob's work and/or herring roadmap?*
+*Briefly list suggested steps, for example (from herring roadmap for now)*
 
 * Define decision context
 * Define specific objectives and performance indicators
