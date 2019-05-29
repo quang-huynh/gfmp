@@ -170,7 +170,7 @@ DLMtool::Converge(short_mse)
 ```
 
 ```{r}
-summary(short_mse, PMlist = c("PNOF", "P40", "Punder80", "AAVY", "LTY"))
+plot_probs(short_mse, PMlist = c("P40", "Punder80", "PNOF", "AAVY", "LTY"))
 ```
 
 Illustrating the built-in plotting functions:
