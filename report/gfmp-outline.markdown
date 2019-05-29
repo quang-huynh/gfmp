@@ -1,147 +1,108 @@
-# **GFMP**
+# GFMP Research Document Outline
 
+# Introduction (mostly existing draft)
 
-## Introduction (existing draft)
+* Motivation
+* The tiered approach
+* Movement towards management procedure approaches
+* The model-oriented approach versus the management-oriented approach (not yet drafted)
+* The objectives of this project
+* The expected benefits of this project
 
-### Motivation
+# Best practices for setting up a management procedure approach from the literature
 
-### The tiered approach
+<!-- (draw on Punt et al. 2016 and/or Rob's work and/or herring roadmap?) -->
+<!-- Briefly list suggested steps, for example (from herring roadmap for now) -->
 
-### Movement towards management procedure approaches
+* Define decision context
+* Define specific objectives and performance indicators
+* Identify management procedure options
+* Define a set of operating models that capture main uncertainties
+* Simulate and compute performance indicators
+* Rank overall mp performance
+* Apply the mp to real fishery
 
-### the model-oriented approach versus the management-oriented approach (not yet drafted)
+# How the proposed approach goes about adopting those best practices
 
-- see herring MSE roadmap for example
+* Define decision context
+    - clarify the exact decision, decide on the timeframe, decide on the boundaries of the project, decide on collaborative roles, clarify how final decision will be made
+    - give examples throughout
 
-### The objectives of this project
+* Define specific objectives and performance indicator
+    - suggested starting points for objectives and performance indicators across most stocks this will apply to
 
-### The expected benefits of this project
+* Identify management procedure options
+    - summarize candidates that we have narrowed it down to
+    - reference the detailed appendix
 
-## Best practices for setting up a management procedure approach from the literature (draw on Punt et al. 2016 and/or Rob's work and/or herring roadmap?)
+* Define a set of operating models that capture main uncertainties
+    - what are the common main uncertainties that we should make sure to capture
+    - defining robustness sets
+    - consider weights based on relative plausibility
 
-### Briefly list suggested steps, for example (from herring roadmap for now)
+* Simulate and compute performance indicators
+    - software (DLMtool)
+    	- why using it
+    	- what it can do
+    	- note that the approach is software agnostic
+    	- examples of where it has been used
+    - checking for convergence of MP selection
 
-### define decision context
+* Rank overall MP performanc
+    - suggested figures and table
+    - satisficing
 
-### define specific objectives and performance indicators
+* Apply the MP to real fishery
+    - MP needs to be followed exactly as defined to meet desired objectives
+    - if adjustments need to be made, suggests a need to revisit the objectives
 
-### identify management procedure options
+# Summarize the case studies
 
-### define a set of operating models that capture main uncertainties, consider weights based on relative plausibility
-
-### simulate and compute performance indicators
-
-### rank overall mp performance
-
-### apply the mp to real fishery
-
-## How the proposed approach goes about adopting those best practices
-
-### define decision context
-
-- clarify the exact decision, decide on the timeframe, decide on the boundaries of the project, decide on collaborative roles, clarify how final decision will be made
-
-- give examples throughout
-
-### define specific objectives and performance indicators
-
-- suggested starting points for objectives and performance indicators across most stocks this will apply to
-
-### identify management procedure options
-
-- summarize candidates that we have narrowed it down to
-
-- reference the detailed appendix
-
-### define a set of operating models that capture main uncertainties
-
-- what are the common main uncertainties that we should make sure to capture
-
-- defining robustness sets
-
-- consider weights based on relative plausibility
-
-### simulate and compute performance indicators
-
-- DLMtool
-
-	- Why using it
-
-	- What it can do
-
-	- Note that the approach is software agnostic
-
-	- Examples of where it has been used
-
-- checking for convergence of MP selection
-
-### rank overall mp performance
-
-- suggested figures and tables
-
-- satisficing
-
-### apply the mp to real fishery
-
-- MP needs to be followed exactly as defined to meet desired objectives
-
-- if adjustments need to be made, suggests a need to revisit the objectives
-
-## Summarize the case studies
-
-## Points of discussion follow
+# Discussion or some other title
 
 ## Implicit versus explicit knowledge of limit reference points
 
-### how this can still fit into the precautionary framework, sustainable fisheries framework and bill C68
-
-### not just a backup solution, could be argued that this is a better solution then the usual "explicit" knowledge
+* How this can still fit into the precautionary framework, sustainable fisheries framework and bill C68
+* Not just a backup solution, could be argued that this is a better solution then the usual "explicit" knowledge
 
 ## Suggested format of the advice
 
-### Suggested elements to include in a research document
+* Suggested elements to include in a research document
+* Suggested elements to include in a SAR
+* Potential use of SRs to update advice
+* Potential to assess multiple related species simultaneously
 
-### Suggested elements to include in a SAR
-
-### Potential use of SRs to update advice
-
-### Potential to assess multiple related species simultaneously
-
-## Suggestions for reassessment frequency
+## Suggested reassessment frequency
 
 ## Suggestions for establishing triggers for reassessment
 
-### Identifying mismatches between the operating model and realized data
+* Identifying mismatches between the operating model and realized data
 
 ## Suggestions for including environmental effects
 
-### tie into bill C68 and ecosystem approach to fisheries management working group
-
-### Perhaps one of the most feasible ways to include environmental effects is via operating models
+* Tie into bill C68 and ecosystem approach to fisheries management working group
+* Perhaps one of the most feasible ways to include environmental effects is via operating models
 
 ## Suggestions for using the approach to determine the value of information
 
-### possibly draw on the value of aging data for English sole from a case study as an example
+* Possibly draw on the value of aging data for English sole from a case study as an example
 
 ## Suggestions for use in rebuilding plans
 
-### Brief overview
+* Brief overview
+* Note the upcoming yelloweye inside application
 
-### Note the upcoming yelloweye inside application
+# Appendix: Candidate management procedures
 
-## Appendix: Candidate management procedures
+* How we picked them
+* Document them
+* Give examples of where they have been used
 
-### How we picked them
+# Appendix: A summary of the important features of the DLMtool operating model
 
-### Document them
+# Appendix: Case study towards the more data limited spectrum (shortraker rockfish)
 
-### Give examples of where they have been used
+# Appendix: Case study towards more data rich/moderate spectrum (English sole?)
 
-## Appendix: A summary of the important features of the DLMtool operating model
-
-## Appendix: Case study towards the more data limited spectrum (shortraker rockfish)
-
-## Appendix: Case study towards more data rich/moderate spectrum (English sole?)
-
-## Appendix: a mocked up SAR based on one of the case studies? 
+# Appendix: a mocked up SAR based on one of the case studies? 
 
