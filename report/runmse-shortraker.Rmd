@@ -180,6 +180,9 @@ plot_probs(short_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"), scale_0_1
 Illustrating the built-in plotting functions:
 
 ```{r}
+x <- trade_off(short_mse,
+               pm_list = list("PNOF", "LTY", "P100", "LTY", "P50", "LTY", "P10", "LTY"),
+               lims = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5))
 Tplot(short_mse)
 Tplot2(short_mse)
 ```

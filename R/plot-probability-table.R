@@ -4,26 +4,39 @@ get_probs <- function(object,
                       ...,
                       refs = NULL){
 
-  pm_list <- unlist(list(...))
-
-  if(!length(pm_list)) pm_list <- c("PNOF", "P50", "AAVY", "LTY")
-  if(class(pm_list) != 'character') stop("Must provide names of PM methods")
-
-  for(X in seq_along(pm_list)){
-    if (!pm_list[X] %in% avail("PM")) stop(pm_list[X], " is not a valid PM method")
+  if (class(object) != "MSE"){
+    stop("object must be class `MSE`",
+         call. = FALSE)
   }
+
+  pm_list <- unlist(list(...))
+  if(!length(pm_list)){
+    warning("No PM's included. Using defaults")
+    pm_list <- c("PNOF", "P50", "AAVY", "LTY")
+  }
+  if(class(pm_list) != 'character'){
+    stop("Must provide names of PM methods",
+         call. = FALSE)
+  }
+  for(X in seq_along(pm_list)){
+    if (!pm_list[X] %in% avail("PM")){
+      stop(pm_list[X], " is not a valid PM method",
+           call. = FALSE)
+    }
+  }
+
   means <- names <- captions <- mps <- list()
   for (X in 1:length(pm_list)) {
     ref <- refs[[pm_list[X]]]
     if (is.null(ref)) {
-      runPM <- eval(call(pm_list[X], object))
+      run_pm <- eval(call(pm_list[X], object))
     } else {
-      runPM <- eval(call(pm_list[X], object, Ref = ref))
+      run_pm <- eval(call(pm_list[X], object, Ref = ref))
     }
-    means[[X]] <- runPM@Mean
-    names[[X]] <- runPM@Name
-    captions[[X]] <- runPM@Caption
-    mps[[X]] <- runPM@MPs
+    means[[X]] <- run_pm@Mean
+    names[[X]] <- run_pm@Name
+    captions[[X]] <- run_pm@Caption
+    mps[[X]] <- run_pm@MPs
   }
 
   df <- data.frame('MP' = mps[[1]],
@@ -108,4 +121,74 @@ plot_probs <- function(probs_dat,
     scale_x_discrete(labels = parse(text = probs), position = "left")
 
   g
+}
+
+#' Compare pairs of performance measures and report satisficed = TRUE if the probabaility
+#'  of both performance measures are greater than lim for each management procedure
+trade_off <- function(object,
+                      pm_list = NULL,
+                      refs = NULL,
+                      yrs = NULL,
+                      lims = NULL){
+
+  if(is.null(lims) | is.null(pm_list)){
+    stop("Both pm_list and lims are required arguments.",
+         call. = FALSE)
+  }
+  if(length(lims) != length(pm_list)){
+    stop("Both pm_list and lims must have the same length.",
+         call. = FALSE)
+  }
+
+  if(length(pm_list) %% 2){
+    stop("pm_list must have an even length.",
+         call. = FALSE)
+  }
+
+  run_pm <- list()
+  for(i in seq_along(pm_list)){
+    ref <- refs[[pm_list[i]]]
+    yr <- yrs[pm_list[i]]
+    if(is.null(ref)){
+      if(is.null(yr)){
+        run_pm[[i]] <- eval(call(pm_list[[i]], object))
+      }else{
+        run_pm[[i]] <- eval(call(pm_list[[i]], object, Yrs = yr))
+      }
+    }else{
+      if(is.null(yr)){
+        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref))
+      }else{
+        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref, Yrs = yr))
+      }
+    }
+  }
+
+  xind <- seq(1, by = 2, length.out = length(pm_list) / 2)
+  yind <- xind + 1
+  out <- list()
+  for(i in seq_len(length(pm_list) / 2)){
+    xpm <- pm_list[[xind[i]]]
+    xvals <- run_pm[[match(xpm, pm_list)]]@Mean
+    xcap <-  run_pm[[match(xpm, pm_list)]]@Caption
+    xname <-  run_pm[[match(xpm, pm_list)]]@Name
+    xline <- lims[match(xpm, pm_list)]
+
+    ypm <- pm_list[[yind[i]]]
+    yvals <- run_pm[[match(ypm, pm_list)]]@Mean
+    ycap <-  run_pm[[match(ypm, pm_list)]]@Caption
+    yname <-  run_pm[[match(ypm, pm_list)]]@Name
+    yline <- lims[match(ypm, pm_list)]
+
+    out[[i]] <- as_tibble(data.frame(name = pm_list[[xind[i]]],
+                                     x = xvals,
+                                     y = yvals,
+                                     # label=labels,
+                                     # Class=Class,
+                                     pass = xvals > xline & yvals > yline,
+                                     xpm = xpm,
+                                     ypm = ypm))
+
+  }
+  do.call(rbind, out)
 }
