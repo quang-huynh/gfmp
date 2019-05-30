@@ -47,7 +47,7 @@ plot_probs <- function(object,
   }else if(sort_by == "increasing"){
     df$MP <- factor(df$MP, levels = df$MP[rev(do.call(order, df[-1]))])
   }else{
-    stop("Error - sort_by must be either 'increasing' or 'decreasing'",
+    stop("sort_by must be either 'increasing' or 'decreasing'",
          call. = FALSE)
   }
 
