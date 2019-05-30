@@ -183,8 +183,6 @@ trade_off <- function(object,
     out[[i]] <- as_tibble(data.frame(name = pm_list[[xind[i]]],
                                      x = xvals,
                                      y = yvals,
-                                     # label=labels,
-                                     # Class=Class,
                                      pass = xvals > xline & yvals > yline,
                                      xpm = xpm,
                                      ypm = ypm))
