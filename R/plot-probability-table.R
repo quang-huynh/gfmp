@@ -1,5 +1,10 @@
-#'Summary of probabilities of things from the MSE object
+#'Summary of probabilities of performance metrics from the MSE object
 #'
+#' @param object MSE object, output of the DLMtool runMSE() function
+#' @param ... List of performace metrics
+#' @param refs List containing the reference limits for each metric
+#' @returns List of length 2, first item is a data frame of the output, second item is a list of
+#'  captions for the metrics
 get_probs <- function(object,
                       ...,
                       refs = NULL){
@@ -123,8 +128,19 @@ plot_probs <- function(probs_dat,
   g
 }
 
-#' Compare pairs of performance measures and report satisficed = TRUE if the probabaility
-#'  of both performance measures are greater than lim for each management procedure
+#' Compare pairs of performance measures a(nd report TRUE if the probabaility
+#'  of both performance measures together (logical AND) are greater than lim
+#'  for each management procedure
+#'
+#' @param object MSE object, output of the DLMtool runMSE() function
+#' @param pm_list List of performace metric names. Must be even length, with odd ones being compared
+#'  to the even ones that follow them in pairs
+#' @param refs List containing the reference limits for each metric
+#' @param yrs Numeric vector of length 2 with year indices to summarize performance
+#' @param lims  A numeric vector of acceptable risk/minimum probability thresholds
+#'
+#' @returns A data frame of the MP name, name and probability of x and y performance metrics,
+#'  and pass/fail
 trade_off <- function(object,
                       pm_list = NULL,
                       refs = NULL,
@@ -135,13 +151,14 @@ trade_off <- function(object,
     stop("Both pm_list and lims are required arguments.",
          call. = FALSE)
   }
-  if(length(lims) != length(pm_list)){
-    stop("Both pm_list and lims must have the same length.",
-         call. = FALSE)
-  }
 
   if(length(pm_list) %% 2){
     stop("pm_list must have an even length.",
+         call. = FALSE)
+  }
+
+  if(length(lims) != length(pm_list) / 2){
+    stop("lims must be half the length of pm_list.",
          call. = FALSE)
   }
 
@@ -172,13 +189,15 @@ trade_off <- function(object,
     xvals <- run_pm[[match(xpm, pm_list)]]@Mean
     xcap <-  run_pm[[match(xpm, pm_list)]]@Caption
     xname <-  run_pm[[match(xpm, pm_list)]]@Name
-    xline <- lims[match(xpm, pm_list)]
+    #xline <- lims[match(xpm, pm_list)]
+    xline <- lims[i]
 
     ypm <- pm_list[[yind[i]]]
     yvals <- run_pm[[match(ypm, pm_list)]]@Mean
     ycap <-  run_pm[[match(ypm, pm_list)]]@Caption
     yname <-  run_pm[[match(ypm, pm_list)]]@Name
-    yline <- lims[match(ypm, pm_list)]
+    #yline <- lims[match(ypm, pm_list)]
+    yline <- lims[i]
 
     out[[i]] <- as_tibble(data.frame(name = pm_list[[xind[i]]],
                                      x = xvals,
