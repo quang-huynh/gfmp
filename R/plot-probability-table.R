@@ -1,20 +1,9 @@
-#' Summary of probabilities of things from the MSE object in a colored tile table format
+#'Summary of probabilities of things from the MSE object
 #'
-#' @param object object of class MSE
-#' @param ... a list of names of PM methods
-#' @param refs An optional named list (matching the PM names) with numeric values to
-#'  override the default `Ref` values. See examples in summary for MSE object.
-#'  @param digits How many decimal places to show in the tiles for the values
-#'  @param sort_by the table will be sorted by the first value in pm_list, this is either "increasing" or "decreasing"
-#'  @param value_size font size for the values in the tiles
-plot_probs <- function(object,
-                       ...,
-                       refs = NULL,
-                       digits = 2,
-                       sort_by = "decreasing",
-                       value_size = 4.1,
-                       relative_max = FALSE,
-                       scale_0_1 = FALSE){
+get_probs <- function(object,
+                      ...,
+                      refs = NULL){
+
   pm_list <- unlist(list(...))
 
   if(!length(pm_list)) pm_list <- c("PNOF", "P50", "AAVY", "LTY")
@@ -23,7 +12,7 @@ plot_probs <- function(object,
   for(X in seq_along(pm_list)){
     if (!pm_list[X] %in% avail("PM")) stop(pm_list[X], " is not a valid PM method")
   }
-  storeMean <- storeName <- storeCap <- storeMP <- list()
+  means <- names <- captions <- mps <- list()
   for (X in 1:length(pm_list)) {
     ref <- refs[[pm_list[X]]]
     if (is.null(ref)) {
@@ -31,16 +20,34 @@ plot_probs <- function(object,
     } else {
       runPM <- eval(call(pm_list[X], object, Ref = ref))
     }
-    storeMean[[X]] <- runPM@Mean
-    storeName[[X]] <- runPM@Name
-    storeCap[[X]] <- runPM@Caption
-    storeMP[[X]] <- runPM@MPs
+    means[[X]] <- runPM@Mean
+    names[[X]] <- runPM@Name
+    captions[[X]] <- runPM@Caption
+    mps[[X]] <- runPM@MPs
   }
 
-  df <- data.frame('MP' = storeMP[[1]],
-                   signif(do.call('cbind', storeMean),2), stringsAsFactors = FALSE)
+  df <- data.frame('MP' = mps[[1]],
+                   signif(do.call('cbind', means),2), stringsAsFactors = FALSE)
   colnames(df)[2:(length(pm_list) + 1)] <- pm_list
-  df <- as_tibble(df)
+
+  list(as_tibble(df), captions)
+}
+
+#' Summary of probabilities of things from the MSE object in a colored tile table format
+#'
+#'  @param probs_dat A list of length 2 - a data frame and another list of captions describing the
+#'   columns of the data frame as returned from get_probs()
+#'  @param digits How many decimal places to show in the tiles for the values
+#'  @param value_size font size for the values in the tiles
+plot_probs <- function(probs_dat,
+                       digits = 2,
+                       value_size = 4.1,
+                       relative_max = FALSE,
+                       scale_0_1 = FALSE,
+                       sort_by = "decreasing"){
+
+  df <- probs_dat[[1]]
+  captions <- probs_dat[[2]]
 
   if(sort_by == "decreasing"){
     df$MP <- factor(df$MP, levels = df$MP[do.call(order, df[-1])])
@@ -57,7 +64,7 @@ plot_probs <- function(object,
                         value.name = "value")
 
   ## Set up expressions for tick labels
-  j <- as.vector(do.call('rbind', storeCap))
+  j <- as.vector(do.call('rbind', captions))
   yrs <- stringr::str_extract(j, "\\(Year.*\\)$")
   yrs <- gsub("Years", "Yrs", yrs)
   yrs <- gsub(" - ", "-", yrs)
