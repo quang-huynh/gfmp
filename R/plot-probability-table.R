@@ -189,19 +189,21 @@ trade_off <- function(object,
     xvals <- run_pm[[match(xpm, pm_list)]]@Mean
     xcap <-  run_pm[[match(xpm, pm_list)]]@Caption
     xname <-  run_pm[[match(xpm, pm_list)]]@Name
-    #xline <- lims[match(xpm, pm_list)]
     xline <- lims[i]
 
     ypm <- pm_list[[yind[i]]]
     yvals <- run_pm[[match(ypm, pm_list)]]@Mean
     ycap <-  run_pm[[match(ypm, pm_list)]]@Caption
     yname <-  run_pm[[match(ypm, pm_list)]]@Name
-    #yline <- lims[match(ypm, pm_list)]
     yline <- lims[i]
 
-    out[[i]] <- as_tibble(data.frame(name = pm_list[[xind[i]]],
+    out[[i]] <- as_tibble(data.frame(name = object@MPs,
                                      x = xvals,
                                      y = yvals,
+                                     xcap = xcap,
+                                     ycap = ycap,
+                                     xname = xname,
+                                     yname = yname,
                                      pass = xvals > xline & yvals > yline,
                                      xpm = xpm,
                                      ypm = ypm))
