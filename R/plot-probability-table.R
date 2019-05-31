@@ -51,6 +51,27 @@ get_probs <- function(object,
   list(as_tibble(df), captions)
 }
 
+#' Change a vector of probability captions into expressions for rendering on a ggplot plot
+#'
+#' @param cap_vec A vector of strings containing probabilities and special characters
+#'
+#' @return a list of expressions
+cap_expr <- function(cap_vec){
+  probs <- regmatches(cap_vec, regexpr("(?<=Prob\\. ).*(?= \\()", cap_vec, perl = TRUE))
+  probs <- gsub("MSY", "_{MSY}", probs)
+  probs <- gsub("%", "\\\\%", probs)
+  probs <- paste0("$", probs, "$")
+
+  yrs <- stringr::str_extract(cap_vec, "\\(Year.*\\)$")
+  yrs <- gsub("Years", "Yrs", yrs)
+  yrs <- gsub(" - ", "-", yrs)
+  ## Note that yrs contains years string which is not shown on the plot
+  ## All seem to be years 1-50 except LTY which is years 41-50
+  #probs <- paste0(probs, "  ", yrs)
+
+  unlist(lapply(probs, latex2exp::TeX))
+}
+
 #' Summary of probabilities of things from the MSE object in a colored tile table format
 #'
 #'  @param probs_dat A list of length 2 - a data frame and another list of captions describing the
@@ -83,19 +104,8 @@ plot_probs <- function(probs_dat,
 
   ## Set up expressions for tick labels
   j <- as.vector(do.call('rbind', captions))
-  yrs <- stringr::str_extract(j, "\\(Year.*\\)$")
-  yrs <- gsub("Years", "Yrs", yrs)
-  yrs <- gsub(" - ", "-", yrs)
+  probs <- cap_expr(j)
 
-  probs <- regmatches(j, regexpr("(?<=Prob\\. ).*(?= \\()", j, perl = TRUE))
-  probs <- gsub("MSY", "_{MSY}", probs)
-  probs <- gsub("%", "\\\\%", probs)
-  probs <- paste0("$", probs, "$")
-  ## Note that yrs contains years string which is not shown on the plot
-  ## All seem to be years 1-50 except LTY which is years 41-50
-  #probs <- paste0(probs, "  ", yrs)
-
-  probs <- unlist(lapply(probs, latex2exp::TeX))
   df$txt <- vapply(df$value, function(x){
     gfutilities::f(x, digits)
   }, FUN.VALUE = character(1L))
