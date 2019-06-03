@@ -54,10 +54,11 @@ get_probs <- function(object,
 #' Change a vector of probability captions into expressions for rendering on a ggplot plot
 #'
 #' @param cap_vec A vector of strings containing probabilities and special characters
-#'
+#' @param inc_yrs Include the years part of the caption expression
 #' @return a list of expressions
-cap_expr <- function(cap_vec){
+cap_expr <- function(cap_vec, inc_yrs = FALSE){
   probs <- regmatches(cap_vec, regexpr("(?<=Prob\\. ).*(?= \\()", cap_vec, perl = TRUE))
+  probs <- paste0("P(", probs, ")")
   probs <- gsub("MSY", "_{MSY}", probs)
   probs <- gsub("%", "\\\\%", probs)
   probs <- paste0("$", probs, "$")
@@ -65,9 +66,9 @@ cap_expr <- function(cap_vec){
   yrs <- stringr::str_extract(cap_vec, "\\(Year.*\\)$")
   yrs <- gsub("Years", "Yrs", yrs)
   yrs <- gsub(" - ", "-", yrs)
-  ## Note that yrs contains years string which is not shown on the plot
-  ## All seem to be years 1-50 except LTY which is years 41-50
-  #probs <- paste0(probs, "  ", yrs)
+  if(inc_yrs){
+    probs <- paste0(probs, "  ", yrs)
+  }
 
   unlist(lapply(probs, latex2exp::TeX))
 }
@@ -138,86 +139,3 @@ plot_probs <- function(probs_dat,
   g
 }
 
-#' Compare pairs of performance measures a(nd report TRUE if the probabaility
-#'  of both performance measures together (logical AND) are greater than lim
-#'  for each management procedure
-#'
-#' @param object MSE object, output of the DLMtool runMSE() function
-#' @param pm_list List of performace metric names. Must be even length, with odd ones being compared
-#'  to the even ones that follow them in pairs
-#' @param refs List containing the reference limits for each metric
-#' @param yrs Numeric vector of length 2 with year indices to summarize performance
-#' @param lims  A numeric vector of acceptable risk/minimum probability thresholds
-#'
-#' @returns A data frame of the MP name, name and probability of x and y performance metrics,
-#'  and pass/fail
-trade_off <- function(object,
-                      pm_list = NULL,
-                      refs = NULL,
-                      yrs = NULL,
-                      lims = NULL){
-
-  if(is.null(lims) | is.null(pm_list)){
-    stop("Both pm_list and lims are required arguments.",
-         call. = FALSE)
-  }
-
-  if(length(pm_list) %% 2){
-    stop("pm_list must have an even length.",
-         call. = FALSE)
-  }
-
-  if(length(lims) != length(pm_list) / 2){
-    stop("lims must be half the length of pm_list.",
-         call. = FALSE)
-  }
-
-  run_pm <- list()
-  for(i in seq_along(pm_list)){
-    ref <- refs[[pm_list[i]]]
-    yr <- yrs[pm_list[i]]
-    if(is.null(ref)){
-      if(is.null(yr)){
-        run_pm[[i]] <- eval(call(pm_list[[i]], object))
-      }else{
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Yrs = yr))
-      }
-    }else{
-      if(is.null(yr)){
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref))
-      }else{
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref, Yrs = yr))
-      }
-    }
-  }
-
-  xind <- seq(1, by = 2, length.out = length(pm_list) / 2)
-  yind <- xind + 1
-  out <- list()
-  for(i in seq_len(length(pm_list) / 2)){
-    xpm <- pm_list[[xind[i]]]
-    xvals <- run_pm[[match(xpm, pm_list)]]@Mean
-    xcap <-  run_pm[[match(xpm, pm_list)]]@Caption
-    xname <-  run_pm[[match(xpm, pm_list)]]@Name
-    xline <- lims[i]
-
-    ypm <- pm_list[[yind[i]]]
-    yvals <- run_pm[[match(ypm, pm_list)]]@Mean
-    ycap <-  run_pm[[match(ypm, pm_list)]]@Caption
-    yname <-  run_pm[[match(ypm, pm_list)]]@Name
-    yline <- lims[i]
-
-    out[[i]] <- as_tibble(data.frame(name = object@MPs,
-                                     x = xvals,
-                                     y = yvals,
-                                     xcap = xcap,
-                                     ycap = ycap,
-                                     xname = xname,
-                                     yname = yname,
-                                     pass = xvals > xline & yvals > yline,
-                                     xpm = xpm,
-                                     ypm = ypm))
-
-  }
-  do.call(rbind, out)
-}

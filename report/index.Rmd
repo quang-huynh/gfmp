@@ -60,6 +60,7 @@ library(rfishbase)
 library(RColorBrewer)
 library(tidyverse)
 source(here::here("R/plot-probability-table.R"))
+source(here::here("R/trade-plots.R"))
 source(here::here("R/pm-functions.R"))
 source(here::here("R/plots.R"))
 ```
