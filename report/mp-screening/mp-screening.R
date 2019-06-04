@@ -106,7 +106,7 @@ top_pm_names <- unique(top_pm$mp)
 length(top_pm_names)
 
 species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
-  species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine rockfish",
+  species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
 
 
