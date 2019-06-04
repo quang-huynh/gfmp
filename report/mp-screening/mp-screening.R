@@ -41,7 +41,7 @@ mps_keep <- names(mps_keep[mps_keep])
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
   oms[[i]]@seed <- 42L
-  oms[[i]]@nsim <- 50L
+  oms[[i]]@nsim <- 48L
   fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
     mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE)
