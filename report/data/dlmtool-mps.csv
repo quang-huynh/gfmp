@@ -52,4 +52,4 @@ SPslope(),Slope in surplus production MP,N,Requires abundance,Requires abundance
 SPSRA() SPSRA_ML(),Surplus Production Stock Reduction Analysis,N,Requires depletion and steepness,Requires depletion and steepness
 YPR(),Yield Per Recruit analysis to get FMSY proxy F01,N,Requires abundance,"YRP requires abundance, YPR_CAA requires ages, possibly YPR_ML"
 YPR_CC(),Yield Per Recruit analysis to get FMSY proxy F01,N,Requires recent age composition data,"YRP requires abundance, YPR_CAA requires ages, possibly YPR_ML"
-YPR() YPR_ML(),Yield Per Recruit analysis to get FMSY proxy F01,Y,,"YRP requires abundance, YPR_CAA requires ages, possibly YPR_ML"
+YPR_ML(),Yield Per Recruit analysis to get FMSY proxy F01,Y,,"YRP requires abundance, YPR_CAA requires ages, possibly YPR_ML"

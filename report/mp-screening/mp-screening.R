@@ -17,31 +17,35 @@ download.file(paste0(base_url, "Shortspine_Thornyhead_BC_DFO/OM.rdata"),
   here("report/mp-screening/om/shortspine.rds"))
 download.file(paste0(base_url, "Yelloweye_Rockfish_BC_DFO/OM.rdata"),
   here("report/mp-screening/om/yelloweye.rds"))
+download.file(paste0(base_url, "Arrowtooth_Flounder_BC_DFO/OM.rdata"),
+  here("report/mp-screening/om/arrowtooth.rds"))
 
 pop_om <- readRDS(here("report/mp-screening/om/pop.rds"))
 rdb_om <- readRDS(here("report/mp-screening/om/redbanded.rds"))
 rgh_om <- readRDS(here("report/mp-screening/om/rougheye.rds"))
 srt_om <- readRDS(here("report/mp-screening/om/shortspine.rds"))
 yel_om <- readRDS(here("report/mp-screening/om/yelloweye.rds"))
+arr_om <- readRDS(here("report/mp-screening/om/arrowtooth.rds"))
 
 folder <- here("report/mp-screening/mse-generated")
-
-oms <- list(pop = pop_om, rdb = rdb_om, rgh = rgh_om, srt = srt_om, yel = yel_om)
+oms <- list(pop = pop_om, rdb = rdb_om, rgh = rgh_om,
+  srt = srt_om, yel = yel_om, arr = arr_om)
 mse <- list()
 
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
   rename(mp = `Management Procedure`)
+mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, "\\(\\)")))
+mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 
-all_mps <- union(avail("Output"), avail("Reference"))
-mps_keep <- vapply(all_mps, function(x) any(grepl(x, candidate_mps$mp)),
-  FUN.VALUE = logical(1L))
-mps_keep <- names(mps_keep[mps_keep])
+# FIXME: Error: Islope3 is not a valid MP!?
+mps_keep <- mps_keep[!mps_keep %in% c("Islope3")]
 
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
+  message("Running ", names(oms)[i], "...")
   oms[[i]]@seed <- 42L
-  oms[[i]]@nsim <- 48L
+  oms[[i]]@nsim <- 100L
   fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
     mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE)
@@ -52,4 +56,66 @@ for (i in seq_along(oms)) {
 }
 snowfall::sfStop()
 
-plot(mse[[1]])
+source("R/plot-probability-table.R")
+source("R/plots.R")
+source("R/trade-plots.R")
+source("R/pm-functions.R")
+library(gfutilities)
+
+pm <- lapply(mse, function(x) {
+  pm_pass(x,
+    pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"),
+    lims = c(0, 0, 0, 0, 0, 0))
+})
+for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
+
+# pm    probcap
+# <fct> <fct>
+#   1 PNOF  Prob. F < FMSY (Years 1 - 50)
+# 2 P100  Prob. SB > SBMSY (Years 1 - 50)
+# 4 P10   Prob. SB > 0.1 SBMSY (Years 1 - 50)
+# 5 P40   Prob. SB > 0.4 SBMSY (Years 1 - 50)
+# 6 LTY   Prob. Yield > 0.5 Ref. Yield (Years 41-50)
+
+# r_plot(pm[[3]])
+# r_plot(pm[[4]])
+# r_plot(pm[[5]])
+# plot(mse[[1]])
+
+wide_pm <- bind_rows(pm) %>%
+  as.data.frame() %>%
+  filter(!species %in% c("rdb"), mp != "YPR") %>%
+  filter(pm %in% c("P40", "LTY", "AAVY")) %>%
+  reshape2::dcast(species + mp ~ pm, value.var = "prob")
+
+top_pm <- wide_pm %>%
+  filter(LTY > 0.50) %>%
+  # filter(AAVY > 0.50) %>%
+  arrange(species, -P40, -LTY, -AAVY) %>%
+  group_by(species) %>%
+  top_n(n = 10L, wt = P40) %>%
+  # arrange(species, -LTY) %>%
+  # group_by(species) %>%
+  # top_n(n = 10L) %>%
+  as.data.frame()
+
+top_pm
+sort(table(top_pm$mp))
+
+top_pm_names <- unique(top_pm$mp)
+length(top_pm_names)
+
+species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
+  species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine rockfish",
+    "yelloweye rockfish", "arrowtooth flounder"))
+
+
+wide_pm %>%
+  left_join(species_names, by = "species") %>%
+  filter(mp %in% top_pm_names) %>%
+  ggplot(aes(x = P40, y = LTY, colour = AAVY)) +
+  geom_point() +
+  facet_wrap(~species_full, scales = "free") +
+  ggrepel::geom_text_repel(aes(label = mp)) +
+  scale_color_viridis_c(direction = -1) +
+  gfplot::theme_pbs()
