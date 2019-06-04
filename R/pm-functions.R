@@ -1,5 +1,26 @@
 # PBS-specific Performance Metric functions
 
+LTY <- function(MSEobj=NULL, Ref=0.5, Yrs=-10) {
+  Yrs <- ChkYrs(Yrs, MSEobj)
+  PMobj <- new("PMobj")
+  PMobj@Name <- paste0("Average Yield relative to Reference Yield (Years ", Yrs[1], "-", Yrs[2], ")")
+  if (Ref != 1) {
+    PMobj@Caption <- paste0('Prob. Yield < ', Ref, ' Ref. Yield (Years ', Yrs[1], "-", Yrs[2], ")")
+  } else {
+    PMobj@Caption <- paste0('Prob. Yield < Ref. Yield (Years ', Yrs[1], "-", Yrs[2], ")")
+  }
+
+  RefYd <- array(MSEobj@OM$RefY, dim=dim(MSEobj@C[,,Yrs[1]:Yrs[2]]))
+
+  PMobj@Stat <- MSEobj@C[,,Yrs[1]:Yrs[2]]/RefYd
+  PMobj@Ref <- 0.5
+  PMobj@Prob <- calcProb(PMobj@Stat < PMobj@Ref, MSEobj)
+
+  PMobj@Mean <- calcMean(PMobj@Prob) # calculate mean probability by MP
+  PMobj@MPs <- MSEobj@MPs
+  PMobj
+}
+
 #' @rdname PerformanceMetric
 #' @export
 Punder80 <- function(MSEobj=NULL, Ref=0.8, Yrs=NULL) {
