@@ -85,12 +85,12 @@ for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 wide_pm <- bind_rows(pm) %>%
   as.data.frame() %>%
   filter(!species %in% c("rdb"), mp != "YPR") %>%
-  filter(pm %in% c("P100", "P40", "LTY", "AAVY")) %>%
+  filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
 top_pm <- wide_pm %>%
   group_by(species) %>%
-  mutate(P100 = P100 / max(P100),
+  mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
     P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
   # filter(AAVY > 0.50) %>%
   filter(P40 > 0.90) %>%
@@ -98,7 +98,7 @@ top_pm <- wide_pm %>%
   # filter(LTY > 0.50) %>%
   as.data.frame() %>%
   filter(class != "Reference") %>%
-  arrange(species, -LTY, -P40, -AAVY) %>%
+  arrange(species, -LTY, -P40, -AAVY, -PNOF) %>%
   group_by(species) %>%
   top_n(n = 5L, wt = P40) %>%
   # arrange(species, -LTY) %>%
@@ -119,14 +119,21 @@ species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
   species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
 
-wide_pm %>%
-  left_join(species_names, by = "species") %>%
-  # filter(mp %in% top_pm_names | class == "Reference") %>%
-  filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
-  ggplot(aes(x = P100, y = LTY)) +
-  geom_point(aes(colour = AAVY, shape = class)) +
-  facet_wrap(~species_full, scales = "free") +
-  ggrepel::geom_text_repel(aes(label = mp), colour = "grey50") +
-  scale_color_viridis_c(direction = -1) +
-  scale_shape_manual(values = c("Reference" = 4, "Output" = 21)) +
-  gfplot::theme_pbs()
+plot_pm <- function(x, y, colour) {
+  wide_pm %>%
+    left_join(species_names, by = "species") %>%
+    # filter(mp %in% top_pm_names | class == "Reference") %>%
+    filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
+    ggplot(aes_string(x = x, y = y)) +
+    geom_point(aes_string(colour = colour, shape = "class")) +
+    xlim(0, 1) + ylim(0, 1) +
+    facet_wrap(~species_full) +
+    ggrepel::geom_text_repel(aes(label = mp), colour = "grey50") +
+    scale_color_viridis_c(direction = -1) +
+    scale_shape_manual(values = c("Reference" = 4, "Output" = 21)) +
+    gfplot::theme_pbs()
+}
+plot_pm("P100", "LTY", "AAVY")
+plot_pm("P40", "LTY", "AAVY")
+plot_pm("P40", "PNOF", "LTY")
+plot_pm("P100", "PNOF", "LTY")
