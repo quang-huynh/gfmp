@@ -32,6 +32,31 @@ oms <- list(pop = pop_om, rdb = rdb_om, rgh = rgh_om,
   srt = srt_om, yel = yel_om, arr = arr_om)
 mse <- list()
 
+lapply(oms, function(x) x@beta) # hyper stability/hyper depletion
+lapply(oms, function(x) x@Ibiascv)
+lapply(oms, function(x) x@Cobs)
+lapply(oms, function(x) x@Cbiascv)
+lapply(oms, function(x) x@interval)
+# What should the assessment interval be?
+# Every 5 years?
+
+lapply(oms, function(x) x@proyears)
+
+# Which OMs make use of cpars and for which slots?
+lapply(oms, function(x) names(x@cpars))
+
+# Let's look at the CV on the survey index
+# since this will be important to many of the MPs:
+lapply(oms, function(x) if ("Iobs" %in% names(x@cpars))
+  range(x@cpars$Iobs) else x@Iobs)
+
+# survey CV should be closer to 0.2-0.35 for POP (synopsis report mean synoptic CVs)
+oms$pop@Iobs <- c(0.20, 0.35)
+# survey CV for shortspine looks reasonable
+# survey CV for yelloweye should be around 0.1-0.2 (looks good)
+# arrowtooth should be around 0.15-0.25 (synopsis report)
+oms$arr@Iobs <- c(0.15, 0.25)
+
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
   rename(mp = `Management Procedure`)
@@ -44,8 +69,12 @@ mps_keep <- mps_keep[!mps_keep %in% c("Islope3")]
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
   message("Running ", names(oms)[i], "...")
-  oms[[i]]@seed <- 42L
-  oms[[i]]@nsim <- 100L
+  oms[[i]]@seed <- 42
+  oms[[i]]@nsim <- 100
+  oms[[i]]@Cobs <- c(0.05, 0.10)
+  oms[[i]]@Cbiascv <- c(0.05, 0.05)
+  oms[[i]]@interval <- 5 # otherwise a mix of 3 and 4
+
   fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
     mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE)
