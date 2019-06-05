@@ -112,6 +112,9 @@ sort(table(top_pm$mp))
 top_pm_names <- unique(top_pm$mp)
 length(top_pm_names)
 
+top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
+top_top_pm_names
+
 species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
   species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
@@ -119,7 +122,7 @@ species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
 wide_pm %>%
   left_join(species_names, by = "species") %>%
   # filter(mp %in% top_pm_names | class == "Reference") %>%
-  filter(grepl("^Itarget", mp) | class == "Reference" | mp %in% c("DD", "DD4010", "AvC")) %>%
+  filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
   ggplot(aes(x = P100, y = LTY)) +
   geom_point(aes(colour = AAVY, shape = class)) +
   facet_wrap(~species_full, scales = "free") +
