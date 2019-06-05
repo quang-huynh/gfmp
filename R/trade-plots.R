@@ -20,7 +20,7 @@ r_plot <- function(df,
                   fill = mp,
                   shape = class)) +
     geom_point(size = 5) +
-    scale_x_discrete(labels = parse(text = prob_labs)) +
+    #scale_x_discrete(labels = parse(text = prob_labs)) +
     theme(panel.background = element_rect(fill = "white",
                                           colour = "white",
                                           size = 0.5,
@@ -31,10 +31,12 @@ r_plot <- function(df,
           panel.grid.minor = element_line(size = 0.25,
                                           linetype = 'solid',
                                           colour = "grey40")) +
-    ylim(0, 1) +
+          #axis.text.x = element_text(size = 12, angle = c(0, 90, 0, 0, -90, 0))) +
+    ggrepel::geom_text_repel(data = df, label = parse(text = prob_labs)) +
+  ylim(0, 1) +
     xlab("") +
     ylab("") +
-    coord_polar() +
+    coord_polar(clip = "off") +
     geom_hline(yintercept = ref_levels, lwd = 1, lty = 2)
 
     if(fill_polys){
