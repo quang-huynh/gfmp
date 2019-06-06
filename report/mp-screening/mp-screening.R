@@ -6,19 +6,26 @@ library(here)
 dir.create(here("report/mp-screening/om"), showWarnings = FALSE)
 dir.create(here("report/mp-screening/mse-generated"), showWarnings = FALSE)
 
-base_url <- "http://www.datalimitedtoolkit.org/Case_Studies_Table/"
-download.file(paste0(base_url, "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/pop.rds"))
-download.file(paste0(base_url, "Redbanded_Rockfish_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/redbanded.rds"))
-download.file(paste0(base_url, "Rougheye_Rockfish_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/rougheye.rds"))
-download.file(paste0(base_url, "Shortspine_Thornyhead_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/shortspine.rds"))
-download.file(paste0(base_url, "Yelloweye_Rockfish_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/yelloweye.rds"))
-download.file(paste0(base_url, "Arrowtooth_Flounder_BC_DFO/OM.rdata"),
-  here("report/mp-screening/om/arrowtooth.rds"))
+download_om <- function(species,
+                        web_file,
+                        base_url = "http://www.datalimitedtoolkit.org/Case_Studies_Table/",
+                        method = "wget",
+                        overwrite = FALSE){
+  fn <- paste0(species, ".rds")
+  if(overwrite | !file.exists(here("report/mp-screening/om", fn))){
+    download.file(paste0(base_url, web_file),
+                  here("report/mp-screening/om", fn),
+                  method = method)
+  }
+}
+
+overwrite <- TRUE
+download_om("pop", "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = overwrite)
+download_om("redbanded", "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
+download_om("rougheye", "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
+download_om("shortspine", "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = overwrite)
+download_om("yelloweye", "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
+download_om("arrowtooth", "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = overwrite)
 
 pop_om <- readRDS(here("report/mp-screening/om/pop.rds"))
 rdb_om <- readRDS(here("report/mp-screening/om/redbanded.rds"))
