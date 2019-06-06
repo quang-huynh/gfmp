@@ -31,7 +31,7 @@ In order to eliminate MPs that did not consistently perform well across multiple
 1. Eliminate MPs with scaled P100 < 0.5 maximum P100 for each stock.
 1. Eliminate MPs with scaled PNOF < 0.5 maximum PNOF for each stock.
 1. Eliminate MPs with scaled LTY < 0.5 maximum LTY for each stock.
-1. Retain the top 10 MPs per stock if more than 10 remain.
+1. Order by LTY and retain the top 10 MPs per stock if more than 10 remain.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
 
