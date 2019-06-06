@@ -135,3 +135,99 @@ indexes
 # The first four are from surveys and the last one is from commercial catch
 # per unit effort from the trawl fleet:
 I_type <- c("B", "B", "B", "B", "VB")
+
+
+
+
+
+
+####### SRA scope, let's reduce the number of simulations to 48 for now
+
+#devtools::install_github("tcarruth/MSEtool")
+library(MSEtool); library(dplyr)
+short_om@nsim <- 48
+
+# Remove time varying growth
+short_om@Linfsd <- short_om@Ksd <- c(0, 0)
+
+
+# Plot the historical catch
+Chist <- cbind(catch, catch_hl) %>% rowSums(na.rm = TRUE)
+plot(1977:2018, Chist, typ = "l")
+
+# Plot the indices
+matplot(indexes)
+for(i in 1:5) plot(1977:2018, indexes[, i], ylab = colnames(indexes)[i], typ = "o", pch = 16)
+
+# Plot the composition data
+plot_composition(Year = 1977:2018, obs = cal_wchg[[1]], CAL_bins = cal_wchg[[2]])
+plot_composition(Year = 1977:2018, obs = cal_qcs[[1]], CAL_bins = cal_qcs[[2]])
+plot_composition(Year = 1977:2018, obs = cal_wcvi[[1]], CAL_bins = cal_wcvi[[2]])
+
+plot_composition(Year = 1977:2018, caa_qcs[1,,])
+plot_composition(Year = 1977:2018, caa_wchg[1,,])
+
+
+
+
+
+
+
+####### Let's use the WC Haida Gwaii survey age and length comps, all the survey indices, and combine the catch.
+
+#short_om_SRA <- SRA_scope(short_om, Chist, Index = indexes, I_type = rep(1, 5),
+#                       CAA = caa_wchg[1,,],
+#                       CAL = cal_wchg[[1]], length_bin = cal_wchg[[2]],
+#                       cores = 10, report = TRUE)
+#saveRDS(short_om_SRA$OM, file = "sra/short_om2.rds")
+#saveRDS(short_om_SRA$report, file = "sra/short_om2_SRA_report.rds")
+
+short_om2 <- readRDS(file = "sra/short_om2.rds")
+short_SRA_report <- readRDS(file = "sra/short_SRA_report.rds")
+
+MSEtool:::plot_SRA_scope(short_om2, Chist = matrix(Chist, ncol = 1), Index = indexes,
+                         CAA = array(caa_wchg[1,,], c(42, 154, 1)), CAL = array(cal_wchg[[1]], c(42, 22, 1)),
+                         report = short_SRA_report)
+
+
+
+##### Downweight
+#short_om_downweight_SRA <- SRA_scope(short_om, Chist, Index = indexes, I_type = rep(1, 5),
+#                                     CAA = caa_wchg[1,,],
+#                                     CAL = cal_wchg[[1]], length_bin = cal_wchg[[2]], LWT = list(CAL = 0.05, CAA = 0.05),
+#                                     cores = 10, report = TRUE)
+#saveRDS(short_om_downweight_SRA$OM, file = "sra/short_om_downweight.rds")
+#saveRDS(short_om_downweight_SRA$report, file = "sra/short_downweight_SRA_report.rds")
+
+short_om_downweight <- readRDS(file = "sra/short_om_downweight.rds")
+short_downweight_SRA_report <- readRDS(file = "sra/short_downweight_SRA_report.rds")
+
+MSEtool:::plot_SRA_scope(short_om_downweight, Chist = matrix(Chist, ncol = 1), Index = indexes,
+                         CAA = array(caa_wchg[1,,], c(42, 154, 1)), CAL = array(cal_wchg[[1]], c(42, 22, 1)),
+                         report = short_downweight_SRA_report)
+
+
+
+######## Take out the age/length comps. The catch/index show a one-way trip.
+#short_om_no_comps_SRA <- SRA_scope(short_om, Chist, Index = indexes, I_type = rep(1, 5), cores = 10, report = TRUE)
+#
+#saveRDS(short_om_no_comps_SRA$OM, file = "short_om_no_comps.rds")
+#saveRDS(short_om_no_comps_SRA$report, file = "short_no_comps_SRA_report.rds")
+
+short_om_no_comps <- readRDS("sra/short_om_no_comps.rds")
+short_no_comps_SRA_report <- readRDS("sra/short_no_comps_SRA_report.rds")
+
+MSEtool:::plot_SRA_scope(short_om_no_comps, Chist = matrix(Chist, ncol = 1), Index = indexes,
+                         report = short_no_comps_SRA_report)
+
+
+####### Run a surplus production model
+short_dat <- new("Data")
+short_dat@Name <- "Shortraker rockfish"
+short_dat@Ind <- matrix(indexes[, 5], nrow = 1)
+short_dat@Cat <- matrix(Chist, nrow = 1)
+short_dat@Year <- 1977:2018
+
+short_assess <- SP(Data = short_dat)
+plot(short_assess)
+retrospective(short_assess)

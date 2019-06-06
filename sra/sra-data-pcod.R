@@ -136,3 +136,86 @@ pcod_data_summary$mean_length <- mean_lengthpc
 #Write to file
 saveRDS(pcod_data_summary, file = here::here("generated-data", "pcod-data-summary.rds"))
 
+
+
+######
+#devtools::install_github('tcarruth/MSEtool')
+library(MSEtool); library(dplyr)
+pcod_data_summary <- readRDS(here::here("generated-data", "pcod-data-summary.rds"))
+pcod_om <- readRDS(here::here("generated-data", "pcod-om.rds"))
+
+
+# plot CAA - combines QCS and HS surveys
+plot_composition(1956:2018, obs = pcod_data_summary$caa)
+
+# plot CAL
+plot_composition(1956:2018, obs = pcod_data_summary$cal_hsmas, CAL_bins = colnames(pcod_data_summary$cal_hsmas) %>% as.numeric())
+plot_composition(1956:2018, obs = pcod_data_summary$cal_hss, CAL_bins = colnames(pcod_data_summary$cal_hss) %>% as.numeric())
+plot_composition(1956:2018, obs = pcod_data_summary$cal_qcss, CAL_bins = colnames(pcod_data_summary$cal_qcss) %>% as.numeric())
+
+plot_composition(1956:2018, obs = pcod_data_summary$cal_com, CAL_bins = colnames(pcod_data_summary$cal_com) %>% as.numeric())
+
+CAL_sur <- pcod_data_summary$cal_hss
+CAL_sur[, 1:18] <- CAL_sur[, 1:18] + pcod_data_summary$cal_qcss
+
+
+CAL <- pcod_data_summary$cal_com
+CAL[1:41, ] <- NA # Do not use commerical CAL prior to 1996 because they lack discards of smaller fish
+
+Chist <- pcod_data_summary$catch$catch_t
+
+indices <- reshape2::dcast(pcod_data_summary$indices, year ~ survey_abbrev, value.var = "biomass") %>%
+  dplyr::right_join(data.frame(year = 1956:2017))
+
+Index <- indices[, -1] %>% as.matrix() %>% rbind(rep(NA, 3))
+
+
+pcod_om@nsim <- 48
+pcod_om@Linfsd <- pcod_om@Msd <- pcod_om@Ksd <- c(0, 0)
+
+# Use catch, index, and commercial length comps, downweighting the length comps
+pcod_cal_com_SRA <- SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 3),
+                              CAL = CAL, length_bin = colnames(CAL) %>% as.numeric(), LWT = list(CAL = 0.05),
+                              cores = 10, report = TRUE)
+saveRDS(pcod_cal_com_SRA$OM, file = "sra/pcod_cal_com_om.rds")
+saveRDS(pcod_cal_com_SRA$report, file = "sra/pcod_cal_com_SRA_report.rds")
+
+pcod_cal_com_om <- readRDS("sra/pcod_cal_com_om.rds")
+pcod_cal_com_SRA_report <- readRDS("sra/pcod_cal_com_SRA_report.rds")
+
+pcod_cal_com_om@cpars$Find[pcod_cal_com_om@cpars$Find > 1] <- 1 # There are some very high F's, so set max. F = 1
+
+MSEtool:::plot_SRA_scope(pcod_cal_com_om, Chist = matrix(Chist, ncol = 1), Index = Index, CAL = array(CAL, c(dim(CAL), 1)),
+                         report = pcod_cal_com_SRA_report, Year = 1956:2018)
+
+#### Use catch, index, and combined age/length comps from Hecate Straight and QCS surveys
+pcod_cal_sur_SRA <- SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 3),
+                              CAA = pcod_data_summary$caa,
+                              CAL = CAL_sur, length_bin = colnames(CAL_sur) %>% as.numeric(), LWT = list(CAA = 0.1, CAL = 0.1),
+                              cores = 10, report = TRUE)
+#saveRDS(pcod_cal_sur_SRA$OM, file = "sra/pcod_cal_sur_om.rds")
+#saveRDS(pcod_cal_sur_SRA$report, file = "sra/pcod_cal_sur_SRA_report.rds")
+
+pcod_cal_sur_om <- readRDS("sra/pcod_cal_sur_om.rds")
+pcod_cal_sur_SRA_report <- readRDS("sra/pcod_cal_sur_SRA_report.rds")
+
+pcod_cal_sur_om@cpars$Find[pcod_cal_sur_om@cpars$Find > 1] <- 1 # There are some very high F's, so set max. F = 1
+
+MSEtool:::plot_SRA_scope(pcod_cal_sur_om, Chist = matrix(Chist, ncol = 1), Index = Index, CAL = array(CAL_sur, c(dim(CAL_sur), 1)),
+                         CAA = array(pcod_data_summary$caa, c(dim(pcod_data_summary$caa), 1)),
+                         report = pcod_cal_sur_SRA_report, Year = 1956:2018)
+
+
+
+
+##### No comps - SRA becomes a de facto delay-difference model
+
+#pcod_no_comps_SRA <- SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 3), cores = 10, report = TRUE)
+#saveRDS(pcod_no_comps_SRA$OM, file = "pcod_om_no_comps.rds")
+#saveRDS(pcod_no_comps_SRA$report, file = "pcod_no_comps_SRA_report.rds")
+
+pcod_om_no_comps <- readRDS("sra/pcod_om_no_comps.rds")
+pcod_no_comps_SRA_report <- readRDS("sra/pcod_no_comps_SRA_report.rds")
+
+MSEtool:::plot_SRA_scope(pcod_om_no_comps, Chist = matrix(Chist, ncol = 1), Index = Index,
+                         report = pcod_no_comps_SRA_report, Year = 1956:2018)
