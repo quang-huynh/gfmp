@@ -9,7 +9,14 @@ r_plot <- function(df,
                    fill_polys = FALSE,
                    fill_alpha = 0.05,
                    ref_levels = c(0.5, 0.975),
-                   inc_yrs = TRUE){
+                   inc_yrs = TRUE,
+                   main_shp = 16,
+                   ref_shp = 17){
+  # Set up shapes
+  mp_names <- levels(df$mp)
+  shp <- rep(main_shp, length(mp_names))
+  ref <- grep("ref", mp_names)
+  shp[ref] <- ref_shp
 
   prob_labs <- cap_expr(as.character(unique(df$probcap)), inc_yrs)
   g <- ggplot(data = df,
@@ -17,10 +24,12 @@ r_plot <- function(df,
                   y = prob,
                   group = mp,
                   color = mp,
-                  fill = mp,
-                  shape = class)) +
+                  shape = mp)) +
     geom_point(size = 5) +
-    #scale_x_discrete(labels = parse(text = prob_labs)) +
+    scale_x_discrete(labels = parse(text = prob_labs)) +
+    scale_color_viridis_d(name = "MP type", guide = "legend") +
+    scale_shape_manual(name = "MP type", values = shp) +
+    scale_fill_viridis_d(name = "MP type") +
     theme(panel.background = element_rect(fill = "white",
                                           colour = "white",
                                           size = 0.5,
@@ -32,8 +41,8 @@ r_plot <- function(df,
                                           linetype = 'solid',
                                           colour = "grey40")) +
           #axis.text.x = element_text(size = 12, angle = c(0, 90, 0, 0, -90, 0))) +
-    ggrepel::geom_text_repel(data = df, label = parse(text = prob_labs)) +
-  ylim(0, 1) +
+    #ggrepel::geom_text_repel(label = parse(text = prob_labs)) +
+    ylim(0, 1) +
     xlab("") +
     ylab("") +
     coord_polar(clip = "off") +
