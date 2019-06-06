@@ -77,7 +77,7 @@ for (i in seq_along(oms)) {
 
   fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
-    mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE)
+    mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE, ntrials = 1000)
     saveRDS(mse[[i]], file = fi)
   } else {
     mse[[i]] <- readRDS(fi)
@@ -106,33 +106,32 @@ for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 # 5 P40   Prob. SB > 0.4 SBMSY (Years 1 - 50)
 # 6 LTY   Prob. Yield > 0.5 Ref. Yield (Years 41-50)
 
-# r_plot(pm[[3]])
-# r_plot(pm[[4]])
-# r_plot(pm[[5]])
-# plot(mse[[1]])
-
 wide_pm <- bind_rows(pm) %>%
   as.data.frame() %>%
   filter(!species %in% c("rdb"), mp != "YPR") %>%
   filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
+# relative to peak MP:
 top_pm <- wide_pm %>%
   group_by(species) %>%
   mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
     P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
-  # filter(AAVY > 0.50) %>%
+  filter(P40 > 0.90) %>%
+  filter(P100 > 0.75) %>%
+  filter(class != "Reference") %>%
+  group_by(species) %>%
+  top_n(n = 10L, wt = LTY) %>%
+  as.data.frame()
+
+# absolute performance:
+top_pm <- wide_pm %>%
+  group_by(species) %>%
   filter(P40 > 0.90) %>%
   filter(P100 > 0.50) %>%
-  # filter(LTY > 0.50) %>%
-  as.data.frame() %>%
   filter(class != "Reference") %>%
-  arrange(species, -LTY, -P40, -AAVY, -PNOF) %>%
   group_by(species) %>%
-  top_n(n = 5L, wt = P40) %>%
-  # arrange(species, -LTY) %>%
-  # group_by(species) %>%
-  # top_n(n = 10L) %>%
+  top_n(n = 10L, wt = LTY) %>%
   as.data.frame()
 
 top_pm
@@ -148,21 +147,102 @@ species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
   species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
 
+# FIXME: Should the constant catch MPs be removed? They don't have any feedback built in.
 plot_pm <- function(x, y, colour) {
   wide_pm %>%
     left_join(species_names, by = "species") %>%
-    # filter(mp %in% top_pm_names | class == "Reference") %>%
     filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
     ggplot(aes_string(x = x, y = y)) +
     geom_point(aes_string(colour = colour, shape = "class")) +
     xlim(0, 1) + ylim(0, 1) +
     facet_wrap(~species_full) +
-    ggrepel::geom_text_repel(aes(label = mp), colour = "grey50") +
+    ggrepel::geom_text_repel(aes_string(label = "mp", colour = colour)) +
     scale_color_viridis_c(direction = -1) +
     scale_shape_manual(values = c("Reference" = 4, "Output" = 21)) +
     gfplot::theme_pbs()
 }
 plot_pm("P100", "LTY", "AAVY")
+plot_pm("P100", "LTY", "PNOF")
 plot_pm("P40", "LTY", "AAVY")
 plot_pm("P40", "PNOF", "LTY")
 plot_pm("P100", "PNOF", "LTY")
+
+# filter(pm[[3]], mp %in% top_top_pm_names) %>%
+#   r_plot()
+# r_plot(pm[[4]])
+# r_plot(pm[[5]])
+# plot(mse[[1]])
+
+# https://stackoverflow.com/a/46999174
+calculate_radar <- function(mydf) {
+  df <- cbind(mydf[, -1], mydf[,2])
+  myvec <- c(t(df))
+  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (ncol(df) - 1))
+  xx <- myvec * sin(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
+  yy <- myvec * cos(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
+  graphData <- data.frame(group = rep(mydf[, 1], each = ncol(mydf)),
+    x = xx, y = yy)
+  graphData
+}
+
+calculate_spokes <- function(mydf) {
+  .n <- ncol(mydf) -1
+  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (.n))
+  data.frame(x = 0, y = 0, xend = sin(angles[-1]), yend = cos(angles[-1]))
+}
+
+dat <- wide_pm %>%
+  filter(mp %in% top_top_pm_names, species == "arr") %>%
+  select(-1, -2)
+
+spokes_data <- calculate_spokes(dat)
+spokes_data$pm <- names(dat[, -1])
+radar_data <- calculate_radar(dat)
+label_data <- data.frame(x = 0, y = c(0.5, 0.75))
+
+radar_data %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_segment(
+    data = spokes_data,
+    aes(x = x, y = y, xend = xend, yend = yend), colour = "grey75", lty = 1
+  ) +
+  # FIXME: do this more elegantly in the data:
+  geom_path(
+    data = rbind(spokes_data, spokes_data[1, ]),
+    aes(x = xend * 0.5, y = yend * 0.5), colour = "grey75", lty = 2
+  ) +
+  geom_path(
+    data = rbind(spokes_data, spokes_data[1, ]),
+    aes(x = xend * 0.75, y = yend * 0.75), colour = "grey75", lty = 2
+  ) +
+  geom_path(
+    data = rbind(spokes_data, spokes_data[1, ]),
+    aes(x = xend * 1, y = yend * 1), colour = "grey75", lty = 2
+  ) +
+  geom_path(aes(colour = as.factor(group))) +
+  coord_equal() +
+  geom_text(data = spokes_data, aes(
+    x = xend * 1.1, y = yend * 1.1,
+    label = pm
+  ), colour = "grey30") +
+  geom_text(
+    data = label_data,
+    aes(x = x, y = y, label = y), colour = "grey50",
+    nudge_y = 0.04, hjust = 0, nudge_x = 0.01
+  ) +
+  gfplot::theme_pbs() +
+  labs(colour = "MP") +
+  scale_color_brewer(palette = "Dark2") +
+  theme(
+    axis.line = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.background = element_blank(),
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.background = element_blank()
+  )
