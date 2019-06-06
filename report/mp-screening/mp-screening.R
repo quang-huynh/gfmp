@@ -117,12 +117,13 @@ top_pm <- wide_pm %>%
   group_by(species) %>%
   mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
     P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
+  filter(PNOF > 0.5) %>%
   filter(P40 > 0.8) %>%
   filter(P100 > 0.5) %>%
   filter(LTY > 0.5) %>%
   filter(class != "Reference") %>%
   group_by(species) %>%
-  top_n(n = 8L, wt = LTY) %>%
+  top_n(n = 10L, wt = LTY) %>%
   as.data.frame()
 #
 # # absolute performance:
@@ -140,6 +141,7 @@ sort(table(top_pm$mp))
 
 top_pm_names <- unique(top_pm$mp)
 length(top_pm_names)
+saveRDS(top_pm, file = here("generated-data/top-mp-screening.rds"))
 
 top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
 top_top_pm_names
@@ -162,6 +164,7 @@ plot_pm <- function(x, y, colour) {
     scale_shape_manual(values = c("Reference" = 4, "Output" = 21)) +
     gfplot::theme_pbs()
 }
+saveRDS(wide_pm, file = here("generated-data/wide-pm-screening.rds"))
 plot_pm("P100", "LTY", "AAVY")
 plot_pm("P100", "LTY", "PNOF")
 plot_pm("P40", "LTY", "AAVY")
@@ -259,6 +262,6 @@ make_radar <- function(.species) {
 }
 
 out <- lapply(species_names$species, make_radar)
-pdf("report/figure/screening-radar.pdf", width = 17, height = 9)
-cowplot::plot_grid(plotlist = out, labels = species_names$species_full, label_fontface = "plain", hjust = 0, label_x = 0.05)
+pdf("report/figure/screening-radar.pdf", width = 11, height = 13)
+cowplot::plot_grid(plotlist = out, labels = species_names$species_full, label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
 dev.off()
