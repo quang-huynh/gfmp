@@ -24,7 +24,7 @@ knitr::kable(table_screening,
   caption = "Test",
   booktabs = TRUE,
   longtable = TRUE,
-  linesep = "",
+  linesep = "\\addlinespace",
   escape = FALSE,
   format = "latex") %>%
   kableExtra::column_spec(column = 1, width = "4cm") %>% 
