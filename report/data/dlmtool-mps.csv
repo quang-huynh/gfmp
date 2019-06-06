@@ -1,7 +1,7 @@
 Management Procedure,Description,Candidate,Reason for exclusion,Comment
 AvC,Average catch,Y,,
 BK,Beddington and Kirkwood (2005) life-history MP,N,Requires abundance,"equation wrong in documentation, lambda should be absolute value"
-BK_CC,Beddington and Kirkwood (2005) life-history MP,N,Requires recent age composition data,"equation wrong in documentation, lambda should be absolute value"
+BK_CC,Beddington and Kirkwood (2005) life-history MP with a catch curve,N,Requires recent age composition data,"equation wrong in documentation, lambda should be absolute value"
 BK_ML,Beddington and Kirkwood (2005) life-history MP,Y,,"equation wrong in documentation, lambda should be absolute value"
 CC1 CC2 CC3 CC4 CC5,Geromont and Butterworth (2015) Constant Catch,Y,,
 CompSRA CompSRA4010,Age-Composition Stock-Reduction Analysis,N,Requires recent age composition data,Requires 3 years of recent age comp data

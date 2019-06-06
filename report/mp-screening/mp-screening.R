@@ -60,7 +60,7 @@ oms$arr@Iobs <- c(0.15, 0.25)
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
   rename(mp = `Management Procedure`)
-mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, "\\(\\)")))
+mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, " ")))
 mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 
 # FIXME: Error: Islope3 is not a valid MP!?
