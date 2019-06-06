@@ -27,11 +27,11 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
-1. Eliminate MPs with scaled P40 < 0.8 maximum P40 for each species.
-1. Eliminate MPs with scaled P100 < 0.5 maximum P100 for each species.
-1. Eliminate MPs with scaled PNOF < 0.5 maximum PNOF for each species.
-1. Eliminate MPs with scaled LTY < 0.5 maximum LTY for each species.
-1. Retain the top eight MPs per species if more than 10 remain.
+1. Eliminate MPs with scaled P40 < 0.8 maximum P40 for each stock.
+1. Eliminate MPs with scaled P100 < 0.5 maximum P100 for each stock.
+1. Eliminate MPs with scaled PNOF < 0.5 maximum PNOF for each stock.
+1. Eliminate MPs with scaled LTY < 0.5 maximum LTY for each stock.
+1. Retain the top 10 MPs per stock if more than 10 remain.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
 
