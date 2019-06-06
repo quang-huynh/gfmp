@@ -1,0 +1,27 @@
+# MANAGEMENT PROCEDURE SCREENING
+
+Objectives:
+
+1. get down to a manageable number of MPs to describe at this review meeting and future review meetings
+1. reduce computational burden by excluding MPs that are unlikely to work well for us
+
+```{r}
+library(dplyr)
+table_screening <- readr::read_csv(here::here("report/data/dlmtool-mps.csv")) %>% 
+  select(-Comment) %>% 
+  mutate(Candidate = ifelse(Candidate == "Y", "Yes", "No"))
+# csasdown::csas_table(table_screening, format = "latex") %>% 
+#   kableExtra::column_spec(column = 1, width_max = "1cm")
+
+knitr::kable(table_screening,
+  caption = "Test",
+  booktabs = TRUE,
+  longtable = TRUE,
+  linesep = "",
+  format = "latex") %>%
+  kableExtra::kable_styling(latex_options = c("hold_position", "repeat_header")) %>% 
+  kableExtra::column_spec(column = 1, width = "6cm") %>% 
+  kableExtra::column_spec(column = 2, width = "7cm") %>% 
+  kableExtra::column_spec(column = 4, width = "7cm")
+```
+
