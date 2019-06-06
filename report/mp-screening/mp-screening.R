@@ -192,7 +192,7 @@ calculate_spokes <- function(mydf) {
 }
 
 dat <- wide_pm %>%
-  filter(mp %in% top_top_pm_names, species == "arr") %>%
+  filter(mp %in% top_top_pm_names, species == "pop") %>%
   select(-1, -2)
 
 spokes_data <- calculate_spokes(dat)
@@ -219,7 +219,7 @@ radar_data %>%
     data = rbind(spokes_data, spokes_data[1, ]),
     aes(x = xend * 1, y = yend * 1), colour = "grey75", lty = 2
   ) +
-  geom_path(aes(colour = as.factor(group))) +
+  geom_path(aes(colour = as.factor(group)), lwd = 0.8) +
   coord_equal() +
   geom_text(data = spokes_data, aes(
     x = xend * 1.1, y = yend * 1.1,
@@ -232,7 +232,7 @@ radar_data %>%
   ) +
   gfplot::theme_pbs() +
   labs(colour = "MP") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_brewer(palette = "Set3") +
   theme(
     axis.line = element_blank(),
     axis.text.x = element_blank(),
