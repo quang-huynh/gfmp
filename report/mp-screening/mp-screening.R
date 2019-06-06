@@ -19,7 +19,7 @@ download_om <- function(species,
   }
 }
 
-overwrite <- TRUE
+overwrite <- FALSE
 download_om("pop", "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = overwrite)
 download_om("redbanded", "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
 download_om("rougheye", "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
