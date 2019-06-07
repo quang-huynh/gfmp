@@ -15,7 +15,7 @@ We then downloaded all British Colombia groundfish operating models in the [DLMt
 1. In some cases we adjusted the survey CVs to better match the values displayed in the latest groundfish synopsis report (Pacific Ocean Perch = 0.20 to 0.35, Arrowtooth Flounder = 0.15 to 0.25). We expected this to be an important parameter given that many of the MPs rely on a survey index.
 1. We standardized the CV on the catch observations across the stocks to be 0.05 to 0.10 (i.e., quite low).
 1. We standardized the bias in catch observations from iteration to iteration to be 0.05 (i.e., quite low.
-1. We standardized to the assessment frequency to be every five years.
+1. We standardized the assessment frequency to be every five years.
 
 We ran 100 simulation iterations for each stock with a 50-year projection.  We then calculated the following performance metrics (PMs):
 
@@ -30,7 +30,7 @@ In order to eliminate MPs that did not consistently perform well across multiple
 1. Eliminate MPs with P40 < 0.8.
 1. Eliminate MPs with P100 < 0.5.
 1. Eliminate MPs with PNOF < 0.5.
-1. Eliminate MPs with LTY < 0.5 LTY from adjusting TAC to MSY each assessment interval (F~MSY ref~).
+1. Eliminate MPs with LTY < 0.5.
 1. Order by LTY and retain the top 10 MPs per stock if more than 10 remain.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
