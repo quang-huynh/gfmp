@@ -109,6 +109,17 @@ pm <- lapply(mse, function(x) {
 })
 for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 
+
+probs <- lapply(mse, function(x) {
+  get_probs(x, "P40", "P100", "PNOF", "LTY", "AAVY")
+})
+
+lapply(seq_along(probs), function(i) {
+  pdf(paste0("report/figure/screening-probs-", names(oms)[i], ".pdf"), width = 5, height = 10)
+  print(plot_probs(probs[[i]]))
+  dev.off()
+})
+
 # pm    probcap
 # <fct> <fct>
 #   1 PNOF  Prob. F < FMSY (Years 1 - 50)
@@ -119,7 +130,8 @@ for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 
 wide_pm <- bind_rows(pm) %>%
   as.data.frame() %>%
-  filter(!species %in% c("rdb"), mp != "YPR") %>%
+  # filter(!species %in% c("rdb"), mp != "YPR") %>%
+  filter(mp != "YPR") %>%
   filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
@@ -142,14 +154,18 @@ top_pm <- wide_pm %>%
   group_by(species) %>%
   mutate(LTY_FMSYref = LTY[mp == "FMSYref"]) %>%
   # filter(LTY  > 0.50 * LTY_FMSYref) %>%
-  filter(LTY  > 0.50) %>%
-  filter(PNOF > 0.50) %>%
-  filter(P100 > 0.50) %>%
-  filter(P40  > 0.80) %>%
+  filter(LTY  > 0.60) %>%
+  filter(PNOF > 0.60) %>%
+  filter(P100 > 0.60) %>%
+  filter(P40  > 0.90) %>%
   filter(class != "Reference") %>%
   group_by(species) %>%
-  top_n(n = 10L, wt = LTY) %>%
+  # top_n(n = 20L, wt = LTY) %>%
   as.data.frame()
+
+omitted <- filter(wide_pm, !mp %in% as.character(unique(top_pm$mp)), class != "Reference") %>%
+  pull(mp) %>% as.character() %>% unique() %>% sort()
+omitted
 
 top_pm
 sort(table(top_pm$mp))
@@ -204,13 +220,19 @@ calculate_spokes <- function(mydf) {
   data.frame(x = 0, y = 0, xend = sin(angles[-1]), yend = cos(angles[-1]))
 }
 
-make_radar <- function(.species) {
+make_radar <- function(.species, .mp = NULL, top = TRUE) {
   dat <- wide_pm %>%
-    filter(mp %in% top_top_pm_names, species == .species) %>%
+    filter(species == .species) %>%
     select(-1, -2)
 
+  if (top)
+    dat <- filter(dat, mp %in% top_top_pm_names)
+
+  if (!is.null(.mp))
+    dat <- filter(dat, mp %in% .mp)
+
   spokes_data <- calculate_spokes(dat)
-  spokes_data$pm <- names(dat[, -1])
+  spokes_data$pm <- c(names(dat[, -1])[-1], names(dat[, -1])[1])
   radar_data <- calculate_radar(dat)
   label_data <- data.frame(x = 0, y = c(0.5, 0.75))
 
@@ -276,7 +298,38 @@ make_radar <- function(.species) {
 
 }
 
-out <- lapply(species_names$species, make_radar)
-pdf("report/figure/screening-radar.pdf", width = 11, height = 13)
-cowplot::plot_grid(plotlist = out, labels = species_names$species_full, label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
-dev.off()
+average_catch_mp <- c("AvC", "CC1", "CC2", "CC3", "CC4", "CC5")
+data_moderate_mp <- c("DD", "DD4010", "SP_4010", "SP_MSY")
+length_mp <- c("L95target", "Lratio_BHI", "Lratio_BHI2", "Lratio_BHI3",
+  "LstepCC1", "LstepCC2", "Ltarget1", "Ltarget2", "Fdem_ML", "YPR_ML")
+reference_mp <- c("NFref", "FMSYref", "FMSYref75")
+index_mp <- c("Iratio", "Islope1", "Islope2", "Islope4", "Itarget1",
+  "Itarget2", "Itarget3", "Itarget4", "ITM ICI", "ICI2", "SBT1", "SBT2")
+
+make_radar_plot <- function(mps, file_name = NULL, ...) {
+  out <- lapply(species_names$species, make_radar, .mp = mps, ...)
+
+  if (!is.null(file_name)) {
+    pdf(file_name, width = 11, height = 12)
+    on.exit(dev.off())
+  }
+  g <- cowplot::plot_grid(plotlist = out,
+    labels = gfsynopsis:::first_cap(species_names$species_full),
+    label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
+  print(g)
+}
+
+make_radar_plot(average_catch_mp,
+  file_name = "report/figure/screening-radar-average-catch.pdf")
+
+make_radar_plot(data_moderate_mp,
+file_name = "report/figure/screening-radar-data-moderate.pdf")
+
+make_radar_plot(length_mp,
+file_name = "report/figure/screening-radar-length.pdf")
+
+make_radar_plot(reference_mp,
+  file_name = "report/figure/screening-radar-reference.pdf", top = FALSE)
+
+make_radar_plot(index_mp,
+  file_name = "report/figure/screening-radar-index.pdf")

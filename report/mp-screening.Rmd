@@ -10,7 +10,18 @@ Objectives:
 We started with all of the output-control MPs currently in DLMtool (Table \@ref(tab:screening-table)).
 We excluded any MPs that required current estimates of abundance, recent age composition data, or a current estimate of depletion because these would not be available for the stocks for which this framework will apply.
 
-We then downloaded all British Colombia groundfish operating models in the [DLMtool library](https://www.datalimitedtoolkit.org/fishery_library/). We used them as entered in the library with the following exceptions:
+We then downloaded all British Colombia groundfish operating models in the [DLMtool library](https://www.datalimitedtoolkit.org/fishery_library/). These included:
+
+1. Pacific Ocean Perch in Queen Charlotte Sound
+1. Rougheye Rockfish
+1. Shortspine Thornyhad
+1. Inside Yelloweye Rockfish
+1. Arrowtooth Flounder
+1. Redbanded Rockfish (FIXME: this OM had problems and doesn't show up in the results; given problems accepting the assessment we could probably leave this one out since it's scraped from that)
+
+*FIXME: add regions... I think these are all mostly coast wide except for POP*
+
+We used them as entered in the library with the following exceptions:
 
 1. In some cases we adjusted the survey CVs to better match the values displayed in the latest groundfish synopsis report (Pacific Ocean Perch = 0.20 to 0.35, Arrowtooth Flounder = 0.15 to 0.25). We expected this to be an important parameter given that many of the MPs rely on a survey index.
 1. We standardized the CV on the catch observations across the stocks to be 0.05 to 0.10 (i.e., quite low).
@@ -18,6 +29,8 @@ We then downloaded all British Colombia groundfish operating models in the [DLMt
 1. We standardized the assessment frequency to be every five years.
 
 We ran 100 simulation iterations for each stock with a 50-year projection.  We then calculated the following performance metrics (PMs):
+
+*FIXME: do we like a 50-year projection or is that a bit long?*
 
 1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
 1. P100: Probability SB > SB~MSY~ (years 1--50)
@@ -27,11 +40,10 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
-1. Eliminate MPs with P40 < 0.8.
-1. Eliminate MPs with P100 < 0.5.
-1. Eliminate MPs with PNOF < 0.5.
-1. Eliminate MPs with LTY < 0.5.
-1. Order by LTY and retain the top 10 MPs per stock if more than 10 remain.
+1. Eliminate MPs with P40 < 0.9.
+1. Eliminate MPs with P100 < 0.6.
+1. Eliminate MPs with PNOF < 0.6.
+1. Eliminate MPs with LTY < 0.6.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
 
@@ -54,11 +66,16 @@ csasdown::csas_table(top_mps, caption = "Management procedures (MPs) that made i
 top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
 ```
 
-`r nrow(top_mps)` MPs made it through the above filtering process (Table \@ref(tab:screening-top-table)). We then retained only those that made it through the filtering process for at least two stocks. The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-all))  Fig. \@ref(fig:screening-trade-off1) Fig. \@ref(fig:screening-trade-off2) Fig. \@ref(fig:screening-trade-off3).
+`r nrow(top_mps)` MPs made it through the above filtering process (Table \@ref(tab:screening-top-table)).
 
-*FIXME: try adding a surplus production model from MSEtool and optionally substitute the delay difference model from that package too.*
+We then retained only those that made it through the filtering process for at least two stocks.
+
+*FIXME: do we like that filtering?*
+
+The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-reference), \@ref(fig:screening-radar-length), \@ref(fig:screening-radar-average-catch), \@ref(fig:screening-radar-moderate)) Fig. \@ref(fig:screening-trade-off1) Fig. \@ref(fig:screening-trade-off2) Fig. \@ref(fig:screening-trade-off3).
 
 The current top MPs:
+*FIXME: lots of MPs not here depending on how we do the filtering.*
 
 IT5 + IT10: An index target MP where the TAC is modified according to current index levels (mean index over last 5 years) relative to a target level. IT5: Maximum annual changes in TAC are 5 per cent. IT10: Maximum annual changes are 10 per cent.
 
@@ -74,8 +91,34 @@ DD: Delay difference
 
 DD: Delay difference with a 4010 rule. We could tweak the harvest control rule to perhaps put it more inline with the Canadian precautionary approach.
 
-```{r screening-radar-all, fig.cap="Radar plots of performance metrics across screened management procedures.", fig.pos="p"}
-knitr::include_graphics(here::here("report/figure/screening-radar.pdf"))
+-------------------
+
+## Observations and things I just don't understand in the plots
+
+1. Why is AAVY so low for POP with AvC (average historical catch)? There should be no variability! The others looked fine for average catch.
+
+1. It looks like all of the length-based MPs perform very similarly with a couple minor exceptions. Maybe we can narrow this down more at this stage?
+
+1. Interesting to note that more "classical" assessment models like DD and surplus production models don't necessarily do as well as a simple management procedures. (Note that the MSEtool state space delay difference models performed very poorly; maybe some default parameter setting or maybe convergence problems?)
+
+```{r screening-radar-reference, fig.cap="Radar plots of performance metrics across screened management procedures. (Reference MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-reference.pdf"))
+```
+
+```{r screening-radar-length, fig.cap="Radar plots of performance metrics across screened management procedures. (Length-based MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-length.pdf"))
+```
+
+```{r screening-radar-index, fig.cap="Radar plots of performance metrics across screened management procedures. (Index-based MPs", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-index.pdf"))
+```
+
+```{r screening-radar-average-catch, fig.cap="Radar plots of performance metrics across screened management procedures. (Average-catch-based MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-average-catch.pdf"))
+```
+
+```{r screening-radar-moderate, fig.cap="Radar plots of performance metrics across screened management procedures. ('Data-moderate' MPs", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-data-moderate.pdf"))
 ```
 
 ```{r}
@@ -87,6 +130,7 @@ species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
 plot_pm <- function(x, y, colour) {
   wide_pm %>%
     left_join(species_names, by = "species") %>%
+    filter(!is.na(species_full)) %>%
     filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
     ggplot(aes_string(x = x, y = y)) +
     geom_point(aes_string(colour = colour, shape = "class")) +
@@ -100,7 +144,7 @@ plot_pm <- function(x, y, colour) {
 wide_pm <- readRDS(here::here("generated-data/wide-pm-screening.rds"))
 ```
 
-```{r screening-trade-off1, fig.cap="Performance trade-offs 1"}
+```{r screening-trade-off1, fig.cap="Performance trade-offs 1. FIXME: these made more sense before there were so many candidates MPs."}
 plot_pm("P100", "LTY", "AAVY")
 ```
 
@@ -110,6 +154,14 @@ plot_pm("P40", "LTY", "PNOF")
 
 ```{r screening-trade-off3, fig.cap="Performance trade-offs 3"}
 plot_pm("P100", "PNOF", "LTY")
+```
+
+```{r screening-probs-table-arr, fig.cap="Performance metrics Pacific Ocean Perch. Need to deal with the length of the column names. This shows all the MPs that were run, not just the filtered ones. The MPs are ordered by performance metric value starting from the leftmost performance metric and working right to break ties.", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/screening-probs-pop.pdf"))
+```
+
+```{r screening-probs-table-yel, fig.cap="Performance metrics Yelloweye Rockfish", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/screening-probs-yel.pdf"))
 ```
 
 \clearpage 

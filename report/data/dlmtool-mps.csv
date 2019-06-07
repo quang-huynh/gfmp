@@ -30,7 +30,7 @@ Islope1 Islope2 Islope3 Islope4,Index Slope Tracking MP,Y,,
 IT5 IT10,Iterative Index Target MP,Y,,
 Itarget1 Itarget2 Itarget3 Itarget4,Incremental Index Target MP,Y,,"Linear drop down to Itarget, then squared to bring it back up"
 ITM,Index Target based on natural mortality rate,Y,,"See help and plot: plot(a <<- seq(0.05, 0.3, by = 0.001), 4*a^(-.25)); plot(a, (5+25)*a/100)"
-Ltarget1 Ltarget2 Ltarget3 Ltarget4L95target,Length Target TAC MP,Y,,"See Itarget methods, very similar but for length instead of index.  L95target includes maturity as length limiter. L95 and L50 are required."
+Ltarget1 Ltarget2 Ltarget3 Ltarget4 L95target,Length Target TAC MP,Y,,"See Itarget methods, very similar but for length instead of index.  L95target includes maturity as length limiter. L95 and L50 are required."
 Lratio_BHI Lratio_BHI2 Lratio_BHI3,Mean length-based indicator MP of (Jardim et al. 2015),Y,,Lref is calculated internally as 0.75 * Length at full selectivity + 0.25 * Linf
 LstepCC1 LstepCC2 LstepCC3 LstepCC4,Step-wise Constant Catch,Y,,
 MCD MCD4010,Mean Catch Depletion,N,Requires depletion,Requires depletion
