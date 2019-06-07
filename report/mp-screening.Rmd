@@ -27,15 +27,15 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
-1. Eliminate MPs with scaled P40 < 0.8 maximum P40 for each stock.
-1. Eliminate MPs with scaled P100 < 0.5 maximum P100 for each stock.
-1. Eliminate MPs with scaled PNOF < 0.5 maximum PNOF for each stock.
-1. Eliminate MPs with scaled LTY < 0.5 maximum LTY for each stock.
+1. Eliminate MPs with P40 < 0.8.
+1. Eliminate MPs with P100 < 0.5.
+1. Eliminate MPs with PNOF < 0.5.
+1. Eliminate MPs with LTY < 0.5 LTY from adjusting TAC to MSY each assessment interval (F~MSY ref~).
 1. Order by LTY and retain the top 10 MPs per stock if more than 10 remain.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
 
-*FIXME: An alternative approach would be based on absolute performance metrics, but we would have to give some thought about what to do in the case of Yelloweye Rockfish, which is quite depleted.*
+*FIXME: Note that Yelloweye Rockfish doesn't factor into this because it starts so depleted.*
 
 ```{r screening-top-top}
 top_pm <- readRDS(here::here("generated-data/top-mp-screening.rds"))
@@ -60,7 +60,7 @@ top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
 
 The current top MPs:
 
-IT5: An index target MP where the TAC is modified according to current index levels (mean index over last 5 years) relative to a target level.
+IT5 + IT10: An index target MP where the TAC is modified according to current index levels (mean index over last 5 years) relative to a target level. IT5: Maximum annual changes in TAC are 5 per cent. IT10: Maximum annual changes are 10 per cent.
 
 ITM: An index target MP where the TAC is modified according to current index levels (mean index over last number of years determined by natural mortality (M)) relative to a target level.
 
@@ -74,7 +74,7 @@ DD: Delay difference
 
 DD: Delay difference with a 4010 rule. We could tweak the harvest control rule to perhaps put it more inline with the Canadian precautionary approach.
 
-```{r screening-radar-all, fig.cap="Radar plots of performance metrics across screened management procedures.", fig.pos="H"}
+```{r screening-radar-all, fig.cap="Radar plots of performance metrics across screened management procedures.", fig.pos="p"}
 knitr::include_graphics(here::here("report/figure/screening-radar.pdf"))
 ```
 
@@ -106,7 +106,6 @@ plot_pm("P100", "LTY", "AAVY")
 
 ```{r screening-trade-off2, fig.cap="Performance trade-offs 2"}
 plot_pm("P40", "LTY", "PNOF")
-
 ```
 
 ```{r screening-trade-off3, fig.cap="Performance trade-offs 3"}

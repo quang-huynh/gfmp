@@ -119,29 +119,32 @@ wide_pm <- bind_rows(pm) %>%
   filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
-# relative to peak MP:
-top_pm <- wide_pm %>%
-  group_by(species) %>%
-  mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
-    P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
-  filter(PNOF > 0.5) %>%
-  filter(P40 > 0.8) %>%
-  filter(P100 > 0.5) %>%
-  filter(LTY > 0.5) %>%
-  filter(class != "Reference") %>%
-  group_by(species) %>%
-  top_n(n = 10L, wt = LTY) %>%
-  as.data.frame()
-#
-# # absolute performance:
+# relative performance:
 # top_pm <- wide_pm %>%
 #   group_by(species) %>%
-#   filter(P40 > 0.90) %>%
-#   filter(P100 > 0.50) %>%
+#   mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
+#     P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
+#   filter(PNOF > 0.5) %>%
+#   filter(P40 > 0.8) %>%
+#   filter(P100 > 0.5) %>%
+#   filter(LTY > 0.5) %>%
 #   filter(class != "Reference") %>%
 #   group_by(species) %>%
 #   top_n(n = 10L, wt = LTY) %>%
 #   as.data.frame()
+#
+# # absolute performance:
+top_pm <- wide_pm %>%
+  group_by(species) %>%
+  mutate(LTY_FMSYref = LTY[mp == "FMSYref"]) %>%
+  filter(LTY  > 0.50 * LTY_FMSYref) %>%
+  filter(PNOF > 0.50) %>%
+  filter(P100 > 0.50) %>%
+  filter(P40  > 0.80) %>%
+  filter(class != "Reference") %>%
+  group_by(species) %>%
+  top_n(n = 10L, wt = LTY) %>%
+  as.data.frame()
 
 top_pm
 sort(table(top_pm$mp))
