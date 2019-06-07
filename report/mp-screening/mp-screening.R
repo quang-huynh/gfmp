@@ -70,8 +70,12 @@ candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
 mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, " ")))
 mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 
+library(MSEtool)
+mps_keep <- union(mps_keep, c("DDSS_MSY", "DDSS_4010", "SP_MSY", "SP_4010"))
+
 # FIXME: Error: Islope3 is not a valid MP!?
 mps_keep <- mps_keep[!mps_keep %in% c("Islope3")]
+mps_keep <- sort(mps_keep)
 
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
@@ -137,7 +141,8 @@ wide_pm <- bind_rows(pm) %>%
 top_pm <- wide_pm %>%
   group_by(species) %>%
   mutate(LTY_FMSYref = LTY[mp == "FMSYref"]) %>%
-  filter(LTY  > 0.50 * LTY_FMSYref) %>%
+  # filter(LTY  > 0.50 * LTY_FMSYref) %>%
+  filter(LTY  > 0.50) %>%
   filter(PNOF > 0.50) %>%
   filter(P100 > 0.50) %>%
   filter(P40  > 0.80) %>%
