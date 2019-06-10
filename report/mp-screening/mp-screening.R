@@ -97,9 +97,9 @@ for (i in seq_along(oms)) {
 snowfall::sfStop()
 
 source("R/plot-probability-table.R")
-source("R/plots.R")
-source("R/trade-plots.R")
-source("R/pm-functions.R")
+source("R/plot-probability-table.R")
+source("R/plot-probability-table.R")
+source("R/plot-probability-table.R")
 library(gfutilities)
 
 pm <- lapply(mse, function(x) {
