@@ -1,9 +1,30 @@
+calc_contour_lines <- function(d,
+                               probs = c(0.025, 0.5, 0.975),
+                               resolution = 100){
+  d <- split(d, d$mp)
+  lapply(probs, function(j){
+    lapply(seq_along(d), function(i){
+      dens <- MASS::kde2d(d[[i]]$bbmsy,
+                          d[[i]]$ffmsy,
+                          n = resolution,
+                          lims = c(range(d[[i]]$bbmsy),
+                                   range(d[[i]]$ffmsy)))
+      lst <- contourLines(dens$x, dens$y, dens$z, levels = (max(dens$z) - min(dens$z)) * j)[[1]]
+      lst$mp <- rep(i, length(lst$x))
+      lst
+    })  %>%
+      purrr::map_dfr(`[`, c("mp", "x", "y")) %>%
+      mutate(prob = j)
+  }) %>%
+    purrr::map_df(rbind)
+}
+
 plot_contours <- function(object,
                           yend = max(object@proyears),
                           dontshow_mp = NULL,
                           show_ref_pt_lines = FALSE,
-                          bins = 5,
-                          probs = c(0.025, 0.5, 0.975)){
+                          probs = c(0.025, 0.5, 0.975),
+                          resolution = 100){
 
   ffmsy <- object@F_FMSY[,,yend]
   bbmsy <- object@B_BMSY[,,yend]
@@ -16,33 +37,18 @@ plot_contours <- function(object,
   d <- dplyr::left_join(d, dn) %>%
     dplyr::filter(!mp_name %in% dontshow_mp)
 
-  j <- split(d, d$mp)
-  jj <- lapply(seq_along(j), function(x){
-    dens <- MASS::kde2d(j[[x]]$bbmsy,
-                        j[[x]]$ffmsy,
-                        n = 100,
-                        lims = c(range(j[[x]]$bbmsy),
-                                 range(j[[x]]$ffmsy)))
-    contourLines(dens$x, dens$y, dens$z, levels = probs)[[1]]
-  })
-  ## TODO: Add these lines to the plot
-## jj is length 11, each of those is length 3, $x, $y, and $level representing the contour lines values.
-##
-browser()
+  contour_lines <- calc_contour_lines(d,
+                                      probs = probs,
+                                      resolution = resolution)
 
-    g <- ggplot(d, aes(bbmsy, ffmsy)) +
-    stat_density_2d(data = jjj) +
-    #geom_density_2d(aes(colour = ..level..), bins = bins) +
-    # Cannot use breaks in geom_density_2d - Using breaks like in the following has no effect
-    #stat_density2d(aes(colour = ..level..), breaks = c(.025, .5, .975), bins = bins, geom = "contour") +
-    # Doing the following gives different contours than geom_density_2d but the different breaks produce the same results
-    #stat_density2d(aes(colour = ..level..), bins = bins, geom = "contour") +
-    #scale_alpha_continuous(breaks = c(.025, .5, .975)) +
-    #scale_alpha_continuous(breaks = c(.25, .5, .75)) +
+  g <- ggplot(d, aes(bbmsy, ffmsy)) +
+    geom_path(data = contour_lines, aes(x, y, group = prob)) +
     viridis::scale_colour_viridis() +
     ggsidekick::theme_sleek() +
-    facet_wrap(~mp_name) +
-    ylim(0, 3.5) + xlim(0, 3.5) +
+    facet_wrap(~mp) +
+    scale_x_continuous(trans = "sqrt") +
+    scale_y_continuous(trans = "sqrt") +
+    #ylim(0, 3.5) + xlim(0, 3.5) +
     geom_point(alpha = 0.2) +
     labs(colour = "Prob. density", x = expression(B/B[MSY]),
          y = expression(F/F[MSY])) +
