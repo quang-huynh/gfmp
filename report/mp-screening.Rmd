@@ -181,6 +181,9 @@ table_screening$`Management Procedure` <-
 
 table_screening$`Management Procedure` <- gsub("\\_", "\\\\_", table_screening$`Management Procedure`)
 
+table_screening <- arrange(table_screening, desc(Candidate), 
+  `Reason for exclusion`, `Management Procedure`)
+
 knitr::kable(table_screening,
   caption = "Test",
   booktabs = TRUE,
