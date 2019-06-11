@@ -36,7 +36,7 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 1. P100: Probability SB > SB~MSY~ (years 1--50)
 1. P40: Probability SB > 0.4 SB~MSY~ (years 1--50)
 1. LTY: Probability yield > 0.5 MSY (years 41--50)
-1. AAVY: Probability AAVY (average annual variability in yield) > 0.2
+1. AAVY: Probability AAVY (average annual variability in yield) < 0.2
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
