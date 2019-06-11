@@ -2,80 +2,66 @@
 
 # Management Procedures
 
-This is a generic review of the available MPs in DLMtool which include TAC-based procedures
+This is a generic review of the available MPs in DLMtool which include TAC-based procedures.
 
-Available management procedures from DLMtool have been filtered to only include TAC-based procedures which seem plausible to use given the data we have. The details of each are summarazied below.
-
-```{r, results='asis'}
+```{r, results='asis', include=FALSE}
 mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
   dplyr::filter(Recs == "TAC") %>% 
   dplyr::filter(!MP %in% grep("CC[2-9]+", .$MP, value = TRUE) )
 csasdown::csas_table(mps)
 ```
 
-**AvC** - Average Catch
+### `AvC`: Average catch
 
-The mean historical catch is calculated and used to set a constant catch limit (TAC). If the number of stochastic samples of the MP recommendation(s) is greater than 1 then those samples are drawn from a log-normal distribution with mean TAC and standard deviation (in log-space) of 0.2. The TAC is calculated as:
+The mean historical catch is calculated and used to set a constant catch limit (TAC). The TAC is calculated as:
 
-\begin{equation}
-TAC = \frac{\sum_{y=1}^{n}C_y}{n}
-\end{equation}
+$$
+\textrm{TAC} = \frac{\sum_{y=1}^{n}C_y}{n}
+$$
 
-where $TAC$ is the the mean catch recommendation, $n$ is the number of historical years, and $C_y$ is the catch in historical year $y$.
+where $\mathrm{TAC}$ is the catch recommendation, $n$ is the number of historical years, and $C_y$ is the catch in historical year $y$.
 
-**CC1** - Geromont and Butterworth (2015) Constant Catch
+### `CC`: Constant catch
 
-The TAC is the average historical catch over the last N years (default 5). Note *CC2*, *CC3*, *CC4*, and *CC5* represent the same MP but with the catch multiplied by 0.9, 0.8, 0.7, and 0.6 respectively. See @geromont2015\. The TAC is calculated as:
+The TAC is the average historical catch over the last $n$ years (default 5) [@geromont2015]. The TAC is calculated as:
 
-\begin{equation}
-TAC = (1-x)C_{ave}
-\end{equation}
+$$
+\textrm{TAC} = (1-x)C_{\textrm{ave}}
+$$
 
-where $x$ lies between 0 and 1, and $C_{ave}$ is average historical catch over the previous $N$ years. The $TAC$ is constant for all future projections.
+where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous $n$ years (default of five). The TAC is constant for all future projections. CC1, CC2, CC3, CC4, and CC5 represent the same MP but with $x =$ 0.9, 0.8, 0.7, and 0.6 respectively.
 
-**DCAC** - Depletion Corrected Average Catch
 
-Calculates a catch limit (dcac; intended as an MSY proxy) based on average historical catch while accounting for the windfall catch that got the stock down to its current depletion level (D).
+### `BK_ML`: Beddington and Kirkwood life-history
 
-Depletion is not updated in the future projections. The TAC is static and not updated in the future years. This represents an application of the DCAC method where a catch limit is calculated based on current estimate of depletion and time-series of catch from the beginning of the fishery, and the TAC is fixed at this level for all future projections. See @maccall2009 and @harford2017\. The method calculates the depletion-corrected average catch (dcac) as:
+An MP that sets the TAC based on an approximation of $F_\textrm{max}$ based on the length at first capture relative to the asymptotic length and the von Bertalanffy growth parameters $K$.  $F_\textrm{max}$ is the fishing mortality that produces the maximum yield assuming constant recruitment independent of spawning biomass. The TAC is calculated as
 
-\begin{equation}
-DCAC = \frac{\sum_{y=1}^{n}C_y}{n+(1-D)/Y_{pot}}
-\end{equation}
+$$
+\textrm{TAC} = A F_{\textrm{max}},
+$$
 
-where 
+where $A$ is vulnerable stock abundance, and $F_{\textrm{max}}$ is calculated as
 
-\begin{equation}
-Y_{pot} = \frac{B_{MSY}}{B_0} \frac{F_{MSY}}{M}M
-\end{equation}
+$$
+F_{\textrm{max}} = \frac{0.6K}{0.67-L_c/L_\infty},
+$$
 
-where $C_y$ is the historical catches and does not change in the future projections.
+where $K$ is the von Bertalanffy growth coefficient, $L_c$ is the length at first capture, and $L_\infty$ is the von Bertalanffy asymptotic length.
 
-**DCAC_40** - Depletion Corrected Average Catch
+Abundance ($A$) is estimated as
 
-Current stock biomass is assumed to be exactly at 40 per cent of unfished levels. The 40 percent depletion assumption may not really affect DCAC that much as it already makes TAC recommendations that are quite MSY-like.
+$$
+A = \frac{\bar{C}}{\left(1-e^{-F}\right)},
+$$
 
-**DCAC4010** - Depletion Corrected Average Catch
+where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ as calculated as $Z$ - $M$, where $M$ it is assumed known. 
 
-The dynamic DCAC (depletion is updated) is paired with the 40-10 rule that throttles back the OFL to zero at 10 percent of unfished stock size (the OFL is not subject to downward adjustment above 40 percent unfished). DCAC can overfish below BMSY levels. The 40-10 harvest control rule largely resolves this problem providing an MP with surprisingly good performance even at low stock levels.
+FIXME: add how mean length data are used to estimate Z and F.
 
-**DAAC** - Depletion Corrected Average Catch - Modified
+-----------
 
-DCAC (with updated Depletion) divided by BMSY/B0 (Bpeak) (Harford and Carruthers, 2017).
 
-**HDAAC** - Hybrid Depletion Corrected Average Catch
 
-Same as DAAC when below BMSY, and DCAC above BMSY (Harford and Carruthers 2017).
-
-**DBSRA** - Depletion-Based Stock Reduction Analysis (DB-SRA)
-
-A method designed for determining a catch limit and management reference points for data-limited fisheries where catches are known from the beginning of exploitation. User prescribed BMSY/B0, M, FMSY/M are used to find B0 and therefore the a catch limit by back-constructing the stock to match a user specified level of stock depletion. See @dick2010 and @dick2011\.
-
-DB-SRA assumes that a complete time-series of catch from the beginning of exploitation is available. Users prescribe estimates of current depletion ($D$), biomass at MSY relative to unfished ($\frac{B_{MSY}}{B_0}$), the natural mortality rate ($M$), and the ratio fishing mortality at MSY to M ($\frac{F_{MSY}}{M}$). The TAC is calculated as:
-
-\begin{equation}
-TAC = M \frac{F_{MSY}}{M} DB_0
-\end{equation}
 
 **DD** - Delay Difference
 
