@@ -21,17 +21,6 @@ $$
 
 where $\mathrm{TAC}$ is the catch recommendation, $n$ is the number of historical years, and $C_y$ is the catch in historical year $y$.
 
-### `CC`: Constant catch
-
-The TAC is the average historical catch over the last $n$ years (default 5) [@geromont2015]. The TAC is calculated as:
-
-$$
-\textrm{TAC} = (1-x)C_{\textrm{ave}}
-$$
-
-where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous $n$ years (default of five). The TAC is constant for all future projections. CC1, CC2, CC3, CC4, and CC5 represent the same MP but with $x =$ 0.9, 0.8, 0.7, and 0.6 respectively.
-
-
 ### `BK_ML`: Beddington and Kirkwood life-history
 
 An MP that sets the TAC based on an approximation of $F_\textrm{max}$ based on the length at first capture relative to the asymptotic length and the von Bertalanffy growth parameters $K$.  $F_\textrm{max}$ is the fishing mortality that produces the maximum yield assuming constant recruitment independent of spawning biomass. The TAC is calculated as
@@ -56,41 +45,104 @@ $$
 
 where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ as calculated as $Z$ - $M$, where $M$ it is assumed known. 
 
+### `CC`: Constant catch
+
+The TAC is the average historical catch over the last $n$ years (default 5) [@geromont2015]. The TAC is calculated as:
+
+$$
+\textrm{TAC} = (1-x)C_{\textrm{ave}}
+$$
+
+where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous $n$ years (default of five). The TAC is constant for all future projections. CC1, CC2, CC3, CC4, and CC5 represent the same MP but with $x =$ 0.9, 0.8, 0.7, and 0.6 respectively.
+
 FIXME: add how mean length data are used to estimate Z and F.
 
------------
+
+### `DD`: Delay Difference
+
+A simple delay-difference assessment with $U_\textrm{MSY}$ and MSY as leading parameters that estimate the TAC using a time-series of catch. This model includes observation error only and has does not estimate process error (recruitment deviations). There is the assumption that knife-edge selectivity occurs at the age of 50. It depends on other assumptions such as temporally stationary productivity and proportionality between the abundance index and real abundance. The extent to which these assumptions are violated tends to be the biggest driver of performance for this method. See @carruthers2012 and @hilborn1992\.
+
+$$
+\textrm{TAC} = U_\textrm{MSY} * \textrm{Current Biomass}
+$$
+
+DD4010 imposes the 40:10 rule on the TAC.
 
 
+### `Fratio_ML`: $F_\textrm{MSY}/M$ ratio method using mean lengths
 
+Calculates the overfishing limit based on a fixed ratio of FMSY to M multiplied by a current estimate of abundance. This method estimates current abundance by using average catch and an estimate of F from mean lengths. See @gulland1971 and @martell2013\.
 
-**DD** - Delay Difference
+$$
+TAC = F_\textrm{MSY}A
+$$
 
-A simple delay-difference assessment with UMSY and MSY as leading parameters that estimates the TAC using a time-series of catches and a relative. This model includes observation error only and has does not estimate process error (recruitment deviations). Assumption is that knife-edge selectivity occurs at the age of 50 models it depends on assumptions such as temporally stationary productivity and proportionality between the abundance index and real abundance. The extent to which these assumptions are violated tends to be the biggest driver of performance for this method. See @carruthers2012 and @hilborn1992\.
+where $F_\textrm{MSY}$ is calculated as $\frac{F_\textrm{MSY}}{M}M$ and $A$ is an estimate of current abundance.
 
+### `Fdem_ML`: Demographic $F_\textrm{MSY}$ method using mean lengths
 
-**Fratio** - $F_{MSY}/M$ ratio methods
+$F_\textrm{MSY}$ is calculated as $r/2$ where $r$ is calculated from a demographic approach (including steepness). This is coupled with an estimate of current abundance using mean lengths that gives you the overfishing limit (OFL).
 
-Calculates the overfishing limit based on a fixed ratio of FMSY to M multiplied by a current estimate of abundance. This method requires as estimate of current abundance. Special case management procedures *Fratio_CC* and *Fratio_ML* estimate current abundance using average catch and an estimate of F from an age-based catch curve and mean lengths respectively. See @gulland1971 and @martell2013\. The TAC is calculated as:
+$$
+TAC = F_\textrm{MSY}A
+$$
 
-\begin{equation}
-TAC = F_{MSY}A
-\end{equation}
+where $A$ is an estimate of current abundance, and $F_\textrm{MSY}$ is estimated as $r/2$, where $r$ is the intrinsic rate of population growth, estimated from the life-history parameters using the methods of @mcallister2001\.
 
-where $F_{MSY}$ is calculated as $\frac{F_{MSY}}{M}M$ and $A$ is an estimate of current abundance.
+### `GB_CC`: Geromont and Butterworth Constant Catch
 
+A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY.
 
-**GB_CC** - Geromont and Butterworth Constant Catch
-
-A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY. The TAC is calculated as:
-
-\begin{equation}
+$$
 TAC = C_{ref}
-\end{equation}
+$$
 
 where $C_{ref}$ s a reference catch assumed to be a proxy for MSY. In the MSE $C_{ref}$ is the calculated MSY subject to observation error. See @geromont2015\.
 
 The TAC is subject to the following conditions:
 
-- if next TAC > 1.2 last catch, then TAC = 1.2 last catch
-- if next TAC < 0.8 last catch, then TAC = 0.8 last catch
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
 
+### `GB_slope`: Geromont and Butterworth index Slope HCR
+
+An MP similar to SBT1 that modifies a time-series of catch recommendations and aims for a stable catch rates.
+
+$$
+\textrm{TAC}_y= C_{y-1}(1+\lambda I)
+$$
+
+where where $C_{y-1}$ is catch from the previous year, $\lambda$ is a gain parameter, and $I$ is the slope of the linear regression of log Index over the last 5 years.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+See @geromont2015 for more information.
+
+### `GB_target`: Geromont and Butterworth target CPUE and catch
+
+An MP similar to SBT2 that modifies a time-series of catch recommendations and aims for target catch rate and catch level based on $B\{MSY}/B_0$ and MSY, respectively.
+
+If $I_{recent}\ge I_0$ the TAC is:
+$$
+\textrm{TAC}= C_\textrm{ref}(w + (1-w)\frac{I_\textrm{rec}-I_0}{I_\textrm{target}-I_0})
+$$
+
+otherwise:
+
+$$
+\textrm{TAC}= wC_\textrm{ref} \frac{I_\textrm{rec}}{I_0}^2
+$$
+where $C_\textrm{ref}$ is a reference catch assumed to be a proxy for MSY, $w$ is a gain parameter, $I_\textrm{rec}$ is the average index over the last 4 years, $I\textrm{target}$ is the target Index, and $I_0$ is 0.2 x the average index over the past 5 years.
+
+In the MSE $C_\textrm{ref}$ is the calculated MSY subject to observation error, and $I\textrm{target}$ is assumed to be the index at MSY subject to observation error. Consequently, the performance of this method in the MSE is strongly determined by the specified uncertainty for these parameters.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+
+-----
