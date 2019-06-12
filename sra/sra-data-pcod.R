@@ -52,6 +52,9 @@ dpc$survey_index <- dpc$survey_index %>%
 #get indices
 indicespc <- dpc$survey_index
 
+#get commercial CPUE from file (direct from assessment reference case dat file)
+commcpuepc <- read_csv(here::here("sra", "Pcod_CPUE.csv"))
+
 #Survey catch at age - combined HS and QCS synoptic surveys
 caapc <- dplyr::filter(dpc$survey_samples) %>%
   pbs2dlm::tidy_caa(yrs = all_years)
@@ -125,6 +128,7 @@ cpuepc <- readr::read_csv(here::here("generated-data", "pcod-cpue.csv"))
 pcod_data_summary <- list()
 
 pcod_data_summary$indices <- indicespc
+pcod_data_summary$comcpue <- commcpuepc
 pcod_data_summary$caa <- caapc
 pcod_data_summary$cal_hsmas <- calpc_hsmas
 pcod_data_summary$cal_hss <- calpc_hss
