@@ -144,5 +144,60 @@ The TAC is subject to the following conditions:
 - if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
 - if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
 
+### `ICI`: Index Confidence Interval
+
+The MP adjusts catch based on the value of the index in the current year relative to the time series mean and standard error.
+
+$$
+\textrm{TAC}_y=C_{y-1} \alpha
+$$
+
+where $C_{y-1}$ is the catch from the previous year, and $\alpha$ is defined as:
+
+$$
+\alpha = 
+\begin{cases}
+d, & \text{if}\ I \lt CI_L \\
+u, & \text{if}\ I \gt CI_H \\
+1, & \text{if}\ CI_L \le I \le CI_H
+\end{cases}
+$$
+
+where $I$ is the index in the most recent year, $d$ is 0.75 for both ICI and ICI2, $u$ is 1.05 and 1.25 for ICI and ICI2 respectively, and $CI_L$ and $CI_H$ are the lower and upper bound of the confidence interval of mean historical index. The confidence interval is calculated using Z-scores as follows:
+
+- ICI: The catch is reduced by 0.75 if the Z-score of the current year's index is less than -0.44. The catch is increased by 1.05 if the Z-score of the current year's index is greater than 1.96. Otherwise, the catch is held constant.
+- ICI2: This method is less precautionary of the two ICI MPs by allowing for a larger increase in TAC and a lower threshold of the index to decrease the TAC. The catch is reduced by 0.75 if the Z-score of the current year's index is less than -1.96. The catch is increased by 1.25 if the Z-score of the current year's index is greater than 1.96. Otherwise, the catch is held constant.
+
+See @jardim2015 for more information.
+
+### `Iratio`: Mean Index ratio
+
+The TAC is adjusted by the ratio $\alpha$, where the numerator being the mean index in the most recent two years of the time series and the denominator being the mean index in the three years prior to those in the numerator. This MP is the stochastic version of Method 3.2 used by ICES for Data-Limited Stocks (@ices2012).
+
+$$
+\textrm{TAC}_y = \alpha C_{y-1}
+$$
+
+where $C_{y−1}$ is the catch from the previous year, and $\alpha$ is the ratio of the mean index in the most recent two years of the time series and the mean index in 3--5 years before current time. The number of reference years can be specified.
+$\alpha$ is defined as
+
+$$
+\alpha = \frac{\frac{I_{yr-1} + I_{yr-2}} {2}} {\frac{I_{yr-3} + I_{yr-4} + I_{yr-5}} {3}}
+$$
+
+See @jardim2015 for more information.
+
+### `Islope`: Index slope tracking
+
+A management procedure that incrementally adjusts the TAC to maintain a constant CPUE or relative abundance index.
+
+$$
+\textrm{TAC} = \textrm{TAC}^*(1+\lambda I)
+$$
+
+where $TAC^∗$ is $1−xx$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of log index over the past 5 years.
+Islope1, Islope2, and Islope3 increase in being biological precautionary by having values for $xx$ of 0.2, 0.3, and 0.4 respectively. Islope4 is considered the most biologically precautionary as it is identical to Islope3 but with a reduced gain parameter, $\lambda$ of 0.2 while the others use 0.4.
+
+
 
 -----
