@@ -52,12 +52,31 @@ calc_contour_lines <- function(d,
     purrr::map_df(rbind)
 }
 
+#' Make a panel of contour plots by management procedure for B/BMSY by F/FMSY
+#'
+#' @param object An MSE object as returned by [DLMtool::runMSE()].
+#' @param yend The end year
+#' @param dontshow_mp A vector of MPs to leave out of the plot.
+#' @param show_ref_pt_lines Show the reference point lines at the values in *_ref_lines arguments
+#' @param alpha A vector of levels between 0 and 1 for the contour lines.
+#' @param n  As defined in [MASS::kde2d()].
+#' @param x_lim The [ggplot2::xlim()] values for x-axis limits.
+#' @param y_lim The [ggplot2::ylim()] values for y-axis limits.
+#' @param x_ref_lines A vector of vertical lines to draw as reference point lines.
+#' @param y_ref_lines A vector of horizontal lines to draw as reference point lines.
+#'
+#' @return A ggplot object
+#' @export
 plot_contours <- function(object,
                           yend = max(object@proyears),
                           dontshow_mp = NULL,
                           show_ref_pt_lines = FALSE,
                           alpha = c(0.2, 0.4, 0.6, 0.8),
-                          n = 200){
+                          n = 200,
+                          x_lim = xlim(0, 3.5),
+                          y_lim = ylim(0, 3.5),
+                          x_ref_lines = c(0.4, 0.8),
+                          y_ref_lines = 1){
 
   ffmsy <- object@F_FMSY[,,yend] %>%
     reshape2::melt() %>%
@@ -83,22 +102,19 @@ plot_contours <- function(object,
                  aes(color = alpha,
                      group = as.factor(alpha)),
                  alpha = 0.5) +
-                 #fill = NA) +
     scale_color_viridis_c(end = 0.9) +
     ggsidekick::theme_sleek() +
     facet_wrap(~mp_name) +
-    #scale_x_continuous(trans = "sqrt") +
-    #scale_y_continuous(trans = "sqrt") +
-    ylim(0, 3.5) +
-    xlim(0, 3.5) +
+    y_lim +
+    x_lim +
     labs(colour = "Prob. density", x = expression(B/B[MSY]),
          y = expression(F/F[MSY])) +
     guides(colour = FALSE)
 
   if(show_ref_pt_lines){
     g <- g +
-      geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
-      geom_hline(yintercept = 1, alpha = 0.2)
+      geom_vline(xintercept = x_ref_lines, alpha = 0.2) +
+      geom_hline(yintercept = y_ref_lines, alpha = 0.2)
   }
   g
 }
