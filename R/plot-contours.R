@@ -1,3 +1,13 @@
+#' Calculate a set of x-y coordinates for a contour line
+#' Density values are sorted and standardized, and the critical value is
+#' calculated from the alpha cutoff value and sent to [countourLines()]
+#' as an argument.
+#'
+#' @param x Output from the function [MASS::kde2d()]
+#' @param alpha A cutoff value between 0 and 1 for the contour line.
+#'
+#' @return A list of two vectors of x and y-coordinates for the contour line.
+#' @export
 quantile_contour <- function(x, alpha = 0.8){
   zdens <- rev(sort(x$z))
   cumu_zdens <- cumsum(zdens)
@@ -7,6 +17,16 @@ quantile_contour <- function(x, alpha = 0.8){
   list(x = b.full[[1]]$x, y = b.full[[1]]$y)
 }
 
+#' Calculate management procedure contour lines for two quantities
+#'
+#'
+#' @param d A list of management procedure data frames with columns mp, mp_name, x, and y.
+#' @param alpha A vector of levels for the contour lines.
+#' @param n As defined in [MASS::kde2d()].
+#'
+#' @return A data frame containing mp, mp_name, alpha, x, and y where x and y are the calculated
+#' coordinates for the contour lines for each alpha and mp.
+#' @export
 calc_contour_lines <- function(d,
                                alpha = c(0.025, 0.5, 0.975),
                                n = 200){
@@ -24,9 +44,10 @@ calc_contour_lines <- function(d,
                                    alpha = j)
       dens$alpha <- rep(j, length(dens$x))
       dens$mp <- rep(i, length(dens$x))
+      dens$mp_name <- rep(as.character(d[[i]]$mp_name[i]), length(dens$x))
       dens
     }) %>%
-      purrr::map_dfr(`[`, c("mp", "x", "y", "alpha"))
+      purrr::map_dfr(`[`, c("mp", "x", "y", "alpha", "mp_name"))
   }) %>%
     purrr::map_df(rbind)
 }
@@ -52,16 +73,9 @@ plot_contours <- function(object,
     rename(x = bbmsy,
            y = ffmsy)
 
-  mp_names <- d %>%
-    distinct(mp_name) %>%
-    rownames_to_column(var = "mp") %>%
-    mutate(mp = as.integer(mp))
-
   contour_lines <- calc_contour_lines(d,
                                       alpha = alpha,
-                                      n = n) %>%
-    purrr::map_df(~.x) %>%
-    left_join(mp_names)
+                                      n = n)
 
   g <- ggplot(d, aes(x, y)) +
     geom_point(alpha = 0.2) +
