@@ -1,3 +1,7 @@
+## Code used to make the functions found in plot-contours.R
+## **Not used directly in this project**
+##
+
 get_quantile_contour <- function(x, alpha = 0.8) {
   zdens <- rev(sort(x$z))
   Czdens <- cumsum(zdens)
