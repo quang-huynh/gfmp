@@ -21,7 +21,7 @@ quantile_contour <- function(x, alpha = 0.8){
 #'
 #'
 #' @param d A list of management procedure data frames with columns mp, mp_name, x, and y.
-#' @param alpha A vector of levels for the contour lines.
+#' @param alpha A vector of levels between 0 and 1 for the contour lines.
 #' @param n As defined in [MASS::kde2d()].
 #'
 #' @return A data frame containing mp, mp_name, alpha, x, and y where x and y are the calculated
