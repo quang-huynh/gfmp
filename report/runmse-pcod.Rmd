@@ -53,7 +53,10 @@ avail("Reference")
 ```{r echo = TRUE}
 ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 
-ompc@nsim <- 250L
+#Use OM that was made in sra-data-pcod.R -- NOT WORKING RIGHT NOW
+#ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+
+ompc@nsim <- 50L
 ```
 
 ```{r, eval=TRUE, fig.asp=1}
