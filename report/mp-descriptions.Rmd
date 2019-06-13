@@ -13,8 +13,9 @@ csasdown::csas_table(mps)
 
 ### `AvC`: Average catch
 
-The mean historical catch is calculated and used to set a constant catch limit (TAC). The TAC is calculated as:
+The mean historical catch is calculated and used to set a constant catch limit (TAC).
 
+The TAC is calculated as:
 $$
 \textrm{TAC} = \frac{\sum_{y=1}^{n}C_y}{n}
 $$
@@ -23,13 +24,14 @@ where $\mathrm{TAC}$ is the catch recommendation, $n$ is the number of historica
 
 ### `BK_ML`: Beddington and Kirkwood life-history
 
-An MP that sets the TAC based on an approximation of $F_\textrm{max}$ based on the length at first capture relative to the asymptotic length and the von Bertalanffy growth parameters $K$.  $F_\textrm{max}$ is the fishing mortality that produces the maximum yield assuming constant recruitment independent of spawning biomass. The TAC is calculated as
+An MP that sets the TAC based on an approximation of $F_\textrm{max}$ based on the length at first capture relative to the asymptotic length and the von Bertalanffy growth parameters $K$.  $F_\textrm{max}$ is the fishing mortality that produces the maximum yield assuming constant recruitment independent of spawning biomass.
 
+The TAC is calculated as:
 $$
 \textrm{TAC} = A F_{\textrm{max}},
 $$
 
-where $A$ is vulnerable stock abundance, and $F_{\textrm{max}}$ is calculated as
+where $A$ is vulnerable stock abundance, and $F_{\textrm{max}}$ is calculated as:
 
 $$
 F_{\textrm{max}} = \frac{0.6K}{0.67-L_c/L_\infty},
@@ -37,42 +39,49 @@ $$
 
 where $K$ is the von Bertalanffy growth coefficient, $L_c$ is the length at first capture, and $L_\infty$ is the von Bertalanffy asymptotic length.
 
-Abundance ($A$) is estimated as
-
+Abundance ($A$) is estimated as:
 $$
 A = \frac{\bar{C}}{\left(1-e^{-F}\right)},
 $$
 
-where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ as calculated as $Z$ - $M$, where $M$ it is assumed known.
+where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ is calculated as $Z$ - $M$, where $M$ it is assumed known.
 
 ### `CC`: Constant catch
 
-The TAC is the average historical catch over the last $n$ years (default 5) [@geromont2015]. The TAC is calculated as:
+The TAC is the average historical catch over the last 5 years [@geromont2015].
 
+The TAC is calculated as:
 $$
 \textrm{TAC} = (1-x)C_{\textrm{ave}}
 $$
 
-where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous $n$ years (default of five). The TAC is constant for all future projections. CC1, CC2, CC3, CC4, and CC5 represent the same MP but with $x =$ 0.9, 0.8, 0.7, and 0.6 respectively.
+where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous 5 years. The TAC is constant for all future projections.
 
-FIXME: add how mean length data are used to estimate Z and F.
+There are five variants of this procedure which are the same other than the value of $x$:
 
+- CC1: $x = 1.0$
+- CC2: $x = 0.9$
+- CC3: $x = 0.8$
+- CC4: $x = 0.7$
+- CC5: $x = 0.6$
 
 ### `DD`: Delay Difference
 
 A simple delay-difference assessment with $U_\textrm{MSY}$ and MSY as leading parameters that estimate the TAC using a time-series of catch. This model includes observation error only and has does not estimate process error (recruitment deviations). There is the assumption that knife-edge selectivity occurs at the age of 50. It depends on other assumptions such as temporally stationary productivity and proportionality between the abundance index and real abundance. The extent to which these assumptions are violated tends to be the biggest driver of performance for this method. See @carruthers2012 and @hilborn1992\.
 
+The TAC is calculated as:
 $$
 \textrm{TAC} = U_\textrm{MSY} * \textrm{Current Biomass}
 $$
 
-DD4010 imposes the 40:10 rule on the TAC.
+The DD4010 variant is identical but imposes the 40:10 rule on the TAC.
 
 
 ### `Fratio_ML`: $F_\textrm{MSY}/M$ ratio method using mean lengths
 
-Calculates the overfishing limit based on a fixed ratio of FMSY to M multiplied by a current estimate of abundance. This method estimates current abundance by using average catch and an estimate of F from mean lengths. See @gulland1971 and @martell2013\.
+Calculates the overfishing limit based on a fixed ratio of $F_\textrm{MSY}$ to $M$ multiplied by a current estimate of abundance. This method estimates current abundance by using average catch and an estimate of $F$ from mean lengths. See @gulland1971 and @martell2013\.
 
+The TAC is calculated as:
 $$
 TAC = F_\textrm{MSY}A
 $$
@@ -83,6 +92,7 @@ where $F_\textrm{MSY}$ is calculated as $\frac{F_\textrm{MSY}}{M}M$ and $A$ is a
 
 $F_\textrm{MSY}$ is calculated as $r/2$ where $r$ is calculated from a demographic approach (including steepness). This is coupled with an estimate of current abundance using mean lengths that gives you the overfishing limit (OFL).
 
+The TAC is calculated as:
 $$
 TAC = F_\textrm{MSY}A
 $$
@@ -93,6 +103,7 @@ where $A$ is an estimate of current abundance, and $F_\textrm{MSY}$ is estimated
 
 A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY.
 
+The TAC is calculated as:
 $$
 TAC = C_{ref}
 $$
@@ -108,6 +119,7 @@ The TAC is subject to the following conditions:
 
 An MP similar to SBT1 that modifies a time-series of catch recommendations and aims for a stable catch rates.
 
+The TAC is calculated as:
 $$
 \textrm{TAC}_y= C_{y-1}(1+\lambda I)
 $$
@@ -125,13 +137,12 @@ See @geromont2015 for more information.
 
 An MP similar to SBT2 that modifies a time-series of catch recommendations and aims for target catch rate and catch level based on $B\textrm{MSY}/B_0$ and MSY, respectively.
 
-If $I_{recent}\ge I_0$ the TAC is:
+If $I_{recent}\ge I_0$ the TAC is calculated as:
 $$
 \textrm{TAC}= C_\textrm{ref}(w + (1-w)\frac{I_\textrm{rec}-I_0}{I_\textrm{target}-I_0})
 $$
 
 otherwise:
-
 $$
 \textrm{TAC}= wC_\textrm{ref} \frac{I_\textrm{rec}}{I_0}^2
 $$
@@ -148,6 +159,7 @@ The TAC is subject to the following conditions:
 
 The MP adjusts catch based on the value of the index in the current year relative to the time series mean and standard error.
 
+The TAC is calculated as:
 $$
 \textrm{TAC}_y=C_{y-1} \alpha
 $$
@@ -174,6 +186,7 @@ See @jardim2015 for more information.
 
 The TAC is adjusted by the ratio $\alpha$, where the numerator being the mean index in the most recent two years of the time series and the denominator being the mean index in the three years prior to those in the numerator. This MP is the stochastic version of Method 3.2 used by ICES for Data-Limited Stocks (@ices2012).
 
+The TAC is calculated as:
 $$
 \textrm{TAC}_y = \alpha C_{y-1}
 $$
@@ -191,37 +204,49 @@ See @jardim2015 for more information.
 
 A management procedure that incrementally adjusts the TAC to maintain a constant CPUE or relative abundance index.
 
+The TAC is calculated as:
 $$
 \textrm{TAC} = \textrm{TAC}^*(1+\lambda I)
 $$
 
 where $TAC^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of log index over the past 5 years.
-Islope1, Islope2, and Islope3 increase in being biological precautionary by having values for $xx$ of 0.2, 0.3, and 0.4 respectively. Islope4 is considered the most biologically precautionary as it is identical to Islope3 but with a reduced gain parameter, $\lambda$ of 0.2 while the others use 0.4.
+
+There are four variants of this procedure:
+
+- Islope1: The least biologically precautionary, with $\lambda = 0.4$ and $xx = 0.2$
+- Islope2: Increasingly biologically precautionary, with $\lambda = 0.4$ and $xx = 0.3$ 
+- Islope3: Increasingly biologically precautionary, with  $\lambda = 0.4$ and $xx = 0.4$
+- Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $xx = 0.2$
 
 ### `IT`: Iterative Index target
 
 An index target MP where the TAC is modified according to current index levels, which is calculated as the mean index over last 5 years, relative to a target level.
 
+The TAC is calculated as:
 $$
 \textrm{TAC}_y = C_{y-1} I_\delta
 $$
 
-where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The maximum allowable annual change in TAC is determined by mc: e.g mc = 0.05 means that the maximum change in TAC from the previous catch is 5\%. IT5 and IT10 have mc set to 0.05 and 0.1 respectively.
+where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The maximum allowable annual change in TAC is determined by mc: e.g mc = 0.05 means that the maximum change in TAC from the previous catch is 5\%.
 
 The reference index level is assumed to be a proxy for MSY. In the MSE $I_{ref}$ is the index at MSY subject to observation error. The performance of these methods in MSE is strongly determined by the uncertainty the in reference index.
+
+There are two variants of this procedure:
+
+- IT5: Maximum annual changes to the TAC are 5% ($mc = 0.05$)
+- IT10: Maximum annual changes to the TAC are 10% ($mc = 0.1$)
 
 ### `Itarget`: Incremental Index target
 
 A management procedure that incrementally adjusts the TAC from a reference level that is a fraction of mean recent catches to a target CPUE or relative abundance index.
 
 
-If $I_{recent}\ge I_0$ the TAC is:
-
+If $I_{recent}\ge I_0$ the TAC is calculated as:
 $$
 \textrm{TAC}= 0.5 \textrm{TAC}^* [1+(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0})]
 $$
-otherwise:
 
+otherwise:
 $$
 \textrm{TAC}= 0.5 \textrm{TAC}^*[\frac{I_\textrm{recent}^2}{I_0}]
 $$
@@ -249,20 +274,19 @@ where $\delta I$ is the ratio of the mean index over $4 (\frac{1}{M})^{1/4}$ yea
 A management procedure that incrementally adjusts the TAC to reach a target mean length in catches.
 There are four target length MPs proposed by @geromont2015.
 
-If $L_\textrm{recent} \ge L_0$ the TAC is:
+If $L_\textrm{recent} \ge L_0$ the TAC is calculated as:
 $$
 \textrm{TAC} = 0.5 \textrm{TAC}^* [1+(\frac{L_\textrm{recent}-L_0}{L_\textrm{target}-L_0})]
 $$
 
 otherwise:
-
 $$
 \textrm{TAC} = 0.5 \textrm{TAC}^* [\frac{L_\textrm{recent}}{L_0}^2]
 $$
 
 where $TAC^*$ is $(1-xx)$ mean catches from the last 5 historical years, $L_\textrm{recent}$ is the mean length in the last 5 years, $L_0$ is (except for L95target) 0.9 times the average catch in the last 10 historical years ($L_\textrm{ave}$), and $L_\textrm{target}$ is (except for L95target) the multiplier $xL$ times $L_\textrm{ave}$.
 
-There are five variants on this procedure:
+There are five variants of this procedure:
 
 - Ltarget1: The least precautionary, with $xx = 0$ and $xL = 1.05$
 - Ltarget2: Increasingly biologically precautionary, with $xx = 0$ and $xL = 1.10$
@@ -274,24 +298,24 @@ There are five variants on this procedure:
 
 The TAC is calculated as the most recent catch, modified by the ratio alpha, where the numerator is the mean length of the catch (of lengths larger than Lc) and the denominator is the mean length expected at MSY. Here, Lc is the length at full selection (LFS).
 
+The TAC is calculated as:
 $$
 \textrm{TAC}_y = C_{y-1} \frac{L}{L_\textrm{ref}}
 $$
 
 where where $C_{y-1}$ is the catch from the previous year, $L$ is the mean length of the catch over the last 3 years (of lengths larger than $L_c$) and $L_\textrm{ref}$ is the mean length expected at MSY and is calculated as $L_\textrm{ref} = 0.75L_c + 0.25L_\textrm{inf}$ . $L_c$ is the length at full selection (LFS).
 
-There are 3 variants for this procedure:
+There are three variants of this procedure:
 
 - Lratio_BHI: Assumes $M/K = 1.5$ and $F_\textrm{MSY}/M = 1$. Natural mortality $M$ and von Bertalanffy $K$ are not used in this MP (see Appendix A of @jardim2015)
 -Lratio_BHI2: A more general version that calculates the reference mean length $L_\textrm{ref}$ as a function of $M$, $K$, and presumed $F_\textrm{MSY}/M$
 -Lratio_BHI3: A modified version of Lratio_BHI2 where mean length is calculated for lengths > modal length ($L_c$)
 
-
 ### `LstepCC`: Step-wise Constance Catch
 
 A management procedure that incrementally adjusts the TAC according to the mean length of recent catches.
 
-
+The TAC is calculated as:
 $$
 TAC =
 \begin{cases}
@@ -304,7 +328,7 @@ $$
 
 where $TAC^*$ is $(1-xx)$ times average catch in the first year, and previous catch in all projection years, $S$ is step-size, and $r$ is the ratio of $L_\textrm{recent}$ and $L_\textrm{ave}$ which are mean length over the most recent 5 years and 10 historical years respectively.
 
-There are four variants to this procedure:
+There are four variants of this procedure:
 
 - LstepCC1: The least biologically precautionary, with $xx = 0$
 - LstepCC2: Increasingly biologically precautionary, with $xx = 0.1$
@@ -315,7 +339,7 @@ There are four variants to this procedure:
 
 An MP that makes incremental adjustments to TAC recommendations based on the apparent trend in CPUE or index levels relative to target levels (BMSY/B0) and catch levels relative to target levels (MSY).
 
-For SBT1 the TAC is:
+For SBT1 the TAC is calculated as:
 $$
 TAC_y =
 \begin{cases}
@@ -326,7 +350,7 @@ $$
 
 where $\lambda$ is the slope of the index over the last 5 years, and $K_1$, $K_2$, and $\gamma$ are arguments to the MP.
 
-For SBT2 the TAC is:
+For SBT2 the TAC is calculated as:
 
 $$
 TAC_y = 0.5 (C_{y-1} + C_\textrm{targ} \delta)
@@ -348,6 +372,7 @@ where $epsR$ is a control parameter and $R = \frac{\bar{r}}{\phi}$ where $\bar{r
 
 A simple yield per recruit approximation to $F\textrm{MSY}$ which is the position of the ascending YPR curve for which $\mathrm{d} YPR/ \mathrm{d} F = 0.1 ( \mathrm{d} YPR/ \mathrm{d} 0)$. The ML variant uses a mean length estimate of $Z$ to infer current abundance.
 
+The TAC is calculated as:
 $$
 TAC = F_{0.1} A
 $$
