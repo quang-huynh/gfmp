@@ -3,7 +3,7 @@ chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             "introduction.Rmd",
             "mp-descriptions.Rmd",
-            "mp-screening.Rmd",
+            #"mp-screening.Rmd",
             #"get-data-shortraker.Rmd",
             #"effort-shortraker.Rmd",
             #"om-specification-shortraker.Rmd",

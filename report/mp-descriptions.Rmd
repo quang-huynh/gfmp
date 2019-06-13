@@ -43,7 +43,7 @@ $$
 A = \frac{\bar{C}}{\left(1-e^{-F}\right)},
 $$
 
-where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ as calculated as $Z$ - $M$, where $M$ it is assumed known. 
+where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as and $F$ as calculated as $Z$ - $M$, where $M$ it is assumed known.
 
 ### `CC`: Constant catch
 
@@ -123,7 +123,7 @@ See @geromont2015 for more information.
 
 ### `GB_target`: Geromont and Butterworth target CPUE and catch
 
-An MP similar to SBT2 that modifies a time-series of catch recommendations and aims for target catch rate and catch level based on $B\{MSY}/B_0$ and MSY, respectively.
+An MP similar to SBT2 that modifies a time-series of catch recommendations and aims for target catch rate and catch level based on $B\textrm{MSY}/B_0$ and MSY, respectively.
 
 If $I_{recent}\ge I_0$ the TAC is:
 $$
@@ -155,11 +155,11 @@ $$
 where $C_{y-1}$ is the catch from the previous year, and $\alpha$ is defined as:
 
 $$
-\alpha = 
+\alpha =
 \begin{cases}
-d, & \text{if}\ I \lt CI_L \\
-u, & \text{if}\ I \gt CI_H \\
-1, & \text{if}\ CI_L \le I \le CI_H
+d, & \textrm{if}\ I \lt CI_L \\
+u, & \textrm{if}\ I \gt CI_H \\
+1, & \textrm{if}\ CI_L \le I \le CI_H
 \end{cases}
 $$
 
@@ -178,7 +178,7 @@ $$
 \textrm{TAC}_y = \alpha C_{y-1}
 $$
 
-where $C_{y−1}$ is the catch from the previous year, and $\alpha$ is the ratio of the mean index in the most recent two years of the time series and the mean index in 3--5 years before current time. The number of reference years can be specified.
+where $C_{y-1}$ is the catch from the previous year and $\alpha$ is the ratio of the mean index in the most recent two years of the time series and the mean index in 3--5 years before current time. The number of reference years can be specified.
 $\alpha$ is defined as
 
 $$
@@ -195,7 +195,7 @@ $$
 \textrm{TAC} = \textrm{TAC}^*(1+\lambda I)
 $$
 
-where $TAC^∗$ is $1−xx$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of log index over the past 5 years.
+where $TAC^*$ is $1-xx$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of log index over the past 5 years.
 Islope1, Islope2, and Islope3 increase in being biological precautionary by having values for $xx$ of 0.2, 0.3, and 0.4 respectively. Islope4 is considered the most biologically precautionary as it is identical to Islope3 but with a reduced gain parameter, $\lambda$ of 0.2 while the others use 0.4.
 
 ### `IT`: Iterative Index target
@@ -206,7 +206,7 @@ $$
 \textrm{TAC}_y = C_{y-1} I_\delta
 $$
 
-where $C_{y−1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The maximum allowable annual change in TAC is determined by mc: e.g mc = 0.05 means that the maximum change in TAC from the previous catch is 5\%. IT5 and IT10 have mc set to 0.05 and 0.1 respectively.
+where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The maximum allowable annual change in TAC is determined by mc: e.g mc = 0.05 means that the maximum change in TAC from the previous catch is 5\%. IT5 and IT10 have mc set to 0.05 and 0.1 respectively.
 
 The reference index level is assumed to be a proxy for MSY. In the MSE $I_{ref}$ is the index at MSY subject to observation error. The performance of these methods in MSE is strongly determined by the uncertainty the in reference index.
 
@@ -221,6 +221,6 @@ $$
 $$
 
 
-There are four index/CPUE target MPs proposed by @geromont2015: Itarget1, Itarget2, Itarget3, and Itarget4. 
+There are four index/CPUE target MPs proposed by @geromont2015: Itarget1, Itarget2, Itarget3, and Itarget4.
 
 -----
