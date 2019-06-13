@@ -198,6 +198,29 @@ $$
 where $TAC^∗$ is $1−xx$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of log index over the past 5 years.
 Islope1, Islope2, and Islope3 increase in being biological precautionary by having values for $xx$ of 0.2, 0.3, and 0.4 respectively. Islope4 is considered the most biologically precautionary as it is identical to Islope3 but with a reduced gain parameter, $\lambda$ of 0.2 while the others use 0.4.
 
+### `IT`: Iterative Index target
 
+An index target MP where the TAC is modified according to current index levels, which is calculated as the mean index over last 5 years, relative to a target level.
+
+$$
+\textrm{TAC}_y = C_{y-1} I_\delta
+$$
+
+where $C_{y−1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The maximum allowable annual change in TAC is determined by mc: e.g mc = 0.05 means that the maximum change in TAC from the previous catch is 5\%. IT5 and IT10 have mc set to 0.05 and 0.1 respectively.
+
+The reference index level is assumed to be a proxy for MSY. In the MSE $I_{ref}$ is the index at MSY subject to observation error. The performance of these methods in MSE is strongly determined by the uncertainty the in reference index.
+
+### `Itarget`: Incremental Index target
+
+A management procedure that incrementally adjusts the TAC from a reference level that is a fraction of mean recent catches to a target CPUE or relative abundance index.
+
+
+If $I_{recent}\ge I_0$ the TAC is:
+$$
+\textrm{TAC}= 0.5 \textrm{TAC}^* [1+(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0})]
+$$
+
+
+There are four index/CPUE target MPs proposed by @geromont2015: Itarget1, Itarget2, Itarget3, and Itarget4. 
 
 -----
