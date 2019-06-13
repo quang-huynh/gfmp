@@ -216,11 +216,59 @@ A management procedure that incrementally adjusts the TAC from a reference level
 
 
 If $I_{recent}\ge I_0$ the TAC is:
+
 $$
 \textrm{TAC}= 0.5 \textrm{TAC}^* [1+(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0})]
 $$
+otherwise:
 
+$$
+\textrm{TAC}= 0.5 \textrm{TAC}^*[\frac{I_\textrm{recent}^2}{I_0}]
+$$
+where $I_0$ is $0.8I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, and $I_\textrm{target}$ is a multiplier, $Imulti$, times $I_\textrm{ave}$, and $TAC^*$ is $(1-xx)C$ where $xx$ is an argument to the function and $C$ is the average catch over the last 5 years of the historical period. 
 
 There are four index/CPUE target MPs proposed by @geromont2015: Itarget1, Itarget2, Itarget3, and Itarget4.
+
+- Itarget1: The least precautionary, with $xx = 0$ and $Imulti = 1.5$
+- Itarget2: Increasingly biological precautionary, with $xx = 0$ and $Imulti = 2.0$
+- Itarget3: Increasingly biological precautionary, with $xx = 0$ and $Imulti = 2.5$
+- Itarget4: Most biological precautionary, with $xx = 0.3$ and $Imulti = 2.5$
+
+### `ITM`: Index Target based on Natural Mortality Rate
+
+An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over last number of years determined by natural mortality $M$ relative to a target level.
+
+$$
+\textrm{TAC}_y = \textrm{TAC}_{y-1} \delta I
+$$
+
+where $\delta I$ is the ratio of the mean index over $4 (\frac{1}{M})^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} (\frac{5+25M}{100}, 0.2)$
+
+### `Ltarget`: Length Target TAC
+
+A management procedure that incrementally adjusts the TAC to reach a target mean length in catches.
+There are four target length MPs proposed by @geromont2015.
+
+If $L_\textrm{recent} \ge L_0$ the TAC is:
+$$
+\textrm{TAC} = 0.5 \textrm{TAC}^* [1+(\frac{L_\textrm{recent}-L_0}{L_\textrm{target}-L_0})]
+$$
+
+otherwise:
+
+$$
+\textrm{TAC} = 0.5 \textrm{TAC}^* [\frac{L_\textrm{recent}}{L_0}^2]
+$$
+
+where $TAC^*$ is $(1-xx)$ mean catches from the last 5 historical years, $L_\textrm{recent}$ is the mean length in the last 5 years, $L_0$ is (except for L95target) 0.9 times the average catch in the last 10 historical years ($L_\textrm{ave}$), and $L_\textrm{target}$ is (except for L95target) the multiplier $xL$ times $L_\textrm{ave}$.
+
+There are five variants on this procedure:
+
+- Ltarget1: The least precautionary, with $xx = 0$ and $xL = 1.05$
+- Ltarget2: Increasingly biologically precautionary, with $xx = 0$ and $xL = 1.10$
+- Ltarget3: Increasingly biologically precautionary, with $xx = 0$ and $xL = 1.15$
+- Ltarget4: Increasingly biologically precautionary, with $xx = 0.2$ and $xL = 1.15$
+- L95target: The same as Ltarget1 but here the target and limit mean lengths are based on the length at maturity distribution rather than an arbitrary multiplicative of the mean length. $xx = 0.2$ and $xL = 1.15$
+
 
 -----
