@@ -8,10 +8,10 @@ For now pick out some measure procedures that look plausible for our data. The n
 mp <- c(
   # "DCAC",
   # "DCAC_40",
-  "DBSRA4010",
+  #"DBSRA4010",
   # "DBSRA",
   # "DBSRA_40",
-  "DCAC4010",
+  #"DCAC4010",
   "AvC",
   "CC1",
   # "CC2",
@@ -22,9 +22,9 @@ mp <- c(
   "SPMSY",
   "NFref",
   "FMSYref",
-  "FMSYref50",
+  #"FMSYref50",
   # "DD",
-  "DD4010",
+  #"DD4010",
   "GB_CC")
 mp <- sort(mp)
 
@@ -48,7 +48,7 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 
-om@nsim <- 200
+om@nsim <- 2
 
 saveRDS(om, file = here::here("generated-data", "shortraker-om.rds"))
 ```

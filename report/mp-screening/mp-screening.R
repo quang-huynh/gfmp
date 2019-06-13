@@ -316,7 +316,7 @@ make_radar_plot <- function(mps, file_name = NULL, ...) {
   g <- cowplot::plot_grid(plotlist = out,
     labels = gfsynopsis:::first_cap(species_names$species_full),
     label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
-  print(g)
+  g #print(g)
 }
 
 make_radar_plot(average_catch_mp,
