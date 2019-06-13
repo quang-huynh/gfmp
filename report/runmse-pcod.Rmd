@@ -5,27 +5,8 @@
 For now pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
 
 ```{r}
-mppc <- c(
-  # "DCAC",
-  # "DCAC_40",
-  "DBSRA4010",
-  # "DBSRA",
-  # "DBSRA_40",
-  "DCAC4010",
-  "AvC",
-  "CC1",
-  # "CC2",
-  # "CC3",
-  # "CC4",
-  # "CC5",
-  "SPSRA",
-  "SPMSY",
-  "NFref",
-  "FMSYref",
-  "FMSYref50",
-  # "DD",
-  "DD4010",
-  "GB_CC")
+mppc <- c("AvC", "CC2", "CC3", "GB_CC", "GB_target", "Islope1", "Islope2",
+"Islope4", "IT5", "ITM", "LstepCC2", "Ltarget1", "SBT2")
 mppc <- sort(mppc)
 
 ```
@@ -51,10 +32,10 @@ avail("Reference")
 ```
 
 ```{r echo = TRUE}
-ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+#ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 
 #Use OM that was made in sra-data-pcod.R -- NOT WORKING RIGHT NOW
-#ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
 
 ompc@nsim <- 50L
 ```
@@ -148,11 +129,22 @@ Check convergence:
 DLMtool::Converge(pcod_mse)
 ```
 
-```{r}
-summary(pcod_mse)
+```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
+probs <- get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+plot_probs(probs)
+```
+
+```{r probability-table-0-1-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
+plot_probs(probs, scale_0_1 = TRUE)
 ```
 
 Illustrating the built-in plotting functions:
+
+```{r radar-pc}
+x = pm_pass(pcod_mse, pm_list = list("PNOF", "P100", "P50", "P10", "P40", "LTY"), lims = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5))
+r_plot(x, fill_polys = TRUE)
+
+```
 
 ```{r}
 Tplot(pcod_mse)
@@ -160,13 +152,20 @@ Tplot2(pcod_mse)
 ```
 
 
+
+```{r}
+summary(pcod_mse)
+```
+
+Illustrating the built-in plotting functions:
+
 ```{r}
 wormplot(pcod_mse)
 ```
 
 ```{r}
 Pplot(pcod_mse)
-Pplot2(pcod_mse)
+
 ```
 
 ```{r}

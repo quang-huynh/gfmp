@@ -181,9 +181,8 @@ pcod_om@nsim <- 50L
 pcod_om@Linfsd <- pcod_om@Msd <- pcod_om@Ksd <- c(0, 0)
 
 ##### No comps - SRA becomes a de facto delay-difference model
-#pcod_no_comps_SRA <- MSEtool:::SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 5),cores = 10, report = TRUE)
-pcod_no_comps_SRA <- scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 5),cores = 10, report = TRUE)
-trsaveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om.rds"))
+pcod_no_comps_SRA <- MSEtool:::SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 5),cores = 10, report = TRUE)
+saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om.rds"))
 saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
 
 pcod_no_comps_om <- readRDS("sra/pcod_no_comps_om.rds")
