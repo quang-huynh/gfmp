@@ -1,5 +1,65 @@
 # Performance Metrics
 
+#' Evaluate Performance Metrics
+#'
+#' @param mse_obj MSE object, output of the DLMtool [DLMtool::runMSE()] function
+#' @param pm_list List of performace metric names
+#' @param refs Optional. List containing the reference limits for each metric
+#' @param yrs Numeric vector of length 2 with year indices to summarize performance
+#'
+#' @returns A data frame containing the Management procedures, Performace metrics,
+#' probability, probability caption, description, and class of the management procedure.
+eval_pm <- function(mse_obj,
+                    pm_list = NULL,
+                    refs = NULL,
+                    yrs = NULL){
+
+  if(is.null(pm_list)){
+    stop("pm_list is a required argument.",
+         call. = FALSE)
+  }
+
+  run_pm <- list()
+  for(i in seq_along(pm_list)){
+    ref <- refs[[pm_list[i]]]
+    yr <- yrs[pm_list[i]]
+    if(is.null(ref)){
+      if(is.null(yr)){
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj))
+      }else{
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Yrs = yr))
+      }
+    }else{
+      if(is.null(yr)){
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Ref = ref))
+      }else{
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Ref = ref, Yrs = yr))
+      }
+    }
+  }
+
+  out <- list()
+  for(i in seq_along(pm_list)){
+    pm <- pm_list[[i]]
+    prob <- run_pm[[match(pm, pm_list)]]@Mean
+    probcap <- run_pm[[match(pm, pm_list)]]@Caption
+    name <- run_pm[[match(pm, pm_list)]]@Name
+
+    mp_type <- MPtype(mse_obj@MPs)
+    class <- mp_type[match(mse_obj@MPs, mp_type[,1]), 2]
+
+    out[[i]] <- as_tibble(data.frame(id = i,
+                                     mp = mse_obj@MPs,
+                                     pm = pm,
+                                     prob = prob,
+                                     probcap = probcap,
+                                     english = name,
+                                     class = class))
+
+  }
+  do.call(rbind, out)
+}
+
 #' Function factory for creating DLMtool Performace Metrics (class "PM") functions
 #'
 #' @param pm_type The type of performance metric
