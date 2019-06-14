@@ -28,7 +28,6 @@ pm_factory <- function(pm_type,
       pm_obj@Prob <- calcProb(pm_obj@Stat > pm_obj@Ref, mse_obj)
       pm_obj@Mean <- calcMean(pm_obj@Prob)
       pm_obj@MPs <- mse_obj@MPs
-      browser()
       pm_obj
     }
   }else if(pm_type == "AAVY"){
@@ -100,6 +99,10 @@ P40 <- pm_factory("SBMSY", 0.4)
 P40_yrs6_20 <- pm_factory("SBMSY", 0.4, c(6, 20))
 P40_yrs21_35 <- pm_factory("SBMSY", 0.4, c(21, 35))
 P40_yrs36_50 <- pm_factory("SBMSY", 0.4, c(36, 50))
+P80 <- pm_factory("SBMSY", 0.8)
+P80_yrs6_20 <- pm_factory("SBMSY", 0.8, c(6, 20))
+P80_yrs21_35 <- pm_factory("SBMSY", 0.8, c(21, 35))
+P80_yrs36_50 <- pm_factory("SBMSY", 0.8, c(36, 50))
 P100 <- pm_factory("SBMSY", 1)
 P100_yrs6_20 <- pm_factory("SBMSY", 1, c(6, 20))
 P100_yrs21_35 <- pm_factory("SBMSY", 1, c(21, 35))

@@ -44,7 +44,7 @@ calc_contour_lines <- function(d,
                                    alpha = j)
       dens$alpha <- rep(j, length(dens$x))
       dens$mp <- rep(i, length(dens$x))
-      dens$mp_name <- rep(as.character(d[[i]]$mp_name[i]), length(dens$x))
+      dens$mp_name <- rep(as.character(d[[i]]$mp_name[1]), length(dens$x))
       dens
     }) %>%
       purrr::map_dfr(`[`, c("mp", "x", "y", "alpha", "mp_name"))
@@ -95,7 +95,6 @@ plot_contours <- function(object,
   contour_lines <- calc_contour_lines(d,
                                       alpha = alpha,
                                       n = n)
-
   g <- ggplot(d, aes(x, y)) +
     geom_point(alpha = 0.2) +
     geom_path(data = contour_lines,
