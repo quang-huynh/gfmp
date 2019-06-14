@@ -61,7 +61,7 @@ plotImp(imppc)
 plotObs(obspc)
 ```
 
-One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
+One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed catch timeseries. For Pacific Cod these are set to be all the same.
 
 ```{r, fig.asp=0.8}
 
@@ -99,6 +99,12 @@ catchpc %>%
   ylab("Historical catch") +
   xlab("Year")
 
+
+```
+
+Here is the simulated biomass
+
+```{r, fig.asp=0.8}
 pcod_historical@TSdata$B %>%
   reshape2::melt() %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
@@ -107,8 +113,8 @@ pcod_historical@TSdata$B %>%
   facet_wrap(~Var1, scales = "free_y") +
   ylab("Simulated historical biomass") +
   xlab("Year")
-
 ```
+
 
 Now we can run closed-loop simulation:
 
@@ -129,14 +135,47 @@ Check convergence:
 DLMtool::Converge(pcod_mse)
 ```
 
+Check basline states for performance metrics. We want to see simulated FMSY, BMSY and reference Yield
+
+```{r}
+library(reshape2)
+bmsy_pc <- pcod_mse@OM$SSBMSY
+bmsy80_pc <- 0.8*bmsy_pc
+bmsy40_pc <- 0.4*bmsy_pc
+fmsy_pc <- pcod_mse@OM$FMSY
+refY_pc <- pcod_mse@OM$RefY
+
+p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,bmsy80_pc,bmsy40_pc,refY_pc)) %>% 
+  reshape2::melt() %>% 
+  ggplot() + 
+  geom_boxplot(aes(variable,value))+
+  ylab("Simulated Value (tonnes)") +
+  xlab("Baseline metric")
+print(p)
+  
+
+```
+
+Get median values
+
+```{r}
+
+med_bmsy_pc <- median(pcod_mse@OM$SSBMSY)
+med_bmsy80_pc <- median(0.8*bmsy_pc)
+med_bmsy40_pc <- median(0.4*bmsy_pc)
+med_fmsy_pc <- median(pcod_mse@OM$FMSY)
+med_refY_pc <- median(pcod_mse@OM$RefY)
+
+```
+
+
+Show probabilities of meeting performance metrics
+
 ```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
 probs <- get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
-```{r probability-table-0-1-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-plot_probs(probs, scale_0_1 = TRUE)
-```
 
 Illustrating the built-in plotting functions:
 
