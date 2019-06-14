@@ -116,30 +116,22 @@ t_plot <- function(df,
   cowplot::plot_grid(pgrid, legend, ncol = 2, rel_widths = c(1, .1))
 }
 
-#' Pass/fail for performance measures based on their probabaility being
-#'  greater than some limit for each management procedure
+#' Evaluate performance measures
 #'
-#' @param object MSE object, output of the DLMtool [DLMtool::runMSE()] function
+#' @param mse_obj MSE object, output of the DLMtool [DLMtool::runMSE()] function
 #' @param pm_list List of performace metric names
 #' @param refs Optional. List containing the reference limits for each metric
 #' @param yrs Numeric vector of length 2 with year indices to summarize performance
-#' @param lims  A numeric vector of acceptable risk/minimum probability thresholds
 #'
-#' @returns A data frame of the MP name, name and probability of performance metrics,
-#'  and pass/fail
-pm_pass <- function(object,
+#' @returns A data frame containing the Management procedures, Performace metrics,
+#' probability, probability caption, description, and class of the management procedure.
+eval_pm <- function(mse_obj,
                     pm_list = NULL,
                     refs = NULL,
-                    yrs = NULL,
-                    lims = NULL){
+                    yrs = NULL){
 
-  if(is.null(lims) | is.null(pm_list)){
-    stop("Both pm_list and lims are required arguments.",
-         call. = FALSE)
-  }
-
-  if(length(lims) != length(pm_list)){
-    stop("lims must be the length of pm_list.",
+  if(is.null(pm_list)){
+    stop("pm_list is a required argument.",
          call. = FALSE)
   }
 
@@ -149,15 +141,15 @@ pm_pass <- function(object,
     yr <- yrs[pm_list[i]]
     if(is.null(ref)){
       if(is.null(yr)){
-        run_pm[[i]] <- eval(call(pm_list[[i]], object))
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj))
       }else{
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Yrs = yr))
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Yrs = yr))
       }
     }else{
       if(is.null(yr)){
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref))
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Ref = ref))
       }else{
-        run_pm[[i]] <- eval(call(pm_list[[i]], object, Ref = ref, Yrs = yr))
+        run_pm[[i]] <- eval(call(pm_list[[i]], mse_obj, Ref = ref, Yrs = yr))
       }
     }
   }
@@ -168,19 +160,17 @@ pm_pass <- function(object,
     prob <- run_pm[[match(pm, pm_list)]]@Mean
     probcap <- run_pm[[match(pm, pm_list)]]@Caption
     name <- run_pm[[match(pm, pm_list)]]@Name
-    line <- lims[i]
 
-    mp_type <- MPtype(object@MPs)
-    class <- mp_type[match(object@MPs, mp_type[,1]), 2]
+    mp_type <- MPtype(mse_obj@MPs)
+    class <- mp_type[match(mse_obj@MPs, mp_type[,1]), 2]
 
     out[[i]] <- as_tibble(data.frame(id = i,
-                                     mp = object@MPs,
+                                     mp = mse_obj@MPs,
                                      pm = pm,
                                      prob = prob,
                                      probcap = probcap,
                                      english = name,
-                                     class = class,
-                                     pass = prob > line))
+                                     class = class))
 
   }
   do.call(rbind, out)
