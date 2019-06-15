@@ -186,17 +186,31 @@ nSim <- ompc@nsim
 nYear <- ncol(bbmsy_pcod[,1,]) #find global parameter for number of projection years
 dimnames(bbmsy_pcod) <- list(c(1:nSim), mppc, 1:nYear)
 
-#TODO: PLOT NEEDS LAYING OUT PROPERLY
 #convert to data frame and plot
 z1 <- apply(bbmsy_pcod, 3L, c)
 z2 <- expand.grid(dimnames(bbmsy_pcod)[1:2])
 z3 <- data.frame(z2, z1) %>% 
-  melt() %>%
+  melt() 
+
+#TODO: PLOT NEEDS LAYING OUT PROPERLY
+#FIXME: why are they all the same? The MSE results don't vary over MPs ???
+p <-  filter(z3, Var2 %in% mppc[1:4]) %>%
   ggplot(aes(x=variable,y=value,z=Var2))+
   geom_boxplot()+
   facet_grid(rows=vars(Var2))
-print(z3)
+print(p)
 
+p1 <-  filter(z3, Var2 %in% mppc[5:8]) %>%
+  ggplot(aes(x=variable,y=value,z=Var2))+
+  geom_boxplot()+
+  facet_grid(rows=vars(Var2))
+print(p1)
+
+p2 <-  filter(z3, Var2 %in% mppc[9:13]) %>%
+  ggplot(aes(x=variable,y=value,z=Var2))+
+  geom_boxplot()+
+  facet_grid(rows=vars(Var2))
+print(p2)
 
 
 ```
@@ -212,13 +226,6 @@ plot_probs(probs)
 ```
 
 
-Illustrating the built-in plotting functions:
-
-```{r radar-pc}
-x = pm_pass(pcod_mse, pm_list = list("PNOF", "P100", "P50", "P10", "P40", "LTY"), lims = c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5))
-r_plot(x, fill_polys = TRUE)
-
-```
 
 ```{r}
 Tplot(pcod_mse)
