@@ -37,7 +37,7 @@ avail("Reference")
 #Use OM that was made in sra-data-pcod.R -- NOT WORKING RIGHT NOW
 ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
 
-ompc@nsim <- 50L
+ompc@nsim <- 48L
 ```
 
 ```{r, eval=TRUE, fig.asp=1}
@@ -61,8 +61,7 @@ plotImp(imppc)
 plotObs(obspc)
 ```
 
-One thing we can do to check our operating model calibration is checksum random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed catch timeseries. For Pacific Cod these are set to be all the same.
-
+csasdown::csas_table(MPtype(mppc))
 ```{r, fig.asp=0.8}
 
 DLMtool::setup(cpus = parallel::detectCores())
@@ -135,7 +134,8 @@ Check convergence:
 DLMtool::Converge(pcod_mse)
 ```
 
-Check basline states for performance metrics. We want to see simulated FMSY, BMSY and reference Yield
+
+Check basline states for performance metrics from th OM. We want to see OM-simulated FMSY, BMSY and reference Yield
 
 ```{r}
 library(reshape2)
@@ -145,12 +145,15 @@ bmsy40_pc <- 0.4*bmsy_pc
 fmsy_pc <- pcod_mse@OM$FMSY
 refY_pc <- pcod_mse@OM$RefY
 
+baseline_names <- c("FMSY", "BMSY", "0.8BMSY", "0.4BMSY","RefYield")
+
 p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,bmsy80_pc,bmsy40_pc,refY_pc)) %>% 
   reshape2::melt() %>% 
   ggplot() + 
   geom_boxplot(aes(variable,value))+
   ylab("Simulated Value (tonnes)") +
-  xlab("Baseline metric")
+  xlab("Baseline metric") +
+  scale_x_discrete(labels=baseline_names[-1]) 
 print(p)
   
 
@@ -159,14 +162,46 @@ print(p)
 Get median values
 
 ```{r}
-
+med_fmsy_pc <- median(pcod_mse@OM$FMSY)
 med_bmsy_pc <- median(pcod_mse@OM$SSBMSY)
 med_bmsy80_pc <- median(0.8*bmsy_pc)
 med_bmsy40_pc <- median(0.4*bmsy_pc)
-med_fmsy_pc <- median(pcod_mse@OM$FMSY)
 med_refY_pc <- median(pcod_mse@OM$RefY)
 
+baseline_medians <- c(med_fmsy_pc, med_bmsy_pc,med_bmsy80_pc,med_bmsy40_pc,med_refY_pc)
+baseline_medians <- as.matrix(cbind(baseline_names, round(baseline_medians,3)))
+colnames(baseline_medians) <- c("Metric", "Median")
+knitr::kable(baseline_medians, format="markdown")
+
 ```
+
+Look at B/BMSY trajectories under each MP
+
+```{r}
+bbmsy_pcod <- pcod_mse@B_BMSY
+dim(bbmsy_pcod) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+
+#Give names to the array so they can be used for plotting
+nSim <- ompc@nsim
+nYear <- ncol(bbmsy_pcod[,1,]) #find global parameter for number of projection years
+dimnames(bbmsy_pcod) <- list(c(1:nSim), mppc, 1:nYear)
+
+#TODO: PLOT NEEDS LAYING OUT PROPERLY
+#convert to data frame and plot
+z1 <- apply(bbmsy_pcod, 3L, c)
+z2 <- expand.grid(dimnames(bbmsy_pcod)[1:2])
+z3 <- data.frame(z2, z1) %>% 
+  melt() %>%
+  ggplot(aes(x=variable,y=value,z=Var2))+
+  geom_boxplot()+
+  facet_grid(rows=vars(Var2))
+print(z3)
+
+
+
+```
+
+
 
 
 Show probabilities of meeting performance metrics
