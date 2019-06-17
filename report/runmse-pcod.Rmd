@@ -9,6 +9,14 @@ mppc <- c("AvC", "CC2", "CC3", "GB_CC", "GB_target", "Islope1", "Islope2",
 "Islope4", "IT5", "ITM", "LstepCC2", "Ltarget1", "SBT2")
 mppc <- sort(mppc)
 
+#Group MPs into similar types
+mppcg1 <- mppc[1:3]
+mppcg2 <- mppc[4:5]
+mppcg3 <- mppc[6:8]
+mppcg4 <- mppc[9:10]
+mppcg5 <- mppc[11:12]
+mppcg6 <- mppc[11:12]
+
 ```
 
 
@@ -27,8 +35,8 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 
 
 ```{r}
-avail("Output")
-avail("Reference")
+#avail("Output")
+#avail("Reference")
 ```
 
 ```{r echo = TRUE}
@@ -184,6 +192,30 @@ dim(bbmsy_pcod) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 #Give names to the array so they can be used for plotting
 nSim <- ompc@nsim
 nYear <- ncol(bbmsy_pcod[,1,]) #find global parameter for number of projection years
+nMP <- length(mppc)
+#dimnames(bbmsy_pcod) <- list(paste0("Sim",1:nSim), mppc, 1:nYear)
+dimnames(bbmsy_pcod) <- list(1:nSim, mppc, 1:nYear)
+
+gg <- list()
+lapply(1:nMP, function(x){
+ tmp <- bbmsy_pcod[,x,] %>% 
+   melt()  
+   gg[[x]] <<- ggplot(tmp, aes(x=as.factor(Var2),y=value)) +
+   geom_boxplot()
+})
+cowplot::plot_grid(plotlist=gg)
+
+
+```
+
+
+```{r}
+bbmsy_pcod <- pcod_mse@B_BMSY
+dim(bbmsy_pcod) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+
+#Give names to the array so they can be used for plotting
+nSim <- ompc@nsim
+nYear <- ncol(bbmsy_pcod[,1,]) #find global parameter for number of projection years
 dimnames(bbmsy_pcod) <- list(c(1:nSim), mppc, 1:nYear)
 
 #convert to data frame and plot
@@ -214,8 +246,6 @@ print(p2)
 
 
 ```
-
-
 
 
 Show probabilities of meeting performance metrics
