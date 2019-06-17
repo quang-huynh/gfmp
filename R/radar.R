@@ -1,42 +1,30 @@
-#' Title
 # https://stackoverflow.com/a/46999174#'
-#' @param mydf
-#'
-#' @return
-#' @export
-#'
-#' @examples
-calculate_radar <- function(mydf) {
+calc_spider_web <- function(mydf){
   df <- cbind(mydf[, -1], mydf[,2])
   myvec <- c(t(df))
   angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (ncol(df) - 1))
   xx <- myvec * sin(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
   yy <- myvec * cos(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
-  graphData <- data.frame(group = rep(mydf[, 1], each = ncol(mydf)),
-                          x = xx, y = yy)
-  graphData
+  data.frame(group = rep(as.character(mydf[, 1, drop = TRUE]),
+                               each = ncol(mydf)),
+             x = xx,
+             y = yy)
 }
 
-calculate_spokes <- function(mydf) {
-  .n <- ncol(mydf) - 1
-  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (.n))
-  data.frame(x = 0, y = 0, xend = sin(angles[-1]), yend = cos(angles[-1]))
+calc_spokes <- function(num){
+  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / num)
+  data.frame(x = 0, y = 0, xend = sin(angles[-1]), yend = cos(angles[-1])) -> j
 }
 
-make_radar <- function(.species, .mp = NULL, top = TRUE) {
-  dat <- wide_pm %>%
-    filter(species == .species) %>%
-    select(-1, -2)
-
-  if (top)
-    dat <- filter(dat, mp %in% top_top_pm_names)
-
-  if (!is.null(.mp))
-    dat <- filter(dat, mp %in% .mp)
-
-  spokes_data <- calculate_spokes(dat)
-  spokes_data$pm <- c(names(dat[, -1])[-1], names(dat[, -1])[1])
-  radar_data <- calculate_radar(dat)
+spider_plot <- function(df,
+                        col = "pm",
+                        main_shp = 16,
+                        ref_shp = 17){
+  nms <- as.character(unique(df[col]) %>% pull())
+  spokes <- calc_spokes(length(nms))
+  spokes$nms <- nms
+  ds <- spread(df %>% select(mp, pm, prob), pm, prob)
+  spider_data <- calc_spider_web(ds)
   label_data <- data.frame(x = 0, y = c(0.5, 0.75))
 
   ## for ggrepel labels:
@@ -46,30 +34,30 @@ make_radar <- function(.species, .mp = NULL, top = TRUE) {
   #   summarize(xx = approx(x = x, y = y, n = 7)$x[6],
   #     yy = approx(x = x, y = y, n = 7)$y[6])
 
-  radar_data %>%
+  spider_data %>%
     ggplot(aes(x = x, y = y)) +
     geom_segment(
-      data = spokes_data,
+      data = spokes,
       aes(x = x, y = y, xend = xend, yend = yend), colour = "grey75", lty = 1
     ) +
     # FIXME: do this more elegantly in the data:
     geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
+      data = rbind(spokes, spokes[1, ]),
       aes(x = xend * 0.5, y = yend * 0.5), colour = "grey75", lty = 2
     ) +
     geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
+      data = rbind(spokes, spokes[1, ]),
       aes(x = xend * 0.75, y = yend * 0.75), colour = "grey75", lty = 2
     ) +
     geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
+      data = rbind(spokes, spokes[1, ]),
       aes(x = xend * 1, y = yend * 1), colour = "grey75", lty = 2
     ) +
     geom_path(aes(colour = as.factor(group)), lwd = 0.8) +
     coord_equal() +
-    geom_text(data = spokes_data, aes(
+    geom_text(data = spokes, aes(
       x = xend * 1.1, y = yend * 1.1,
-      label = pm
+      label = nms
     ), colour = "grey30") +
     geom_text(
       data = label_data,
@@ -101,15 +89,13 @@ make_radar <- function(.species, .mp = NULL, top = TRUE) {
 
 }
 
-make_radar_plot <- function(mps, file_name = NULL, ...) {
-  out <- lapply(species_names$species, make_radar, .mp = mps, ...)
+spider_plot_grid <- function(mps, file_name = NULL, ...) {
 
-  if (!is.null(file_name)) {
+    if (!is.null(file_name)) {
     pdf(file_name, width = 11, height = 12)
     on.exit(dev.off())
   }
   g <- cowplot::plot_grid(plotlist = out,
-                          labels = gfsynopsis:::first_cap(species_names$species_full),
                           label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
   g
 }

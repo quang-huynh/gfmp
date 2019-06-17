@@ -14,7 +14,7 @@ mp <- c(
   #"DCAC4010",
   "AvC",
   "CC1",
-  # "CC2",
+  "CC2",
   # "CC3",
   # "CC4",
   # "CC5",
@@ -23,7 +23,7 @@ mp <- c(
   "NFref",
   "FMSYref",
   #"FMSYref50",
-  # "DD",
+  "DD",
   #"DD4010",
   "GB_CC")
 mp <- sort(mp)
@@ -48,7 +48,7 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 ```{r echo = TRUE}
 om <- new('OM', stock, fleet, obs, imp)
 
-om@nsim <- 2
+om@nsim <- 100
 
 saveRDS(om, file = here::here("generated-data", "shortraker-om.rds"))
 ```

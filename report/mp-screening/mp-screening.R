@@ -103,9 +103,8 @@ source("R/plot-probability-table.R")
 library(gfutilities)
 
 pm <- lapply(mse, function(x) {
-  pm_pass(x,
-    pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"),
-    lims = c(0, 0, 0, 0, 0, 0))
+  eval_pm(x,
+    pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"))
 })
 for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 
@@ -230,7 +229,6 @@ make_radar <- function(.species, .mp = NULL, top = TRUE) {
 
   if (!is.null(.mp))
     dat <- filter(dat, mp %in% .mp)
-
   spokes_data <- calculate_spokes(dat)
   spokes_data$pm <- c(names(dat[, -1])[-1], names(dat[, -1])[1])
   radar_data <- calculate_radar(dat)
