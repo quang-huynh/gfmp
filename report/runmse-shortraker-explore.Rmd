@@ -66,58 +66,50 @@ Run the historical part of the MSE.
 
 One thing we can do to check our operating model calibration is check some random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
 
-#FIXME NOT WORKING:
-#short_historical <- runMSE(omsr, Hist = TRUE, parallel=TRUE, ntrials=1000)
-
-Possibly something has changed in the OM? (Markdown commenting out not working, chunk is still being run)
-
-<!--
 ```{r, fig.asp=0.8}
-
-#short_historical <- runMSE(omsr, Hist = TRUE, parallel=TRUE, ntrials=1000)
+omsr@nsim <- 50
+short_historical <- runMSE(omsr, Hist = TRUE, parallel=TRUE, ntrials=1000)
+omsr@nsim <- 200
 
 ## names(short_historical@TSdata)
 ## dim(short_historical@TSdata$Catch)
 
-#real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
-#real_catch <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, #Observed.catch))
+real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
+real_catch <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, Observed.catch))
 
-#all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
-#real_catch <- dplyr::left_join(all_years, real_catch)
+all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
+real_catch <- dplyr::left_join(all_years, real_catch)
 
-#set.seed(1567)
-#catch <- short_historical@TSdata$Catch %>%
-#  reshape2::melt() %>%
-#  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
-#  transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
-#    catch = value, type = "Simulated") %>%
-#  bind_rows(data.frame(sample_id = 0, year = real_catch$Year,
-#    catch = real_catch$synthetic, type = "Observed", stringsAsFactors = FALSE))
+set.seed(1567)
+catch <- short_historical@TSdata$Catch %>%
+  reshape2::melt() %>%
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
+  transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
+    catch = value, type = "Simulated") %>%
+  bind_rows(data.frame(sample_id = 0, year = real_catch$Year,
+    catch = real_catch$synthetic, type = "Observed", stringsAsFactors = FALSE))
 
-#catch %>%
-#  filter(!is.na(catch)) %>%
-#  group_by(sample_id) %>%
-#  mutate(catch = catch/max(catch)) %>%
-#  ggplot(aes(year, catch, colour = type)) +
-#  geom_line() +
-#  facet_wrap(~sample_id) +
-#  ylab("Historical catch") +
-#  xlab("Year")
+catch %>%
+  filter(!is.na(catch)) %>%
+  group_by(sample_id) %>%
+  mutate(catch = catch/max(catch)) %>%
+  ggplot(aes(year, catch, colour = type)) +
+  geom_line() +
+  facet_wrap(~sample_id) +
+  ylab("Historical catch") +
+  xlab("Year")
 
-#short_historical@TSdata$B %>%
-#  reshape2::melt() %>%
-#  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
-#  ggplot(aes(Var2, value)) +
-#  geom_line() +
- # facet_wrap(~Var1, scales = "free_y") +
-#  ylab("Simulated historical biomass") +
-#  xlab("Year")
+short_historical@TSdata$B %>%
+  reshape2::melt() %>%
+  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
+  ggplot(aes(Var2, value)) +
+  geom_line() +
+  facet_wrap(~Var1, scales = "free_y") +
+  ylab("Simulated historical biomass") +
+  xlab("Year")
 
-# short_data <- pbs2dlm::create_dlm_data(d)
-# DLMtool::Turing(OM = om, Data = short_data, wait = FALSE)
 ```
 
--->
 
 Now run the closed loop simulation with the MPs above.
 

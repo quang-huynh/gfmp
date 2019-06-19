@@ -66,8 +66,9 @@ Run the historical part of the MSE. For Pacific Cod, OM historical catch is set 
 ```{r, fig.asp=0.8}
 
 DLMtool::setup(cpus = parallel::detectCores())
-ompc@nsim <- 200
+ompc@nsim <- 50
 pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = TRUE, ntrials=1000)
+ompc@nsim <- 200
 #saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
 
 
