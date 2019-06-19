@@ -1,11 +1,11 @@
 \newpage
 
-# PACIFIC COD: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
+# SHORTRAKER: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
 
 Use the management procedures that passed the screening test
 
 ```{r}
-mppc <- c("AvC", 
+mpsr <- c("AvC", 
           "CC2", 
           "CC3",
           "DD", 
@@ -28,15 +28,15 @@ mppc <- c("AvC",
           "SP_MSY")
 
 #Group MPs into similar types
-mppc_group <- list()
-mppc_group[[1]] <- mppc[1:3]
-mppc_group[[2]] <- mppc[4:5]
-mppc_group[[3]] <- mppc[6:7]
-mppc_group[[4]] <- mppc[8:10]
-mppc_group[[5]] <- mppc[c(11:12,19)]
-mppc_group[[6]] <- mppc[13:15]
-mppc_group[[7]] <- mppc[16:18]
-mppc_group[[8]] <- mppc[20:21]
+mpsr_group <- list()
+mpsr_group[[1]] <- mpsr[1:3]
+mpsr_group[[2]] <- mpsr[4:5]
+mpsr_group[[3]] <- mpsr[6:7]
+mpsr_group[[4]] <- mpsr[8:10]
+mpsr_group[[5]] <- mpsr[c(11:12,19)]
+mpsr_group[[6]] <- mpsr[13:15]
+mpsr_group[[7]] <- mpsr[16:18]
+mpsr_group[[8]] <- mpsr[20:21]
 
 mptypenames <- c("Av Catch", "Delay Difference","Catch Target", "Index Slope", "Index Target","Stepwise Constant Catch", "Length Target","Surplus Production")
 
@@ -44,91 +44,98 @@ mptypenames <- c("Av Catch", "Delay Difference","Catch Target", "Index Slope", "
 
 
 ```{r, results='asis'}
-csasdown::csas_table(MPtype(mppc))
+csasdown::csas_table(MPtype(mpsr))
 ```
 
-# PACIFIC COD: RESULTS 
+# Shortraker: RESULTS 
 
 ## Constructing the operating model
 
-Get the operating model. For Pacific Cod we are using the operating model fit using the SRA Scoping method fit to commercial CPUE and trawl survey indices.
+Get the operating model. 
 
 
 ```{r echo = TRUE}
-#ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+omsr <- new('OM', stock, fleet, obs, imp)
 
-#Use OM that was made in sra-data-pcod.R 
-ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+omsr@nsim <- 200
+
+saveRDS(omsr, file = here::here("generated-data", "shortraker-om.rds"))
 ```
 
-Run the historical part of the MSE. For Pacific Cod, OM historical catch is set to the observed catch.
+Run the historical part of the MSE. 
 
+One thing we can do to check our operating model calibration is check some random samples from the historical simulation against our observed data. For example, here are 11 samples from the simulated historical catch timeseries compared to the observed (reconstructed/corrected) catch timeseries.
+
+#FIXME NOT WORKING:
+#short_historical <- runMSE(omsr, Hist = TRUE, parallel=TRUE, ntrials=1000)
+
+Possibly something has changed in the OM? (Markdown commenting out not working, chunk is still being run)
+
+<!--
 ```{r, fig.asp=0.8}
 
-DLMtool::setup(cpus = parallel::detectCores())
-ompc@nsim <- 200
-pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = TRUE, ntrials=1000)
-#saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
+#short_historical <- runMSE(omsr, Hist = TRUE, parallel=TRUE, ntrials=1000)
 
+## names(short_historical@TSdata)
+## dim(short_historical@TSdata$Catch)
 
-real_catchpc <- read.csv(here::here("report/data/pcod-corrected-catch.csv"))
-real_catchpc <- mutate(real_catchpc, synthetic = real_catchpc$Observed.catch) #Don't use predicted catchpc for P cod
+#real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
+#real_catch <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, #Observed.catch))
 
-all_years <- data.frame(Year = (2018 - fleetpc@nyears):2018)
-real_catchpc <- dplyr::left_join(all_years, real_catchpc)
+#all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
+#real_catch <- dplyr::left_join(all_years, real_catch)
 
-set.seed(1938)
-catchpc <- pcod_historical@TSdata$Catch %>%
-  reshape2::melt() %>%
-  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
-  transmute(sample_id = Var1, year = Var2 + min(real_catchpc$Year) - 1,
-    catchpc = value, type = "Simulated") %>%
-  bind_rows(data.frame(sample_id = 0, year = real_catchpc$Year,
-    catchpc = real_catchpc$synthetic, type = "Observed", stringsAsFactors = FALSE))
+#set.seed(1567)
+#catch <- short_historical@TSdata$Catch %>%
+#  reshape2::melt() %>%
+#  dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
+#  transmute(sample_id = Var1, year = Var2 + min(real_catch$Year) - 1,
+#    catch = value, type = "Simulated") %>%
+#  bind_rows(data.frame(sample_id = 0, year = real_catch$Year,
+#    catch = real_catch$synthetic, type = "Observed", stringsAsFactors = FALSE))
 
-catchpc %>%
-  filter(!is.na(catchpc)) %>%
-  group_by(sample_id) %>%
-  mutate(catchpc = catchpc/max(catchpc)) %>%
-  ggplot(aes(year, catchpc, colour = type)) +
-  geom_line() +
-  facet_wrap(~sample_id) +
-  ylab("Historical catch") +
-  xlab("Year")
+#catch %>%
+#  filter(!is.na(catch)) %>%
+#  group_by(sample_id) %>%
+#  mutate(catch = catch/max(catch)) %>%
+#  ggplot(aes(year, catch, colour = type)) +
+#  geom_line() +
+#  facet_wrap(~sample_id) +
+#  ylab("Historical catch") +
+#  xlab("Year")
 
+#short_historical@TSdata$B %>%
+#  reshape2::melt() %>%
+#  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
+#  ggplot(aes(Var2, value)) +
+#  geom_line() +
+ # facet_wrap(~Var1, scales = "free_y") +
+#  ylab("Simulated historical biomass") +
+#  xlab("Year")
 
+# short_data <- pbs2dlm::create_dlm_data(d)
+# DLMtool::Turing(OM = om, Data = short_data, wait = FALSE)
 ```
 
-Look at the simulated biomass from a random set of replicates. Looks similar to the 2018 stock assessment [@forrest2019].
-
-```{r, fig.asp=0.8}
-pcod_historical@TSdata$B %>%
-  reshape2::melt() %>%
-  dplyr::filter(Var1 %in% sample(unique(Var1), size = 12)) %>%
-  ggplot(aes(Var2, value)) +
-  geom_line() +
-  facet_wrap(~Var1, scales = "free_y") +
-  ylab("Simulated historical biomass") +
-  xlab("Year")
-```
+-->
 
 Now run the closed loop simulation with the MPs above.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-file_name <- here::here("generated-data", "pcod-mse.rds")
+file_name <- here::here("generated-data", "shortraker-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  pcod_mse <- runMSE(OM = ompc, MPs = mppc, parallel = TRUE, ntrials=1000)
-  saveRDS(pcod_mse, file = file_name)
+  shortraker_mse <- runMSE(OM = omsr, MPs = mpsr, parallel = TRUE, ntrials=1000)
+  saveRDS(shortraker_mse, file = file_name)
 } else {
-  pcod_mse <- readRDS(file_name)
+  shortraker_mse <- readRDS(file_name)
 }
 ```
 
 Check convergence. This is to test whether enough simulations have been run ... does the order of the MPs change across iterations? If so, increase the number of iterations.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-DLMtool::Converge(pcod_mse)
+DLMtool::Converge(shortraker_mse)
 ```
 
 Seems to be okay.
@@ -137,17 +144,17 @@ Seems to be okay.
 Now look to see if we have redundant MPs by plotting the range of catches across replicates for a subset of years.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-pcod_mse_C <- pcod_mse@C
+shortraker_mse_C <- shortraker_mse@C
 
-nSim <- ompc@nsim
-nYear <- ncol(pcod_mse_C[,1,]) 
-nMP <- length(mppc)
-dimnames(pcod_mse_C) <- list(1:nSim, mppc, 1:nYear)
+nSim <- omsr@nsim
+nYear <- ncol(shortraker_mse_C[,1,]) 
+nMP <- length(mpsr)
+dimnames(shortraker_mse_C) <- list(1:nSim, mpsr, 1:nYear)
 
 #convert to data frame
-z1 <- apply(pcod_mse_C, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_C)[1:2])
-mp_catch_pc <- data.frame(z2, z1) %>% 
+z1 <- apply(shortraker_mse_C, 3L, c)
+z2 <- expand.grid(dimnames(shortraker_mse_C)[1:2])
+mp_catch_sr <- data.frame(z2, z1) %>% 
   reshape2::melt() %>% 
   rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Catch"=value) %>% 
   mutate(Year=as.numeric(Year)) 
@@ -155,8 +162,8 @@ mp_catch_pc <- data.frame(z2, z1) %>%
 #Make boxplots of catch from similar MPs for a subset of years
 for(i in seq_along(mptypenames))
 {
-  mpgroup <- mppc_group[[i]]
-  ggcatch <- mp_catch_pc %>% 
+  mpgroup <- mpsr_group[[i]]
+  ggcatch <- mp_catch_sr %>% 
     filter(MP %in% mpgroup) %>% 
     filter(Year %in% c(1,10,20,30,40,50)) %>%
     ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
@@ -171,17 +178,17 @@ It seems as if we have some redundancy among similar MPs based on the catch. Bef
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-pcod_mse_SSB <- pcod_mse@SSB
+shortraker_mse_SSB <- shortraker_mse@SSB
 
-nSim <- ompc@nsim
-nYear <- ncol(pcod_mse_SSB[,1,]) 
-nMP <- length(mppc)
-dimnames(pcod_mse_SSB) <- list(1:nSim, mppc, 1:nYear)
+nSim <- omsr@nsim
+nYear <- ncol(shortraker_mse_SSB[,1,]) 
+nMP <- length(mpsr)
+dimnames(shortraker_mse_SSB) <- list(1:nSim, mpsr, 1:nYear)
 
 #convert to data frame
-z1 <- apply(pcod_mse_SSB, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_SSB)[1:2])
-mp_ssb_pc <- data.frame(z2, z1) %>% 
+z1 <- apply(shortraker_mse_SSB, 3L, c)
+z2 <- expand.grid(dimnames(shortraker_mse_SSB)[1:2])
+mp_ssb_sr <- data.frame(z2, z1) %>% 
   reshape2::melt() %>% 
   rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "SBiomass"=value) %>% 
   mutate(Year=as.numeric(Year))
@@ -189,8 +196,8 @@ mp_ssb_pc <- data.frame(z2, z1) %>%
 #Make boxplots of catch from similar MPs for a subset of years
 for(i in seq_along(mptypenames))
 {
-  mpgroup <- mppc_group[[i]]
-  ggssb <- mp_ssb_pc %>% 
+  mpgroup <- mpsr_group[[i]]
+  ggssb <- mp_ssb_sr %>% 
     filter(MP %in% mpgroup) %>% 
     filter(Year %in% c(1,10,20,30,40,50)) %>%
     ggplot(aes(x=as.factor(Year),y=SBiomass,fill=MP))+
@@ -205,7 +212,7 @@ for(i in seq_along(mptypenames))
 We can remove some MPs to make comparison of results easier. Here is the shortened list.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-mppc_short <- c("AvC", 
+mpsr_short <- c("AvC", 
           "DD", 
           "GB_CC", 
           "Islope1", 
@@ -216,39 +223,38 @@ mppc_short <- c("AvC",
 ```
 
 ```{r, results='asis'}
-csasdown::csas_table(MPtype(mppc_short))
+csasdown::csas_table(MPtype(mpsr_short))
 ```
 
 Rather than subsetting all the results, run the mse again on the shorter set. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-file_name <- here::here("generated-data", "pcod-mse-short.rds")
+file_name <- here::here("generated-data", "shortraker-mse-short.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  pcod_mse_short <- runMSE(OM = ompc, MPs = mppc_short, parallel = TRUE, ntrials=1000)
-  saveRDS(pcod_mse_short, file = file_name)
+  shortraker_mse_short <- runMSE(OM = omsr, MPs = mpsr_short, parallel = TRUE, ntrials=1000)
+  saveRDS(shortraker_mse_short, file = file_name)
 } else {
-  pcod_mse_short <- readRDS(file_name)
+  shortraker_mse_short <- readRDS(file_name)
 }
 ```
-
 Check basline states for performance metrics from the OM. We want to see OM-simulated FMSY, BMSY and reference Yield
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 library(reshape2)
-bmsy_pc <- pcod_mse@OM$SSBMSY
-USR_pc <- 0.8*bmsy_pc
-LRP_pc <- 0.4*bmsy_pc
-fmsy_pc <- pcod_mse@OM$FMSY
-refY_pc <- pcod_mse@OM$RefY
+bmsy_sr <- shortraker_mse@OM$SSBMSY
+USR_sr <- 0.8*bmsy_sr
+LRP_sr <- 0.4*bmsy_sr
+fmsy_sr <- shortraker_mse@OM$FMSY
+refY_sr <- shortraker_mse@OM$RefY
 
 baseline_names <- c("FMSY", "BMSY", "USR=0.8BMSY", "LRP=0.4BMSY","RefYield")
 
-p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,USR_pc,LRP_pc,refY_pc)) %>% 
+p <- baselines_sr <- as.data.frame(cbind(bmsy_sr,USR_sr,LRP_sr,refY_sr)) %>% 
   reshape2::melt() %>% 
   ggplot() + 
   geom_boxplot(aes(variable,value))+
-  ylab("Simulated Value (tonnes)") +
+  ylab("Simulated Value") +
   xlab("Baseline metric") +
   scale_x_discrete(labels=baseline_names[-1]) 
 print(p)
@@ -259,91 +265,80 @@ print(p)
 Get median values
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-med_fmsy_pc <- median(pcod_mse@OM$FMSY)
-med_bmsy_pc <- median(pcod_mse@OM$SSBMSY)
-med_USR_pc <- median(0.8*bmsy_pc)
-med_LRP_pc <- median(0.4*bmsy_pc)
-med_refY_pc <- median(pcod_mse@OM$RefY)
+med_fmsy_sr <- median(shortraker_mse@OM$FMSY)
+med_bmsy_sr <- median(shortraker_mse@OM$SSBMSY)
+med_USR_sr <- median(0.8*bmsy_sr)
+med_LRP_sr <- median(0.4*bmsy_sr)
+med_refY_sr <- median(shortraker_mse@OM$RefY)
 
-baseline_medians <- c(med_fmsy_pc, med_bmsy_pc,med_USR_pc,med_LRP_pc,med_refY_pc)
+baseline_medians <- c(med_fmsy_sr, med_bmsy_sr,med_USR_sr,med_LRP_sr,med_refY_sr)
 baseline_medians <- as.matrix(cbind(baseline_names, round(baseline_medians,3)))
 colnames(baseline_medians) <- c("Metric", "Median")
 knitr::kable(baseline_medians, format="markdown")
 
 ```
 
+
 Now look at results from the shortlist of MPs together. Show biomass with median LRP and USR.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-pcod_mse_SSB_short <- pcod_mse_short@SSB
-pcod_mse_C_short <- pcod_mse_short@C
+shortraker_mse_SSB_short <- shortraker_mse_short@SSB
+shortraker_mse_C_short <- shortraker_mse_short@C
 
-nSim <- ompc@nsim
-nYear <- ncol(pcod_mse_SSB[,1,]) 
-nMP <- length(mppc_short)
-dimnames(pcod_mse_SSB_short) <- list(1:nSim, mppc_short, 1:nYear)
-dimnames(pcod_mse_C_short) <- list(1:nSim, mppc_short, 1:nYear)
+nSim <- omsr@nsim
+nYear <- ncol(shortraker_mse_SSB[,1,]) 
+nMP <- length(mpsr_short)
+dimnames(shortraker_mse_SSB_short) <- list(1:nSim, mpsr_short, 1:nYear)
+dimnames(shortraker_mse_C_short) <- list(1:nSim, mpsr_short, 1:nYear)
 
 #convert arrays to data frames
-z1 <- apply(pcod_mse_C_short, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_C_short)[1:2])
-mp_catch_pc_short <- data.frame(z2, z1) %>% 
+z1 <- apply(shortraker_mse_C_short, 3L, c)
+z2 <- expand.grid(dimnames(shortraker_mse_C_short)[1:2])
+mp_catch_sr_short <- data.frame(z2, z1) %>% 
   reshape2::melt() %>% 
   rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Catch"=value) %>% 
   mutate(Year=as.numeric(Year)) 
 
-z1 <- apply(pcod_mse_SSB_short, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_SSB_short)[1:2])
-mp_ssb_pc_short <- data.frame(z2, z1) %>% 
+z1 <- apply(shortraker_mse_SSB_short, 3L, c)
+z2 <- expand.grid(dimnames(shortraker_mse_SSB_short)[1:2])
+mp_ssb_sr_short <- data.frame(z2, z1) %>% 
   reshape2::melt() %>% 
   rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "SBiomass"=value) %>% 
   mutate(Year=as.numeric(Year)) 
 
 #Make boxplots of catch and biomass from the short list of MPs 
-ggcatch <- mp_catch_pc_short %>% 
+ggcatch <- mp_catch_sr_short %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
   geom_boxplot()+
   ggtitle("Shortlist of MPs: Catch")+ xlab("Year")+ ylab("Catch")
 print(ggcatch)
 
-ggssb2 <- mp_ssb_pc_short %>% 
+ggssb2 <- mp_ssb_sr_short %>% 
 filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=SBiomass,fill=MP))+
   geom_boxplot()+
-  geom_hline(yintercept=med_USR_pc, linetype="dashed", color = "darkgreen")+
-  geom_hline(yintercept=med_LRP_pc, linetype="dashed", color = "red")+
+  geom_hline(yintercept=med_USR_sr, linetype="dashed", color = "darkgreen")+
+  geom_hline(yintercept=med_LRP_sr, linetype="dashed", color = "red")+
   ggtitle("Shortlist of MPs: Spawning Biomass")+ xlab("Year")+ ylab("Spawning Biomass")
 print(ggssb2)
 
 ```
 
-
 Look at Catch relative to RefY for each MP
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-nSim <- ompc@nsim
-RefYield_pc <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=pcod_mse_short@OM$RefY)
+nSim <- omsr@nsim
+RefYield_sr <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=shortraker_mse_short@OM$RefY)
 
-#HACK Remove an outlier ... limit refY to 1000 for plotting
-MaxRefY <- max(RefYield_pc$Catch)
-NumOutliers <- length(which(RefYield_pc$Catch>10000))
-func <- function(x) {ifelse(x> 10000,10000,x)}
-RefY_Pc_trunc <- sapply(RefYield_pc$Catch, FUN=func)
+#Make a new object so we don't accidentally keep appending to mp_catch_sr_short
+mp_catch_sr_short2 <- rbind(mp_catch_sr_short,RefYield_sr)
 
-#Replace RefY with truncated set, just for plotting
-RefYield_pc$Catch <- RefY_Pc_trunc
-
-#Make a new object so we don't accidentally keep appending to mp_catch_pc_short
-mp_catch_pc_short2 <- rbind(mp_catch_pc_short,RefYield_pc)
-
-ggcatch <- mp_catch_pc_short2 %>% 
+ggcatch <- mp_catch_sr_short2 %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
   geom_boxplot()+
-  geom_hline(yintercept=med_refY_pc, linetype="dashed", color = "black")+
-  ggtitle("Shortlist of MPs: Catch showing ref yield")+ xlab("Year")+ ylab("Catch") +
-  annotate(geom="text", x=4, y=9500, label=paste("Maximum RefY value =", round(MaxRefY,1))) +
-  annotate(geom="text", x=4, y=9000, label=paste("Number of RefY sims > 10000 =", NumOutliers))  
+  geom_hline(yintercept=med_refY_sr, linetype="dashed", color = "black")+
+  ggtitle("Shortlist of MPs: Catch showing ref yield")+ xlab("Year")+ ylab("Catch") 
 print(ggcatch)
 
 
@@ -352,12 +347,12 @@ print(ggcatch)
 Look at Catch/RefY for each MP
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 #For each MP and sim need to divide Catch by annual RefY
-RefYield <- pcod_mse_short@OM$RefY
+RefYield <- shortraker_mse_short@OM$RefY
 RefYieldRep <- rep(RefYield,nMP*nYear)
-mp_catch_pc_shortRel <- mp_catch_pc_short %>% 
+mp_catch_sr_shortRel <- mp_catch_sr_short %>% 
   mutate("RefY"=RefYieldRep,"CatchRelRefY"=Catch/RefYieldRep)
 
-ggcatch <- mp_catch_pc_shortRel %>% 
+ggcatch <- mp_catch_sr_shortRel %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=CatchRelRefY,fill=MP))+
   geom_boxplot()+
@@ -367,24 +362,22 @@ print(ggcatch)
 ```
 
 
-Looks like we need to be able to set RefY to an agreed reference value doesn't it!
-
 Look at B/BMSY trajectories under each MP. 
 
 <!--- Try Cowplot grid version, hard to read but could lay it out better
 
 ```{r}
-pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
-dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+shortraker_mse_BBMSY_short <- shortraker_mse_short@B_BMSY
+dim(shortraker_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 
-#USR_pc
+#USR_sr
 
 #Give names to the array so they can be used for plotting
-dimnames(pcod_mse_BBMSY_short) <- list(1:nSim, mppc_short, 1:nYear)
+dimnames(shortraker_mse_BBMSY_short) <- list(1:nSim, mpsr_short, 1:nYear)
 
 gg <- list()
 lapply(1:nMP, function(x){
- tmp <- pcod_mse_BBMSY_short[,x,] %>% 
+ tmp <- shortraker_mse_BBMSY_short[,x,] %>% 
    reshape2::melt() 
    gg[[x]] <<- ggplot(tmp, aes(x=as.factor(Var2),y=value)) +
    geom_boxplot() +
@@ -397,29 +390,29 @@ cowplot::plot_grid(plotlist=gg)
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
-dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+shortraker_mse_BBMSY_short <- shortraker_mse_short@B_BMSY
+dim(shortraker_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 
 #Give names to the array so they can be used for plotting
-nSim <- ompc@nsim
-nYear <- ncol(pcod_mse_BBMSY_short[,1,]) #find global parameter for number of projection years
-dimnames(pcod_mse_BBMSY_short) <- list(c(1:nSim), mppc_short, 1:nYear)
+nSim <- omsr@nsim
+nYear <- ncol(shortraker_mse_BBMSY_short[,1,]) #find global parameter for number of projection years
+dimnames(shortraker_mse_BBMSY_short) <- list(c(1:nSim), mpsr_short, 1:nYear)
 
 #convert to data frame and plot
-z1 <- apply(pcod_mse_BBMSY_short, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_BBMSY_short)[1:2])
-mp_bbmsy_pc_short <- data.frame(z2, z1) %>% 
+z1 <- apply(shortraker_mse_BBMSY_short, 3L, c)
+z2 <- expand.grid(dimnames(shortraker_mse_BBMSY_short)[1:2])
+mp_bbmsy_sr_short <- data.frame(z2, z1) %>% 
   reshape2::melt()%>% 
   rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "BBMSY"=value) %>% 
   mutate(Year=as.numeric(Year)) 
 
-p <-  filter(mp_bbmsy_pc_short, MP %in% mppc_short[1:4]) %>%
+p <-  filter(mp_bbmsy_sr_short, MP %in% mpsr_short[1:4]) %>%
   ggplot(aes(x=as.factor(Year),y=BBMSY))+
   geom_boxplot()+
   facet_grid(rows=vars(MP)) + xlab("Year")+ ylab("B/BMSY") 
 print(p)
 
-p1 <-  filter(mp_bbmsy_pc_short, MP %in% mppc_short[5:8]) %>%
+p1 <-  filter(mp_bbmsy_sr_short, MP %in% mpsr_short[5:8]) %>%
   ggplot(aes(x=as.factor(Year),y=BBMSY))+
   geom_boxplot()+
   facet_grid(rows=vars(MP)) + xlab("Year")+ ylab("B/BMSY") 
@@ -430,14 +423,14 @@ print(p1)
 Make the subsetted years version. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-ggcatch <- mp_bbmsy_pc_short %>% 
+ggcatch <- mp_bbmsy_sr_short %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
   geom_boxplot()+
   ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
 print(ggcatch)
 
-ggcatch <- mp_bbmsy_pc_short %>% 
+ggcatch <- mp_bbmsy_sr_short %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
   geom_boxplot()+
@@ -450,64 +443,64 @@ print(ggcatch)
 
 Show probabilities of meeting performance metrics
 
-```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+```{r probability-table-abs-sr, fig.width = 9, fig.asp = 1, out.width = "4in"}
+probs <- get_probs(shortraker_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
 
 
 ```{r}
-Tplot(pcod_mse)
-Tplot2(pcod_mse)
+Tplot(shortraker_mse)
+Tplot2(shortraker_mse)
 ```
 
 
 
 ```{r}
-summary(pcod_mse)
+summary(shortraker_mse)
 ```
 
 Illustrating the built-in plotting functions:
 
 ```{r}
-wormplot(pcod_mse)
+wormplot(shortraker_mse)
 ```
 
 ```{r}
-Pplot(pcod_mse)
+Pplot(shortraker_mse)
 
 ```
 
 ```{r}
-Pplot2(pcod_mse, traj="quant", quants=c(0.2, 0.8))
+Pplot2(shortraker_mse, traj="quant", quants=c(0.2, 0.8))
 ```
 
 ```{r}
-Kplot(pcod_mse)
+Kplot(shortraker_mse)
 ```
 
 ```{r}
-Cplot(pcod_mse)
+Cplot(shortraker_mse)
 ```
 
 And examine the output.
 
 ```{r}
- plot(pcod_mse)
+ plot(shortraker_mse)
  oldpar <- par()
-##DFO_hist(pcod_mse)
+##DFO_hist(shortraker_mse)
 par(mfrow = c(1, 1))
-DFO_plot(pcod_mse)
-# DFO_plot2(pcod_mse)
+DFO_plot(shortraker_mse)
+# DFO_plot2(shortraker_mse)
 ```
 
 ```{r, fig.asp=1, warning=FALSE}
-DFO_proj(pcod_mse)
-#DFO_hist(pcod_om)
-# DFO_plot2(pcod_mse)
+DFO_proj(shortraker_mse)
+#DFO_hist(shortraker_om)
+# DFO_plot2(shortraker_mse)
 
-# d <- DFO_plot2(pcod_mse)
+# d <- DFO_plot2(shortraker_mse)
 # ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
 #   geom_vline(xintercept = 0.5, col = "grey50") +
 #   geom_hline(yintercept = 0.5, col = "grey50") +
@@ -523,9 +516,9 @@ par(oldpar)
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
 ```{r, fig.asp=1}
-yend <- max(pcod_mse@proyears)
-ffmsy <- pcod_mse@F_FMSY[,,yend]
-bbmsy <- pcod_mse@B_BMSY[,,yend]
+yend <- max(shortraker_mse@proyears)
+ffmsy <- shortraker_mse@F_FMSY[,,yend]
+bbmsy <- shortraker_mse@B_BMSY[,,yend]
 
 ffmsy <- reshape2::melt(ffmsy) %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
@@ -534,7 +527,7 @@ bbmsy <- reshape2::melt(bbmsy) %>%
 
 d <- dplyr::inner_join(ffmsy, bbmsy)
 
-n <- data.frame(mp = seq_along(pcod_mse@MPs), mp_name = pcod_mse@MPs)
+n <- data.frame(mp = seq_along(shortraker_mse@MPs), mp_name = shortraker_mse@MPs)
 # n$mp_name <- paste(1:nrow(n), n$mp_name)
 
 d <- dplyr::left_join(d, n)
@@ -552,15 +545,15 @@ ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
   labs(colour = "Prob. density", x = expression(B/B[MSY]),
     y = expression(F/F[MSY])) +
   guides(colour = FALSE)
-#ggsave("analysis/pcod-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
+#ggsave("analysis/shortraker-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
 ```
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
 library(dplyr)
 library(RColorBrewer)
-ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- shortraker_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- shortraker_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
@@ -629,7 +622,7 @@ d_ <- d
 #   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
+# pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
@@ -645,7 +638,7 @@ d_ <- d
 #   labels = TRUE, yaxis = TRUE)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
@@ -661,14 +654,14 @@ p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   labels = TRUE, yaxis = TRUE)
 gridExtra::grid.arrange(p1, p2, ncol = 2)
 
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
+# pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
 #########3
-ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- shortraker_mse@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- shortraker_mse@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
 d <- dplyr::left_join(d, n)
@@ -717,5 +710,5 @@ g
 ```
 
 ```{r, fig.asp=1.2}
-voi_out <- DLMtool::VOI(pcod_mse)
+voi_out <- DLMtool::VOI(shortraker_mse)
 ```
