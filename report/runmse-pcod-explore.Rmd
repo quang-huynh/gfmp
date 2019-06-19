@@ -2,20 +2,43 @@
 
 # PACIFIC COD: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
 
-For now pick out some measure procedures that look plausible for our data. The next step is to run our data through the data conversion function and run `DLMtool::can()`. FIXME
+Use the management procedures that passed the screening test
 
 ```{r}
-mppc <- c("AvC", "CC2", "CC3", "GB_CC", "GB_target", "Islope1", "Islope2",
-"Islope4", "IT5", "ITM", "LstepCC2", "Ltarget1", "SBT2")
-mppc <- sort(mppc)
+mppc <- c("AvC", 
+          "CC2", 
+          "CC3",
+          "DD", 
+          "DD4010", 
+          "GB_CC", 
+          "GB_target",  
+          "Islope1", 
+          "Islope2",
+          "Islope4", 
+          "IT5", 
+          "ITM", 
+          "LstepCC2",
+          "LstepCC3", 
+          "LstepCC4", 
+          "Ltarget1", 
+          "Ltarget2", 
+          "Ltarget3",
+          "SBT2", 
+          "SP_4010", 
+          "SP_MSY")
 
 #Group MPs into similar types
-mppcg1 <- mppc[1:3]
-mppcg2 <- mppc[4:5]
-mppcg3 <- mppc[6:8]
-mppcg4 <- mppc[9:10]
-mppcg5 <- mppc[11:12]
-mppcg6 <- mppc[11:12]
+mppc_group <- list()
+mppc_group[[1]] <- mppc[1:3]
+mppc_group[[2]] <- mppc[4:5]
+mppc_group[[3]] <- mppc[6:7]
+mppc_group[[4]] <- mppc[8:10]
+mppc_group[[5]] <- mppc[c(11:12,19)]
+mppc_group[[6]] <- mppc[13:15]
+mppc_group[[7]] <- mppc[16:18]
+mppc_group[[8]] <- mppc[20:21]
+
+mptypenames <- c("Av Catch", "Delay Difference","Catch Target", "Index Slope", "Index Target","Stepwise Constant Catch", "Length Target","Surplus Production")
 
 ```
 
@@ -28,7 +51,7 @@ csasdown::csas_table(MPtype(mppc))
 
 ## Constructing the operating model
 
-Get the operating model:
+Get the operating model. For Pacific Cod we are using the operating model fit using the SRA Scoping method fit to commercial CPUE and trawl survey indices.
 
 
 ```{r echo = TRUE}
@@ -38,14 +61,13 @@ Get the operating model:
 ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
 ```
 
-Run the historical part of the MSE and look at OM historical catch compared to observed catch ... should be the same for P Cod
+Run the historical part of the MSE. For Pacific Cod, OM historical catch is set to the observed catch.
 
 ```{r, fig.asp=0.8}
 
 DLMtool::setup(cpus = parallel::detectCores())
-ompc@nsim <- 100
+ompc@nsim <- 200
 pcod_historical <- runMSE(ompc, Hist = TRUE, parallel = TRUE, ntrials=1000)
-ompc@nsim <- 100L #Why is this set again?
 #saveRDS(ompc,file="C:/GitHub/gfmp/generated-data/ompc.RDS")
 
 
@@ -77,7 +99,7 @@ catchpc %>%
 
 ```
 
-Look at the simulated biomass
+Look at the simulated biomass from a random set of replicates. Looks similar to the 2018 stock assessment [@forrest2019].
 
 ```{r, fig.asp=0.8}
 pcod_historical@TSdata$B %>%
@@ -90,7 +112,7 @@ pcod_historical@TSdata$B %>%
   xlab("Year")
 ```
 
-Run the closed loop simulation.
+Now run the closed loop simulation with the MPs above.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 file_name <- here::here("generated-data", "pcod-mse.rds")
@@ -103,94 +125,126 @@ if (!file.exists(file_name)) {
 }
 ```
 
-Check convergence. This is to answer the question of whether enough simulations have been run ... does the order of the MPs change across iterations? If so, increase the number of iterations.
+Check convergence. This is to test whether enough simulations have been run ... does the order of the MPs change across iterations? If so, increase the number of iterations.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 DLMtool::Converge(pcod_mse)
 ```
 
-Seems to be okay but all the MPs give identical B/BMSY=100.
+Seems to be okay.
+*FIXME: Can't read the y axis labels*
 
-Now look to see if we have redundant MPs.
+Now look to see if we have redundant MPs by plotting the range of catches across replicates for a subset of years.
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_C <- pcod_mse@C
 
 nSim <- ompc@nsim
-nYear <- ncol(pcod_mse@C[,1,]) #find global parameter for number of projection years
+nYear <- ncol(pcod_mse_C[,1,]) 
 nMP <- length(mppc)
-dimnames(pcod_mse@C) <- list(1:nSim, mppc, paste0("Year",1:nYear))
+dimnames(pcod_mse_C) <- list(1:nSim, mppc, 1:nYear)
 
 #convert to data frame
-z1 <- apply(pcod_mse@C, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse@C)[1:2])
+z1 <- apply(pcod_mse_C, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_C)[1:2])
 mp_catch_pc <- data.frame(z2, z1) %>% 
-  reshape2::melt()
-colnames(mp_catch_pc) <- c("Sim","MP","Year", "Catch")
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Catch"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
 
 #Make boxplots of catch from similar MPs for a subset of years
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg1) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
+for(i in seq_along(mptypenames))
+{
+  mpgroup <- mppc_group[[i]]
+  ggcatch <- mp_catch_pc %>% 
+    filter(MP %in% mpgroup) %>% 
+    filter(Year %in% c(1,10,20,30,40,50)) %>%
+    ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
+    geom_boxplot()+
+    ggtitle(mptypenames[i]) + xlab("Year") + ylab("Catch")
+  print(ggcatch)
+} 
 
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg2) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
+```
 
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg3) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
-
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg4) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
-
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg5) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
-
-ggcatch <- mp_catch_pc %>% 
-  filter(MP %in% mppcg6) %>% 
-  filter(Year %in% c("Year1","Year10","Year20","Year30","Year40","Year50")) %>%
-  ggplot(aes(x=Year,y=Catch,fill=MP))+
-  geom_boxplot()
-print(ggcatch)
-#+
-# facet_grid(rows=vars(MP))
+It seems as if we have some redundancy among similar MPs based on the catch. Before removing MPs check biomass as well.
 
 
- 
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_SSB <- pcod_mse@SSB
+
+nSim <- ompc@nsim
+nYear <- ncol(pcod_mse_SSB[,1,]) 
+nMP <- length(mppc)
+dimnames(pcod_mse_SSB) <- list(1:nSim, mppc, 1:nYear)
+
+#convert to data frame
+z1 <- apply(pcod_mse_SSB, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_SSB)[1:2])
+mp_ssb_pc <- data.frame(z2, z1) %>% 
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "SBiomass"=value) %>% 
+  mutate(Year=as.numeric(Year))
+
+#Make boxplots of catch from similar MPs for a subset of years
+for(i in seq_along(mptypenames))
+{
+  mpgroup <- mppc_group[[i]]
+  ggssb <- mp_ssb_pc %>% 
+    filter(MP %in% mpgroup) %>% 
+    filter(Year %in% c(1,10,20,30,40,50)) %>%
+    ggplot(aes(x=as.factor(Year),y=SBiomass,fill=MP))+
+    geom_boxplot()+
+    ggtitle(mptypenames[i])+ xlab("Year")+ ylab("Spawning Biomass")
+  print(ggssb)
+} 
+
 ```
 
 
+We can remove some MPs to make comparison of results easier. Here is the shortened list.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+mppc_short <- c("AvC", 
+          "DD", 
+          "GB_CC", 
+          "Islope1", 
+          "IT5", 
+          "LstepCC2",
+          "Ltarget1", 
+          "SP_MSY")
+```
+
+```{r, results='asis'}
+csasdown::csas_table(MPtype(mppc_short))
+```
+
+Rather than subsetting all the results, run the mse again on the shorter set. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+file_name <- here::here("generated-data", "pcod-mse-short.rds")
+if (!file.exists(file_name)) {
+  DLMtool::setup(cpus = parallel::detectCores())
+  pcod_mse_short <- runMSE(OM = ompc, MPs = mppc_short, parallel = TRUE, ntrials=1000)
+  saveRDS(pcod_mse_short, file = file_name)
+} else {
+  pcod_mse_short <- readRDS(file_name)
+}
+```
 
 Check basline states for performance metrics from the OM. We want to see OM-simulated FMSY, BMSY and reference Yield
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 library(reshape2)
 bmsy_pc <- pcod_mse@OM$SSBMSY
-bmsy80_pc <- 0.8*bmsy_pc
-bmsy40_pc <- 0.4*bmsy_pc
+USR_pc <- 0.8*bmsy_pc
+LRP_pc <- 0.4*bmsy_pc
 fmsy_pc <- pcod_mse@OM$FMSY
 refY_pc <- pcod_mse@OM$RefY
 
-baseline_names <- c("FMSY", "BMSY", "0.8BMSY", "0.4BMSY","RefYield")
+baseline_names <- c("FMSY", "BMSY", "USR=0.8BMSY", "LRP=0.4BMSY","RefYield")
 
-p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,bmsy80_pc,bmsy40_pc,refY_pc)) %>% 
+p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,USR_pc,LRP_pc,refY_pc)) %>% 
   reshape2::melt() %>% 
   ggplot() + 
   geom_boxplot(aes(variable,value))+
@@ -204,79 +258,194 @@ print(p)
 
 Get median values
 
-```{r}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 med_fmsy_pc <- median(pcod_mse@OM$FMSY)
 med_bmsy_pc <- median(pcod_mse@OM$SSBMSY)
-med_bmsy80_pc <- median(0.8*bmsy_pc)
-med_bmsy40_pc <- median(0.4*bmsy_pc)
+med_USR_pc <- median(0.8*bmsy_pc)
+med_LRP_pc <- median(0.4*bmsy_pc)
 med_refY_pc <- median(pcod_mse@OM$RefY)
 
-baseline_medians <- c(med_fmsy_pc, med_bmsy_pc,med_bmsy80_pc,med_bmsy40_pc,med_refY_pc)
+baseline_medians <- c(med_fmsy_pc, med_bmsy_pc,med_USR_pc,med_LRP_pc,med_refY_pc)
 baseline_medians <- as.matrix(cbind(baseline_names, round(baseline_medians,3)))
 colnames(baseline_medians) <- c("Metric", "Median")
 knitr::kable(baseline_medians, format="markdown")
 
 ```
 
-Look at B/BMSY trajectories under each MP
+Now look at results from the shortlist of MPs together. Show biomass with median LRP and USR.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_SSB_short <- pcod_mse_short@SSB
+pcod_mse_C_short <- pcod_mse_short@C
+
+nSim <- ompc@nsim
+nYear <- ncol(pcod_mse_SSB[,1,]) 
+nMP <- length(mppc_short)
+dimnames(pcod_mse_SSB_short) <- list(1:nSim, mppc_short, 1:nYear)
+dimnames(pcod_mse_C_short) <- list(1:nSim, mppc_short, 1:nYear)
+
+#convert arrays to data frames
+z1 <- apply(pcod_mse_C_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_C_short)[1:2])
+mp_catch_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Catch"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
+
+z1 <- apply(pcod_mse_SSB_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_SSB_short)[1:2])
+mp_ssb_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "SBiomass"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
+
+#Make boxplots of catch and biomass from the short list of MPs 
+ggcatch <- mp_catch_pc_short %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
+  geom_boxplot()+
+  ggtitle("Shortlist of MPs: Catch")+ xlab("Year")+ ylab("Catch")
+print(ggcatch)
+
+ggssb2 <- mp_ssb_pc_short %>% 
+filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=SBiomass,fill=MP))+
+  geom_boxplot()+
+  geom_hline(yintercept=med_USR_pc, linetype="dashed", color = "darkgreen")+
+  geom_hline(yintercept=med_LRP_pc, linetype="dashed", color = "red")+
+  ggtitle("Shortlist of MPs: Spawning Biomass")+ xlab("Year")+ ylab("Spawning Biomass")
+print(ggssb2)
+
+```
+
+
+Look at Catch relative to RefY for each MP
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+nSim <- ompc@nsim
+RefYield_pc <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=pcod_mse_short@OM$RefY)
+
+#HACK Remove an outlier ... limit refY to 1000 for plotting
+MaxRefY <- max(RefYield_pc$Catch)
+NumOutliers <- length(which(RefYield_pc$Catch>10000))
+func <- function(x) {ifelse(x> 10000,10000,x)}
+RefY_Pc_trunc <- sapply(RefYield_pc$Catch, FUN=func)
+
+#Replace RefY with truncated set, just for plotting
+RefYield_pc$Catch <- RefY_Pc_trunc
+
+#Make a new object so we don't accidentally keep appending to mp_catch_pc_short
+mp_catch_pc_short2 <- rbind(mp_catch_pc_short,RefYield_pc)
+
+ggcatch <- mp_catch_pc_short2 %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
+  geom_boxplot()+
+  geom_hline(yintercept=med_refY_pc, linetype="dashed", color = "black")+
+  ggtitle("Shortlist of MPs: Catch showing ref yield")+ xlab("Year")+ ylab("Catch") +
+  annotate(geom="text", x=4, y=9500, label=paste("Maximum RefY value =", round(MaxRefY,1))) +
+  annotate(geom="text", x=4, y=9000, label=paste("Number of RefY sims > 10000 =", NumOutliers))  
+print(ggcatch)
+
+
+```
+
+Look at Catch/RefY for each MP
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+#For each MP and sim need to divide Catch by annual RefY
+RefYield <- pcod_mse_short@OM$RefY
+RefYieldRep <- rep(RefYield,nMP*nYear)
+mp_catch_pc_shortRel <- mp_catch_pc_short %>% 
+  mutate("RefY"=RefYieldRep,"CatchRelRefY"=Catch/RefYieldRep)
+
+ggcatch <- mp_catch_pc_shortRel %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=CatchRelRefY,fill=MP))+
+  geom_boxplot()+
+  ggtitle("Shortlist of MPs: Catch relative to RefY")+ xlab("Year")+ ylab("Relative Catch")  
+print(ggcatch)
+
+```
+
+
+Looks like we need to be able to set RefY to an agreed reference value doesn't it!
+
+Look at B/BMSY trajectories under each MP. 
+
+<!--- Try Cowplot grid version, hard to read but could lay it out better
 
 ```{r}
-bbmsy_pcod <- pcod_mse@B_BMSY
-dim(bbmsy_pcod) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
+dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+
+#USR_pc
 
 #Give names to the array so they can be used for plotting
-dimnames(bbmsy_pcod) <- list(1:nSim, mppc, 1:nYear)
+dimnames(pcod_mse_BBMSY_short) <- list(1:nSim, mppc_short, 1:nYear)
 
 gg <- list()
 lapply(1:nMP, function(x){
- tmp <- bbmsy_pcod[,x,] %>% 
-   reshape2::melt()
+ tmp <- pcod_mse_BBMSY_short[,x,] %>% 
+   reshape2::melt() 
    gg[[x]] <<- ggplot(tmp, aes(x=as.factor(Var2),y=value)) +
-   geom_boxplot()
+   geom_boxplot() +
+   xlab("Year")+ ylab("B/BMSY") 
 })
 cowplot::plot_grid(plotlist=gg)
 
-
 ```
+--->
 
 
-```{r}
-bbmsy_pcod <- pcod_mse@B_BMSY
-dim(bbmsy_pcod) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
+dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 
 #Give names to the array so they can be used for plotting
 nSim <- ompc@nsim
-nYear <- ncol(bbmsy_pcod[,1,]) #find global parameter for number of projection years
-dimnames(bbmsy_pcod) <- list(c(1:nSim), mppc, 1:nYear)
+nYear <- ncol(pcod_mse_BBMSY_short[,1,]) #find global parameter for number of projection years
+dimnames(pcod_mse_BBMSY_short) <- list(c(1:nSim), mppc_short, 1:nYear)
 
 #convert to data frame and plot
-z1 <- apply(bbmsy_pcod, 3L, c)
-z2 <- expand.grid(dimnames(bbmsy_pcod)[1:2])
-z3 <- data.frame(z2, z1) %>% 
-  reshape2::melt()
+z1 <- apply(pcod_mse_BBMSY_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_BBMSY_short)[1:2])
+mp_bbmsy_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "BBMSY"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
 
-#TODO: PLOT NEEDS LAYING OUT PROPERLY
-#FIXME: why are they all the same? The MSE results don't vary over MPs ???
-p <-  filter(z3, Var2 %in% mppc[1:4]) %>%
-  ggplot(aes(x=variable,y=value,z=Var2))+
+p <-  filter(mp_bbmsy_pc_short, MP %in% mppc_short[1:4]) %>%
+  ggplot(aes(x=as.factor(Year),y=BBMSY))+
   geom_boxplot()+
-  facet_grid(rows=vars(Var2))
+  facet_grid(rows=vars(MP)) + xlab("Year")+ ylab("B/BMSY") 
 print(p)
 
-p1 <-  filter(z3, Var2 %in% mppc[5:8]) %>%
-  ggplot(aes(x=variable,y=value,z=Var2))+
+p1 <-  filter(mp_bbmsy_pc_short, MP %in% mppc_short[5:8]) %>%
+  ggplot(aes(x=as.factor(Year),y=BBMSY))+
   geom_boxplot()+
-  facet_grid(rows=vars(Var2))
+  facet_grid(rows=vars(MP)) + xlab("Year")+ ylab("B/BMSY") 
 print(p1)
 
-p2 <-  filter(z3, Var2 %in% mppc[9:13]) %>%
-  ggplot(aes(x=variable,y=value,z=Var2))+
-  geom_boxplot()+
-  facet_grid(rows=vars(Var2))
-print(p2)
+```
 
+Make the subsetted years version. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+ggcatch <- mp_bbmsy_pc_short %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
+  geom_boxplot()+
+  ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
+print(ggcatch)
+
+ggcatch <- mp_bbmsy_pc_short %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
+  geom_boxplot()
+  ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
+print(ggcatch)
 
 ```
+
 
 
 Show probabilities of meeting performance metrics
