@@ -230,7 +230,8 @@ if (!file.exists(file_name)) {
   shortraker_mse_short <- readRDS(file_name)
 }
 ```
-Check basline states for performance metrics from the OM. We want to see OM-simulated FMSY, BMSY and reference Yield
+
+Check basline states for performance metrics from the OM. We want to see OM-simulated FMSY, BMSY and reference Yield.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 library(reshape2)
@@ -436,63 +437,63 @@ print(ggcatch)
 Show probabilities of meeting performance metrics
 
 ```{r probability-table-abs-sr, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(shortraker_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+probs <- get_probs(shortraker_mse_short, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
 
 
 ```{r}
-Tplot(shortraker_mse)
-Tplot2(shortraker_mse)
+Tplot(shortraker_mse_short)
+Tplot2(shortraker_mse_short)
 ```
 
 
 
 ```{r}
-summary(shortraker_mse)
+summary(shortraker_mse_short)
 ```
 
 Illustrating the built-in plotting functions:
 
 ```{r}
-wormplot(shortraker_mse)
+wormplot(shortraker_mse_short)
 ```
 
 ```{r}
-Pplot(shortraker_mse)
+Pplot(shortraker_mse_short)
 
 ```
 
 ```{r}
-Pplot2(shortraker_mse, traj="quant", quants=c(0.2, 0.8))
+Pplot2(shortraker_mse_short, traj="quant", quants=c(0.2, 0.8))
 ```
 
 ```{r}
-Kplot(shortraker_mse)
+Kplot(shortraker_mse_short)
 ```
 
 ```{r}
-Cplot(shortraker_mse)
+Cplot(shortraker_mse_short)
 ```
 
 And examine the output.
 
 ```{r}
- plot(shortraker_mse)
+ plot(shortraker_mse_short)
  oldpar <- par()
-##DFO_hist(shortraker_mse)
+##DFO_hist(shortraker_mse_short)
 par(mfrow = c(1, 1))
-DFO_plot(shortraker_mse)
-# DFO_plot2(shortraker_mse)
+DFO_plot(shortraker_mse_short)
+# DFO_plot2(shortraker_mse_short)
 ```
 
 ```{r, fig.asp=1, warning=FALSE}
-DFO_proj(shortraker_mse)
+DFO_proj(shortraker_mse_short)
 #DFO_hist(shortraker_om)
-# DFO_plot2(shortraker_mse)
+# DFO_plot2(shortraker_mse_short)
 
-# d <- DFO_plot2(shortraker_mse)
+# d <- DFO_plot2(shortraker_mse_short)
 # ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
 #   geom_vline(xintercept = 0.5, col = "grey50") +
 #   geom_hline(yintercept = 0.5, col = "grey50") +
@@ -508,9 +509,9 @@ par(oldpar)
 The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
 
 ```{r, fig.asp=1}
-yend <- max(shortraker_mse@proyears)
-ffmsy <- shortraker_mse@F_FMSY[,,yend]
-bbmsy <- shortraker_mse@B_BMSY[,,yend]
+yend <- max(shortraker_mse_short@proyears)
+ffmsy <- shortraker_mse_short@F_FMSY[,,yend]
+bbmsy <- shortraker_mse_short@B_BMSY[,,yend]
 
 ffmsy <- reshape2::melt(ffmsy) %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
@@ -519,10 +520,10 @@ bbmsy <- reshape2::melt(bbmsy) %>%
 
 d <- dplyr::inner_join(ffmsy, bbmsy)
 
-n <- data.frame(mp = seq_along(shortraker_mse@MPs), mp_name = shortraker_mse@MPs)
-# n$mp_name <- paste(1:nrow(n), n$mp_name)
+nmp <- data.frame(mp = seq_along(shortraker_mse_short@MPs), mp_name = shortraker_mse_short@MPs)
+# nmp$mp_name <- paste(1:nrow(n), nmp$mp_name)
 
-d <- dplyr::left_join(d, n)
+d <- dplyr::left_join(d, nmp)
 
 library(ggplot2)
 ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
@@ -543,14 +544,22 @@ ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
 library(dplyr)
 library(RColorBrewer)
-ffmsy <- shortraker_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+nmp <- data.frame(mp = seq_along(pcod_mse_short@MPs), mp_name = pcod_mse_short@MPs)
+
+ffmsy <- shortraker_mse_short@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- shortraker_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- shortraker_mse_short@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
-d <- dplyr::inner_join(ffmsy, bbmsy)
-d <- dplyr::left_join(d, n)
+cat <- shortraker_mse_short@C[,,] %>% reshape2::melt() %>%
+  dplyr::rename(iter = Var1, mp = Var2, catch = value, year = Var3)
+biomass <- shortraker_mse_short@SSB[,,] %>% reshape2::melt() %>%
+  dplyr::rename(iter = Var1, mp = Var2, Biomass = value, year = Var3)
+d <- dplyr::inner_join(ffmsy, bbmsy) 
+d <- dplyr::inner_join(d, cat) 
+d <- dplyr::inner_join(d, biomass)
+d <- dplyr::left_join(d, nmp)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
-levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
+levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]), expression(Catch), expression(Biomass))
 
 d_median <- d %>% group_by(mp_name, year, variable) %>%
   summarise(median_value = median(value)) %>%
@@ -558,7 +567,7 @@ d_median <- d %>% group_by(mp_name, year, variable) %>%
 
 fudge <- 3.5
 d$over <- FALSE
-d$over[d$value > fudge] <- TRUE
+d$over[d$value > fudge & d$variable %in% c(expression(F/F[MSY]), expression(B/B[MSY]))] <- TRUE
 d$value[d$over] <- fudge
 d_median$median_value[d_median$median_value > fudge] <- fudge
 
@@ -600,63 +609,49 @@ set.seed(42)
 # d_ <- filter(d, iter %in% sample(seq_len(max(d$iter)), 30))
 d_ <- d
 
-# plot_timeseries(d, d_median,
-# cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)))
+maxC <- d_ %>% 
+  dplyr::filter(variable=="Catch") %>% 
+  select(value) %>% 
+  max()
 
-# mps <- c("DCAC", "DCAC_40")
-# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-#   labels = TRUE)
-# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-#   labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
+maxB <- d_ %>% 
+  dplyr::filter(variable=="Biomass") %>% 
+  select(value) %>% 
+  max()
 
-# pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
-# mps <- unique(d_$mp_name)
-# # mps <- mps[-which(mps %in% c("CC4"))]
-# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-#   labels = TRUE)
-# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-#   labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-
-# pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
+#
 mps <- unique(d_$mp_name)
 # mps <- mps[-which(mps %in% c("CC4"))]
 p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-  labels = TRUE)
+  labels = TRUE, ylim = c(0,fudge))
 p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-  labels = TRUE, yaxis = TRUE)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
+  labels = TRUE, ylim = c(0,fudge), yaxis = TRUE)
+p3 <- plot_timeseries(filter(d_, variable == "Catch", mp_name %in% mps),
+  filter(d_median, variable == "Catch", mp_name %in% mps), expression(Catch),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxC))
+p4 <- plot_timeseries(filter(d_, variable == "Biomass", mp_name %in% mps),
+  filter(d_median, variable == "Biomass", mp_name %in% mps), expression(Biomass),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxB))
+
+gridExtra::grid.arrange(p4,p3,  p1, p2, ncol = 4)
 
 # pdf("analysis/shortraker-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 # dev.off()
 
 #########3
-ffmsy <- shortraker_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- shortraker_mse_short@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- shortraker_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- shortraker_mse_short@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
-d <- dplyr::left_join(d, n)
+d <- dplyr::left_join(d, nmp)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
 levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
 
@@ -702,5 +697,5 @@ g
 ```
 
 ```{r, fig.asp=1.2}
-voi_out <- DLMtool::VOI(shortraker_mse)
+voi_out <- DLMtool::VOI(shortraker_mse_short)
 ```

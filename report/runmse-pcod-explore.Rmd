@@ -61,6 +61,8 @@ Get the operating model. For Pacific Cod we are using the operating model fit us
 ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
 ```
 
+\newpage
+
 Run the historical part of the MSE. For Pacific Cod, OM historical catch is set to the observed catch.
 
 ```{r, fig.asp=0.8}
@@ -78,7 +80,7 @@ real_catchpc <- mutate(real_catchpc, synthetic = real_catchpc$Observed.catch) #D
 all_years <- data.frame(Year = (2018 - fleetpc@nyears):2018)
 real_catchpc <- dplyr::left_join(all_years, real_catchpc)
 
-set.seed(1938)
+set.seed(193812)
 catchpc <- pcod_historical@TSdata$Catch %>%
   reshape2::melt() %>%
   dplyr::filter(Var1 %in% sample(unique(Var1), size = 11)) %>%
@@ -100,6 +102,8 @@ catchpc %>%
 
 ```
 
+\newpage
+
 Look at the simulated biomass from a random set of replicates. Looks similar to the 2018 stock assessment [@forrest2019].
 
 ```{r, fig.asp=0.8}
@@ -112,6 +116,8 @@ pcod_historical@TSdata$B %>%
   ylab("Simulated historical biomass") +
   xlab("Year")
 ```
+
+\newpage
 
 Now run the closed loop simulation with the MPs above.
 
@@ -133,9 +139,12 @@ DLMtool::Converge(pcod_mse)
 ```
 
 Seems to be okay.
+
 *FIXME: Can't read the y axis labels*
 
-Now look to see if we have redundant MPs by plotting the range of catches across replicates for a subset of years.
+\newpage
+
+Now look to see if we have redundant MPs by plotting the range of catches across replicates for a subset of years. Each graph shows results from MPs of a similar "type". The group type is shown in the title of each graph. Robyn made up the group types.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_C <- pcod_mse@C
@@ -167,6 +176,9 @@ for(i in seq_along(mptypenames))
 } 
 
 ```
+
+
+\newpage
 
 It seems as if we have some redundancy among similar MPs based on the catch. Before removing MPs check biomass as well.
 
@@ -203,11 +215,13 @@ for(i in seq_along(mptypenames))
 ```
 
 
-We can remove some MPs to make comparison of results easier. Here is the shortened list.
+\newpage
+
+We can remove some MPs to make comparison of results easier. Here is the shortlist.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 mppc_short <- c("AvC", 
-          "DD", 
+          "DD4010", 
           "GB_CC", 
           "Islope1", 
           "IT5", 
@@ -233,7 +247,10 @@ if (!file.exists(file_name)) {
 }
 ```
 
-Check basline states for performance metrics from the OM. We want to see OM-simulated FMSY, BMSY and reference Yield
+
+\newpage
+
+Check basline states for performance metrics from the OM. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 library(reshape2)
@@ -253,11 +270,23 @@ p <- baselines_pc <- as.data.frame(cbind(bmsy_pc,USR_pc,LRP_pc,refY_pc)) %>%
   xlab("Baseline metric") +
   scale_x_discrete(labels=baseline_names[-1]) 
 print(p)
+
+p <- baselines_pc <- as.data.frame(fmsy_pc) %>% 
+  reshape2::melt() %>% 
+  ggplot() + 
+  geom_boxplot(aes(variable,value))+
+  ylab("Simulated Value (tonnes)") +
+  xlab("Baseline metric") +
+  scale_x_discrete(labels=baseline_names[1]) 
+print(p)
   
 
 ```
 
-Get median values
+
+\newpage
+
+Get median values of baseline metrics (reference points).
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 med_fmsy_pc <- median(pcod_mse@OM$FMSY)
@@ -273,7 +302,10 @@ knitr::kable(baseline_medians, format="markdown")
 
 ```
 
-Now look at results from the shortlist of MPs together. Show biomass with median LRP and USR.
+
+\newpage
+
+Now look at Catch and Biomass results from the shortlist of MPs together. Biomass plot shows median LRP and USR as dashed lines.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_SSB_short <- pcod_mse_short@SSB
@@ -320,7 +352,13 @@ print(ggssb2)
 ```
 
 
-Look at Catch relative to RefY for each MP
+\newpage
+
+All the MP give the same biomass results. Probably because the catch isn't touching the biomass really.
+
+
+To check, look at Catch relative to RefY for each MP.The pink box in Year 1 shows the range of refY values from the OM, with the median shown as a dashed line.
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 nSim <- ompc@nsim
 RefYield_pc <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=pcod_mse_short@OM$RefY)
@@ -350,7 +388,11 @@ print(ggcatch)
 
 ```
 
-Look at Catch/RefY for each MP
+
+\newpage
+
+Look at Catch/RefY for each MP.
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 #For each MP and sim need to divide Catch by annual RefY
 RefYield <- pcod_mse_short@OM$RefY
@@ -368,9 +410,39 @@ print(ggcatch)
 ```
 
 
-Looks like we need to be able to set RefY to an agreed reference value doesn't it!
+Perhaps we need to be able to set RefY to an agreed reference value. The OM thinks the stock is very productive. 
 
-Look at B/BMSY trajectories under each MP. 
+
+\newpage
+
+Look at projected fishing mortality. This is odd. The DD4010 MP produces much higher F than any other MP, yet the biomass is the same across all MPs and catches are the same as the AvC MP, which doesn't have such high F.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_F_short <- pcod_mse_short@FM
+dimnames(pcod_mse_F_short) <- list(1:nSim, mppc_short, 1:nYear)
+
+#convert arrays to data frames
+z1 <- apply(pcod_mse_F_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_F_short)[1:2])
+mp_F_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "FM"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
+
+#Make boxplots of catch and biomass from the short list of MPs 
+ggF <- mp_F_pc_short %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=FM,fill=MP))+
+  geom_boxplot()+
+  ggtitle("Shortlist of MPs: Fishing Mortality")+ xlab("Year")+ ylab("Fishing Mortality")
+print(ggF)
+
+```
+
+
+\newpage
+
+Look at B/BMSY trajectories under each MP. They seem identical for each MP.
 
 <!--- Try Cowplot grid version, hard to read but could lay it out better
 
@@ -428,158 +500,72 @@ print(p1)
 
 ```
 
-Make the subsetted years version. 
+
+\newpage
+
+Make the subsetted years version of the B/BMSY and F/FMSY plots. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-ggcatch <- mp_bbmsy_pc_short %>% 
+pcod_mse_FFMSY_short <- pcod_mse_short@F_FMSY
+dim(pcod_mse_FFMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
+dimnames(pcod_mse_FFMSY_short) <- list(c(1:nSim), mppc_short, 1:nYear)
+
+#convert to data frame and plot
+z1 <- apply(pcod_mse_FFMSY_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_FFMSY_short)[1:2])
+mp_ffmsy_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "FFMSY"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
+
+
+ggb <- mp_bbmsy_pc_short %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
   ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
   geom_boxplot()+
   ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
-print(ggcatch)
+print(ggb)
 
-ggcatch <- mp_bbmsy_pc_short %>% 
+ggf <- mp_ffmsy_pc_short %>% 
   filter(Year %in% c(1,10,20,30,40,50)) %>%
-  ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
+  ggplot(aes(x=as.factor(Year),y=FFMSY,fill=MP))+
   geom_boxplot()+
-  ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
-print(ggcatch)
+  ggtitle("Shortlist of MPs: F/FMSY")+ xlab("Year")+ ylab("F/FMSY")  
+print(ggf)
 
 ```
 
+\newpage
 
+Dig into some results further ... like what is going on with the delay difference model (DD4010)? Show four metrics for all MPs.
 
-Show probabilities of meeting performance metrics
-
-```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
-plot_probs(probs)
-```
-
-
-
-```{r}
-Tplot(pcod_mse)
-Tplot2(pcod_mse)
-```
-
-
-
-```{r}
-summary(pcod_mse)
-```
-
-Illustrating the built-in plotting functions:
-
-```{r}
-wormplot(pcod_mse)
-```
-
-```{r}
-Pplot(pcod_mse)
-
-```
-
-```{r}
-Pplot2(pcod_mse, traj="quant", quants=c(0.2, 0.8))
-```
-
-```{r}
-Kplot(pcod_mse)
-```
-
-```{r}
-Cplot(pcod_mse)
-```
-
-And examine the output.
-
-```{r}
- plot(pcod_mse)
- oldpar <- par()
-##DFO_hist(pcod_mse)
-par(mfrow = c(1, 1))
-DFO_plot(pcod_mse)
-# DFO_plot2(pcod_mse)
-```
-
-```{r, fig.asp=1, warning=FALSE}
-DFO_proj(pcod_mse)
-#DFO_hist(pcod_om)
-# DFO_plot2(pcod_mse)
-
-# d <- DFO_plot2(pcod_mse)
-# ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
-#   geom_vline(xintercept = 0.5, col = "grey50") +
-#   geom_hline(yintercept = 0.5, col = "grey50") +
-#   geom_text() + ggsidekick::theme_sleek() +
-#   scale_colour_manual(values = c("grey60", "black")) +
-#   guides(colour = FALSE) +
-#   xlab(expression(Pr(B>0.5~B[MSY]))) +
-#   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
-#   xlim(0, 1) + ylim(0, 1)
-par(oldpar)
-```
-
-The following are some plots I was playing with a long time ago. We should wrap the useful ones into their own functions in our package.
-
-```{r, fig.asp=1}
-yend <- max(pcod_mse@proyears)
-ffmsy <- pcod_mse@F_FMSY[,,yend]
-bbmsy <- pcod_mse@B_BMSY[,,yend]
-
-ffmsy <- reshape2::melt(ffmsy) %>%
-  dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
-bbmsy <- reshape2::melt(bbmsy) %>%
-  dplyr::rename(iter = Var1, mp = Var2, bbmsy = value)
-
-d <- dplyr::inner_join(ffmsy, bbmsy)
-
-n <- data.frame(mp = seq_along(pcod_mse@MPs), mp_name = pcod_mse@MPs)
-# n$mp_name <- paste(1:nrow(n), n$mp_name)
-
-d <- dplyr::left_join(d, n)
-
-library(ggplot2)
-ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
-  geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
-  geom_hline(yintercept = 1, alpha = 0.2) +
-  geom_density_2d(aes(colour = ..level..), bins = 5) +
-  viridis::scale_colour_viridis() +
-  ggsidekick::theme_sleek() +
-  facet_wrap(~mp_name) +
-  ylim(0, 3.5) + xlim(0, 3.5) +
-  geom_point(alpha = 0.2) +
-  labs(colour = "Prob. density", x = expression(B/B[MSY]),
-    y = expression(F/F[MSY])) +
-  guides(colour = FALSE)
-#ggsave("analysis/pcod-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
-```
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
 library(dplyr)
 library(RColorBrewer)
-ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+nmp <- data.frame(mp = seq_along(pcod_mse_short@MPs), mp_name = pcod_mse_short@MPs)
+
+ffmsy <- pcod_mse_short@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- pcod_mse_short@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
-d <- dplyr::inner_join(ffmsy, bbmsy)
-d <- dplyr::left_join(d, n)
+cat <- pcod_mse_short@C[,,] %>% reshape2::melt() %>%
+  dplyr::rename(iter = Var1, mp = Var2, catch = value, year = Var3)
+biomass <- pcod_mse_short@SSB[,,] %>% reshape2::melt() %>%
+  dplyr::rename(iter = Var1, mp = Var2, Biomass = value, year = Var3)
+d <- dplyr::inner_join(ffmsy, bbmsy) 
+d <- dplyr::inner_join(d, cat) 
+d <- dplyr::inner_join(d, biomass)
+d <- dplyr::left_join(d, nmp)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
-levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
+levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]), expression(Catch), expression(Biomass))
 
 d_median <- d %>% group_by(mp_name, year, variable) %>%
   summarise(median_value = median(value)) %>%
   mutate(iter = NA)
 
-fudge <- 3.5
-d$over <- FALSE
-d$over[d$value > fudge] <- TRUE
-d$value[d$over] <- fudge
-d_median$median_value[d_median$median_value > fudge] <- fudge
-
 d_last <- dplyr::filter(d, year == max(year)) %>%
-  select(-over, -year) %>%
+  select(-year) %>%
   rename(last_value = value)
 d <- inner_join(d, d_last)
 
@@ -616,63 +602,45 @@ set.seed(42)
 # d_ <- filter(d, iter %in% sample(seq_len(max(d$iter)), 30))
 d_ <- d
 
-# plot_timeseries(d, d_median,
-# cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)))
+maxC <- d_ %>% 
+  dplyr::filter(variable=="Catch") %>% 
+  select(value) %>% 
+  max()
 
-# mps <- c("DCAC", "DCAC_40")
-# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-#   labels = TRUE)
-# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-#   labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
+maxB <- d_ %>% 
+  dplyr::filter(variable=="Biomass") %>% 
+  select(value) %>% 
+  max()
 
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex.pdf", width = 6, height = 3.5)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
-# mps <- unique(d_$mp_name)
-# # mps <- mps[-which(mps %in% c("CC4"))]
-# p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-#   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-#   labels = TRUE)
-# p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
-#   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-#   cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-#   labels = TRUE, yaxis = TRUE)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
-
+#
 mps <- unique(d_$mp_name)
 # mps <- mps[-which(mps %in% c("CC4"))]
 p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
-  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, fudge)),
-  labels = TRUE)
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,5))
 p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
   filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
-  cols = cols, values = scales::rescale(c(fudge, 1.2, 0.8, 0)),
-  labels = TRUE, yaxis = TRUE)
-gridExtra::grid.arrange(p1, p2, ncol = 2)
+  cols = cols, values = scales::rescale(c(5, 1.2, 0.8, 0)),
+  labels = TRUE, ylim = c(0,5), yaxis = TRUE)
+p3 <- plot_timeseries(filter(d_, variable == "Catch", mp_name %in% mps),
+  filter(d_median, variable == "Catch", mp_name %in% mps), expression(Catch),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxC))
+p4 <- plot_timeseries(filter(d_, variable == "Biomass", mp_name %in% mps),
+  filter(d_median, variable == "Biomass", mp_name %in% mps), expression(Biomass),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxB))
 
-# pdf("analysis/pcod-bbmsy-ffmsy-ts-ex-all.pdf", width = 6, height = 6)
-# gridExtra::grid.arrange(p1, p2, ncol = 2)
-# dev.off()
+gridExtra::grid.arrange(p4,p3,  p1, p2, ncol = 4)
 
 #########3
-ffmsy <- pcod_mse@F_FMSY[,,] %>% reshape2::melt() %>%
+ffmsy <- pcod_mse_short@F_FMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, ffmsy = value, year = Var3)
-bbmsy <- pcod_mse@B_BMSY[,,] %>% reshape2::melt() %>%
+bbmsy <- pcod_mse_short@B_BMSY[,,] %>% reshape2::melt() %>%
   dplyr::rename(iter = Var1, mp = Var2, bbmsy = value, year = Var3)
 d <- dplyr::inner_join(ffmsy, bbmsy)
-d <- dplyr::left_join(d, n)
+d <- dplyr::left_join(d, nmp)
 d <- reshape2::melt(d, id.vars = c("iter", "mp", "year", "mp_name"))
 levels(d$variable) <- c(expression(F/F[MSY]), expression(B/B[MSY]))
 
@@ -683,16 +651,7 @@ d_sum <- d %>% group_by(mp_name, year, variable) %>%
     ll = quantile(value, probs = 0.95),
     uu = quantile(value, probs = 0.05))
 
-
-# d_sum$median_value[d_sum$median_value > fudge] <- fudge
-# d_sum$u[d_sum$u > fudge] <- fudge
-# d_sum$l[d_sum$l > fudge] <- fudge
-
 d <- inner_join(d, d_last)
-
-d$last_value[d$last_value > fudge] <- fudge
-# d$value[d$value > fudge] <- fudge
-
 
 cols <- brewer.pal(5, "RdBu")
 cols <- c(cols[1], "grey50", cols[length(cols)])
@@ -702,21 +661,204 @@ g <- ggplot(d_sum, aes_string("year", "median_value")) +
   geom_ribbon(aes(ymin = l, ymax = u), fill = "grey70") +
   ggsidekick::theme_sleek() +
   geom_line(lwd = 1.5) +
-  coord_cartesian(ylim = c(0, 4)) +
+  #coord_cartesian(ylim = c(0, 4)) +
   guides(colour = FALSE) +
   xlim(25, 50) +
   geom_hline(yintercept = 1,
     col = "black", lty = 2) +
   ylab("Value") + xlab("Year")
-  # geom_line(data = filter(d, iter %in% c(1:10)),
-  #   aes(y = value, group = iter),
-  #   alpha = 0.4, colour = "blue")
-  # scale_colour_gradientn(colours = cols,
-  #     values = c(0, 0.8, 1.2, 3))
-  # viridis::scale_colour_viridis()
+  
 g
 ```
 
+\newpage
+
+This result is confusing. Isolate DD4010 and AvC. Why is F/FMSY different between the DD4010 and AvC MPs  when catch and biomass look identical?
+
+```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
+mps <-  c("AvC", "DD4010")
+p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
+  filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,10))
+p2 <- plot_timeseries(filter(d_, variable == "F/F[MSY]", mp_name %in% mps),
+  filter(d_median, variable == "F/F[MSY]", mp_name %in% mps), expression(F/F[MSY]),
+  cols = cols, values = scales::rescale(c(5, 1.2, 0.8, 0)),
+  labels = TRUE, ylim = c(0,10), yaxis = TRUE)
+p3 <- plot_timeseries(filter(d_, variable == "Catch", mp_name %in% mps),
+  filter(d_median, variable == "Catch", mp_name %in% mps), expression(Catch),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxC))
+p4 <- plot_timeseries(filter(d_, variable == "Biomass", mp_name %in% mps),
+  filter(d_median, variable == "Biomass", mp_name %in% mps), expression(Biomass),
+  cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
+  labels = TRUE, ylim = c(0,maxB))
+
+gridExtra::grid.arrange(p4, p3, p2, nrow = 3)
+
+
+
+```
+
+\newpage
+
+Look at the proportions at age. DLMtool doesn't output annual age comps so plot CAA for the first 16 reps. For now assume this is the CAA in the final year? Plots 1-2 show the MPs AvC and DD4010. They seem to be identical as well.
+
+AvC:
+
+```{r}
+nAge <- dim(pcod_mse_short@CAA)[3]
+
+#For each MP pcod_mse_short@CAA contains nSim rows of nAge proportions
+#Let's assume each replicate shows the final CAA
+MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,1,])
+
+```
+
+DD4010:
+
+```{r}
+#For each MP pcod_mse_short@CAA contains nSim rows of nAge proportions
+#Let's assume each replicate shows the final CAA
+MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,2,])
+
+
+```
+
+\newpage
+
+Show probabilities of meeting performance metrics
+
+```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
+probs <- get_probs(pcod_mse_short, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+plot_probs(probs)
+```
+
+\newpage
+Show radar plot. They all do more or less the same. DD is worst. I think we should remove this from the MPs. Delay-difference models are not data-limited and have too many decisions to throw into our toolkit of simple models. Plus it is behaving strangelY.
+
+```{r}
+library(ggspider)
+x <- eval_pm(pcod_mse_short,
+             pm_list = list("LTY",
+                            "P10",
+                            "P40",
+                            "P80",
+                            "P100",
+                            "PNOF",
+                            "AAVY")) %>% select(mp, pm, prob)
+
+#r_plot(x, fill_polys = TRUE, inc_yrs = FALSE)
+ggspider::spider_web(as.data.frame(x), "mp", "pm", "prob")
+
+
+```
+
+
+
+\newpage
+
+
+Illustrating the built-in plotting functions:
+
+```{r}
+Tplot(pcod_mse_short)
+Tplot2(pcod_mse_short)
+```
+
+
+
+```{r}
+summary(pcod_mse_short)
+```
+
+
+
+```{r}
+wormplot(pcod_mse_short)
+```
+
+```{r}
+Pplot(pcod_mse_short)
+
+```
+
+```{r}
+Pplot2(pcod_mse_short, traj="quant", quants=c(0.2, 0.8))
+```
+
+```{r}
+Kplot(pcod_mse_short)
+```
+
+```{r}
+Cplot(pcod_mse_short)
+```
+
+And examine the output.
+
+
+```{r, fig.asp=1}
+yend <- max(pcod_mse_short@proyears)
+ffmsy <- pcod_mse_short@F_FMSY[,,yend]
+bbmsy <- pcod_mse_short@B_BMSY[,,yend]
+
+ffmsy <- reshape2::melt(ffmsy) %>%
+  dplyr::rename(iter = Var1, mp = Var2, ffmsy = value)
+bbmsy <- reshape2::melt(bbmsy) %>%
+  dplyr::rename(iter = Var1, mp = Var2, bbmsy = value)
+
+d <- dplyr::inner_join(ffmsy, bbmsy)
+
+n <- data.frame(mp = seq_along(pcod_mse_short@MPs), mp_name = pcod_mse_short@MPs)
+# n$mp_name <- paste(1:nrow(n), n$mp_name)
+
+d <- dplyr::left_join(d, n)
+
+library(ggplot2)
+p <- ggplot(dplyr::filter(d, !mp_name %in% c("NFref")), aes(bbmsy, ffmsy)) +
+  geom_vline(xintercept = c(0.4, 0.8), alpha = 0.2) +
+  geom_hline(yintercept = 1, alpha = 0.2) +
+  geom_density_2d(aes(colour = ..level..), bins = 5) +
+  viridis::scale_colour_viridis() +
+  ggsidekick::theme_sleek() +
+  facet_wrap(~mp_name) +
+  ylim(0, 3.5) + xlim(0, 3.5) +
+  geom_point(alpha = 0.2) +
+  labs(colour = "Prob. density", x = expression(B/B[MSY]),
+    y = expression(F/F[MSY])) +
+  guides(colour = FALSE)
+print(p)
+#ggsave("analysis/pcod-bbmsy-ffmsy-multi.pdf", width = 8, height = 8)
+```
+
+```{r}
+ plot(pcod_mse_short)
+ oldpar <- par()
+##DFO_hist(pcod_mse)
+par(mfrow = c(1, 1))
+DFO_plot(pcod_mse_short)
+# DFO_plot2(pcod_mse)
+```
+
+```{r, fig.asp=1, warning=FALSE}
+DFO_proj(pcod_mse_short)
+#DFO_hist(pcod_om)
+# DFO_plot2(pcod_mse)
+
+# d <- DFO_plot2(pcod_mse)
+# ggplot(d, aes(B50/100, LTY/100, label = MPs, colour = Satisfice)) +
+#   geom_vline(xintercept = 0.5, col = "grey50") +
+#   geom_hline(yintercept = 0.5, col = "grey50") +
+#   geom_text() + ggsidekick::theme_sleek() +
+#   scale_colour_manual(values = c("grey60", "black")) +
+#   guides(colour = FALSE) +
+#   xlab(expression(Pr(B>0.5~B[MSY]))) +
+#   ylab(expression(Pr(yield>0.5~yield~at~F[MSY]))) +
+#   xlim(0, 1) + ylim(0, 1)
+par(oldpar)
+```
+
 ```{r, fig.asp=1.2}
-voi_out <- DLMtool::VOI(pcod_mse)
+voi_out <- DLMtool::VOI(pcod_mse_short)
 ```
