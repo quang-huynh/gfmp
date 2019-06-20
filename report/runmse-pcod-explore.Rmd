@@ -411,12 +411,12 @@ print(ggcatch)
 ```
 
 
-Perhaps we need to be able to set RefY to an agreed reference value. The OM thinks the stock is very productive. 
+RefY is a proxy for MSY. Not a very useful target for P cod. Perhaps we need to be able to set RefY to an agreed reference value. The OM thinks the stock is very productive (RefY >> average recent catches). 
 
 
 \newpage
 
-Look at projected fishing mortality. This is odd. The DD4010 MP produces much higher F than any other MP, yet the biomass is the same across all MPs and catches are the same as the AvC MP, which doesn't have such high F.
+Look at projected fishing mortality. This is odd. The DD4010 MP produces much higher F than any other MP, yet the spawning biomass is the same across all MPs and catches are the same as the AvC MP, which doesn't have such high F.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_F_short <- pcod_mse_short@FM
@@ -439,6 +439,32 @@ ggF <- mp_F_pc_short %>%
 print(ggF)
 
 ```
+
+\newpage
+Look at vulnerable biomass ... as expected it's the same more or less as spawning biomass because selectivity in the OM is almost knife-edged and close to maturity ogive.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
+pcod_mse_VB_short <- pcod_mse_short@VB
+dimnames(pcod_mse_VB_short) <- list(1:nSim, mppc_short, 1:nYear)
+
+#convert arrays to data frames
+z1 <- apply(pcod_mse_VB_short, 3L, c)
+z2 <- expand.grid(dimnames(pcod_mse_VB_short)[1:2])
+mp_VB_pc_short <- data.frame(z2, z1) %>% 
+  reshape2::melt() %>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "VBiomass"=value) %>% 
+  mutate(Year=as.numeric(Year)) 
+
+#Make boxplots of catch and biomass from the short list of MPs 
+ggVB <- mp_VB_pc_short %>% 
+  filter(Year %in% c(1,10,20,30,40,50)) %>%
+  ggplot(aes(x=as.factor(Year),y=VBiomass,fill=MP))+
+  geom_boxplot()+
+  ggtitle("Shortlist of MPs: Vulnerable Biomass")+ xlab("Year")+ ylab(" Vulnerable Biomass")
+print(ggVB)
+
+```
+
 
 
 \newpage
@@ -697,13 +723,11 @@ p4 <- plot_timeseries(filter(d_, variable == "Biomass", mp_name %in% mps),
 
 gridExtra::grid.arrange(p4, p3, p2, nrow = 3)
 
-
-
 ```
 
 \newpage
 
-Look at the proportions at age. DLMtool doesn't output annual age comps so plot CAA for the first 16 reps. For now assume this is the CAA in the final year? Plots 1-2 show the MPs AvC and DD4010. They seem to be identical as well.
+Look at the proportions at age. DLMtool doesn't output annual age comps so plot CAA for the first 16 reps. For now assume this is the CAA in the final year? Plots 1-3 show the MPs AvC, SBT2 and DD4010 for comparison. They seem to be identical as well.
 
 AvC:
 
@@ -718,12 +742,21 @@ MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,1,])
 
 SBT2:
 
+```{r}
+nAge <- dim(pcod_mse_short@CAA)[3]
+
+#For each MP pcod_mse_short@CAA contains nSim rows of nAge proportions
+#Let's assume each replicate shows the final CAA
+MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,2,])
+
+```
+
 DD4010:
 
 ```{r}
 #For each MP pcod_mse_short@CAA contains nSim rows of nAge proportions
 #Let's assume each replicate shows the final CAA
-MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,2,])
+MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,3,])
 
 
 ```
@@ -768,7 +801,6 @@ ggspider::spider_web(pm_probs, "mp", "pm", "prob")
 
 
 ```
-
 
 
 \newpage
