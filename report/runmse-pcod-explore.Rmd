@@ -220,14 +220,15 @@ for(i in seq_along(mptypenames))
 We can remove some MPs to make comparison of results easier. Here is the shortlist.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-mppc_short <- c("AvC", 
-          "DD4010", 
-          "GB_CC", 
-          "Islope1", 
-          "IT5", 
-          "LstepCC2",
-          "Ltarget1", 
-          "SP_MSY")
+mppc_short <- c("AvC",
+                "SBT2",
+                "DD4010", 
+                "GB_CC", 
+                "Islope1", 
+                "IT5", 
+                "LstepCC2",
+                "Ltarget1", 
+                "SP_MSY")
 ```
 
 ```{r, results='asis'}
@@ -676,7 +677,7 @@ g
 This result is confusing. Isolate DD4010 and AvC. Why is F/FMSY different between the DD4010 and AvC MPs  when catch and biomass look identical?
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
-mps <-  c("AvC", "DD4010")
+mps <-  c("AvC", "SBT2", "DD4010")
 p1 <- plot_timeseries(filter(d_, variable == "B/B[MSY]", mp_name %in% mps),
   filter(d_median, variable == "B/B[MSY]", mp_name %in% mps), expression(B/B[MSY]),
   cols = cols, values = scales::rescale(c(0, 0.8, 1.2, 5)),
@@ -715,6 +716,8 @@ MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,1,])
 
 ```
 
+SBT2:
+
 DD4010:
 
 ```{r}
@@ -725,12 +728,24 @@ MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,2,])
 
 ```
 
+
+
+DD4010:
+
+```{r}
+#For each MP pcod_mse_short@CAA contains nSim rows of nAge proportions
+#Let's assume each replicate shows the final CAA
+MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,3,])
+
+
+```
+
 \newpage
 
 Show probabilities of meeting performance metrics
 
 ```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(pcod_mse_short, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+probs <- get_probs(pcod_mse_short, PMlist = c("P40", "P80","P100", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
@@ -739,17 +754,17 @@ Show radar plot. They all do more or less the same. DD is worst. I think we shou
 
 ```{r}
 library(ggspider)
-x <- eval_pm(pcod_mse_short,
+pm_probs <- eval_pm(pcod_mse_short,
              pm_list = list("LTY",
                             "P10",
                             "P40",
                             "P80",
                             "P100",
                             "PNOF",
-                            "AAVY")) %>% select(mp, pm, prob)
+                            "AAVY")) 
 
 #r_plot(x, fill_polys = TRUE, inc_yrs = FALSE)
-ggspider::spider_web(as.data.frame(x), "mp", "pm", "prob")
+ggspider::spider_web(pm_probs, "mp", "pm", "prob")
 
 
 ```
