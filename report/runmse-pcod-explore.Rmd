@@ -237,8 +237,11 @@ csasdown::csas_table(MPtype(mppc_short))
 
 Rather than subsetting all the results, run the mse again on the shorter set. 
 
+
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 file_name <- here::here("generated-data", "pcod-mse-short.rds")
+# TODO: pcod_mse_short <- Sub(pcod_mse, MPs = mppc_short)
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
   pcod_mse_short <- runMSE(OM = ompc, MPs = mppc_short, parallel = TRUE, ntrials=1000)
