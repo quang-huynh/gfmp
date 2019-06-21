@@ -1,0 +1,7 @@
+#FIGURES
+
+
+```{r fig-pa, fig.cap="Illustration of DFO's PA Framework", out.width="5in"}
+knitr::include_graphics("figure/PA_Approach.jpg")
+
+```

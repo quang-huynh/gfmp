@@ -1,0 +1,118 @@
+# INTRODUCTION
+
+## Background
+DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught by BC groundfish fisheries. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the multi-sector integrated groundfish fishery. 
+
+Furthermore, the multi-species Individual Transferable Quota (ITQ) nature of BC's groundfish fishery means
+that fishing limits on rarely assessed or unassessed stocks often limit fishing
+for high-value target species and unassessed stocks can limit the ability for
+target fisheries to meet eco-certification standards. However, in recent
+decades, the Groundfish Section resources have been focused on assessing
+a subset of stocks intensely, leaving many stocks unassessed.
+
+## Motivation
+The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006, @dfo2009]. The PA Framework relies upon the definition
+of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status (a Limit Reference Point and Upper Stock Reference) that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The Limit Reference Point (LRP) and Upper Stock Reference (USR) delineate three stock status zones (Healthy, Cautious and Critical). Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs.
+
+*TO DO: Add Fig 1, PA diagram with zones and ref points. Decide whether to run with the existing one or delineate Operational Control Points from Reference Points*
+
+An important BRP is the limit reference point (LRP), which is defined as a threshold of stock biomass below which serious harm can occur to the stock [@dfo2006, @dfo2009].   
+
+## Tiered approaches
+
+
+## Model-oriented approach
+
+
+## Objectives of this document
+
+
+## Expected Benefits
+
+
+
+DFO lacks the capacity and informative data to produce full age-structured
+stock assessments for many such stocks. This project aims to address this gap
+by developing a framework to provide sound and timely scientific advice for
+groundfish stocks that are not suitable for full age-structured stock
+assessment. In doing so, it aims to improve the ability of DFO to report on its
+progress in achieving its 2017--18 Departmental Results Framework, Result 1.1,
+*Canadian fisheries are sustainably managed* by informing indicator 1.1.1 on
+the proportion of major fisheries that have limit reference points, 1.1.2, the
+proportion that are managed according to harvest control rules and 1.1.3, the
+proportions in the critical, cautious and healthy zones. This project also aims
+to improve the ability of DFO to report on Departmental Results Framework
+Result 2.1, *Negative impacts on Canada's oceans and other aquatic ecosystems
+are minimized or avoided* by informing indicator 2.1.3 on the proportion of
+aquatic species or populations listed under the Species at Risk act that have
+a recovery plan completed, through improved ability to provide scientific
+advice for data-limited species that undergo assessment by the Committee on the
+Status of Endangered Wildlife in Canada (COSEWIC).
+
+Many other nations and governing bodies have established frameworks for
+assessing data-limited fisheries --- often through "tiered" approaches (e.g.
+United States [@newman2015], ICES [@ices2012], Australia [@smith2009]).
+A tiered approach places stocks into ranked categories (tiers) based on the
+types and quality of available data. Specific stock assessment estimation
+models are chosen for tiers and arbitrary risk buffers may be added to account
+for the additional uncertainty inherent in more data-limited tiers. An initial
+version of this project examined the suitability of a tiered approach for
+Canada's British Columbia groundfish fisheries [@dfo2016tiered]. However,
+a CSAS workshop convened to examine tiered approaches in 2016 identified
+a preference for applying a modified approach for BC groundfish fisheries
+[@dfo2016tiered]. Instead of a traditional tiered approach, the workshop
+proceedings suggest considering data-richness on a continuous scale and
+focusing on simulation testing multiple management procedures on
+a stock-by-stock basis to choose an approach that best meets fisheries risk
+objectives.
+
+In the scientific literature and in practice around the world, there has been
+a movement towards operating-model-based management-procedure approaches to
+fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015;
+@geromont2015; @carruthers2016]. Whereas stock assessment traditionally focuses
+on biological parameter estimation, a management-procedure approach instead
+focuses on determining a control rule or procedure that best achieves stated
+management objectives when implemented in a closed-loop simulation. The
+closed-loop simulation incorporates feedback between a control rule and the
+underlying system (the operating model). The control rule might be based on
+reference points derived from an estimation model or on empirical or data-based
+approaches [e.g., changes to average fish length or slope of a survey index
+@bentley2015]. There are now many possible management procedures for
+data-limited fisheries and different management procedures have variable
+performance across conditions such as species life history and levels of
+biomass depletion [e.g., @carruthers2016]. Therefore, the
+management-procedure approach typically evaluates many possible management
+procedures for robustness to a range of operating models that encompass
+uncertainties related to, for example, the underlying fish biology, observation
+error, estimation error, and implementation error [e.g., @kell2006].
+
+The purpose of this project, and the resulting Regional Peer Review Process, is
+to develop a framework for applying a management-procedure approach to
+data-limited groundfish stocks in British Columbia. The framework will
+formalize the process of testing and selecting management procedures for
+data-limited groundfish fisheries, which will support the provision of
+scientific advice to fisheries managers in the context of conservation (e.g.
+sustainable total allowable catches, COSEWIC) and eco-certification (e.g. the
+Marine Stewardship Counsel). Although this project may use data tiers for
+communication purposes, it will focus on developing a procedural framework for
+building appropriate operating models, testing suites of management procedures,
+and determining management procedures that best meet the objectives of
+fisheries management and stakeholders for given stocks. In addition to this
+procedural framework, this project aims to produce generic operating models
+that can be modified on a stock-by-stock basis and generate a reproducible data
+synopsis of the available data and general index trends for candidate
+groundfish fish stocks.
+
+There are numerous expected benefits of this project. Compared to a traditional
+tiered approach, this management-procedure approach is focused on achieving
+long-term performance objectives instead of biological estimation; incorporates
+feedback between management procedures and the underlying system; and will
+allow us to take advantage of available data for specific stocks rather than
+prescribing one estimation model per data tier. Compared to the status quo,
+this framework will allow DFO to provide scientific advice on more stocks; will
+develop a standardized and transparent assessment approach across stocks; will
+require less effort to update advice between full re-assessments and thereby
+reduce the turnaround time between science advice request and provision of such
+advice; and will build an understanding of the most important data needs and
+research priorities for reducing uncertainty in stock advice.
+
