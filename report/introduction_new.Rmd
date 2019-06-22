@@ -29,71 +29,42 @@ On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal As
 > 6.2(1) If a prescribed major fish stock has declined to or below its limit reference point, the Minister shall develop a plan to rebuild the stock to or above that point in the affected area, taking into account the biology of the fish and the environmental conditions affecting the stock, and implement it within the period provided for in the plan.
 
 
-For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
+For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the above Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
 
 
 ## Tiered approaches
 Many other nations and governing bodies have established frameworks for assessing data-limited fisheries --- often through "tiered" approaches (e.g., United States [@newman2015], ICES [@ices2012], Australia [@smith2009]). A tiered approach places stocks into ranked categories (tiers) based on the
-types and quality of available data. Specific data-limited methods for setting catch limits are identified for each tier, depending on the available data. Arbitrary buffers may also be added to recommended catch limits (e.g., reduce recommended catch limit by 20%), as an attempt to account for the additional uncertainty inherent in more data-limited tiers. 
+types and quality of available data. Specific data-limited methods for setting catch limits are identified for each tier, depending on the available data. Arbitrary buffers may also be added to recommended catch limits in each tier (e.g., reduce recommended catch limit by 20%), to attempt to account for the additional uncertainty inherent in more data-limited tiers. 
 
-In 2016, a CSAS workshop was held to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach, where the methods for setting catch limits for a stock are determined by its tier, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple management procedures (MPs) on a stock-by-stock basis to identify data-limited methods that would best meet policy and fishery objectives, explicitly accounting for risk.
+In 2016, a CSAS workshop was held in the Pacific region to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach, as described above, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple management procedures (MPs) on a stock-by-stock basis to identify data-limited methods that would best meet policy and fishery objectives, explicitly accounting for risk. The simulation-testing be done using a closed-loop simulation, or management strategy evaluation (MSE) approach.
 
-## Management-oriented approach
-In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented approach  focuses on identifying management procedures that best achieve stated management objectives when implemented in a closed-loop simulation. Importantly, closed-loop simulation incorporates feedback between the management procedure (MP) and the underlying system represented by one or more operating models (OM). The MP may be a simple empirical rule e.g., @bentley2015 or may represent a complex set of choices including data collection, assessment approach and harvest control rule. The steps of closed-loop simulation are illustrated in Figure 2.
+## Management-oriented approach (management strategy evaluation)
+In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented, or MSE, approach  focuses on identifying management procedures (MPs) that perform best with respect to agreed-upon management objectives when implemented in a closed-loop simulation environment (Figure 2). Importantly, closed-loop simulation incorporates feedback between the MP and the underlying system represented by one or more operating models (OM). The MP may be a simple empirical rule such as an adjustment to catch based on a change in index of abundance, or may represent a more complex set of choices including data collection, stock assessment method and a harvest control rule (HCR). 
 
-*TO DO: We need a simple Closed-Loop Simulation figure here*
+*TO DO: We need a simple Closed-Loop Simulation figure here (Figure 2)*
 
-The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [ @carruthers2016]. Closed loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example underlying fish biology, observation
-error, estimation error, and implementation error [@kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
+The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [ @carruthers2014; @carruthers2016]. Closed-loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example, underlying fish biology, observation error, estimation error, and implementation error [@kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives, and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
 
-A toolkit for applying closed-loop simulation with data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners. The Data-Limited Toolkit, "DLMtool" (https://www.datalimitedtoolkit.org/) enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below LRP). DLMtool is open-source software (https://github.com/DLMtool/DLMtool), enabling experienced users to customize MPs and performance metrics as needed.
+A toolkit for applying closed-loop simulation for data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners [@carruthers2018]. The Data-Limited Toolkit, "DLMtool" (https://www.datalimitedtoolkit.org/) enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below LRP). DLMtool is open-source software (https://github.com/DLMtool/DLMtool), enabling experienced users to customize MPs and performance metrics as needed.
 
+## Objectives of this document
+This project aims to develop a "management procedure" framework for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+
+The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of
+scientific advice to fisheries managers.The project will focus on developing appropriate operating models, testing suites of management procedures, and determining management procedures that best meet the objectives of fisheries management and stakeholders for some example stocks with different life-histories. 
+
+Development of operating models will be done using the DLMtool toolkit [@carruthers2018], using data and empirical analyses published in recent work by @anderson2019, which is a reproducible data synopsis of the available data and general index trends for candidate groundfish fish stocks.
+*TO DO: Add data synopsis ref, improve last paragraph above*
 
 *TO DO: RF to finish editing from here:*
-## Objectives of this document
-
-
 ## Expected Benefits
 
 
 
-This project aims to address this gap
-by developing a framework to provide sound and timely scientific advice for
-groundfish stocks that are not suitable for full statistical stock
-assessments. In doing so, it aims to improve the ability of DFO to report on its
-progress in achieving its 2017--18 Departmental Results Framework, Result 1.1,
-*Canadian fisheries are sustainably managed* by informing indicator 1.1.1 on
-the proportion of major fisheries that have limit reference points, 1.1.2, the
-proportion that are managed according to harvest control rules and 1.1.3, the
-proportions in the critical, cautious and healthy zones. This project also aims
-to improve the ability of DFO to report on Departmental Results Framework
-Result 2.1, *Negative impacts on Canada's oceans and other aquatic ecosystems
-are minimized or avoided* by informing indicator 2.1.3 on the proportion of
-aquatic species or populations listed under the Species at Risk act that have
-a recovery plan completed, through improved ability to provide scientific
-advice for data-limited species that undergo assessment by the Committee on the
-Status of Endangered Wildlife in Canada (COSEWIC).
 
 
 
 
-
-The purpose of this project, and the resulting Regional Peer Review Process, is
-to develop a framework for applying a management-procedure approach to
-data-limited groundfish stocks in British Columbia. The framework will
-formalize the process of testing and selecting management procedures for
-data-limited groundfish fisheries, which will support the provision of
-scientific advice to fisheries managers in the context of conservation (e.g.
-sustainable total allowable catches, COSEWIC) and eco-certification (e.g. the
-Marine Stewardship Counsel). Although this project may use data tiers for
-communication purposes, it will focus on developing a procedural framework for
-building appropriate operating models, testing suites of management procedures,
-and determining management procedures that best meet the objectives of
-fisheries management and stakeholders for given stocks. In addition to this
-procedural framework, this project aims to produce generic operating models
-that can be modified on a stock-by-stock basis and generate a reproducible data
-synopsis of the available data and general index trends for candidate
-groundfish fish stocks.
 
 There are numerous expected benefits of this project. Compared to a traditional
 tiered approach, this management-procedure approach is focused on achieving
