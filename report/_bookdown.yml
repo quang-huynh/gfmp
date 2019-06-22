@@ -2,7 +2,7 @@ book_filename: "resdoc"
 chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             #"introduction.Rmd",
-            "introduction_new.Rmd",
+            #"introduction_new.Rmd",
             #"mp-descriptions.Rmd",
             #"mp-screening.Rmd",
             #"get-data-shortraker.Rmd",
@@ -10,12 +10,12 @@ rmd_files: ["index.Rmd",
             #"om-specification-shortraker.Rmd",
             #"runmse-shortraker-explore.Rmd",
             #"runmse-shortraker.Rmd",
-            #"get-data-pcod.Rmd",
+            "get-data-pcod.Rmd",
             #"effort-pcod.Rmd",
-            #"om-specification-pcod.Rmd",
+            "om-specification-pcod.Rmd",
             #"runmse-pcod-explore.Rmd",
             #"runmse-pcod.Rmd",
-            "Figures.Rmd",
+            #"Figures.Rmd",
             "references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true

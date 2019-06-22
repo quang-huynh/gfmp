@@ -1,29 +1,55 @@
 # INTRODUCTION
 
 ## Background
-DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught by BC groundfish fisheries. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the multi-sector integrated groundfish fishery. 
+DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the BC integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the groundfish fishery. 
 
-Furthermore, the multi-species Individual Transferable Quota (ITQ) nature of BC's groundfish fishery means
-that fishing limits on rarely assessed or unassessed stocks often limit fishing
-for high-value target species and unassessed stocks can limit the ability for
-target fisheries to meet eco-certification standards. However, in recent
-decades, the Groundfish Section resources have been focused on assessing
-a subset of stocks intensely, leaving many stocks unassessed.
+The majority of species encountered by the integrated groundfish fishery can be considered data-limited, meaning they lack enough informative data to perform full statistical age-structured stock assessments for provision of scientific advice on TACs. In recent decades, DFO stock assessment resources have focused on assessing a subset of the more data-rich stocks intensively, leaving many stocks without current assessment advice.
 
 ## Motivation
 The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006, @dfo2009]. The PA Framework relies upon the definition
-of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status (a Limit Reference Point and Upper Stock Reference) that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The Limit Reference Point (LRP) and Upper Stock Reference (USR) delineate three stock status zones (Healthy, Cautious and Critical). Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs.
+of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status (a Limit Reference Point and Upper Stock Reference) that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The Limit Reference Point (LRP) and Upper Stock Reference (USR) delineate three stock status zones (Healthy, Cautious and Critical). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006, @dfo2009].
 
-*TO DO: Add Fig 1, PA diagram with zones and ref points. Decide whether to run with the existing one or delineate Operational Control Points from Reference Points*
 
-An important BRP is the limit reference point (LRP), which is defined as a threshold of stock biomass below which serious harm can occur to the stock [@dfo2006, @dfo2009].   
+*TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... *
+
+
+On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the Fish Stocks provisions, the provisions state:
+
+
+> **Measures to maintain fish stocks**
+
+> 6.1(1) In the management of fisheries, the Minister shall implement measures to maintain prescribed major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock.
+
+> **Limit reference point**
+
+> 6.1 (2) If the Minister is of the opinion that it is not feasible or appropriate, for cultural reasons or because of adverse socio-economic impacts, to implement the measures referred to in subsection (1), the Minister shall set a limit reference point and implement measures to maintain the fish stock at or above that point, taking into account the biology of the fish and the environmental conditions affecting the stock.
+
+> **Plan to rebuild**
+
+> 6.2(1) If a prescribed major fish stock has declined to or below its limit reference point, the Minister shall develop a plan to rebuild the stock to or above that point in the affected area, taking into account the biology of the fish and the environmental conditions affecting the stock, and implement it within the period provided for in the plan.
+
+
+For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
+
 
 ## Tiered approaches
+Many other nations and governing bodies have established frameworks for assessing data-limited fisheries --- often through "tiered" approaches (e.g., United States [@newman2015], ICES [@ices2012], Australia [@smith2009]). A tiered approach places stocks into ranked categories (tiers) based on the
+types and quality of available data. Specific data-limited methods for setting catch limits are identified for each tier, depending on the available data. Arbitrary buffers may also be added to recommended catch limits (e.g., reduce recommended catch limit by 20%), as an attempt to account for the additional uncertainty inherent in more data-limited tiers. 
+
+In 2016, a CSAS workshop was held to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach, where the methods for setting catch limits for a stock are determined by its tier, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple management procedures (MPs) on a stock-by-stock basis to identify data-limited methods that would best meet policy and fishery objectives, explicitly accounting for risk.
+
+## Management-oriented approach
+In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented approach  focuses on identifying management procedures that best achieve stated management objectives when implemented in a closed-loop simulation. Importantly, closed-loop simulation incorporates feedback between the management procedure (MP) and the underlying system represented by one or more operating models (OM). The MP may be a simple empirical rule e.g., @bentley2015 or may represent a complex set of choices including data collection, assessment approach and harvest control rule. The steps of closed-loop simulation are illustrated in Figure 2.
+
+*TO DO: We need a simple Closed-Loop Simulation figure here*
+
+The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [ @carruthers2016]. Closed loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example underlying fish biology, observation
+error, estimation error, and implementation error [@kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
+
+A toolkit for applying closed-loop simulation with data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners. The Data-Limited Toolkit, "DLMtool" (https://www.datalimitedtoolkit.org/) enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below LRP). DLMtool is open-source software (https://github.com/DLMtool/DLMtool), enabling experienced users to customize MPs and performance metrics as needed.
 
 
-## Model-oriented approach
-
-
+*TO DO: RF to finish editing from here:*
 ## Objectives of this document
 
 
@@ -31,11 +57,10 @@ An important BRP is the limit reference point (LRP), which is defined as a thres
 
 
 
-DFO lacks the capacity and informative data to produce full age-structured
-stock assessments for many such stocks. This project aims to address this gap
+This project aims to address this gap
 by developing a framework to provide sound and timely scientific advice for
-groundfish stocks that are not suitable for full age-structured stock
-assessment. In doing so, it aims to improve the ability of DFO to report on its
+groundfish stocks that are not suitable for full statistical stock
+assessments. In doing so, it aims to improve the ability of DFO to report on its
 progress in achieving its 2017--18 Departmental Results Framework, Result 1.1,
 *Canadian fisheries are sustainably managed* by informing indicator 1.1.1 on
 the proportion of major fisheries that have limit reference points, 1.1.2, the
@@ -49,42 +74,9 @@ a recovery plan completed, through improved ability to provide scientific
 advice for data-limited species that undergo assessment by the Committee on the
 Status of Endangered Wildlife in Canada (COSEWIC).
 
-Many other nations and governing bodies have established frameworks for
-assessing data-limited fisheries --- often through "tiered" approaches (e.g.
-United States [@newman2015], ICES [@ices2012], Australia [@smith2009]).
-A tiered approach places stocks into ranked categories (tiers) based on the
-types and quality of available data. Specific stock assessment estimation
-models are chosen for tiers and arbitrary risk buffers may be added to account
-for the additional uncertainty inherent in more data-limited tiers. An initial
-version of this project examined the suitability of a tiered approach for
-Canada's British Columbia groundfish fisheries [@dfo2016tiered]. However,
-a CSAS workshop convened to examine tiered approaches in 2016 identified
-a preference for applying a modified approach for BC groundfish fisheries
-[@dfo2016tiered]. Instead of a traditional tiered approach, the workshop
-proceedings suggest considering data-richness on a continuous scale and
-focusing on simulation testing multiple management procedures on
-a stock-by-stock basis to choose an approach that best meets fisheries risk
-objectives.
 
-In the scientific literature and in practice around the world, there has been
-a movement towards operating-model-based management-procedure approaches to
-fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015;
-@geromont2015; @carruthers2016]. Whereas stock assessment traditionally focuses
-on biological parameter estimation, a management-procedure approach instead
-focuses on determining a control rule or procedure that best achieves stated
-management objectives when implemented in a closed-loop simulation. The
-closed-loop simulation incorporates feedback between a control rule and the
-underlying system (the operating model). The control rule might be based on
-reference points derived from an estimation model or on empirical or data-based
-approaches [e.g., changes to average fish length or slope of a survey index
-@bentley2015]. There are now many possible management procedures for
-data-limited fisheries and different management procedures have variable
-performance across conditions such as species life history and levels of
-biomass depletion [e.g., @carruthers2016]. Therefore, the
-management-procedure approach typically evaluates many possible management
-procedures for robustness to a range of operating models that encompass
-uncertainties related to, for example, the underlying fish biology, observation
-error, estimation error, and implementation error [e.g., @kell2006].
+
+
 
 The purpose of this project, and the resulting Regional Peer Review Process, is
 to develop a framework for applying a management-procedure approach to

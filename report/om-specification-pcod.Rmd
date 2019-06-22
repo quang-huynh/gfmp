@@ -1148,7 +1148,7 @@ imppc@TACSD <- c(0, 0)
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-taefrac-pacific-cod, results = knitr_results, echo = knitr_echo}
-imppc@TAEFrac <- c(0.8, 1.0)
+imppc@TAEFrac <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 

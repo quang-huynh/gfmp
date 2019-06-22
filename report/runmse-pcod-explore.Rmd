@@ -254,7 +254,7 @@ if (!file.exists(file_name)) {
 
 \newpage
 
-Check basline states for performance metrics from the OM. 
+Check baseline states for performance metrics from the OM. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 library(reshape2)
