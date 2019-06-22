@@ -1,7 +1,7 @@
 # INTRODUCTION
 
 ## Background
-DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the BC integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the groundfish fishery. 
+DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the BC integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the British Columbia (BC) integrated groundfish fishery. 
 
 The majority of species encountered by the integrated groundfish fishery can be considered data-limited, meaning they lack enough informative data to perform full statistical age-structured stock assessments for provision of scientific advice on TACs. In recent decades, DFO stock assessment resources have focused on assessing a subset of the more data-rich stocks intensively, leaving many stocks without current assessment advice.
 
@@ -15,17 +15,15 @@ of biological reference points (BRPs), which define biomass targets as well as l
 
 On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the Fish Stocks provisions, the provisions state:
 
+*TO DO: Why are the bullets below a different font?
 
 > **Measures to maintain fish stocks**
-
 > 6.1(1) In the management of fisheries, the Minister shall implement measures to maintain prescribed major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock.
 
 > **Limit reference point**
-
 > 6.1 (2) If the Minister is of the opinion that it is not feasible or appropriate, for cultural reasons or because of adverse socio-economic impacts, to implement the measures referred to in subsection (1), the Minister shall set a limit reference point and implement measures to maintain the fish stock at or above that point, taking into account the biology of the fish and the environmental conditions affecting the stock.
 
 > **Plan to rebuild**
-
 > 6.2(1) If a prescribed major fish stock has declined to or below its limit reference point, the Minister shall develop a plan to rebuild the stock to or above that point in the affected area, taking into account the biology of the fish and the environmental conditions affecting the stock, and implement it within the period provided for in the plan.
 
 
@@ -53,29 +51,64 @@ This project aims to develop a "management procedure" framework for selecting me
 The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of
 scientific advice to fisheries managers.The project will focus on developing appropriate operating models, testing suites of management procedures, and determining management procedures that best meet the objectives of fisheries management and stakeholders for some example stocks with different life-histories. 
 
-Development of operating models will be done using the DLMtool toolkit [@carruthers2018], using data and empirical analyses published in recent work by @anderson2019, which is a reproducible data synopsis of the available data and general index trends for candidate groundfish fish stocks.
-*TO DO: Add data synopsis ref, improve last paragraph above*
+This work builds on recent work by *Anderson (2019)*, who developed a comprehensive, reproducible data synopsis for all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. Data and empirical analyses from the synopsis are used to develop operating models within the DLMtool toolkit [@carruthers2018], which is then used for simulation testing of alternative data-limited MPs against performance metrics. See Methods for details.
+
+*TO DO: Add data synopsis ref to bib*
+
+## Expected Benefits
+There are a number of expected benefits of this project. This management procedure approach is focused on identifying MPs for data-limited stocks that achieve long-term performance objectives. The closed-loop simulation approach will allow analysts to use the available data for specific stocks rather than prescribing one MP per data tier, as in previously published "tiered approaches". Compared to the current status quo, this framework will allow DFO to provide scientific catch advice for more stocks; will develop a standardized and transparent approach across stocks; will reduce the turnaround time between requests for science advice and provision of advice; and will help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock advice.
+
+Importantly, the framework will demonstrate methods to improve capacity for DFO Science to provide catch advice for data-limited stocks that is consistent with Canada's PA Framework, and therefore bring data-limited stocks into compliance with the Fish Stocks provisions of the *Fisheries Act*.
 
 *TO DO: RF to finish editing from here:*
-## Expected Benefits
 
+# Best practices for implementing an MP approach
 
+*Draw on Punt et al. 2016 and/or Kronlund and Shelton Discussion Paper, and/or Herring roadmap?*
+*Briefly list suggested steps, for example: (from herring roadmap for now)*
 
+* Define decision context
+* Define specific objectives and performance indicators
+* Identify management procedure options
+* Define a set of operating models that capture main uncertainties
+* Simulate and compute performance indicators
+* Rank overall MP performance
+* Apply the MP to real fishery
 
+# How the proposed approach adopts these best practices
 
+* Define decision context
+    - clarify the exact decision, decide on the timeframe, decide on the boundaries of the project, decide on collaborative roles, clarify how final decision will be made
+    - give examples throughout including what we propose as starting points
 
+* Define specific objectives and performance indicator
+    - suggested starting points for objectives and performance indicators across most stocks this will apply to
+    - justify these objectives and performance indicators based on PA framework, literature, and precedent in Canada and elsewhere
 
+* Identify management procedure options
+    - summarize candidates that we have narrowed it down to
+    - reference the detailed appendix
 
-There are numerous expected benefits of this project. Compared to a traditional
-tiered approach, this management-procedure approach is focused on achieving
-long-term performance objectives instead of biological estimation; incorporates
-feedback between management procedures and the underlying system; and will
-allow us to take advantage of available data for specific stocks rather than
-prescribing one estimation model per data tier. Compared to the status quo,
-this framework will allow DFO to provide scientific advice on more stocks; will
-develop a standardized and transparent assessment approach across stocks; will
-require less effort to update advice between full re-assessments and thereby
-reduce the turnaround time between science advice request and provision of such
-advice; and will build an understanding of the most important data needs and
-research priorities for reducing uncertainty in stock advice.
+* Define a set of operating models that capture main uncertainties
+    - what are the common main uncertainties that we should make sure to capture
+    - what are potential sources of uncertainty that by default we suggest should not be focused on (but could be included on a stock by stock basis)
+    - the idea behind robustness sets; example robustness sets
+    - consider weights based on relative plausibility (and why by default we suggest avoiding this complexity)
 
+* Simulate and compute performance indicators
+    - proposed software (DLMtool)
+    	- why use it?
+    	- what it can do?
+    	- note that the approach is software agnostic
+    	- examples of where it has been used
+    - how many iterations: checking for convergence of MP selection
+
+* Rank overall MP performance
+    - suggested figures and table
+    - explain satisficing
+    - describe potential default satisficing rules
+
+* Apply the MP to real fishery
+    - same MP; real data 
+    - reinforce that MP needs to be followed exactly as defined to meet desired objectives
+    - if adjustments need to be made this suggests a need to revisit the objectives
