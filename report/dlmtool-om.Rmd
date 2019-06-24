@@ -1,0 +1,7 @@
+# THE DLMTOOL OPERATING MODEL
+
+*A summary of the important features of the DLMtool operating model*
+
+*Draw on appendix of DLMtool paper but simplified to have one region*
+
+*Not too many details; reference the paper*

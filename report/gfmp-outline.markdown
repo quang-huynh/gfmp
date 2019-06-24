@@ -1,6 +1,6 @@
 # GFMP Research Document Outline
 
-# Introduction 
+# Introduction
 
 *(mostly existing draft)*
 
@@ -58,7 +58,7 @@
     - describe potential default satisficing rules
 
 * Apply the MP to real fishery
-    - same MP; real data 
+    - same MP; real data
     - reinforce that MP needs to be followed exactly as defined to meet desired objectives
     - if adjustments need to be made this suggests a need to revisit the objectives
 
@@ -115,16 +115,11 @@
 
 # Appendix: A summary of the important features of the DLMtool operating model
 
-* Not too many details; reference the paper
+* a
 
 # Appendix: Case study towards the more data-limited spectrum (Shortraker Rockfish)
 
 # Appendix: Case study towards more data-rich/moderate spectrum (English Sole?)
-
-# Appendix: A mocked-up SAR based on one of the case studies? 
-
-* Would be useful; maybe taking on too much to do this
-* Could suggest the format and components without actually illustrating it
 
 ----------------------------------------------
 

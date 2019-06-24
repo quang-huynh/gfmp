@@ -13,7 +13,7 @@ of biological reference points (BRPs), which define biomass targets as well as l
 
 *TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... *
 
-On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "fish stock provisions", the provisions state:
+On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "Fish Stocks provisions", the provisions state:
 
 > **Measures to maintain fish stocks**
 > 6.1(1) In the management of fisheries, the Minister shall implement measures to maintain prescribed major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock.
@@ -24,7 +24,7 @@ On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal As
 > **Plan to rebuild**
 > 6.2(1) If a prescribed major fish stock has declined to or below its limit reference point, the Minister shall develop a plan to rebuild the stock to or above that point in the affected area, taking into account the biology of the fish and the environmental conditions affecting the stock, and implement it within the period provided for in the plan.
 
-For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the above fish stock provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
+For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the above Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
 
 ## TIERED APPROACHES
 
@@ -33,79 +33,22 @@ types and quality of available data. Specific data-limited methods for setting c
 
 In 2016, a CSAS workshop was held in the Pacific region to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach, as described above, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple management procedures (MPs) on a stock-by-stock basis to identify data-limited methods that would best meet policy and fishery objectives, explicitly accounting for risk. The simulation-testing be done using a closed-loop simulation, or management strategy evaluation (MSE) approach.
 
-## Management-oriented approach (management strategy evaluation)
-In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented, or MSE, approach  focuses on identifying management procedures (MPs) that perform best with respect to agreed-upon management objectives when implemented in a closed-loop simulation environment (Figure 2). Importantly, closed-loop simulation incorporates feedback between the MP and the underlying system represented by one or more operating models (OM). The MP may be a simple empirical rule such as an adjustment to catch based on a change in index of abundance, or may represent a more complex set of choices including data collection, stock assessment method and a harvest control rule (HCR). 
+## MANAGEMENT-ORIENTED APPROACHES
 
-*TO DO: We need a simple Closed-Loop Simulation figure here (Figure 2)*
+In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented, or management-strategy-evaluation (MSE), approach focuses on identifying management procedures (MPs) that perform best with respect to agreed-upon management objectives when implemented in a closed-loop simulation environment (Figure TODO). Importantly, closed-loop simulation incorporates feedback between the MP and the underlying system represented by one or more operating models (OM). The MP may be a simple empirical rule such as an adjustment to catch based on a change in index of abundance, or may represent a more complex set of choices including data collection, stock assessment method, and a harvest control rule. 
 
-The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [ @carruthers2014; @carruthers2016]. Closed-loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example, underlying fish biology, observation error, estimation error, and implementation error [@kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives, and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
+*TODO: add a simple Closed-Loop Simulation figure here*
 
-A toolkit for applying closed-loop simulation for data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners [@carruthers2018]. The Data-Limited Toolkit, "DLMtool" (https://www.datalimitedtoolkit.org/) enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below LRP). DLMtool is open-source software (https://github.com/DLMtool/DLMtool), enabling experienced users to customize MPs and performance metrics as needed.
+The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [e.g., @carruthers2014; @carruthers2016]. Closed-loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example, underlying fish biology, observation error, estimation error, and implementation error [e.g., @kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives, and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
 
-## Objectives of this document
-This project aims to develop a "management procedure" framework for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+A toolkit for applying closed-loop simulation for data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners [@carruthers2018]. The Data-Limited Toolkit, "[DLMtool](https://www.datalimitedtoolkit.org/)" enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below the LRP). DLMtool is [open-source software](https://CRAN.R-project.org/package=DLMtool), enabling experienced users to customize MPs and performance metrics as needed.
 
-The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of
-scientific advice to fisheries managers.The project will focus on developing appropriate operating models, testing suites of management procedures, and determining management procedures that best meet the objectives of fisheries management and stakeholders for some example stocks with different life-histories. 
+## OBJECTIVES OF THIS DOCUMENT
 
-This work builds on recent work by *Anderson (2019)*, who developed a comprehensive, reproducible data synopsis for all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. Data and empirical analyses from the synopsis are used to develop operating models within the DLMtool toolkit [@carruthers2018], which is then used for simulation testing of alternative data-limited MPs against performance metrics. See Methods for details.
+This project aims to develop a management-procedure framework for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species. The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers. The project will focus on developing appropriate operating models, testing suites of management procedures, and determining management procedures that best meet the objectives of fisheries management and stakeholders for some example stocks with different life-histories. This work builds on recent work by @anderson2019synopsis, who developed a comprehensive, reproducible data synopsis for all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. Data and empirical analyses from the synopsis are used to develop operating models within the DLMtool toolkit [@carruthers2018], which is then used for simulation testing of alternative data-limited MPs against performance metrics.
 
-*TO DO: Add data synopsis ref to bib*
+## EXPECTED BENEFITS
 
-## Expected Benefits
-There are a number of expected benefits of this project. This management procedure approach is focused on identifying MPs for data-limited stocks that achieve long-term performance objectives. The closed-loop simulation approach will allow analysts to use the available data for specific stocks rather than prescribing one MP per data tier, as in previously published "tiered approaches". Compared to the current status quo, this framework will allow DFO to provide scientific catch advice for more stocks; will develop a standardized and transparent approach across stocks; will reduce the turnaround time between requests for science advice and provision of advice; and will help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock advice.
+There are a number of expected benefits of this project. This management procedure approach is focused on identifying MPs for data-limited stocks that achieve long-term performance objectives. The closed-loop simulation approach will allow analysts to use the available data for specific stocks rather than prescribing one MP per data tier, as in previously published "tiered" approaches. Compared to the current status quo, this framework will allow DFO to provide scientific catch advice for more stocks; will develop a standardized and transparent approach across stocks; will reduce the turnaround time between requests for science advice and provision of advice; and will help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock advice. Importantly, the framework will demonstrate methods to improve capacity for DFO Science to provide catch advice for data-limited stocks that is consistent with Canada's PA Framework, and therefore bring data-limited stocks into compliance with the Fish Stocks provisions of the *Fisheries Act*.
 
-Importantly, the framework will demonstrate methods to improve capacity for DFO Science to provide catch advice for data-limited stocks that is consistent with Canada's PA Framework, and therefore bring data-limited stocks into compliance with the Fish Stocks provisions of the *Fisheries Act*.
-
-*TO DO: RF to finish editing from here:*
-
-# Best practices for implementing an MP approach
-
-*Draw on Punt et al. 2016 and/or Kronlund and Shelton Discussion Paper, and/or Herring roadmap?*
-*Briefly list suggested steps, for example: (from herring roadmap for now)*
-
-* Define decision context
-* Define specific objectives and performance indicators
-* Identify management procedure options
-* Define a set of operating models that capture main uncertainties
-* Simulate and compute performance indicators
-* Rank overall MP performance
-* Apply the MP to real fishery
-
-# How the proposed approach adopts these best practices
-
-* Define decision context
-    - clarify the exact decision, decide on the timeframe, decide on the boundaries of the project, decide on collaborative roles, clarify how final decision will be made
-    - give examples throughout including what we propose as starting points
-
-* Define specific objectives and performance indicator
-    - suggested starting points for objectives and performance indicators across most stocks this will apply to
-    - justify these objectives and performance indicators based on PA framework, literature, and precedent in Canada and elsewhere
-
-* Identify management procedure options
-    - summarize candidates that we have narrowed it down to
-    - reference the detailed appendix
-
-* Define a set of operating models that capture main uncertainties
-    - what are the common main uncertainties that we should make sure to capture
-    - what are potential sources of uncertainty that by default we suggest should not be focused on (but could be included on a stock by stock basis)
-    - the idea behind robustness sets; example robustness sets
-    - consider weights based on relative plausibility (and why by default we suggest avoiding this complexity)
-
-* Simulate and compute performance indicators
-    - proposed software (DLMtool)
-    	- why use it?
-    	- what it can do?
-    	- note that the approach is software agnostic
-    	- examples of where it has been used
-    - how many iterations: checking for convergence of MP selection
-
-* Rank overall MP performance
-    - suggested figures and table
-    - explain satisficing
-    - describe potential default satisficing rules
-
-* Apply the MP to real fishery
-    - same MP; real data 
-    - reinforce that MP needs to be followed exactly as defined to meet desired objectives
-    - if adjustments need to be made this suggests a need to revisit the objectives
+*TODO: RF to finish editing from here:*

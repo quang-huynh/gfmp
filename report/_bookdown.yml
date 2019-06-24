@@ -1,9 +1,13 @@
 book_filename: "resdoc"
 chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
-            #"introduction.Rmd",
-            "introduction_new.Rmd",
-            #"mp-descriptions.Rmd",
+            "introduction.Rmd",
+            "best-practices.Rmd",
+            "rexsole-summary.Rmd",
+            "shortraker-summary.Rmd",
+            "discussion.Rmd",
+            "mp-descriptions.Rmd",
+            "dlmtool-om.Rmd",
             #"mp-screening.Rmd",
             #"get-data-shortraker.Rmd",
             #"effort-shortraker.Rmd",
