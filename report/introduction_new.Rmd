@@ -1,21 +1,19 @@
 # INTRODUCTION
 
-## Background
-DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the BC integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the British Columbia (BC) integrated groundfish fishery. 
+## BACKGROUND
 
-The majority of species encountered by the integrated groundfish fishery can be considered data-limited, meaning they lack enough informative data to perform full statistical age-structured stock assessments for provision of scientific advice on TACs. In recent decades, DFO stock assessment resources have focused on assessing a subset of the more data-rich stocks intensively, leaving many stocks without current assessment advice.
+DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the British Columbia (BC) integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[@dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the BC integrated groundfish fishery. 
 
-## Motivation
-The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006, @dfo2009]. The PA Framework relies upon the definition
-of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status (a Limit Reference Point and Upper Stock Reference) that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The Limit Reference Point (LRP) and Upper Stock Reference (USR) delineate three stock status zones (Healthy, Cautious and Critical). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006, @dfo2009].
+The majority of species encountered by the integrated groundfish fishery can be considered data-limited, meaning they lack sufficient informative data to perform full statistical age-structured stock assessments for provision of scientific advice on TACs. In recent decades, DFO stock assessment resources have focused on assessing a subset of the more data-rich stocks intensively, leaving many stocks without current assessment advice.
 
+## MOTIVATION
+
+The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition
+of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---a Limit Reference Point (LRP) and Upper Stock Reference (USR)---that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The LRP and USR delineate three stock status zones ("healthy", "cautious" and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006, @dfo2009].
 
 *TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... *
 
-
-On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the Fish Stocks provisions, the provisions state:
-
-*TO DO: Why are the bullets below a different font?
+On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "fish stock provisions", the provisions state:
 
 > **Measures to maintain fish stocks**
 > 6.1(1) In the management of fisheries, the Minister shall implement measures to maintain prescribed major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock.
@@ -26,12 +24,11 @@ On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal As
 > **Plan to rebuild**
 > 6.2(1) If a prescribed major fish stock has declined to or below its limit reference point, the Minister shall develop a plan to rebuild the stock to or above that point in the affected area, taking into account the biology of the fish and the environmental conditions affecting the stock, and implement it within the period provided for in the plan.
 
+For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the above fish stock provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
 
-For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of LRPs and assessment of stock status relative to LRPs. To comply with the above Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP.
+## TIERED APPROACHES
 
-
-## Tiered approaches
-Many other nations and governing bodies have established frameworks for assessing data-limited fisheries --- often through "tiered" approaches (e.g., United States [@newman2015], ICES [@ices2012], Australia [@smith2009]). A tiered approach places stocks into ranked categories (tiers) based on the
+Many other nations and governing bodies have established frameworks for assessing data-limited fisheries---often through "tiered" approaches (e.g., United States [@newman2015], ICES [@ices2012], Australia [@smith2009]). A tiered approach places stocks into ranked categories (tiers) based on the
 types and quality of available data. Specific data-limited methods for setting catch limits are identified for each tier, depending on the available data. Arbitrary buffers may also be added to recommended catch limits in each tier (e.g., reduce recommended catch limit by 20%), to attempt to account for the additional uncertainty inherent in more data-limited tiers. 
 
 In 2016, a CSAS workshop was held in the Pacific region to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach, as described above, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple management procedures (MPs) on a stock-by-stock basis to identify data-limited methods that would best meet policy and fishery objectives, explicitly accounting for risk. The simulation-testing be done using a closed-loop simulation, or management strategy evaluation (MSE) approach.
