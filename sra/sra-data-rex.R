@@ -1,29 +1,27 @@
-library(dplyr)
-species_name <- "shortraker rockfish"
+library("dplyr")
+species_name <- "rex sole"
 starting_year <- 1977
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
-science_name <- "Sebastes borealis"
+science_name <- "Glyptocephalus zachirusadus"
+drex <- load_data_rex()
 
-d_short <- load_data_shortraker()
-d_privacy <- load_data_shortraker(private = TRUE)
-
-short_om <- readRDS(here::here("generated-data", "shortraker-om.rds"))
-short_om@M
-short_om@Linf
-short_om@K
-short_om@t0
-short_om@a
-short_om@b
-short_om@L50
-short_om@L50_95
+rex_om <- readRDS(here::here("generated-data", "rex-om.rds"))
+rex_om@M
+rex_om@Linf
+rex_om@K
+rex_om@t0
+rex_om@a
+rex_om@b
+rex_om@L50
+rex_om@L50_95
 # Cobs could be made slightly bigger than 0; it is now zero but
 # is much larger for older observations:
-short_om@Cobs
-short_om@Perr
+rex_om@Cobs
+rex_om@Perr
 # this is a rough guess as a composite across many indexes; each index has its own CV:
-short_om@Iobs <- c(0.4, 0.6)
+rex_om@Iobs <- c(0.4, 0.6)
 
 make_raker_cal <- function(dat, survey, length_bin = 5) {
   dat <- filter(dat, survey_abbrev == survey)
@@ -32,21 +30,21 @@ make_raker_cal <- function(dat, survey, length_bin = 5) {
   list(cal = cal[1, , ], length_bins = length_bins)
 }
 
-cal_wchg <- make_raker_cal(d_short$survey_samples, "SYN WCHG")
-cal_qcs <- make_raker_cal(d_short$survey_samples, "SYN QCS")
-cal_wcvi <- make_raker_cal(d_short$survey_samples, "SYN WCVI")
+cal_wchg <- make_raker_cal(drex$survey_samples, "SYN WCHG")
+cal_qcs <- make_raker_cal(drex$survey_samples, "SYN QCS")
+cal_wcvi <- make_raker_cal(drex$survey_samples, "SYN WCVI")
 
-caa_wchg <- filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
+caa_wchg <- dplyr::filter(drex$survey_samples, survey_abbrev == "SYN WCHG") %>%
   gfdlm::tidy_caa(yrs = all_years)
 caa_wchg[1, , ]
 
-caa_qcs <- filter(d_short$survey_samples, survey_abbrev == "SYN QCS") %>%
+caa_qcs <- dplyr::filter(drex$survey_samples, survey_abbrev == "SYN QCS") %>%
   gfdlm::tidy_caa(yrs = all_years)
 caa_qcs[1, , ]
 
-mean_length <- filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
+mean_length <- dplyr::filter(drex$survey_samples, survey_abbrev == "SYN WCHG") %>%
   gfdlm::tidy_mean_length() %>%
-  filter(n > 10, year <= ending_year, year >= starting_year) %>%
+  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year") %>%
   pull(mean_length)
 
@@ -56,8 +54,8 @@ mean_length
 # For now just do that by dividing the catch in those years by 3:
 
 # bottom trawl catch:
-if ("catch" %in% names(d_short)) {
-  catch <- d_short$catch %>%
+if ("catch" %in% names(drex)) {
+  catch <- drex$catch %>%
     filter(gear == "BOTTOM TRAWL") %>%
     gfplot::tidy_catch() %>%
     group_by(year) %>%
@@ -74,8 +72,8 @@ catch
 plot(all_years, catch, type = "o")
 
 # hook and line catch:
-if ("catch" %in% names(d_short)) {
-  catch_hl <- d_short$catch %>%
+if ("catch" %in% names(drex)) {
+  catch_hl <- drex$catch %>%
     filter(gear == "HOOK AND LINE") %>%
     gfplot::tidy_catch() %>%
     group_by(year) %>%
@@ -96,7 +94,7 @@ cpue <- read.csv(here::here("generated-data", "shortraker-cpue.csv"))
 
 # we are working on something similar for the hook and line fleet
 
-indexes <- gfplot::tidy_survey_index(d_short$survey_index) %>%
+indexes <- gfplot::tidy_survey_index(drex$survey_index) %>%
   filter(survey_abbrev %in% c("SYN WCHG", "SYN QCS", "SYN WCVI", "IPHC FISS")) %>%
   reshape2::dcast(year ~ survey_abbrev, value.var = "biomass") %>%
   right_join(tibble(year = all_years), by = "year") %>%
