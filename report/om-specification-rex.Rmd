@@ -973,3 +973,14 @@ imprex@SizeLimSD
 ```
 <!-- slot-chunk-end -->
 
+<!-- slot-chunk-begin -->
+### Output the OM
+
+*Output the Operating model.*
+
+```{r output-rex}
+rex_om <- new('OM', stockrex, fleetrex, obsrex, imprex)
+saveRDS(rex_om, file = here::here("generated-data", "rex-om.rds"))
+
+```
+<!-- slot-chunk-end -->

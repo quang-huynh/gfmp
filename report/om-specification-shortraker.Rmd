@@ -1179,3 +1179,15 @@ imp@SizeLimFrac <- c(1, 1)
 imp@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Output the OM
+
+*Output the Operating model.*
+
+```{r output-shortraker}
+short_om <- new('OM', stock, fleet, obs, imp)
+saveRDS(short_om, file = here::here("generated-data", "shortraker-om.rds"))
+```
+<!-- slot-chunk-end -->
+

@@ -1185,11 +1185,10 @@ imppc@SizeLimSD <- c(1, 1)
 <!-- slot-chunk-begin -->
 ### Output the OM
 
-*Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Output the Operating model.*
 
-```{r }
+```{r output-pc}
 ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 saveRDS(ompc, file = here::here("generated-data", "pcod-om.rds"))
-
 ```
 <!-- slot-chunk-end -->
