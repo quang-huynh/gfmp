@@ -191,7 +191,7 @@ x <- eval_pm(short_mse,
                             "AAVY")) %>% select(mp, pm, prob)
 
 #r_plot(x, fill_polys = TRUE, inc_yrs = FALSE)
-ggspider::spider_web(as.data.frame(x), "mp", "pm", "prob")
+ggspider::spider_web(x, "mp", "pm", "prob")
 #Tplot(short_mse)
 #Tplot2(short_mse)
 ```
@@ -215,7 +215,7 @@ Kplot(short_mse)
 ```
 
 ```{r}
-Cplot(short_mse)
+#Cplot(short_mse)
 ```
 
 And examine the output.

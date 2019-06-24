@@ -799,8 +799,12 @@ pm_probs <- eval_pm(pcod_mse_short,
                             "PNOF",
                             "AAVY")) 
 
+<<<<<<< Updated upstream
 #r_plot(x, fill_polys = TRUE, inc_yrs = FALSE)
 ggspider::spider_web(pm_probs, "mp", "pm", "prob")
+=======
+ggspider::spider_web(x, "mp", "pm", "prob")
+>>>>>>> Stashed changes
 
 
 ```
@@ -842,7 +846,7 @@ Kplot(pcod_mse_short)
 ```
 
 ```{r}
-Cplot(pcod_mse_short)
+#Cplot(pcod_mse_short)
 ```
 
 And examine the output.
