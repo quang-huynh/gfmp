@@ -1,0 +1,36 @@
+
+```{r download-data-rex}
+
+rex_areas <- c("03", "04", "05", "06", "07", "08", "09")
+rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl",
+                 "Queen Charlotte Sound Synoptic Bottom Trawl",
+                 "Hecate Strait Synoptic Bottom Trawl")
+
+science_name <- "Glyptocephalus zachirusadus"
+species_name <- "Rex Sole"
+species_file <- here::here("generated-data",
+                           paste0(gsub(" ", "-", species_name), ".rds"))
+if(!file.exists(species_file)){
+  drex <- list()
+  drex$commercial_samples <- gfdata::get_commercial_samples(species_name, unsorted_only = FALSE)
+  drex$survey_samples <- gfdata::get_survey_samples(species_name)
+  drex$catch <- gfdata::get_catch(species_name)
+  drex$survey_index <- gfdata::get_survey_index(species_name)
+  saveRDS(drex, file = species_file)
+}else{
+  drex <- readRDS(species_file)
+}
+
+drex$commercial_samples <- drex$commercial_samples %>%
+  dplyr::filter(major_stat_area_code %in% rex_areas)
+
+drex$survey_samples <- drex$survey_samples %>%
+  dplyr::filter(major_stat_area_code %in% rex_areas)
+
+drex$catch <- drex$catch %>%
+  dplyr::filter(major_stat_area_code %in% rex_areas)
+
+drex$survey_index <- drex$survey_index %>%
+  dplyr::filter(survey_series_desc %in% rex_surveys)
+
+```
