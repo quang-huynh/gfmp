@@ -18,7 +18,7 @@ stockrex <- methods::new('Stock')
 
 
 ```{r desc-stockrex-name-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Name
+stockrex@Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -28,7 +28,7 @@ stockrex@Name
 
 
 ```{r desc-stockrex-common_name-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Common_Name
+stockrex@Common_Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -38,7 +38,7 @@ stockrex@Common_Name
 
 
 ```{r desc-stockrex-species-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Species
+stockrex@Species <- "Glyptocephalus zachirus"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -46,9 +46,10 @@ stockrex@Species
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
+From @turnock2005. This is the plus group value.
 
 ```{r desc-stockrex-maxage-rex, results = knitr_results, echo = knitr_echo}
-stockrex@maxage
+stockrex@maxage <- 20
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -56,9 +57,10 @@ stockrex@maxage
 
 *The magnitude of unfished recruitment. Single value. Positive real number*
 
+From @mcgilliard2017, Table 13, model 15.0.
 
 ```{r desc-stockrex-r0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@R0
+stockrex@R0 <- exp(11.5683)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -66,9 +68,10 @@ stockrex@R0
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
+The value of $M=0.17$ is from @mcgilliard2017
 
 ```{r desc-stockrex-m-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M
+stockrex@M <- 0.17
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -166,9 +169,11 @@ stockrex@Amplitude
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Females only, from @turnock2005, table 4.12
+Male = 39.5
 
 ```{r desc-stockrex-linf-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Linf
+stockrex@Linf <- 44.9
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -176,9 +181,11 @@ stockrex@Linf
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Females only, from @turnock2005, table 4.12
+Male = 0.38
 
 ```{r desc-stockrex-k-rex, results = knitr_results, echo = knitr_echo}
-stockrex@K
+stockrex@K <- 0.31
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -186,9 +193,12 @@ stockrex@K
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
 
+Females only, from @turnock2005, table 4.12
+Male = 0.79
+t0 was not reported in @mcgilliard2015, so @turnock2005 was used for all values t0, K, and Linf
 
 ```{r desc-stockrex-t0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@t0
+stockrex@t0 <- 0.69
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -226,9 +236,10 @@ stockrex@Linfsd
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
+From @abookire2006, Table 3, in cm.
 
 ```{r desc-stockrex-l50-rex, results = knitr_results, echo = knitr_echo}
-stockrex@L50
+stockrex@L50 <- 35.17
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -236,9 +247,10 @@ stockrex@L50
 
 *Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
+From @abookire2006, Table 3, in cm.
 
 ```{r desc-stockrex-l50_95-rex, results = knitr_results, echo = knitr_echo}
-stockrex@L50_95
+stockrex@L50_95 <- 35.97
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -256,9 +268,11 @@ stockrex@D
 
 *Length-weight parameter alpha. Single value. Positive real number*
 
+From @mcgilliard2015, female only.
+Male = 2.18e-06
 
 ```{r desc-stockrex-a-rex, results = knitr_results, echo = knitr_echo}
-stockrex@a
+stockrex@a <- 1.35e-06
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -266,9 +280,11 @@ stockrex@a
 
 *Length-weight parameter beta. Single value. Positive real number*
 
+From @mcgilliard2015, female only.
+Male = 3.30571
 
 ```{r desc-stockrex-b-rex, results = knitr_results, echo = knitr_echo}
-stockrex@b
+stockrex@b <- 3.44963
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
