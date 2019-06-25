@@ -391,7 +391,7 @@ Fleet <- DLMtool::Generic_Fleet # TODO: temporary
 
 
 ```{r desc-fleetrex-name-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Name
+fleetrex@Name <- "BC Fleet"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -399,9 +399,13 @@ fleetrex@Name
 
 *The number of years for the historical spool-up simulation. Single value. Positive integer*
 
+We will set the historical run-up to be approximately the length of the commercial fishery.
 
 ```{r desc-fleetrex-nyears-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@nyears
+catch_yrs <- unique(lubridate::year(drex$catch$fe_start_date))
+catch_yrs <- catch_yrs[!is.na(catch_yrs)]
+fleetrex@nyears <- length(catch_yrs)
+c(catch_yrs[1], catch_yrs[length(catch_yrs)])
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
