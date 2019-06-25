@@ -49,7 +49,7 @@ stockrex@Species <- "Glyptocephalus zachirus"
 From @turnock2005. This is the plus group value.
 
 ```{r desc-stockrex-maxage-rex, results = knitr_results, echo = knitr_echo}
-stockrex@maxage <- 20
+stockrex@maxage <- max(drex$survey_samples$age, drex$commercial_samples$age, na.rm = TRUE)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -68,7 +68,7 @@ stockrex@R0 <- exp(11.5683)
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
-The value of $M=0.17$ is from @mcgilliard2017
+From @mcgilliard2017
 
 ```{r desc-stockrex-m-rex, results = knitr_results, echo = knitr_echo}
 stockrex@M <- 0.17
@@ -78,7 +78,6 @@ stockrex@M <- 0.17
 ### M2 {#app:desc-stockrex-m2-rex}
 
 *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
-
 
 ```{r desc-stockrex-m2-rex, results = knitr_results, echo = knitr_echo}
 stockrex@M2
@@ -91,7 +90,7 @@ stockrex@M2
 
 
 ```{r desc-stockrex-mexp-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Mexp
+stockrex@Mexp <- c(NA_real_, NA_real_)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -101,7 +100,7 @@ stockrex@Mexp
 
 
 ```{r desc-stockrex-msd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Msd
+stockrex@Msd <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -109,9 +108,10 @@ stockrex@Msd
 
 *Steepness of the stockrex recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
+FIXME: Completely fabricated (copied from Shortraker OM). I could not find a value of steepness anywhere in the recent assessments.
 
 ```{r desc-stockrex-h-rex, results = knitr_results, echo = knitr_echo}
-stockrex@h
+stockrex@h <- c(0.4, 0.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -119,9 +119,10 @@ stockrex@h
 
 *Type of stockrex-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 
+FIXME: see shortraked OM
 
 ```{r desc-stockrex-srrel-rex, results = knitr_results, echo = knitr_echo}
-stockrex@SRrel
+stockrex@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -129,9 +130,10 @@ stockrex@SRrel
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+FIXME: Need to look at other assessments. For now this was copied from the Shortraker OM.
 
 ```{r desc-stockrex-perr-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Perr
+stockrex@Perr <- c(0.5, 0.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -139,9 +141,11 @@ stockrex@Perr
 
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+@thorson2014 (Table 2) finds the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27.
+
 
 ```{r desc-stockrex-ac-rex, results = knitr_results, echo = knitr_echo}
-stockrex@AC
+stockrex@AC <- c(0.2, 0.6)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -169,11 +173,16 @@ stockrex@Amplitude
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Females only, from @turnock2005, table 4.12
-Male = 39.5
+Alternatively from @turnock2005, table 4.12:
+- Male = 39.5
+- Female = 44.9
 
 ```{r desc-stockrex-linf-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Linf <- 44.9
+mvb <- gfplot::fit_vb(drex$survey_samples, sex = "all")
+mvb_summary <- summary(TMB::sdreport(mvb$model))
+vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
+gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
+stockrex@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -181,11 +190,12 @@ stockrex@Linf <- 44.9
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Females only, from @turnock2005, table 4.12
-Male = 0.38
+Alternatively from @turnock2005, table 4.12:
+- Male = 0.38
+- Female = 0.31
 
 ```{r desc-stockrex-k-rex, results = knitr_results, echo = knitr_echo}
-stockrex@K <- 0.31
+stockrex@K <- c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -193,12 +203,13 @@ stockrex@K <- 0.31
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
 
-Females only, from @turnock2005, table 4.12
-Male = 0.79
-t0 was not reported in @mcgilliard2015, so @turnock2005 was used for all values t0, K, and Linf
+Alternatively from @turnock2005, table 4.12:
+- Male = 0.79
+- Female = 0.69
+Note - t0 was not reported in @mcgilliard2017, but @turnock2005 reported all values t0, K, and Linf
 
 ```{r desc-stockrex-t0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@t0 <- 0.69
+stockrex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -208,7 +219,9 @@ stockrex@t0 <- 0.69
 
 
 ```{r desc-stockrex-lencv-rex, results = knitr_results, echo = knitr_echo}
-stockrex@LenCV
+sd2cv <- function(.sd) sqrt(exp(.sd ^ 2) - 1)
+stockrex@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+round(stockrex@LenCV, 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -216,9 +229,10 @@ stockrex@LenCV
 
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+FIXME: pick this. For now picking an arbitrary range.
 
 ```{r desc-stockrex-ksd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Ksd
+stockrex@Ksd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -226,9 +240,10 @@ stockrex@Ksd
 
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+FIXME: We don't have much to go on here without some kind of a meta-analysis across other species.
 
 ```{r desc-stockrex-linfsd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Linfsd
+stockrex@Linfsd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -236,10 +251,17 @@ stockrex@Linfsd
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
-From @abookire2006, Table 3, in cm.
+Alternatively, see @abookire2006, Table 3, for value 35.17 cm.
 
 ```{r desc-stockrex-l50-rex, results = knitr_results, echo = knitr_echo}
-stockrex@L50 <- 35.17
+m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
+mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
+se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
+gfplot::plot_mat_ogive(m_mat)
+
+stockrex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
+stockrex@L50
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -247,10 +269,15 @@ stockrex@L50 <- 35.17
 
 *Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
-From @abookire2006, Table 3, in cm.
+Alternatively, see @abookire2006, Table 3, for value 35.97 cm.
 
 ```{r desc-stockrex-l50_95-rex, results = knitr_results, echo = knitr_echo}
-stockrex@L50_95 <- 35.97
+se_l50_95m <- gfdlm:::delta_method(
+  ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
+    -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+    mean = coef(m_mat$model), cov = vcov(m_mat$model))
+stockrex@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
+stockrex@L50_95
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -258,9 +285,12 @@ stockrex@L50_95 <- 35.97
 
 *Current level of stockrex depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 
+TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
+
+FIXME: This is an important value that we may want to think more deeply about.
 
 ```{r desc-stockrex-d-rex, results = knitr_results, echo = knitr_echo}
-stockrex@D
+stockrex@D <- c(0.1, 0.8)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -268,11 +298,15 @@ stockrex@D
 
 *Length-weight parameter alpha. Single value. Positive real number*
 
-From @mcgilliard2015, female only.
-Male = 2.18e-06
+Alternatively from @mcgilliard2017:
+- Female = 1.35e-06
+- Male = 2.18e-06
 
 ```{r desc-stockrex-a-rex, results = knitr_results, echo = knitr_echo}
-stockrex@a <- 1.35e-06
+mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
+gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+stockrex@a <- exp(mlw$pars[["log_a"]])
+round(log(stockrex@a), 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -280,11 +314,13 @@ stockrex@a <- 1.35e-06
 
 *Length-weight parameter beta. Single value. Positive real number*
 
-From @mcgilliard2015, female only.
-Male = 3.30571
+Alternatively from @mcgilliard2017:
+- Female = 3.44963
+- Male = 3.30571
 
 ```{r desc-stockrex-b-rex, results = knitr_results, echo = knitr_echo}
-stockrex@b <- 3.44963
+stockrex@b <- mlw$pars[["b"]]
+round(stockrex@b, 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -292,9 +328,10 @@ stockrex@b <- 3.44963
 
 *The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
 
+We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stockrex-size_area_1-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Size_area_1
+stockrex@Size_area_1 <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -302,9 +339,10 @@ stockrex@Size_area_1
 
 *The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
 
+We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stockrex-frac_area_1-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Frac_area_1
+stockrex@Frac_area_1 <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -312,9 +350,10 @@ stockrex@Frac_area_1
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 
+We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stockrex-prob_staying-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Prob_staying
+stockrex@Prob_staying <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -322,9 +361,10 @@ stockrex@Prob_staying
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+FIXME: Fabricated value of 30% by CJG. Maybe discarding has to be set up in operating model for this to take effect..
 
 ```{r desc-stockrex-fdisc-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Fdisc
+stockrex@Fdisc <- 0.3
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -334,7 +374,7 @@ stockrex@Fdisc
 
 
 ```{r desc-stockrex-source-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Source
+stockrex@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
@@ -638,7 +678,7 @@ obsrex@Name
 
 
 ```{r desc-obsrex-cobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cobsrex
+obsrex@Cobsrex <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
