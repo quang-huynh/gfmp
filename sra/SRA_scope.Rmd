@@ -1,0 +1,287 @@
+---
+title: "Operating model conditioning for Stock:Pacific Cod 5ABCD Stock  Fleet:BC Trawl Fleet  Obs model:BC Obs  Imp model:BC Implementation"
+subtitle: Tables and Figures
+date: "`r Sys.Date()`"
+---
+<style type="text/css">
+h1 { /* Header 1 */
+  font-size: 24px;
+}
+</style>
+
+```{r setup, include = FALSE, echo = FALSE}
+  knitr::opts_chunk$set(collapse = TRUE, echo = FALSE, message = FALSE,
+  fig.width = 6, fig.height = 4.5, out.width = "650px", comment = "#>")
+```
+
+# Summary {.tabset}
+
+## Updated historical operating model parameters
+
+```{r, fig.cap="Histogram of R0 (unfished recruitment)."}
+if(!is.null(OM@cpars$R0)) hist(OM@cpars$R0, main = "", xlab = expression(R[0]))
+```
+
+```{r, fig.cap="Histogram of initial depletion."}
+if(!is.null(OM@cpars$initD)) hist(OM@cpars$initD, main = "", xlab = "Initial depletion")
+```
+
+```{r, fig.cap="Histogram of historical depletion."}
+if(!is.null(OM@cpars$D)) hist(OM@cpars$D, main = "", xlab = "Depletion")
+```
+
+```{r, fig.cap="Recruitment deviations among simulations."}
+Perr <- OM@cpars$Perr_y[, max_age:(max_age+nyears-1), drop = FALSE]
+matplot(Year_matrix, t(Perr), type = "l", col = "black", xlab = "Year", ylab = "Recruitment deviations",
+        ylim = c(0, 1.1 * max(Perr)))
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap="Apical F from model used as effort among simulations."}
+matplot(Year_matrix, t(OM@cpars$Find), type = "l", col = "black", xlab = "Year", ylab = "Apical F")
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap="Operating model selectivity among simulations."}
+if(nfleet == 1) {
+  vul <- do.call(cbind, lapply(report_list[[2]], getElement, "vul"))
+  matplot(matrix(length_bin, ncol = nsim, nrow = length(length_bin)), vul, type = "l", col = "black",
+          xlab = "Length", ylab = "Selectivity", ylim = c(0, 1.1))
+} else {
+  matplot(matrix(age, ncol = nsim, nrow = max_age), t(OM@cpars$V[, , nyears]), type = "l", col = "black",
+          xlab = "Age", ylab = "Selectivity (last historical year)", ylim = c(0, 1.1))
+}
+abline(h = 0, col = "grey")
+```
+
+## Output from all simulations {.tabset}
+
+### Fleet 1 
+
+```{r, fig.cap = "Selectivity of fleet 1."}
+vul_ff <- do.call(cbind, lapply(report_list[[2]], function(x) x$vul[, 1]))
+matplot(matrix(length_bin, ncol = nsim, nrow = length(length_bin)), vul_ff, type = "l", col = "black",
+        xlab = "Length", ylab = "Selectivity of Fleet 1")
+abline(h = 0, col = "grey")
+```
+
+
+```{r, fig.cap = "Fishing Mortality of fleet 1."}
+FM <- do.call(cbind, lapply(report_list[[2]], function(x) x$F[, 1]))
+matplot(Year_matrix, FM, type = "l", col = "black", xlab = "Year", ylab = "Fishing Mortality of Fleet 1")
+abline(h = 0, col = "grey")
+```
+
+
+```{r, fig.cap = "Observed (red) and predicted (black) catch of fleet 1."}
+if(any(data$C_hist[, 1] > 0)) {
+  Cpred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Cpred[, 1]))
+  matplot(Year_matrix, Cpred, type = "l", col = "black", xlab = "Year", ylab = "Catch of Fleet 1")
+  lines(Year, data$C_hist[, 1], col = "red", lwd = 3)
+} else {
+  Cpred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Cpred[, 1]/mean(x$Cpred[, 1])))
+  matplot(Year_matrix, Cpred, type = "l", col = "black", xlab = "Year", ylab = "Relative catch of Fleet 1")
+}
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) mean ages of fleet 1."}
+MApred <- do.call(cbind, lapply(report_list[[2]], function(x) x$CAApred[, , 1] %*% age/x$CN[, 1]))
+matplot(Year_matrix, MApred, type = "l", col = "black", xlab = "Year", ylab = "Mean age")
+if(any(data$CAA_hist[, , 
+1
+] > 0)) {
+  lines(Year, (data$CAA_hist[, , 1] %*% age)/rowSums(data$CAA_hist[, , 1], na.rm = TRUE),  col = "red", lwd = 3, typ = "o", pch = 16)
+}
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) mean lengths of fleet 1."}
+MLpred <- do.call(cbind, lapply(report_list[[2]], function(x) x$mlen_pred[, 1]))
+matplot(Year_matrix, MLpred, type = "l", col = "black", xlab = "Year", ylab = "Mean length")
+if(any(data$CAL_hist[, , 1] > 0)) {
+  lines(Year, (data$CAL_hist[, , 1] %*% length_bin)/rowSums(data$CAL_hist[, , 1], na.rm = TRUE),  col = "red", lwd = 3, typ = "o", pch = 16)
+} else if(any(data$mlen[, 1] > 0)) lines(Year, data$mlen[, 1], col = "red", lwd = 3, typ = "o", pch = 16)
+```
+
+### Surveys
+
+```{r, fig.cap = "Observed (red) and predicted (black) index values in survey 1."}
+Ipred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Ipred[, 
+1
+]))
+matplot(Year_matrix, Ipred, type = "l", col = "black", ylim = c(0, 1.1 * max(c(Ipred, data$I_hist[, 1]), na.rm = TRUE)), xlab = "Year", ylab = "Survey 1")
+lines(Year, data$I_hist[, 1], col = "red", lwd = 3, typ = "o", pch = 16)
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) index values in survey 2."}
+Ipred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Ipred[, 
+2
+]))
+matplot(Year_matrix, Ipred, type = "l", col = "black", ylim = c(0, 1.1 * max(c(Ipred, data$I_hist[, 2]), na.rm = TRUE)), xlab = "Year", ylab = "Survey 2")
+lines(Year, data$I_hist[, 2], col = "red", lwd = 3, typ = "o", pch = 16)
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) index values in survey 3."}
+Ipred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Ipred[, 
+3
+]))
+matplot(Year_matrix, Ipred, type = "l", col = "black", ylim = c(0, 1.1 * max(c(Ipred, data$I_hist[, 3]), na.rm = TRUE)), xlab = "Year", ylab = "Survey 3")
+lines(Year, data$I_hist[, 3], col = "red", lwd = 3, typ = "o", pch = 16)
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) index values in survey 4."}
+Ipred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Ipred[, 
+4
+]))
+matplot(Year_matrix, Ipred, type = "l", col = "black", ylim = c(0, 1.1 * max(c(Ipred, data$I_hist[, 4]), na.rm = TRUE)), xlab = "Year", ylab = "Survey 4")
+lines(Year, data$I_hist[, 4], col = "red", lwd = 3, typ = "o", pch = 16)
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Observed (red) and predicted (black) index values in survey 5."}
+Ipred <- do.call(cbind, lapply(report_list[[2]], function(x) x$Ipred[, 
+5
+]))
+matplot(Year_matrix, Ipred, type = "l", col = "black", ylim = c(0, 1.1 * max(c(Ipred, data$I_hist[, 5]), na.rm = TRUE)), xlab = "Year", ylab = "Survey 5")
+lines(Year, data$I_hist[, 5], col = "red", lwd = 3, typ = "o", pch = 16)
+abline(h = 0, col = "grey")
+```
+
+### Model output
+
+```{r, fig.cap = "Estimated recruitment among all simulations."}
+R_out <- do.call(cbind, lapply(report_list[[2]], getElement, "R"))
+matplot(Yearplusone_matrix, R_out, ylim = c(0, 1.1 * max(R_out)), type = "l", col = "black", xlab = "Year", ylab = "Recruitment")
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap = "Estimated spawning biomass among all simulations."}
+E <- do.call(cbind, lapply(report_list[[2]], getElement, "E"))
+matplot(Yearplusone_matrix, E, ylim = c(0, 1.1 * max(E)), type = "l", col = "black", xlab = "Year", ylab = "Spawning biomass")
+abline(h = 0, col = "grey")
+```
+
+## Fit to mean inputs from operating model {.tabset}
+
+### Model Estimates
+
+`r as.data.frame(summary(SD))`
+
+
+### Life History
+
+```{r, fig.cap="Length-at-age in last historical year."}
+plot_generic_at_age(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), c(28.021975535985, 39.7211077398746, 49.379233528845, 57.3540877763682, 63.940408907288, 69.3810845922378, 73.8763162823282, 77.5911563574425, 80.6617082038972, 83.2002275121811), label = "Mean Length-at-age")
+ ```
+
+```{r, fig.cap="Length-weight relationship."}
+plot(c(2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 66, 70, 74, 78, 82, 86, 90, 94, 98, 102, 106, 110, 114, 118, 122, 126, 130, 134), c(6.56943841094657e-05, 0.00194314121285373, 0.00938575702713156, 0.0264841170615516, 0.0574751985923045, 0.106700519612394, 0.178583758035023, 0.277616596007071, 0.408348894256456, 0.575381446885751, 0.783360405093266, 1.03697284552007, 1.34094315924421, 1.70003004998973, 2.11902399748192, 2.60274508427992, 3.15604111222462, 3.78378595350918, 4.49087809456129, 5.28223934036626, 6.16281365376744, 7.13756610943203, 8.21148194607667, 9.38956570355384, 10.6768404337458, 12.0783469760643, 13.599143289833, 15.2443038370203, 17.0189190097608, 18.9280945978984, 20.9769512924409, 23.1706242213662, 25.5142625146747, 28.0130288959743), typ = "o", xlab = "Length", ylab = "Weight")
+abline(h = 0, col = "grey")
+```
+
+```{r, fig.cap="Maturity-at-age in last historical year."}
+plot_generic_at_age(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), c(0.053897263210192, 0.160026387398972, 0.384608458499072, 0.660093584518124, 0.853330316072877, 0.945194486616339, 0.980740793396237, 0.99335567140233, 0.997708550130904, 0.999204672651272), label = "Maturity")
+ ```
+
+```{r, fig.cap="Natural mortality in last historical year."}
+plot_generic_at_age(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10), c(0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142, 0.315181418298142), label = "Natural mortality")
+ ```
+
+### Data and Fit
+
+```{r, fig.cap="Catch time series."}
+x <- matrix(Year, nyears, nfleet); y <- data$C_hist
+matplot(x, y, type = "l", lty = 1, col = rich.colors(nfleet), ylim = c(0, 1.1 * max(y)), xlab = "Year", ylab = "Catch")
+abline(h = 0, col = "grey")
+if(ncol(x) > 1) legend("topleft", paste("Fleet", 1:ncol(x)), text.col = rich.colors(nfleet))
+ ```
+
+```{r, fig.cap="Observed (black) and predicted (red) survey 1."}
+plot_timeseries(Year, data$I_hist[, 1], report$Ipred[, 1], label = "Survey 1")
+```
+
+```{r, fig.cap="Observed (black) and predicted (red) survey 2."}
+plot_timeseries(Year, data$I_hist[, 2], report$Ipred[, 2], label = "Survey 2")
+```
+
+```{r, fig.cap="Observed (black) and predicted (red) survey 3."}
+plot_timeseries(Year, data$I_hist[, 3], report$Ipred[, 3], label = "Survey 3")
+```
+
+```{r, fig.cap="Observed (black) and predicted (red) survey 4."}
+plot_timeseries(Year, data$I_hist[, 4], report$Ipred[, 4], label = "Survey 4")
+```
+
+```{r, fig.cap="Observed (black) and predicted (red) survey 5."}
+plot_timeseries(Year, data$I_hist[, 5], report$Ipred[, 5], label = "Survey 5")
+```
+
+### Output 
+
+```{r, fig.cap="Selectivity by fleet."}
+x <- matrix(data$length_bin, nrow(report$vul), nfleet); y <- report$vul
+matplot(x, y, type = "l", lty = 1, col = rich.colors(nfleet), ylim = c(0, 1.1 * max(y)), xlab = "Length", ylab = "Selectivity")
+abline(h = 0, col = "grey")
+if(ncol(x) > 1) legend("topleft", paste("Fleet", 1:ncol(x)), text.col = rich.colors(nfleet))
+ ```
+
+```{r, fig.cap="Time series of fishing mortality by fleet."}
+x <- matrix(Year, nyears, nfleet); y <- report$F
+matplot(x, y, type = "l", lty = 1, col = rich.colors(nfleet), ylim = c(0, 1.1 * max(y)), xlab = "Year", ylab = "Fishing Mortality (F)")
+abline(h = 0, col = "grey")
+if(ncol(x) > 1) legend("topleft", paste("Fleet", 1:ncol(x)), text.col = rich.colors(nfleet))
+ ```
+
+```{r, fig.cap="Time series of spawning biomass."}
+plot_timeseries(as.numeric(names(SSB)),SSB, label = "Spawning biomass")
+
+
+```
+
+```{r, fig.cap="Time series of spawning depletion."}
+plot_timeseries(as.numeric(names(SSB_SSB0)),SSB_SSB0, label = expression(SSB/SSB[0]))
+
+
+```
+
+```{r, fig.cap="Time series of recruitment."}
+plot_timeseries(as.numeric(names(R)),R, label = "Recruitment (R)")
+
+
+```
+
+```{r, fig.cap="Time series of recruitment deviations."}
+plot_residuals(as.numeric(names(log_rec_dev)), log_rec_dev , res_sd = NULL, label = "log-Recruitment deviations")
+```
+
+```{r, fig.cap="Time series of recruitment deviations with 95% confidence intervals."}
+if(conv) plot_residuals(as.numeric(names(log_rec_dev)), log_rec_dev , res_sd = log_rec_dev_SE, label = "log-Recruitment deviations")
+```
+
+```{r, fig.cap="Time series of abundance."}
+plot_timeseries(as.numeric(names(N)),N, label = "Abundance (N)")
+
+
+```
+
+```{r, fig.cap="Predicted abundance-at-age."}
+plot_composition(c(Year, max(Year)+1), N_at_age, CAL_bins = NULL, ages = NULL, plot_type = "bubble_data")
+```
+
+```{r, fig.cap="Predicted catch-at-age (summed over all fleets)."}
+plot_composition(Year, CAA_all, CAL_bins = NULL, ages = NULL, plot_type = "bubble_data")
+```
+
+```{r, fig.cap="Predicted catch-at-length (summed over all fleets)."}
+plot_composition(Year, CAL_all, CAL_bins = data$length_bin, ages = NULL, plot_type = "bubble_data")
+```
+
+## About
+
+This report was generated on: `r Sys.time()`<br />
+MSEtool R package version `r packageVersion("MSEtool")`<br />
+`r R.version.string`<br />
+
