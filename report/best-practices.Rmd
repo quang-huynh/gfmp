@@ -1,9 +1,8 @@
-# BEST PRACTICES FOR IMPLEMENTING AN MP APPROACH
+# BEST PRACTICES FOR IMPLEMENTING A MANAGEMENT PROCEDURE APPROACH
 
-*Draw on Punt et al. 2016 and/or Kronlund and Shelton Discussion Paper, and/or Herring roadmap?*
-*Briefly list suggested steps, for example: (from herring roadmap for now)*
 
-*TODO: this was written based on the herring roadmap; suggest switching this to Punt et al. 2016, which is what the DLMtool paper was based on*
+
+Best practices for management strategy evaluation were reviewed by @punt2016.
 
 * Define decision context
 * Define specific objectives and performance indicators
@@ -12,6 +11,10 @@
 * Simulate and compute performance indicators
 * Rank overall MP performance
 * Apply the MP to real fishery
+
+# METHODS 
+
+Text text text
 
 ## HOW THE PROPOSED APPROACH ADOPTS THESE BEST PRACTICES
 
