@@ -71,7 +71,7 @@ stockrex@R0 <- exp(11.5683)
 From @mcgilliard2017
 
 ```{r desc-stockrex-m-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M <- 0.17
+stockrex@M <- c(0.17, 0.17) # TODO add uncertainty
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
