@@ -1,6 +1,6 @@
 library(dplyr)
 species_name <- "rex sole"
-starting_year <- 1977
+starting_year <- 1955
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 

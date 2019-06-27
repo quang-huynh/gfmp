@@ -381,7 +381,7 @@ stockrex@Source <- ""
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleetrex-rex}
 
 ```{r warnings = FALSE}
-Fleet <- DLMtool::Generic_Fleet # TODO: temporary
+fleetrex <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
 <!-- slot-chunk-begin -->
@@ -453,9 +453,10 @@ fleetrex@EffUpper
 
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
 
 ```{r desc-fleetrex-esd-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Esd
+fleetrex@Esd <- c(0.1, 0.4)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -463,9 +464,10 @@ fleetrex@Esd
 
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
 
 ```{r desc-fleetrex-qinc-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@qinc
+fleetrex@qinc <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -473,9 +475,10 @@ fleetrex@qinc
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+TODO: We don't have a lot of data to go on for this. We will set this to 0 to indicate no interannual variability in fishing efficiency for simplicity.
 
 ```{r desc-fleetrex-qcv-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@qcv
+fleetrex@qcv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -483,9 +486,11 @@ fleetrex@qcv
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockrex@L50[[1]]` to `r stockrex@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(drex$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockrex@L50[[2]], 1)`- and `r round(min_caught/stockrex@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+
 
 ```{r desc-fleetrex-l5-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@L5
+fleetrex@L5 <- c(0.4, 0.6)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -493,9 +498,11 @@ fleetrex@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
+
 
 ```{r desc-fleetrex-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFS
+fleetrex@LFS <- c(1.0, 1.2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -503,9 +510,10 @@ fleetrex@LFS
 
 *The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
 
+We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
 
 ```{r desc-fleetrex-vmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Vmaxlen
+fleetrex@Vmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -555,7 +563,7 @@ fleetrex@Rmaxlen
 
 
 ```{r desc-fleetrex-dr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@DR
+fleetrex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -645,7 +653,7 @@ fleetrex@VmaxUpper
 
 
 ```{r desc-fleetrex-currentyr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@CurrentYr
+fleetrex@CurrentYr <- 2019
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -662,7 +670,7 @@ fleetrex@MPA
 ## OBS SLOT DESCRIPTIONS {#app:desc-obsrex-rex}
 
 ```{r warnings = FALSE}
-obsrex <- methods::new('Obs')
+obsrex <- DLMtool::Precise_Unbiased
 ```
 
 <!-- slot-chunk-begin -->
@@ -672,7 +680,7 @@ obsrex <- methods::new('Obs')
 
 
 ```{r desc-obsrex-name-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Name
+obsrex@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -680,9 +688,12 @@ obsrex@Name
 
 *Log-normal catch obsrexervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+At least since 1996, observation error on catch should be very small. Setting this to 0.
+
+TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
 
 ```{r desc-obsrex-cobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cobsrex <- c(0, 0)
+obsrex@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -690,9 +701,12 @@ obsrex@Cobsrex <- c(0, 0)
 
 *Log-normal coefficient of variation controlling the sampling of bias in catch obsrexervations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
+
+FIXME: what about the historical period?
 
 ```{r desc-obsrex-cbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cbiascv
+obsrex@Cbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -740,9 +754,16 @@ obsrex@CAL_ESS
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
+```{r}
+average_cv <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
+  dplyr::pull(re) %>%
+  mean() %>%
+  round(2)
+```
+This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
 ```{r desc-obsrex-iobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Iobsrex
+obsrex@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -752,7 +773,7 @@ obsrex@Iobsrex
 
 
 ```{r desc-obsrex-ibiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Ibiascv
+obsrex@Ibiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -762,7 +783,7 @@ obsrex@Ibiascv
 
 
 ```{r desc-obsrex-btobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Btobsrex
+obsrex@Btobs <- obsrex@Iobs
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -772,7 +793,7 @@ obsrex@Btobsrex
 
 
 ```{r desc-obsrex-btbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Btbiascv
+obsrex@Btbiascv <- obsrex@Ibiascv
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -780,9 +801,10 @@ obsrex@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
 
+We probably don't have a lot to go on here so let's allow for a wide range:
 
 ```{r desc-obsrex-beta-rex, results = knitr_results, echo = knitr_echo}
-obsrex@beta
+obsrex@beta <- c(0.666, 1.500)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -790,9 +812,10 @@ obsrex@beta
 
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
+It is possible there is some persistent bias in estimates such as length at 50% maturity. Let's set this to a range from a little bit to a moderate amount:
 
 ```{r desc-obsrex-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LenMbiascv
+obsrex@LenMbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -800,19 +823,19 @@ obsrex@LenMbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in obsrexerved natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stockrex@M[[1]]` and `r stockrex@M[[2]]`.
 
 ```{r desc-obsrex-mbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Mbiascv
+obsrex@Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Kbiascv {#app:desc-obsrex-kbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in obsrexerved growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obsrex-kbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Kbiascv
+obsrex@Kbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -822,7 +845,7 @@ obsrex@Kbiascv
 
 
 ```{r desc-obsrex-t0biascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@t0biascv
+obsrex@t0biascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -832,7 +855,7 @@ obsrex@t0biascv
 
 
 ```{r desc-obsrex-linfbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Linfbiascv
+obsrex@Linfbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -842,7 +865,7 @@ obsrex@Linfbiascv
 
 
 ```{r desc-obsrex-lfcbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LFCbiascv
+obsrex@LFCbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -852,7 +875,7 @@ obsrex@LFCbiascv
 
 
 ```{r desc-obsrex-lfsbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LFSbiascv
+obsrex@LFSbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -862,7 +885,7 @@ obsrex@LFSbiascv
 
 
 ```{r desc-obsrex-fmsybiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@FMSYbiascv
+obsrex@FMSYbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -872,7 +895,7 @@ obsrex@FMSYbiascv
 
 
 ```{r desc-obsrex-fmsy_mbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@FMSY_Mbiascv
+obsrex@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -882,7 +905,7 @@ obsrex@FMSY_Mbiascv
 
 
 ```{r desc-obsrex-bmsy_b0biascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@BMSY_B0biascv
+obsrex@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -892,7 +915,7 @@ obsrex@BMSY_B0biascv
 
 
 ```{r desc-obsrex-irefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Irefbiascv
+obsrex@Irefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -902,7 +925,7 @@ obsrex@Irefbiascv
 
 
 ```{r desc-obsrex-brefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Brefbiascv
+obsrex@Brefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -912,7 +935,7 @@ obsrex@Brefbiascv
 
 
 ```{r desc-obsrex-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Crefbiascv
+obsrex@Crefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -922,7 +945,7 @@ obsrex@Crefbiascv
 
 
 ```{r desc-obsrex-dbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Dbiascv
+obsrex@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -932,7 +955,7 @@ obsrex@Dbiascv
 
 
 ```{r desc-obsrex-dobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Dobsrex
+obsrex@Dobs
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -942,7 +965,7 @@ obsrex@Dobsrex
 
 
 ```{r desc-obsrex-hbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@hbiascv
+obsrex@hbiascv <- 0.1
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -952,7 +975,7 @@ obsrex@hbiascv
 
 
 ```{r desc-obsrex-recbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Recbiascv
+obsrex@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -969,7 +992,7 @@ imprex <- methods::new('Imp')
 
 
 ```{r desc-imprex-name-rex, results = knitr_results, echo = knitr_echo}
-imprex@Name
+imprex@Name <- "BC Implementation"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -979,7 +1002,7 @@ imprex@Name
 
 
 ```{r desc-imprex-tacfrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@TACFrac
+imprex@TACFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -989,7 +1012,7 @@ imprex@TACFrac
 
 
 ```{r desc-imprex-tacsd-rex, results = knitr_results, echo = knitr_echo}
-imprex@TACSD
+imprex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -999,7 +1022,7 @@ imprex@TACSD
 
 
 ```{r desc-imprex-taefrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@TAEFrac
+imprex@TAEFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -1009,7 +1032,7 @@ imprex@TAEFrac
 
 
 ```{r desc-imprex-taesd-rex, results = knitr_results, echo = knitr_echo}
-imprex@TAESD
+imprex@TAESD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -1019,7 +1042,7 @@ imprex@TAESD
 
 
 ```{r desc-imprex-sizelimfrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@SizeLimFrac
+imprex@SizeLimFrac <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -1029,7 +1052,7 @@ imprex@SizeLimFrac
 
 
 ```{r desc-imprex-sizelimsd-rex, results = knitr_results, echo = knitr_echo}
-imprex@SizeLimSD
+imprex@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
