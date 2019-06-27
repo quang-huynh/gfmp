@@ -1,35 +1,55 @@
-#' Radar plot for management procedures and performance metrics
+#' Radar plot for comparing management procedures and performance metrics
+#'
+#' @param fill_polys Fill the polygons with color?
+#' @param fill_alpha Alpha to use if fill = TRUE.
+#' @param ref_levels A vector of values between 0 and 1 to draw dotted lines for
+#' @param inc_yrs Include years in the performance metrics labels?
+#' @param df is the data frame output by [pm_pass()]
 r_plot <- function(df,
                    fill_polys = FALSE,
-                   ref_levels = c(0.5, 0.975)){
-  df <- df %>%
-    mutate(id = xcap) %>%
-    select(id, name, x, y)
+                   fill_alpha = 0.05,
+                   ref_levels = c(0.5, 0.975),
+                   inc_yrs = TRUE,
+                   main_shp = 16,
+                   ref_shp = 17){
+  # Set up shapes
+  mp_names <- levels(df$mp)
+  shp <- rep(main_shp, length(mp_names))
+  ref <- grep("ref", mp_names)
+  shp[ref] <- ref_shp
 
-browser()
+  prob_labs <- cap_expr(as.character(unique(df$probcap)), inc_yrs)
   g <- ggplot(data = df,
-              aes(x = id,
-                  y = x,
-                  group = name,
-                  color = name,
-                  fill = name)) +
+              aes(x = pm,
+                  y = prob,
+                  group = mp,
+                  color = mp,
+                  shape = mp)) +
     geom_point(size = 5) +
-    #theme(#panel.border = element_blank(),
-          #panel.background = element_blank(),
-          #axis.line = element_line(colour = "grey"),
-          #panel.grid.major = element_blank(),
-          #panel.grid.minor = element_blank(),
-          #axis.title.x = element_blank(),
-          #axis.title.y = element_blank())
+    scale_x_discrete(labels = parse(text = prob_labs)) +
+    scale_color_viridis_d(name = "MP type", guide = "legend") +
+    scale_shape_manual(name = "MP type", values = shp) +
+    scale_fill_viridis_d(name = "MP type") +
+    theme(panel.background = element_rect(fill = "white",
+                                          colour = "white",
+                                          size = 0.5,
+                                          linetype = "solid"),
+          panel.grid.major = element_line(size = 0.5,
+                                          linetype = "solid",
+                                          colour = "grey40"),
+          panel.grid.minor = element_line(size = 0.25,
+                                          linetype = 'solid',
+                                          colour = "grey40")) +
+          #axis.text.x = element_text(size = 12, angle = c(0, 90, 0, 0, -90, 0))) +
+    #ggrepel::geom_text_repel(label = parse(text = prob_labs)) +
     ylim(0, 1) +
     xlab("") +
     ylab("") +
-    coord_polar() +
-    #theme_bw() +
+    coord_polar(clip = "off") +
     geom_hline(yintercept = ref_levels, lwd = 1, lty = 2)
 
     if(fill_polys){
-      g <- g + geom_polygon(aes(fill = name), alpha = 0.1)
+      g <- g + geom_polygon(aes(fill = mp), alpha = fill_alpha)
     }else{
       g <- g + geom_polygon(fill = NA)
     }
@@ -96,37 +116,30 @@ t_plot <- function(df,
   cowplot::plot_grid(pgrid, legend, ncol = 2, rel_widths = c(1, .1))
 }
 
-#' Compare pairs of performance measures a(nd report TRUE if the probabaility
-#'  of both performance measures together (logical AND) are greater than lim
-#'  for each management procedure
+#' Pass/fail for performance measures based on their probabaility being
+#'  greater than some limit for each management procedure
 #'
-#' @param object MSE object, output of the DLMtool runMSE() function
-#' @param pm_list List of performace metric names. Must be even length, with odd ones being compared
-#'  to the even ones that follow them in pairs
-#' @param refs List containing the reference limits for each metric
+#' @param object MSE object, output of the DLMtool [DLMtool::runMSE()] function
+#' @param pm_list List of performace metric names
+#' @param refs Optional. List containing the reference limits for each metric
 #' @param yrs Numeric vector of length 2 with year indices to summarize performance
 #' @param lims  A numeric vector of acceptable risk/minimum probability thresholds
 #'
-#' @returns A data frame of the MP name, name and probability of x and y performance metrics,
+#' @returns A data frame of the MP name, name and probability of performance metrics,
 #'  and pass/fail
-trade_off <- function(object,
-                      pm_list = NULL,
-                      refs = NULL,
-                      yrs = NULL,
-                      lims = NULL){
+pm_pass <- function(object,
+                    pm_list = NULL,
+                    refs = NULL,
+                    yrs = NULL,
+                    lims = NULL){
 
   if(is.null(lims) | is.null(pm_list)){
     stop("Both pm_list and lims are required arguments.",
          call. = FALSE)
   }
 
-  if(length(pm_list) %% 2){
-    stop("pm_list must have an even length.",
-         call. = FALSE)
-  }
-
-  if(length(lims) != length(pm_list) / 2){
-    stop("lims must be half the length of pm_list.",
+  if(length(lims) != length(pm_list)){
+    stop("lims must be the length of pm_list.",
          call. = FALSE)
   }
 
@@ -149,37 +162,25 @@ trade_off <- function(object,
     }
   }
 
-  xind <- seq(1, by = 2, length.out = length(pm_list) / 2)
-  yind <- xind + 1
   out <- list()
-  for(i in seq_len(length(pm_list) / 2)){
-    xpm <- pm_list[[xind[i]]]
-    xvals <- run_pm[[match(xpm, pm_list)]]@Mean
-    xcap <-  run_pm[[match(xpm, pm_list)]]@Caption
-    xname <-  run_pm[[match(xpm, pm_list)]]@Name
-    xline <- lims[i]
-
-    ypm <- pm_list[[yind[i]]]
-    yvals <- run_pm[[match(ypm, pm_list)]]@Mean
-    ycap <-  run_pm[[match(ypm, pm_list)]]@Caption
-    yname <-  run_pm[[match(ypm, pm_list)]]@Name
-    yline <- lims[i]
+  for(i in seq_along(pm_list)){
+    pm <- pm_list[[i]]
+    prob <- run_pm[[match(pm, pm_list)]]@Mean
+    probcap <- run_pm[[match(pm, pm_list)]]@Caption
+    name <- run_pm[[match(pm, pm_list)]]@Name
+    line <- lims[i]
 
     mp_type <- MPtype(object@MPs)
-    class <- mp_type[match(object@MPs, mp_type[,1]),2]
+    class <- mp_type[match(object@MPs, mp_type[,1]), 2]
 
     out[[i]] <- as_tibble(data.frame(id = i,
-                                     name = object@MPs,
-                                     x = xvals,
-                                     y = yvals,
-                                     xcap = xcap,
-                                     ycap = ycap,
-                                     xname = xname,
-                                     yname = yname,
+                                     mp = object@MPs,
+                                     pm = pm,
+                                     prob = prob,
+                                     probcap = probcap,
+                                     english = name,
                                      class = class,
-                                     pass = xvals > xline & yvals > yline,
-                                     xpm = xpm,
-                                     ypm = ypm))
+                                     pass = prob > line))
 
   }
   do.call(rbind, out)
