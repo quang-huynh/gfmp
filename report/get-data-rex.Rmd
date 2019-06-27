@@ -22,14 +22,21 @@ science_name <- "Glyptocephalus zachirusadus"
 
 drex <- load_data_rex()
 drex$commercial_samples <- drex$commercial_samples %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas)
+  dplyr::filter(major_stat_area_code %in% rex_areas) %>%
+  dplyr::mutate(year = lubridate::year(trip_start_date)) %>% 
+  dplyr::filter(year <= 2018)
 
 drex$survey_samples <- drex$survey_samples %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas)
+  dplyr::filter(major_stat_area_code %in% rex_areas) %>% 
+  dplyr::mutate(year = lubridate::year(trip_start_date)) %>% 
+  dplyr::filter(year <= 2018)
 
 drex$catch <- drex$catch %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas)
+  dplyr::filter(major_stat_area_code %in% rex_areas) %>% 
+  dplyr::mutate(year = lubridate::year(fe_start_date)) %>% 
+  dplyr::filter(year <= 2018)
 
 drex$survey_index <- drex$survey_index %>%
-  dplyr::filter(survey_series_desc %in% rex_surveys)
+  dplyr::filter(survey_series_desc %in% rex_surveys) %>% 
+  dplyr::filter(year <= 2018)
 ```
