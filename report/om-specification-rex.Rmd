@@ -46,10 +46,12 @@ stockrex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
-From @turnock2005. This is the plus group value.
+From @turnock2005. This is the plus group value. TODO Can't find turnock2005
+
+From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region.
 
 ```{r desc-stockrex-maxage-rex, results = knitr_results, echo = knitr_echo}
-stockrex@maxage <- max(drex$survey_samples$age, drex$commercial_samples$age, na.rm = TRUE)
+stockrex@maxage <- 27
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -57,10 +59,10 @@ stockrex@maxage <- max(drex$survey_samples$age, drex$commercial_samples$age, na.
 
 *The magnitude of unfished recruitment. Single value. Positive real number*
 
-From @mcgilliard2017, Table 13, model 15.0.
+The absolute value is meaningless here. Arbitrarily pick a value.
 
 ```{r desc-stockrex-r0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@R0 <- exp(11.5683)
+stockrex@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -71,7 +73,7 @@ stockrex@R0 <- exp(11.5683)
 From @mcgilliard2017
 
 ```{r desc-stockrex-m-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M <- c(0.17, 0.17) # TODO add uncertainty
+stockrex@M <- c(0.17, 0.17) # TODO add uncertainty?
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -108,10 +110,10 @@ stockrex@Msd <- c(0, 0)
 
 *Steepness of the stockrex recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
-FIXME: Completely fabricated (copied from Shortraker OM). I could not find a value of steepness anywhere in the recent assessments.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that because of the bias in the value estimated for north Atlantic cod in that paper that the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% CI of 0.69--0.98). Here we will choose a value that encompasses this range with some extra uncertainty.
 
 ```{r desc-stockrex-h-rex, results = knitr_results, echo = knitr_echo}
-stockrex@h <- c(0.4, 0.9)
+stockrex@h <- c(0.70, 0.95)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
