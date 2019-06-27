@@ -653,7 +653,7 @@ fleetrex@VmaxUpper
 
 
 ```{r desc-fleetrex-currentyr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@CurrentYr <- 2019
+fleetrex@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
