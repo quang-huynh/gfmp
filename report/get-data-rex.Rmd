@@ -1,9 +1,22 @@
 
 ```{r download-data-rex}
-rex_areas <- c("03", "04", "05", "06", "07", "08", "09")
-rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl",
-                 "Queen Charlotte Sound Synoptic Bottom Trawl",
-                 "Hecate Strait Synoptic Bottom Trawl")
+# rex_areas <- c("03", "04", "05", "06", "07", "08", "09")
+rex_areas <- c("03", "04")
+rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl")
+                 #"Queen Charlotte Sound Synoptic Bottom Trawl",
+                 #"Hecate Strait Synoptic Bottom Trawl")
+
+#    major_stat_area_code major_stat_area_name
+#  1 00                   UNKNOWN: NO POSITION INFORMATION   
+#  2 01                   4B: STRAIT OF GEORGIA              
+#  3 02                   3B: CAPE FLATTERY (47 20' to 220 T)
+#  4 03                   3C: S.W. VANCOUVER ISLAND          
+#  5 04                   3D: N.W. VANCOUVER ISLAND          
+#  6 05                   5A: SOUTHERN Q.C. SOUND            
+#  7 06                   5B: NORTHERN Q.C. SOUND            
+#  8 07                   5C: SOUTHERN HECATE STRAIT         
+#  9 08                   5D: NORTHERN HECATE STRAIT         
+# 10 09                   5E: WEST COAST Q.C. ISLANDS   
 
 science_name <- "Glyptocephalus zachirusadus"
 
@@ -19,5 +32,4 @@ drex$catch <- drex$catch %>%
 
 drex$survey_index <- drex$survey_index %>%
   dplyr::filter(survey_series_desc %in% rex_surveys)
-
 ```
