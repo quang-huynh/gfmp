@@ -72,32 +72,49 @@ indexes <- drex$survey_index %>%
   as.matrix()
 
 indexes
-plot(all_years, indexes[,1L])
-plot(all_years, indexes[,2L])
+plot(all_years, indexes[, 1L])
+plot(all_years, indexes[, 2L])
 
-MSEtool::plot_composition(all_years, obs = cal_wcvi$cal,
-  CAL_bins = cal_wcvi$length_bins)
+MSEtool::plot_composition(all_years,
+  obs = cal_wcvi$cal,
+  CAL_bins = cal_wcvi$length_bins
+)
 
 rex_om@nsim <- 8L
-rex_sra1 <- MSEtool:::SRA_scope(rex_om, Chist = catch, Index = indexes[,1L],
-  CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[,2L],
-  I_type = 1L, cores = 1L, report = TRUE)
+rex_sra1 <- MSEtool:::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1L],
+  CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[, 2L],
+  I_type = 1L, cores = 1L, report = TRUE
+)
 
-MSEtool::plot_SRA_scope(rex_sra1$OM, Chist = catch,
+MSEtool::plot_SRA_scope(rex_sra1$OM,
+  Chist = catch,
   CAL = cal_wcvi$cal,
-  Index = indexes[,1L], report_list = rex_sra1$report, Year = all_years)
+  Index = indexes[, 1L], report_list = rex_sra1$report, Year = all_years
+)
 
 rex_om@nsim <- 48L
-cores <- floor(parallel::detectCores()/2)
-rex_sra2 <- MSEtool:::SRA_scope(rex_om, Chist = catch, Index = indexes[,1L],
-  I_sd = indexes[,2L], I_type = 1L, cores = cores, report = TRUE)
+cores <- floor(parallel::detectCores() / 2)
+rex_sra2 <- MSEtool:::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1L], integrate = FALSE,
+  I_sd = indexes[, 2L], I_type = 1L, cores = cores, report = TRUE
+)
 hist(rex_sra2$OM@cpars$D)
-matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000030")
+matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
 hist(rex_sra2$OM@cpars$AC)
+matplot(t(rex_sra2$output$SSB), type = "l", lty = 1, col = "#00000040")
 
-# FIXME: upper apical F needs to be bounded to something reasonable; look into what's causing this here
+plot(all_years, exp(rex_sra2$report[[1]]$log_rec_dev))
+
+# FIXME: apical F needs to be bounded to something reasonable; look into what's causing this here (low survey index and high catches in 2005)
+matplot(t(rex_sra2$OM@cpars$Find),
+  type = "l", lty = 1, col = "#00000040",
+  ylim = c(0, 3)
+)
 plot(rex_sra2$OM@EffYears, rex_sra2$OM@EffLower, type = "o", ylim = c(0, 3))
 lines(rex_sra2$OM@EffYears, rex_sra2$OM@EffUpper, type = "o")
 
-MSEtool::plot_SRA_scope(rex_sra2$OM, Chist = catch,
-  Index = indexes[,1L], report_list = rex_sra2$report, Year = all_years)
+MSEtool::plot_SRA_scope(rex_sra2$OM,
+  Chist = catch,
+  Index = indexes[, 1L], report_list = rex_sra2$report, Year = all_years
+)
