@@ -1,10 +1,10 @@
 
 ```{r download-data-rex}
-# rex_areas <- c("03", "04", "05", "06", "07", "08", "09")
-rex_areas <- c("03", "04")
-rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl")
-                 #"Queen Charlotte Sound Synoptic Bottom Trawl",
-                 #"Hecate Strait Synoptic Bottom Trawl")
+# # rex_areas <- c("03", "04", "05", "06", "07", "08", "09")
+# rex_areas <- c("03", "04")
+# rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl")
+#                  #"Queen Charlotte Sound Synoptic Bottom Trawl",
+#                  #"Hecate Strait Synoptic Bottom Trawl")
 
 #    major_stat_area_code major_stat_area_name
 #  1 00                   UNKNOWN: NO POSITION INFORMATION   
@@ -20,23 +20,5 @@ rex_surveys <- c("West Coast Vancouver Island Synoptic Bottom Trawl")
 
 science_name <- "Glyptocephalus zachirusadus"
 
-drex <- load_data_rex()
-drex$commercial_samples <- drex$commercial_samples %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas) %>%
-  dplyr::mutate(year = lubridate::year(trip_start_date)) %>% 
-  dplyr::filter(year <= 2018)
-
-drex$survey_samples <- drex$survey_samples %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas) %>% 
-  dplyr::mutate(year = lubridate::year(trip_start_date)) %>% 
-  dplyr::filter(year <= 2018)
-
-drex$catch <- drex$catch %>%
-  dplyr::filter(major_stat_area_code %in% rex_areas) %>% 
-  dplyr::mutate(year = lubridate::year(fe_start_date)) %>% 
-  dplyr::filter(year <= 2018)
-
-drex$survey_index <- drex$survey_index %>%
-  dplyr::filter(survey_series_desc %in% rex_surveys) %>% 
-  dplyr::filter(year <= 2018)
+drex <- load_data_rex() %>% filter_data_rex()
 ```
