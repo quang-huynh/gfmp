@@ -1,11 +1,11 @@
 \newpage
 
-# SHORTRAKER: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-sr}
+# REX SOLE: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-rex}
 
 Use the management procedures that passed the screening test
 
 ```{r}
-mpsr <- c("AvC", 
+mprex <- c("AvC",
           "CC2", 
           "CC3",
           "DD", 
@@ -28,31 +28,24 @@ mpsr <- c("AvC",
           "SP_MSY")
 
 #Group MPs into similar types
-mpsr_group <- list()
-mpsr_group[[1]] <- mpsr[1:3]
-mpsr_group[[2]] <- mpsr[4:5]
-mpsr_group[[3]] <- mpsr[6:7]
-mpsr_group[[4]] <- mpsr[8:10]
-mpsr_group[[5]] <- mpsr[c(11:12,19)]
-mpsr_group[[6]] <- mpsr[13:15]
-mpsr_group[[7]] <- mpsr[16:18]
-mpsr_group[[8]] <- mpsr[20:21]
+mprex_group <- list()
+mprex_group[[1]] <- mprex[1:3]
+mprex_group[[2]] <- mprex[4:5]
+mprex_group[[3]] <- mprex[6:7]
+mprex_group[[4]] <- mprex[8:10]
+mprex_group[[5]] <- mprex[c(11:12,19)]
+mprex_group[[6]] <- mprex[13:15]
+mprex_group[[7]] <- mprex[16:18]
+mprex_group[[8]] <- mprex[20:21]
 
 mptypenames <- c("Av Catch", "Delay Difference","Catch Target", "Index Slope", "Index Target","Stepwise Constant Catch", "Length Target","Surplus Production")
-
 ```
 
-
-```{r, results='asis'}
-csasdown::csas_table(MPtype(mpsr))
-```
-
-# SHORTRAKER: RESULTS 
+# REX SOLE: RESULTS 
 
 ## Constructing the operating model
 
 Get the operating model. For Shortraker we are using the DLMtool operating model.
-
 
 ```{r echo = TRUE}
 omsr <- new('OM', stock, fleet, obs, imp)
