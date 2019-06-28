@@ -15,6 +15,7 @@ rex_om@b
 rex_om@L50
 rex_om@L50_95
 rex_om@LFS
+rex_om@L5
 rex_om@Cobs
 rex_om@Perr
 rex_om@nsim <- 4
@@ -22,6 +23,7 @@ rex_om@Msd <- c(0, 0)
 rex_om@Linfsd <- c(0, 0)
 rex_om@Ksd <- c(0, 0)
 rex_om@nyears
+rex_om@maxage
 stopifnot(identical(rex_om@nyears, length(all_years)))
 
 # from WCVI:
@@ -80,24 +82,37 @@ MSEtool::plot_composition(all_years,
   CAL_bins = cal_wcvi$length_bins
 )
 
+# rex_om@nsim <- 8L
+# rex_sra1 <- MSEtool:::SRA_scope(rex_om,
+#   Chist = catch, Index = indexes[, 1L],
+#   CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[, 2L],
+#   I_type = 1L, cores = 1L, report = TRUE
+# )
+#
+# MSEtool::plot_SRA_scope(rex_sra1$OM,
+#   Chist = catch,
+#   CAL = cal_wcvi$cal,
+#   Index = indexes[, 1L], report_list = rex_sra1$report, Year = all_years
+# )
+
+I_sd <- indexes[, 2L]
+# I_sd[all_years == 2004] <- 1
+# I_sd[all_years == 2006] <- 1
+I_sd
+
+# rex_om@M <- c(0.12, 0.12)
+# rex_om@M <- c(0.17, 0.17)
+# rex_om@maxage <- 50
+# rex_om@maxage <- 27
+
+rex_om@L5
+rex_om@LFS
+
 rex_om@nsim <- 8L
-rex_sra1 <- MSEtool:::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1L],
-  CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[, 2L],
-  I_type = 1L, cores = 1L, report = TRUE
-)
-
-MSEtool::plot_SRA_scope(rex_sra1$OM,
-  Chist = catch,
-  CAL = cal_wcvi$cal,
-  Index = indexes[, 1L], report_list = rex_sra1$report, Year = all_years
-)
-
-rex_om@nsim <- 48L
 cores <- floor(parallel::detectCores() / 2)
 rex_sra2 <- MSEtool:::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1L], integrate = FALSE,
-  I_sd = indexes[, 2L], I_type = 1L, cores = cores, report = TRUE
+  I_sd = I_sd, I_type = 1L, cores = cores, report = TRUE
 )
 hist(rex_sra2$OM@cpars$D)
 matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
@@ -108,10 +123,9 @@ plot(all_years, exp(rex_sra2$report[[1]]$log_rec_dev))
 
 # FIXME: apical F needs to be bounded to something reasonable; look into what's causing this here (low survey index and high catches in 2005)
 matplot(t(rex_sra2$OM@cpars$Find),
-  type = "l", lty = 1, col = "#00000040",
-  ylim = c(0, 3)
+  type = "l", lty = 1, col = "#00000040", ylim = c(0, 2)
 )
-plot(rex_sra2$OM@EffYears, rex_sra2$OM@EffLower, type = "o", ylim = c(0, 3))
+plot(rex_sra2$OM@EffYears, rex_sra2$OM@EffLower, type = "o", ylim = c(0, 2))
 lines(rex_sra2$OM@EffYears, rex_sra2$OM@EffUpper, type = "o")
 
 MSEtool::plot_SRA_scope(rex_sra2$OM,

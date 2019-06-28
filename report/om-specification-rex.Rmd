@@ -499,9 +499,12 @@ fleetrex@qcv <- c(0, 0)
 
 ```{r min-caught-rex}
 min_caught <- min(drex$commercial_samples$length, na.rm = TRUE)
+min_caught <- 14
 ```
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockrex@L50[[1]]` to `r stockrex@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockrex@L50[[2]], 1)`- and `r round(min_caught/stockrex@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+TODO: in the data from this analysis report the minimum length caught in 3C is 14. Need to figure out why these are not in our filtered rex data.
+
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockrex@L50[[1]]` to `r stockrex@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught`, although commercial samples are only available from 2015 in WCVI.
 
 ```{r desc-fleetrex-l5-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@L5 <- c(min_caught/stockrex@L50[[2]], min_caught/stockrex@L50[[1]])
@@ -512,12 +515,19 @@ fleetrex@L5 <- c(min_caught/stockrex@L50[[2]], min_caught/stockrex@L50[[1]])
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity. Let's make this slightly larger than `L5`, which effectively makes this almost knife-edged selectivity:
-FIXME
+Here's a comparison of the commercial and survey samples:
+
+```{r}
+hist(drex$commercial_samples$length, xlim = c(5, 60), breaks = 50);par(new = TRUE);plot(density(na.omit(drex$survey_samples$length)), xlim = c(5, 60), main = "", ylab = "", xlab = "", axes = FALSE)
+# FIXME: missing a lot of samples
+```
+
+Based on the observed commercial length samples let's assume that Rex Sole is fully vulnerable to fishing by the like that 50% maturity. FIXME
 
 ```{r desc-fleetrex-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFS <- fleetrex@L5 * 1.1
+fleetrex@LFS <- c(0.9, 1.1)
 ```
+
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Vmaxlen {#app:desc-fleetrex-vmaxlen-rex}
