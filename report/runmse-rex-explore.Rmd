@@ -140,7 +140,7 @@ plot_probs(probs)
 x <- eval_pm(rex_mse,
   pm_list = as.list(PM)
 ) %>% select(mp, pm, prob)
-satisficed <- filter(probs[[1]], P40_yrs36_50 >= 0.6) %>% pull(MP)
+satisficed <- filter(probs[[1]], P40_yrs36_50 >= 0.70) %>% pull(MP)
 xx <- dplyr::filter(x, mp %in% satisficed)
 ggspider::spider_web(xx, "mp", "pm", "prob")
 ```
