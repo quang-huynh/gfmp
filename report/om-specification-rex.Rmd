@@ -46,10 +46,12 @@ stockrex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
-From @turnock2005. This is the plus group value.
+From @turnock2005. This is the plus group value. TODO Can't find turnock2005
+
+From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region.
 
 ```{r desc-stockrex-maxage-rex, results = knitr_results, echo = knitr_echo}
-stockrex@maxage <- max(drex$survey_samples$age, drex$commercial_samples$age, na.rm = TRUE)
+stockrex@maxage <- 27
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -57,10 +59,10 @@ stockrex@maxage <- max(drex$survey_samples$age, drex$commercial_samples$age, na.
 
 *The magnitude of unfished recruitment. Single value. Positive real number*
 
-From @mcgilliard2017, Table 13, model 15.0.
+The absolute value is meaningless here. Arbitrarily pick a value.
 
 ```{r desc-stockrex-r0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@R0 <- exp(11.5683)
+stockrex@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -71,7 +73,7 @@ stockrex@R0 <- exp(11.5683)
 From @mcgilliard2017
 
 ```{r desc-stockrex-m-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M <- c(0.17, 0.17) # TODO add uncertainty
+stockrex@M <- c(0.17, 0.17) # TODO add uncertainty?
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -108,10 +110,10 @@ stockrex@Msd <- c(0, 0)
 
 *Steepness of the stockrex recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
-FIXME: Completely fabricated (copied from Shortraker OM). I could not find a value of steepness anywhere in the recent assessments.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that because of the bias in the value estimated for north Atlantic cod in that paper that the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% CI of 0.69--0.98). Here we will choose a value that encompasses this range with some extra uncertainty.
 
 ```{r desc-stockrex-h-rex, results = knitr_results, echo = knitr_echo}
-stockrex@h <- c(0.4, 0.9)
+stockrex@h <- c(0.70, 0.95)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -119,7 +121,7 @@ stockrex@h <- c(0.4, 0.9)
 
 *Type of stockrex-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 
-FIXME: see shortraked OM
+We will use a Beverton-Holt stock-recruit relationship as is been used in most British Columbia groundfish assessments and is assumed in the estimates of steepness used in this operating model.
 
 ```{r desc-stockrex-srrel-rex, results = knitr_results, echo = knitr_echo}
 stockrex@SRrel <- 1L
@@ -132,8 +134,10 @@ stockrex@SRrel <- 1L
 
 FIXME: Need to look at other assessments. For now this was copied from the Shortraker OM.
 
+@thorson2014 (Table 2) finds the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation.
+
 ```{r desc-stockrex-perr-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Perr <- c(0.5, 0.9)
+stockrex@Perr <- c(0.4, 0.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -141,11 +145,10 @@ stockrex@Perr <- c(0.5, 0.9)
 
 *Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-@thorson2014 (Table 2) finds the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27.
-
+@thorson2014 (Table 2) finds the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will set our uniform distribution to be approximately plus or minus one standard deviation.
 
 ```{r desc-stockrex-ac-rex, results = knitr_results, echo = knitr_echo}
-stockrex@AC <- c(0.2, 0.6)
+stockrex@AC <- c(0.2, 0.7)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -177,12 +180,15 @@ Alternatively from @turnock2005, table 4.12:
 - Male = 39.5
 - Female = 44.9
 
+TODO: take the linf from the females above and add uncertainty (also for other VB parameters)
+
 ```{r desc-stockrex-linf-rex, results = knitr_results, echo = knitr_echo}
-mvb <- gfplot::fit_vb(drex$survey_samples, sex = "all")
-mvb_summary <- summary(TMB::sdreport(mvb$model))
-vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
-gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
-stockrex@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+# mvb <- gfplot::fit_vb(drex$survey_samples, sex = "all")
+# mvb_summary <- summary(TMB::sdreport(mvb$model))
+# vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
+# gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
+# stockrex@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+stockrex@Linf <- c(39.5, 44.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -195,7 +201,8 @@ Alternatively from @turnock2005, table 4.12:
 - Female = 0.31
 
 ```{r desc-stockrex-k-rex, results = knitr_results, echo = knitr_echo}
-stockrex@K <- c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+# stockrex@K <- c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+stockrex@K <- c(0.31, 0.38)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -209,7 +216,8 @@ Alternatively from @turnock2005, table 4.12:
 Note - t0 was not reported in @mcgilliard2017, but @turnock2005 reported all values t0, K, and Linf
 
 ```{r desc-stockrex-t0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+# stockrex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+stockrex@t0 <- c(0.69, 0.79)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -217,11 +225,13 @@ stockrex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
 
 *Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
 
+TODO: picking a value here
 
 ```{r desc-stockrex-lencv-rex, results = knitr_results, echo = knitr_echo}
-sd2cv <- function(.sd) sqrt(exp(.sd ^ 2) - 1)
-stockrex@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
-round(stockrex@LenCV, 2)
+# sd2cv <- function(.sd) sqrt(exp(.sd ^ 2) - 1)
+# stockrex@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+# round(stockrex@LenCV, 2)
+stockrex@LenCV <- c(0.2, 0.2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -229,10 +239,10 @@ round(stockrex@LenCV, 2)
 
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-FIXME: pick this. For now picking an arbitrary range.
+Assuming that growth is not time varying.
 
 ```{r desc-stockrex-ksd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Ksd <- c(0, 0.2)
+stockrex@Ksd <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -240,7 +250,7 @@ stockrex@Ksd <- c(0, 0.2)
 
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-FIXME: We don't have much to go on here without some kind of a meta-analysis across other species.
+Assuming that growth is not time varying.
 
 ```{r desc-stockrex-linfsd-rex, results = knitr_results, echo = knitr_echo}
 stockrex@Linfsd <- c(0, 0.2)
@@ -285,12 +295,10 @@ stockrex@L50_95
 
 *Current level of stockrex depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 
-TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
-
-FIXME: This is an important value that we may want to think more deeply about.
+This will be populated via the SRA model.
 
 ```{r desc-stockrex-d-rex, results = knitr_results, echo = knitr_echo}
-stockrex@D <- c(0.1, 0.8)
+stockrex@D
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -328,7 +336,7 @@ round(stockrex@b, 2)
 
 *The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-We will set this to 0.5 to approximate a single area model.
+We will set this to 0.5 to mimic a single area model.
 
 ```{r desc-stockrex-size_area_1-rex, results = knitr_results, echo = knitr_echo}
 stockrex@Size_area_1 <- c(0.5, 0.5)
@@ -339,7 +347,7 @@ stockrex@Size_area_1 <- c(0.5, 0.5)
 
 *The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
 
-We will set this to 0.5 to approximate a single area model.
+We will set this to 0.5 to mimic a single area model.
 
 ```{r desc-stockrex-frac_area_1-rex, results = knitr_results, echo = knitr_echo}
 stockrex@Frac_area_1 <- c(0.5, 0.5)
@@ -350,7 +358,7 @@ stockrex@Frac_area_1 <- c(0.5, 0.5)
 
 *The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 
-We will set this to 0.5 to approximate a single area model.
+We will set this to 0.5 to mimic a single area model.
 
 ```{r desc-stockrex-prob_staying-rex, results = knitr_results, echo = knitr_echo}
 stockrex@Prob_staying <- c(0.5, 0.5)
@@ -361,10 +369,10 @@ stockrex@Prob_staying <- c(0.5, 0.5)
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-FIXME: Fabricated value of 30% by CJG. Maybe discarding has to be set up in operating model for this to take effect..
+Since there is 100% observer coverage we can assume there is no unreported discards. Therefore the following slot does not get used.
 
 ```{r desc-stockrex-fdisc-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Fdisc <- 0.3
+stockrex@Fdisc
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -413,6 +421,7 @@ c(catch_yrs[1], catch_yrs[length(catch_yrs)])
 
 *Distribution of fishing in relation to spatial biomass: fishing distribution is proportional to B^Spat_targ. Uniform distribution lower and upper bounds. Real numbers*
 
+We have set up a single area model.
 
 ```{r desc-fleetrex-spat_targ-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@Spat_targ
@@ -423,6 +432,7 @@ fleetrex@Spat_targ
 
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
 
+This will be populated by the SRA model.
 
 ```{r desc-fleetrex-effyears-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@EffYears
@@ -433,6 +443,7 @@ fleetrex@EffYears
 
 *Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
 
+This will be populated by the SRA model.
 
 ```{r desc-fleetrex-efflower-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@EffLower
@@ -443,6 +454,7 @@ fleetrex@EffLower
 
 *Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
 
+This will be populated by the SRA model.
 
 ```{r desc-fleetrex-effupper-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@EffUpper
@@ -453,10 +465,10 @@ fleetrex@EffUpper
 
 *Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
+We will assume that natural mortality is not time varying.
 
 ```{r desc-fleetrex-esd-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Esd <- c(0.1, 0.4)
+fleetrex@Esd <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -464,7 +476,7 @@ fleetrex@Esd <- c(0.1, 0.4)
 
 *Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
+We will assume that fishing efficiency is not time varying.
 
 ```{r desc-fleetrex-qinc-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@qinc <- c(0, 0)
@@ -475,7 +487,7 @@ fleetrex@qinc <- c(0, 0)
 
 *Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-TODO: We don't have a lot of data to go on for this. We will set this to 0 to indicate no interannual variability in fishing efficiency for simplicity.
+We will assume that fishing efficiency is not time varying.
 
 ```{r desc-fleetrex-qcv-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@qcv <- c(0, 0)
@@ -490,7 +502,7 @@ Based on the slot `isRel` below, this lot needs to be filled in proportion of si
 
 
 ```{r desc-fleetrex-l5-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@L5 <- c(0.4, 0.6)
+fleetrex@L5 <- c(min_caught/stockrex@L50[[2]], min_caught/stockrex@L50[[1]])
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -676,7 +688,7 @@ obsrex <- DLMtool::Precise_Unbiased
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obsrex-name-rex}
 
-*The name of the obsrexervation model object. Single value. Character string.*
+*The name of the observation model object. Single value. Character string.*
 
 
 ```{r desc-obsrex-name-rex, results = knitr_results, echo = knitr_echo}
@@ -686,7 +698,7 @@ obsrex@Name <- "BC Obs"
 <!-- slot-chunk-begin -->
 ### Cobsrex {#app:desc-obsrex-cobsrex-rex}
 
-*Log-normal catch obsrexervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 At least since 1996, observation error on catch should be very small. Setting this to 0.
 
@@ -699,7 +711,7 @@ obsrex@Cobs <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obsrex-cbiascv-rex}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch obsrexervations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
 
@@ -712,8 +724,9 @@ obsrex@Cbiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### CAA_nsamp {#app:desc-obsrex-caa_nsamp-rex}
 
-*Number of catch-at-age obsrexervation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 
+TODO: critical to get this right
 
 ```{r desc-obsrex-caa_nsamp-rex, results = knitr_results, echo = knitr_echo}
 obsrex@CAA_nsamp
@@ -722,8 +735,9 @@ obsrex@CAA_nsamp
 <!-- slot-chunk-begin -->
 ### CAA_ESS {#app:desc-obsrex-caa_ess-rex}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age obsrexervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
+TODO: critical to get this right
 
 ```{r desc-obsrex-caa_ess-rex, results = knitr_results, echo = knitr_echo}
 obsrex@CAA_ESS
@@ -732,8 +746,9 @@ obsrex@CAA_ESS
 <!-- slot-chunk-begin -->
 ### CAL_nsamp {#app:desc-obsrex-cal_nsamp-rex}
 
-*Number of catch-at-length obsrexervation per time step. Uniform distribution lower and upper bounds. Positive integers*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
+TODO: critical to get this right
 
 ```{r desc-obsrex-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
 obsrex@CAL_nsamp
@@ -742,7 +757,7 @@ obsrex@CAL_nsamp
 <!-- slot-chunk-begin -->
 ### CAL_ESS {#app:desc-obsrex-cal_ess-rex}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length obsrexervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 
 ```{r desc-obsrex-cal_ess-rex, results = knitr_results, echo = knitr_echo}
@@ -769,7 +784,7 @@ obsrex@Iobs <- c(average_cv, average_cv)
 <!-- slot-chunk-begin -->
 ### Ibiascv {#app:desc-obsrex-ibiascv-rex}
 
-*Log-normal coefficient of variation controlling error in obsrexervations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obsrex-ibiascv-rex, results = knitr_results, echo = knitr_echo}
@@ -779,7 +794,7 @@ obsrex@Ibiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### Btobsrex {#app:desc-obsrex-btobsrex-rex}
 
-*Log-normal coefficient of variation controlling error in obsrexervations of current stockrex biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current stockrex biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obsrex-btobsrex-rex, results = knitr_results, echo = knitr_echo}
@@ -951,7 +966,7 @@ obsrex@Dbiascv <- c(0.1, 0.3)
 <!-- slot-chunk-begin -->
 ### Dobsrex {#app:desc-obsrex-dobsrex-rex}
 
-*Log-normal coefficient of variation controlling error in obsrexervations of stockrex depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of stockrex depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obsrex-dobsrex-rex, results = knitr_results, echo = knitr_echo}
