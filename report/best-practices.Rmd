@@ -1,14 +1,16 @@
 # BEST PRACTICES FOR IMPLEMENTING A MANAGEMENT PROCEDURE APPROACH
 
-@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2-6 below). In large part, DLMtool is designed to follow these steps [@carruthers2018]. In addition, structured decision-making theory [@gregory2012] identifies a critical first step in decision-making processes, which is to define the decision context (Step 1 below).
+A critical first step in any decision-making processes is defining the decision context [@gregory2012]. This is particularly important in complex decision-making approaches such as MSE, where it is necessary to clarify which decisions that need to be made and, importantly, the plan for reaching a decision([^1]). Some key questions to be answered at this step are listed in Step 1 below. Following this step, implementation of the MSE also follows a series of stages. @punt2016 reviewed best practices for MSE and identified five key steps in the process (described in Steps 2-6 below). In large part, DLMtool has been designed to follow these steps, illustrated in Figure \@ref(fig:fig-dlmtool) [@carruthers2018].  
 
-Importantly, decision-makers, stakeholders and other interested groups (First Nations, NGOs, academics) should be engaged throughout the process, particularly in defining the decision context, setting objective and performance metrics and selection of MPs [e.g., @cox2008a].
-
-### 1. Define the decision context
+Importantly, decision-makers, stakeholders and other interested parties (First Nations, NGOs, academics) should be engaged throughout the process, particularly in defining the decision context, setting objective and performance metrics and selection of MPs [e.g., @cox2008a].
 
 *TO DO: figure out how to cite the landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region.) *
 
-Defining the decision context clarifies the goals of the process and lays out the roadmap for how to achieve the goals[^1]. Key questions to guide definition of the decision context for MSE include:
+
+### 1. Define the decision context
+
+
+Defining the decision context . Key questions to guide definition of the decision context for MSE include:
 
 * What is the the exact decision to be made?
 
@@ -23,8 +25,15 @@ Defining the decision context clarifies the goals of the process and lays out th
 
 ### 2. Selection of objectives and performance metrics
 
+Before running any MSE analyses, clear objectives and the performance metrics that measure them must be identified. Ideally, these should be developed with the participation of decision-makers, stakeholders and other interested parties. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability that stock size is below LRP is less than 5% over 50 years). Since the underlying system represented by the OM is known exactly, a wide range of biological and economic metrics is available [@carruthers2018]. 
+
+@punt2016 note that care should be taken to avoid having too many performance metrics, which could make the final decision process too complex. They also note that performance metrics should be chosen so they can be understood by decision-makers and participants.
 
 ### 3. Selection of uncertainties/specification of operating models
+
+Uncertainties inherent in the underlying system are represented in the OM. These may be related to the biology of the stock (e.g., growth, natural mortality, recruitment, migration), the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear), the observation process (e.g., bias or imprecision in survey data or age/length composition data), and the implementation process (e.g., exceeding catch limits) [@carruthers2018]. 
+
+Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured in a single OM. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in one model. Therefore, best practice recommends dividing MSE trials into a "reference" set, represented by a baseline OM, and a "robustness" set, represented by other plausible OM formulations that represent alternative structural hypotheses (e.g., time-varying natural mortality vs constant natural mortality, climate-driven recruitment, or alternative depletion states of the stock) [@rademeyer2007]. @punt2016 provide a list of factors whose uncertainty commonly has a large impact on MSE performance (their Table 3).
 
 
 ### 4. Identification of candidate management procedures

@@ -5,3 +5,10 @@
 knitr::include_graphics("figure/PA_Approach.jpg")
 
 ```
+
+```{r fig-dlmtool, fig.cap="The steps of the MSE process following @punt2016 as implemented in DLMtool", out.width="5in"}
+knitr::include_graphics("figure/Fig3_DLMtool_Steps.png")
+
+```
+
+Fig3_DLMtool_Steps.png
