@@ -108,8 +108,8 @@ I_sd
 rex_om@L5
 rex_om@LFS
 
-rex_om@nsim <- 8L
-cores <- floor(parallel::detectCores() / 2)
+rex_om@nsim <- 150
+cores <- floor(parallel::detectCores() / 1)
 rex_sra2 <- MSEtool:::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1L], integrate = FALSE,
   I_sd = I_sd, I_type = 1L, cores = cores, report = TRUE
@@ -118,17 +118,12 @@ hist(rex_sra2$OM@cpars$D)
 matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
 hist(rex_sra2$OM@cpars$AC)
 matplot(t(rex_sra2$output$SSB), type = "l", lty = 1, col = "#00000040")
-
-plot(all_years, exp(rex_sra2$report[[1]]$log_rec_dev))
-
-# FIXME: apical F needs to be bounded to something reasonable; look into what's causing this here (low survey index and high catches in 2005)
-matplot(t(rex_sra2$OM@cpars$Find),
-  type = "l", lty = 1, col = "#00000040", ylim = c(0, 2)
-)
-plot(rex_sra2$OM@EffYears, rex_sra2$OM@EffLower, type = "o", ylim = c(0, 2))
-lines(rex_sra2$OM@EffYears, rex_sra2$OM@EffUpper, type = "o")
+matplot(t(rex_sra2$OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
 
 MSEtool::plot_SRA_scope(rex_sra2$OM,
   Chist = catch,
   Index = indexes[, 1L], report_list = rex_sra2$report, Year = all_years
 )
+
+saveRDS(rex_sra2$OM, file = here::here("generated-data", "rex-om-sra.rds"))
+saveRDS(rex_sra2$report, file = here::here("generated-data", "rex-sra-report.rds"))
