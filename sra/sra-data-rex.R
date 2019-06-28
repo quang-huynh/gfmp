@@ -14,8 +14,16 @@ rex_om@a
 rex_om@b
 rex_om@L50
 rex_om@L50_95
+rex_om@LFS
 rex_om@Cobs
 rex_om@Perr
+rex_om@nsim <- 4
+rex_om@Msd <- c(0, 0)
+rex_om@Linfsd <- c(0, 0)
+rex_om@Ksd <- c(0, 0)
+rex_om@nyears
+stopifnot(identical(rex_om@nyears, length(all_years)))
+
 # from WCVI:
 # rex_om@Iobs <- c(0.09, 0.09) # specified in `MSEtool::SRA_scope(I_sd = ...)`
 
@@ -67,8 +75,29 @@ indexes
 plot(all_years, indexes[,1L])
 plot(all_years, indexes[,2L])
 
-MSEtool::plot_composition(all_years, obs = cal_wcvi$cal, CAL_bins = cal_wcvi$length_bins)
+MSEtool::plot_composition(all_years, obs = cal_wcvi$cal,
+  CAL_bins = cal_wcvi$length_bins)
 
+rex_om@nsim <- 8L
 rex_sra1 <- MSEtool:::SRA_scope(rex_om, Chist = catch, Index = indexes[,1L],
   CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[,2L],
-  I_type = 1L, cores = parallel::detectCores(), report = TRUE)
+  I_type = 1L, cores = 1L, report = TRUE)
+
+MSEtool::plot_SRA_scope(rex_sra1$OM, Chist = catch,
+  CAL = cal_wcvi$cal,
+  Index = indexes[,1L], report_list = rex_sra1$report, Year = all_years)
+
+rex_om@nsim <- 48L
+cores <- floor(parallel::detectCores()/2)
+rex_sra2 <- MSEtool:::SRA_scope(rex_om, Chist = catch, Index = indexes[,1L],
+  I_sd = indexes[,2L], I_type = 1L, cores = cores, report = TRUE)
+hist(rex_sra2$OM@cpars$D)
+matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000030")
+hist(rex_sra2$OM@cpars$AC)
+
+# FIXME: upper apical F needs to be bounded to something reasonable; look into what's causing this here
+plot(rex_sra2$OM@EffYears, rex_sra2$OM@EffLower, type = "o", ylim = c(0, 3))
+lines(rex_sra2$OM@EffYears, rex_sra2$OM@EffUpper, type = "o")
+
+MSEtool::plot_SRA_scope(rex_sra2$OM, Chist = catch,
+  Index = indexes[,1L], report_list = rex_sra2$report, Year = all_years)

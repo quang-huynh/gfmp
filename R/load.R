@@ -43,27 +43,28 @@ load_data_rex <- load_data_factory("rex sole",
 )
 
 filter_data_rex <- function(d,
+                            minimum_year = 1996,
                             maximum_year = 2018,
                             major_stat_area_codes = c("03", "04"),
                             survey_series_descs = c("West Coast Vancouver Island Synoptic Bottom Trawl")) {
   d$commercial_samples <- d$commercial_samples %>%
     dplyr::filter(major_stat_area_code %in% major_stat_area_codes) %>%
     dplyr::mutate(year = lubridate::year(trip_start_date)) %>%
-    dplyr::filter(year <= maximum_year)
+    dplyr::filter(year <= maximum_year, year >= minimum_year)
 
   d$survey_samples <- d$survey_samples %>%
     dplyr::filter(major_stat_area_code %in% major_stat_area_codes) %>%
     dplyr::mutate(year = lubridate::year(trip_start_date)) %>%
-    dplyr::filter(year <= maximum_year)
+    dplyr::filter(year <= maximum_year, year >= minimum_year)
 
   d$catch <- d$catch %>%
     dplyr::filter(major_stat_area_code %in% major_stat_area_codes) %>%
     dplyr::mutate(year = lubridate::year(fe_start_date)) %>%
-    dplyr::filter(year <= maximum_year)
+    dplyr::filter(year <= maximum_year, year >= minimum_year)
 
   d$survey_index <- d$survey_index %>%
     dplyr::filter(survey_series_desc %in% survey_series_descs) %>%
-    dplyr::filter(year <= maximum_year)
+    dplyr::filter(year <= maximum_year, year >= minimum_year)
 
   d
 }
