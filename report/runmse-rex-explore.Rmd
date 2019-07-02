@@ -99,6 +99,29 @@ rex_historical@TSdata$B %>%
   # facet_wrap(~Var1, scales = "free_y") +
   ylab("Simulated historical biomass") +
   xlab("Year")
+
+# Look at historical length composition data:
+names(rex_historical@TSdata)
+rex_historical@Data@CAL_bins
+dim(rex_historical@Data@CAL)
+rex_historical@Data@CAL[1, , ]
+
+bins <- rex_historical@Data@CAL_bins
+bins <- bins[-length(bins)]
+
+x <- rex_historical@Data@CAL %>%
+  reshape2::melt() %>%
+  transmute(
+    sample_id = Var1, year = Var2 + min(all_years) - 1,
+    proportion = value, type = "Simulated"
+  ) %>%
+  mutate(length_bin = rep(bins, each = max(sample_id) * length(all_years)))
+
+filter(x, year %in% seq(1996, 2018, 2)) %>%
+  filter(sample_id %in% sample.int(150, 9)) %>%
+  ggplot(aes(length_bin, proportion)) +
+  geom_col() +
+  facet_grid(year ~ sample_id)
 ```
 
 \newpage
