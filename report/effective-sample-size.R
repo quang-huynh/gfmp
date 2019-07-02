@@ -23,6 +23,10 @@ dd <- filter(d, year == 2017) %>%
 
 mean(dd$length)
 
+dd$grouping_code <- dd$sample_id # fake
+# TODO: should a station be a strata, a sample, or something else?
+nrow(dd)
+
 r_hat <- group_by(dd, grouping_code) %>%
   summarize(mu_hat = mean(length), M_i = sum(weight)) %>%
   ungroup() %>%
@@ -34,14 +38,15 @@ r_hat
 M_bar <- group_by(dd, grouping_code) %>%
   summarize(M_i = sum(weight)) %>%
   ungroup() %>%
-  summarise(M_bar = sum(M_i / nrow(dd))) %>%
+  summarise(M_bar = mean(M_i)) %>%
   pull(M_bar)
 M_bar
 
+.n <- length(unique(dd$grouping_code))
 var_r_hat <- group_by(dd, grouping_code) %>%
   summarize(mu_hat_i = mean(length), M_i = sum(weight)) %>%
   mutate(numerator = (M_i / M_bar)^2 * (mu_hat_i - r_hat)^2) %>%
-  mutate(denominator = nrow(dd) * (nrow(dd) - 1)) %>%
+  mutate(denominator = .n * (.n - 1)) %>%
   mutate(ratio = numerator / denominator) %>%
   ungroup() %>%
   summarize(var_r_hat = sum(ratio)) %>%
@@ -51,7 +56,8 @@ var_r_hat
 sigma_2 <- group_by(dd, grouping_code) %>%
   mutate(M_i = sum(weight), m_i = M_i, x_ij = length) %>%
   ungroup() %>%
-  summarize(result = sum((M_i / m_i) * (x_ij - r_hat)^2) / (nrow(dd) - 1)) %>%
+  # wrong: (M_i should be a numbers)
+  summarize(result = sum((M_i / m_i) * (x_ij - r_hat)^2) / (sum(M_i) - 1)) %>%
   pull(result)
 sigma_2
 
