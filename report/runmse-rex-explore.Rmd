@@ -109,17 +109,19 @@ rex_historical@Data@CAL[1, , ]
 bins <- rex_historical@Data@CAL_bins
 bins <- bins[-length(bins)]
 
+rex_om@CAL_nsamp
+rex_om@CAL_ESS
 x <- rex_historical@Data@CAL %>%
   reshape2::melt() %>%
   transmute(
     sample_id = Var1, year = Var2 + min(all_years) - 1,
-    proportion = value, type = "Simulated"
+    count = value, type = "Simulated"
   ) %>%
   mutate(length_bin = rep(bins, each = max(sample_id) * length(all_years)))
 
-filter(x, year %in% seq(1996, 2018, 2)) %>%
-  filter(sample_id %in% sample.int(150, 9)) %>%
-  ggplot(aes(length_bin, proportion)) +
+filter(x, year %in% seq(1995, 2020, 5)) %>%
+  filter(sample_id %in% sample.int(150, 7)) %>%
+  ggplot(aes(length_bin, count)) +
   geom_col() +
   facet_grid(year ~ sample_id)
 ```
