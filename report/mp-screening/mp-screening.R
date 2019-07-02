@@ -44,6 +44,8 @@ lapply(oms, function(x) x@Ibiascv)
 lapply(oms, function(x) x@Cobs)
 lapply(oms, function(x) x@Cbiascv)
 lapply(oms, function(x) x@interval)
+lapply(oms, function(x) x@CAL_nsamp)
+lapply(oms, function(x) x@CAL_ESS)
 # What should the assessment interval be?
 # Every 5 years?
 
@@ -63,6 +65,26 @@ oms$pop@Iobs <- c(0.20, 0.35)
 # survey CV for yelloweye should be around 0.1-0.2 (looks good)
 # arrowtooth should be around 0.15-0.25 (synopsis report)
 oms$arr@Iobs <- c(0.15, 0.25)
+
+# TODO: FINISH THIS:
+# based on the synopsis report:
+oms$pop@CAL_nsamp
+oms$pop@CAL_ESS
+
+oms$rdb@CAL_nsamp
+oms$rdb@CAL_ESS
+
+oms$rgh@CAL_nsamp
+oms$rgh@CAL_ESS <- c(100, 200)
+
+oms$srt@CAL_nsamp <- c(300, 1300) # all commercial
+oms$srt@CAL_ESS
+
+oms$yel@CAL_nsamp
+oms$yel@CAL_ESS
+
+oms$arr@CAL_nsamp
+oms$arr@CAL_ESS
 
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
