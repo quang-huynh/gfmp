@@ -4,11 +4,7 @@ starting_year <- 1996
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
-if (!file.exists(here::here("generated-data", "rex-sole.rds"))) {
-  drex <- load_data_rex() %>% filter_data_rex()
-} else {
-  drex <- readRDS(here::here("generated-data", "rex-sole.rds"))
-}
+drex <- load_data_rex() %>% filter_data_rex()
 
 rex_om <- readRDS(here::here("generated-data", "rex-om.rds"))
 rex_om@M
@@ -36,7 +32,7 @@ stopifnot(identical(rex_om@nyears, length(all_years)))
 
 make_cal <- function(dat, survey, yrs, length_bin = 5) {
   cal <- dat %>%
-    filter(survey_abbrev == survey) %>%
+    dplyr::filter(survey_abbrev == survey) %>%
     gfdlm::tidy_cal(yrs = yrs, interval = length_bin)
 
   length_bins <- gfdlm::get_cal_bins(cal, length_bin_interval = length_bin)
@@ -45,9 +41,9 @@ make_cal <- function(dat, survey, yrs, length_bin = 5) {
 
 cal_wcvi <- make_cal(drex$survey_samples, "SYN WCVI", yrs = all_years)
 
-mean_length <- filter(drex$survey_samples, survey_abbrev == "SYN WCVI") %>%
+mean_length <- dplyr::filter(drex$survey_samples, survey_abbrev == "SYN WCVI") %>%
   gfdlm::tidy_mean_length() %>%
-  filter(n > 10, year <= ending_year, year >= starting_year) %>%
+  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year") %>%
   pull(mean_length)
 
@@ -71,7 +67,7 @@ plot(all_years, catch)
 # cpue <- read.csv(here::here("generated-data", rex-cpue.csv"))
 
 indexes <- drex$survey_index %>%
-  filter(survey_abbrev %in% c("SYN WCVI")) %>%
+  dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
   select(year, biomass, re) %>%
   right_join(tibble(year = all_years), by = "year") %>%
   # left_join(rename(select(cpue, year, est), trawl_cpue = est), by = "year") %>%
