@@ -2,7 +2,7 @@
 
 # DEFAULT SLOTS
 
-The following are OM "slots" that we suggest by default are "turned off" or set to default values for the sake of simplicity. On a case-by-case basis an analysis might choose to set some of these lots to other values or include other values as part of a robustness set. However, unless specified otherwise, the following slots can be assumed to be specified as follows.
+The following are OM values or "slots" that we suggest by default be "turned off" or set to default values for the sake of simplicity. On a case-by-case basis, an analysis might choose to set some of these slots to other values or include other values as part of a robustness set. However, unless specified otherwise, the following slots can be assumed to be specified as follows.
 
 ## DEFAULT STOCK SLOTS {#app:desc-stock-default}
 
