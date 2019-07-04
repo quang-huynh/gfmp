@@ -11,6 +11,13 @@ knitr_echo <- TRUE
 stockrex <- methods::new('Stock')
 ```
 
+```{r, echo=FALSE}
+stockrex@Size_area_1 <- c(0.5, 0.5)
+stockrex@Frac_area_1 <- c(0.5, 0.5)
+stockrex@Prob_staying <- c(0.5, 0.5)
+stockrex@Mexp <- c(NA_real_, NA_real_)
+```
+
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stockrex-name-rex}
 
@@ -77,36 +84,6 @@ stockrex@M <- c(0.17, 0.17) # TODO add uncertainty?
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### M2 {#app:desc-stockrex-m2-rex}
-
-*(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number*
-
-```{r desc-stockrex-m2-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M2
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Mexp {#app:desc-stockrex-mexp-rex}
-
-*Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
-
-
-```{r desc-stockrex-mexp-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Mexp <- c(NA_real_, NA_real_)
-
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Msd {#app:desc-stockrex-msd-rex}
-
-*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-
-```{r desc-stockrex-msd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Msd <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
 ### h {#app:desc-stockrex-h-rex}
 
 *Steepness of the stockrex recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
@@ -150,26 +127,6 @@ stockrex@Perr <- c(0.4, 0.9)
 
 ```{r desc-stockrex-ac-rex, results = knitr_results, echo = knitr_echo}
 stockrex@AC <- c(0.2, 0.7)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Period {#app:desc-stockrex-period-rex}
-
-*(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-
-```{r desc-stockrex-period-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Period
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Amplitude {#app:desc-stockrex-amplitude-rex}
-
-*(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*
-
-
-```{r desc-stockrex-amplitude-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Amplitude
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -235,29 +192,6 @@ TODO: picking a value here
 stockrex@LenCV <- c(0.2, 0.2)
 ```
 <!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Ksd {#app:desc-stockrex-ksd-rex}
-
-*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-Assuming that growth is not time varying.
-
-```{r desc-stockrex-ksd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Ksd <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Linfsd {#app:desc-stockrex-linfsd-rex}
-
-*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-Assuming that growth is not time varying.
-
-```{r desc-stockrex-linfsd-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Linfsd <- c(0, 0.2)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
 ### L50 {#app:desc-stockrex-l50-rex}
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
@@ -299,7 +233,7 @@ stockrex@L50_95
 This will be populated via the SRA model.
 
 ```{r desc-stockrex-d-rex, results = knitr_results, echo = knitr_echo}
-stockrex@D <- c(0.75,1.25)
+stockrex@D
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -333,39 +267,6 @@ round(stockrex@b, 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Size_area_1 {#app:desc-stockrex-size_area_1-rex}
-
-*The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
-
-We will set this to 0.5 to mimic a single area model.
-
-```{r desc-stockrex-size_area_1-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Size_area_1 <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Frac_area_1 {#app:desc-stockrex-frac_area_1-rex}
-
-*The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
-
-We will set this to 0.5 to mimic a single area model.
-
-```{r desc-stockrex-frac_area_1-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Frac_area_1 <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Prob_staying {#app:desc-stockrex-prob_staying-rex}
-
-*The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
-
-We will set this to 0.5 to mimic a single area model.
-
-```{r desc-stockrex-prob_staying-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Prob_staying <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stockrex-fdisc-rex}
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
@@ -391,6 +292,12 @@ stockrex@Source <- ""
 
 ```{r warnings = FALSE}
 fleetrex <- DLMtool::Generic_Fleet # TODO: temporary
+```
+
+```{r warnings = FALSE}
+fleetrex@Esd <- c(0, 0)
+fleetrex@qinc <- c(0, 0)
+fleetrex@qcv <- c(0, 0)
 ```
 
 <!-- slot-chunk-begin -->
@@ -425,72 +332,6 @@ We have set up a single area model.
 
 ```{r desc-fleetrex-spat_targ-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@Spat_targ
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### EffYears {#app:desc-fleetrex-effyears-rex}
-
-*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
-
-This will be populated by the SRA model.
-
-```{r desc-fleetrex-effyears-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@EffYears
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### EffLower {#app:desc-fleetrex-efflower-rex}
-
-*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
-
-This will be populated by the SRA model.
-
-```{r desc-fleetrex-efflower-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@EffLower
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### EffUpper {#app:desc-fleetrex-effupper-rex}
-
-*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
-
-This will be populated by the SRA model.
-
-```{r desc-fleetrex-effupper-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@EffUpper
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Esd {#app:desc-fleetrex-esd-rex}
-
-*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-We will assume that natural mortality is not time varying.
-
-```{r desc-fleetrex-esd-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Esd <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### qinc {#app:desc-fleetrex-qinc-rex}
-
-*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-We will assume that fishing efficiency is not time varying.
-
-```{r desc-fleetrex-qinc-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@qinc <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### qcv {#app:desc-fleetrex-qcv-rex}
-
-*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-We will assume that fishing efficiency is not time varying.
-
-```{r desc-fleetrex-qcv-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@qcv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -592,86 +433,6 @@ fleetrex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### SelYears {#app:desc-fleetrex-selyears-rex}
-
-*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers*
-
-
-```{r desc-fleetrex-selyears-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@SelYears
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### AbsSelYears {#app:desc-fleetrex-absselyears-rex}
-
-*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers*
-
-
-```{r desc-fleetrex-absselyears-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@AbsSelYears
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### L5Lower {#app:desc-fleetrex-l5lower-rex}
-
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
-
-
-```{r desc-fleetrex-l5lower-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@L5Lower
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### L5Upper {#app:desc-fleetrex-l5upper-rex}
-
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
-
-
-```{r desc-fleetrex-l5upper-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@L5Upper
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### LFSLower {#app:desc-fleetrex-lfslower-rex}
-
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
-
-
-```{r desc-fleetrex-lfslower-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFSLower
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### LFSUpper {#app:desc-fleetrex-lfsupper-rex}
-
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
-
-
-```{r desc-fleetrex-lfsupper-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFSUpper
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### VmaxLower {#app:desc-fleetrex-vmaxlower-rex}
-
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
-
-
-```{r desc-fleetrex-vmaxlower-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@VmaxLower
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### VmaxUpper {#app:desc-fleetrex-vmaxupper-rex}
-
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
-
-
-```{r desc-fleetrex-vmaxupper-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@VmaxUpper
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleetrex-currentyr-rex}
 
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
@@ -679,16 +440,6 @@ fleetrex@VmaxUpper
 
 ```{r desc-fleetrex-currentyr-rex, results = knitr_results, echo = knitr_echo}
 fleetrex@CurrentYr <- 2018
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### MPA {#app:desc-fleetrex-mpa-rex}
-
-*(Optional) Matrix specifying spatial closures for historical years.*
-
-
-```{r desc-fleetrex-mpa-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@MPA
 ```
 <!-- slot-chunk-end -->
 
@@ -1041,46 +792,6 @@ imprex@TACFrac <- c(0.8, 1.0)
 
 ```{r desc-imprex-tacsd-rex, results = knitr_results, echo = knitr_echo}
 imprex@TACSD <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### TAEFrac {#app:desc-imprex-taefrac-rex}
-
-*Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
-
-
-```{r desc-imprex-taefrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@TAEFrac <- c(0.8, 1.0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### TAESD {#app:desc-imprex-taesd-rex}
-
-*Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
-
-
-```{r desc-imprex-taesd-rex, results = knitr_results, echo = knitr_echo}
-imprex@TAESD <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### SizeLimFrac {#app:desc-imprex-sizelimfrac-rex}
-
-*The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
-
-
-```{r desc-imprex-sizelimfrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@SizeLimFrac <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### SizeLimSD {#app:desc-imprex-sizelimsd-rex}
-
-*Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
-
-
-```{r desc-imprex-sizelimsd-rex, results = knitr_results, echo = knitr_echo}
-imprex@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
