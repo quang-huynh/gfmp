@@ -3,7 +3,12 @@ species_name <- "rex sole"
 starting_year <- 1996
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
-drex <- load_data_rex() %>% filter_data_rex()
+
+if (!file.exists(here::here("generated-data", "rex-sole.rds"))) {
+  drex <- load_data_rex() %>% filter_data_rex()
+} else {
+  drex <- readRDS(here::here("generated-data", "rex-sole.rds"))
+}
 
 rex_om <- readRDS(here::here("generated-data", "rex-om.rds"))
 rex_om@M
@@ -110,10 +115,12 @@ rex_om@LFS
 
 rex_om@nsim <- 150
 cores <- floor(parallel::detectCores() / 1)
+
 rex_sra2 <- MSEtool:::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1L], integrate = FALSE,
   I_sd = I_sd, I_type = 1L, cores = cores, report = TRUE
 )
+
 hist(rex_sra2$OM@cpars$D)
 matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
 hist(rex_sra2$OM@cpars$AC)

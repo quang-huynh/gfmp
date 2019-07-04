@@ -93,6 +93,7 @@ stockrex@M2
 
 ```{r desc-stockrex-mexp-rex, results = knitr_results, echo = knitr_echo}
 stockrex@Mexp <- c(NA_real_, NA_real_)
+
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -298,7 +299,7 @@ stockrex@L50_95
 This will be populated via the SRA model.
 
 ```{r desc-stockrex-d-rex, results = knitr_results, echo = knitr_echo}
-stockrex@D
+stockrex@D <- c(0.75,1.25)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
