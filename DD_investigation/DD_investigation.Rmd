@@ -1,0 +1,157 @@
+---
+title: "Investigating the Delay Difference model in DLMtool and MSEtool"
+author: "Robyn Forrest"
+date: "July 4, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The function DLMtool::DD_ is saved in the file R/DLMtool_DD_.R as myDLDD()
+
+The function optimized by DD_ is DLMtool::DD_R, which is the actual model code. It is saved in the file R/DLMtool_DD_R.R as myDLDDR().
+
+First source the DD_ functions.
+
+```{r}
+source(here::here("R/DLMtool_DD_.R"))
+source(here::here("R/DLMtool_DD_R.R"))
+
+```
+
+Now make a data object. Use the red snapper data csv from the DLMtool library, then check whether the delay difference model is possible with this dataset using the Can function.
+
+```{r}
+library(DLMtool)
+dat <- DLMtool::XL2Data(here::here("DD_investigation/Red_snapper.csv"))
+
+#Check whether DD is possible with this dataset
+DLMtool::Can(dat)
+
+```
+
+DD is on the list, meaning there is sufficient data to run DD_.
+
+Now run the model with the data object ... check it is working. Note that we call myDLDD(), which has been modified to optimize myDLDDR() for this exercise.
+
+```{r}
+myDDresults <- myDLDD(1,dat,reps=1, hcr=NULL)
+
+#plot results
+plot(myDDresults$Year, myDDresults$C_hist, type="l")
+points(myDDresults$Year, myDDresults$Cpredict,col=2,pch=19)
+
+#plot(myDDresults$Year, myDDresults$I_hist, type="l")
+plot(myDDresults$Year, myDDresults$E_hist, type="l")
+
+
+plot(myDDresults$Year, myDDresults$B_DD[-length(myDDresults$B_DD)], type="l")
+
+```
+
+Yes it is working, but doing a bad job of fitting recent catch data. 
+
+Now check on what parameters are estimated and what data the model is fitting to.
+
+
+Parameters are estimated by minimizing the neg log likelihood using the optim function.  
+
+The actual delay difference model that gets optimized is internal function DLMtool::DD_R, which RF renamed myDLDDR for this exercise:
+
+* params <- log(c(UMSYpriorpar[1]/(1 - UMSYpriorpar[1]), 3 *
+                    mean(C_hist, na.rm = T), Data@Mort[x]))
+                    
+* opt <- optim(params, DD_R, opty = 1, So_DD = So_DD, Alpha_DD = Alpha_DD,
+               Rho_DD = Rho_DD, ny_DD = ny_DD, k_DD = k_DD, wa_DD = wa_DD,
+               E_hist = E_hist, C_hist = C_hist, UMSYprior = UMSYprior,
+               method = "BFGS", hessian = TRUE)
+
+
+
+**Estimated parameters**
+
+Umsy -- starting value = UMSYpriorpar[1]/(1 - UMSYpriorpar[1])
+
+MSY -- starting value = 3 * mean(C_hist, na.rm = T)
+
+q -- starting value = Data@Mort[x], where x is the iteration number. For a real data file, x=1.
+
+According to the code in DD_R, the third parameter is q, which is used with the effort data to derive F (F = qE). Odd to initialise this parameter at the value for M.
+
+UMSYpriorpar[1] = 1 - exp(-Data@Mort[x] * 0.5)  This is half the annual natural mortality rate 
+
+There is also a prior on Umsy. We will return to UMSYprior below.
+
+
+**Fixed model inputs to DD_R**
+
+So_DD -- Unfished (natural) survival rate = (exp(-M))
+
+Alpha_DD -- Ford-Walford growth parameter (intercept)
+
+Rho_DD -- Ford-Walford growth parameter (slope)
+
+ny_DD -- length of catch history
+
+k_DD -- age-at-recruitment (knife-edged age at selectivity and maturity)
+
+wa_DD -- weight at age at recruitment
+
+
+**Data inputs to DD_R**
+
+C_hist -- historical catch. This comes from the data object Data@Cat[x, yind]
+
+E_hist -- historical effort. This is calculated as a function of catch and the index. 
+    
+E_hist <- C_hist/I_hist
+
+This is essentially a back calculation assuming I_hist = C_hist/E_hist (i.e., CPUE). 
+
+This seems dodgy as the catch and the index are coming from different sources (fishery-dependent and fishery independent). At this point I am wondering if this is grounds to reject this MP ...
+
+Note that if there are any NA values in either the catch or the index, they are interpolated using R's approx function.
+
+**Prior on the productivity parameter Umsy**
+
+* UMSYpriorpar <- c(1 - exp(-Data@Mort[x] * 0.5), 0.3)  The two parameters here are a mean and sd
+
+* UMSYprior <- c(alphaconv(UMSYpriorpar[1], prod(UMSYpriorpar)),
+                 betaconv(UMSYpriorpar[1], prod(UMSYpriorpar)))
+
+Convert this mean and sd to the alpha and beta parameters of the beta dist:
+
+DLMtool::alphaconv gives
+
+function (m, sd) 
+
+m * (((m * (1 - m))/(sd^2)) - 1)
+
+DLMtool::betaconv gives
+
+function (m, sd) 
+
+(1 - m) * (((m * (1 - m))/(sd^2)) - 1)
+
+Test what this is doing:
+
+```{r}
+mort <- 0.2
+par1 <- 1 - exp(-mort * 0.5)
+umsypriorpar <- c(par1,0.3)
+prod(umsypriorpar)
+alphaconv(umsypriorpar[1],prod(umsypriorpar))
+betaconv(umsypriorpar[1],prod(umsypriorpar))
+
+
+umsyprior <- c(alphaconv(umsypriorpar[1], prod(umsypriorpar)),
+                 betaconv(umsypriorpar[1], prod(umsypriorpar)))
+
+plot(density(rbeta(100000, umsyprior[1], umsyprior[2])))
+```
+
+OK so it is giving a prior for Umsy centred on about half of natural mortality.
+
+Sensitivity testing to come.
