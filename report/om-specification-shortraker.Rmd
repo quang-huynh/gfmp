@@ -125,7 +125,7 @@ stocksr@Msd <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-sr}
 
-*Steepness of the stocksr recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+*Steepness of the obs recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
 FIXME: maybe there's an assessment in Alaska we could draw on?
 
@@ -139,7 +139,7 @@ stocksr@h <- c(0.4, 0.9)
 <!-- slot-chunk-begin -->
 ### SRrel {#app:desc-stock-srrel-sr}
 
-*Type of stocksr-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+*Type of obs-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 
 We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME citations.
 
@@ -326,7 +326,7 @@ stocksr@L50_95
 <!-- slot-chunk-begin -->
 ### D {#app:desc-stock-d-sr}
 
-*Current level of stocksr depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+*Current level of obs depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
@@ -422,7 +422,7 @@ stocksr@Fdisc <- 1
 <!-- slot-chunk-begin -->
 ### Source {#app:desc-stock-source-sr}
 
-*A reference to a website or article from which parameters were taken to define the stocksr object. Single value. Character string.*
+*A reference to a website or article from which parameters were taken to define the obs object. Single value. Character string.*
 
 ```{r desc-stock-source-sr, results = knitr_results, echo = knitr_echo}
 stocksr@Source <- ""
@@ -873,7 +873,7 @@ obssr@Ibiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### Btobs {#app:desc-obs-btobs-sr}
 
-*Log-normal coefficient of variation controlling error in observations of current stocksr biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current obs biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
@@ -885,7 +885,7 @@ obssr@Btobs <- obssr@Iobs
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-sr}
 
-*Uniform-log bounds for sampling persistent bias in current stocksr biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+*Uniform-log bounds for sampling persistent bias in current obs biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-btbiascv-sr, results = knitr_results, echo = knitr_echo}
 obssr@Btbiascv <- obssr@Ibiascv
@@ -1063,7 +1063,7 @@ obssr@Crefbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### Dbiascv {#app:desc-obs-dbiascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in stocksr depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in obs depletion. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO:
 
