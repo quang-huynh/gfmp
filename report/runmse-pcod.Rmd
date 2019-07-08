@@ -42,7 +42,7 @@ First, let's combine the stock, fleet, observation, and mp objects into a comple
 ```{r echo = TRUE}
 #ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
 
-#Use OM that was made in sra-data-pcod.R -- NOT WORKING RIGHT NOW
+#Use OM that was made in sra-data-pcod.R 
 ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
 
 ompc@nsim <- 48L

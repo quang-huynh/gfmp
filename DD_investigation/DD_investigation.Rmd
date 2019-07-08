@@ -16,8 +16,8 @@ The function optimized by DD_ is DLMtool::DD_R, which is the actual model code. 
 First source the DD_ functions.
 
 ```{r}
-source(here::here("R/DLMtool_DD_.R"))
-source(here::here("R/DLMtool_DD_R.R"))
+source(here::here("DD_investigation/DLMtool_DD_.R"))
+source(here::here("DD_investigation/DLMtool_DD_R.R"))
 
 ```
 
@@ -89,15 +89,18 @@ There is also a prior on Umsy. We will return to UMSYprior below.
 
 So_DD -- Unfished (natural) survival rate = (exp(-M))
 
-Alpha_DD -- Ford-Walford growth parameter (intercept)
+k_DD -- age-at-recruitment (knife-edged age at selectivity and maturity) Derived from back-calculation of age at L50 from inverted VB curve --- a bit dodgy
+
+wa_DD -- weight at age at recruitment --- from k_DD and growth parameters
+
+Once you have k_DD and wa_DD you can calculate Alpha and Rho from the VB function:
+
+Alpha_DD -- Ford-Walford growth parameter (intercept) 
 
 Rho_DD -- Ford-Walford growth parameter (slope)
 
 ny_DD -- length of catch history
 
-k_DD -- age-at-recruitment (knife-edged age at selectivity and maturity)
-
-wa_DD -- weight at age at recruitment
 
 
 **Data inputs to DD_R**
@@ -154,4 +157,221 @@ plot(density(rbeta(100000, umsyprior[1], umsyprior[2])))
 
 OK so it is giving a prior for Umsy centred on about half of natural mortality.
 
-Sensitivity testing to come.
+## Simulation test
+
+Use the Pacific Cod OM. Run with the basic OM.
+```{r echo = TRUE}
+
+ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+
+ompc@nsim <- 150L
+setup()
+pcod_mse <- DLMtool::runMSE(OM = ompc, MPs = "DD", ntrials = 1000, PPD = TRUE, parallel=TRUE)
+saveRDS(pcod_mse,here::here("DD_investigation/pcod_mse.R"))
+
+```
+
+Plot the results
+
+```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
+library(tidyverse)
+library(RColorBrewer)
+
+cols <- brewer.pal(3, "RdBu")
+cols[2] <- "grey80"
+
+Btrue <- pcod_mse@SSB
+nSim <- dim(Btrue)[1]
+nMP <-  dim(Btrue)[2]
+nYear <- dim(Btrue)[3]
+dimnames(Btrue) <- list(1:nSim, "DD", 1:nYear)
+
+#convert to data frame and plot
+z1 <- apply(Btrue, 3L, c)
+z2 <- expand.grid(dimnames(Btrue)[1:2])
+Btrue <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Biomass"=value) 
+
+Bmed <- Btrue %>% 
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(Median = median(Biomass),
+    q75th = quantile(Biomass, probs = 0.75),
+    q25th = quantile(Biomass, probs = 0.25),
+    q95th = quantile(Biomass, probs = 0.95),
+    q5th = quantile(Biomass, probs = 0.05))
+
+
+g <- ggplot(Bmed,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=2) +
+    ggsidekick::theme_sleek() +
+      guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+  
+
+
+```
+
+Get the whole time series including the historical biomass
+
+```{r}
+
+
+B1 <- pcod_mse@SSB_hist[,,,1]
+B2 <- pcod_mse@SSB_hist[,,,2]
+nSim <- dim(B1)[1]
+nAge <- dim(B1)[2]
+nYear <- dim(B1)[3]
+dimnames(B1) <- list(1:nSim, 1:nAge, as.numeric(1:nYear))
+dimnames(B2) <- list(1:nSim, 1:nAge, as.numeric(1:nYear))
+
+#convert to data frames and get total biomass per year per area
+z1 <- apply(B1, 3L, c)
+z2 <- expand.grid(dimnames(B1)[1:2])
+Btrue_hist_area1 <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"Age"=Var2,"fYear"=variable, "Biomass"=value) %>% 
+  mutate(Year=as.numeric(as.factor(fYear))) %>% 
+  group_by(Sim,Year) %>%
+  summarise(Btot1=sum(Biomass))
+
+z1 <- apply(B2, 3L, c)
+z2 <- expand.grid(dimnames(B2)[1:2])
+Btrue_hist_area2 <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"Age"=Var2,"fYear"=variable, "Biomass"=value) %>% 
+  mutate(Year=as.numeric(as.factor(fYear))) %>% 
+  group_by(Sim,Year) %>%
+  summarise(Btot2=sum(Biomass))
+
+#Get total biomass per year
+Btrue_hist <- left_join(Btrue_hist_area1, Btrue_hist_area2) %>% 
+  mutate(Biomass = Btot1 + Btot2)
+
+#Now get medians and quantiles
+Bmed_hist <- Btrue_hist %>% 
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(Median = median(Biomass),
+    q75th = quantile(Biomass, probs = 0.75),
+    q25th = quantile(Biomass, probs = 0.25),
+    q95th = quantile(Biomass, probs = 0.95),
+    q5th = quantile(Biomass, probs = 0.05))
+
+#Now join up with MSE results
+#First renumber the years
+nhistYear <- nYear
+Bmed$Year <- Bmed$Year + nhistYear
+
+Bmed_all <- rbind(Bmed_hist, Bmed)
+
+#Plot
+g <- ggplot(Bmed_all,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=1.5) +
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+  
+
+
+```
+
+Now look at what the DD model thought the biomass was
+
+First look at one "slice" from the OM simulated data
+
+```{r}
+#Function by Sean
+DD_output <- function(x, Data, reps = 1, plot=FALSE) {
+  runDD <- DLMtool:::DD_(x, Data, reps)
+  TAC <- DLMtool:::TACfilter(runDD$TAC)
+  
+  if (plot) DLMtool:::DD_plot(x, runDD, Data, TAC) #Dlmtool function that plots the delay difference MP's estimate of biomass
+  
+  # Rec <- new("Rec")
+  # Rec@TAC <- TAC
+  runDD
+}
+
+out <- DD_output(1, pcod_mse@Misc$Data[[1]], reps = 1, plot = TRUE)
+
+```
+
+
+Now get the DD estimates of biomass from all the MSE replicates
+
+```{r}
+
+nsims <- 1:nSim
+
+DD_sims_output <- function(x){
+  out <- DD_output(x, pcod_mse@Misc$Data[[1]], reps = 1, plot = FALSE)
+  return(out$B_DD)
+}
+
+ddout <- sapply(nsims,DD_sims_output)
+dim(ddout)
+
+Simnames <- paste("Sim", 1:nSim)
+colnames(ddout) <- Simnames
+
+Bmed_mp <- ddout %>% 
+  reshape2::melt() %>% 
+  rename("Year"=Var1,"Sim"=Var2,"MPBiomass"=value) %>%
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(MedianMP = median(MPBiomass),
+    q75thMP = quantile(MPBiomass, probs = 0.75),
+    q25thMP = quantile(MPBiomass, probs = 0.25),
+    q95thMP = quantile(MPBiomass, probs = 0.95),
+    q5thMP = quantile(MPBiomass, probs = 0.05))
+
+
+#Plot
+g <- ggplot(Bmed_mp,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5thMP, ymax = q95thMP), fill = "pink1") +
+    geom_ribbon(aes(ymin = q25thMP, ymax = q75thMP), fill = "lightcoral") +
+    geom_line(aes(y=MedianMP), lwd=1.5, colour="red") +
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+
+```
+
+
+Now overlay the two plots
+
+```{r}
+Bmed_all_short <- Bmed_all %>% 
+  dplyr::filter(Year %in% 1:(nrow(Bmed_all)-1))  #Not sure whether the first or last year is missing from B_DD!
+
+Bmed_combined <- inner_join(Bmed_all_short, Bmed_mp)
+
+g <- ggplot(Bmed_combined,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=1.5) +
+  
+    geom_ribbon(aes(ymin = q5thMP, ymax = q95thMP), fill = "pink1", alpha=0.4) +
+    geom_ribbon(aes(ymin = q25thMP, ymax = q75thMP), fill = "lightcoral", alpha=0.4) +
+    geom_line(aes(y=MedianMP), lwd=1.5, colour="red", alpha=0.5) +
+  
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+
+
+```
+
+
+
+
