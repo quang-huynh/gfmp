@@ -2,7 +2,7 @@
 
 # PACIFIC COD: OPERATING MODEL SPECIFICATION  {#app:desc-om-pc}
 
-This operating model is for Pacific Cod in PFMC management areas 5ABCD (Queen Charlotte Sound, Hecate Strait and Dixon Entrance). Parameter values extracted from the 2018 stockpc assessment of Pacific Cod in Area 5ABCD [@forrest2019].
+This operating model is for Pacific Cod in PFMC management areas 5ABCD (Queen Charlotte Sound, Hecate Strait and Dixon Entrance). Parameter values extracted from the 2018 stock assessment of Pacific Cod in Area 5ABCD [@forrest2019].
 
 ```{r message = FALSE, warning=FALSE}
 library(DLMtool)
@@ -121,7 +121,7 @@ stockpc@Msd <- c(0.00, 0.1)
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-pc}
 
-*Steepness of the stockpc recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
 Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
@@ -133,9 +133,9 @@ stockpc@h <- c(0.432, 0.931)
 <!-- slot-chunk-begin -->
 ### SRrel {#app:desc-stock-srrel-pc}
 
-*Type of stockpc-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 
-Beverton-Holt as in stockpc assessment [@forrest2019].
+Beverton-Holt as in stock assessment [@forrest2019].
 
 ```{r desc-stock-srrel-pc, results = knitr_results, echo = knitr_echo}
 stockpc@SRrel <- 1L
@@ -332,7 +332,7 @@ stockpc@L50_95
 <!-- slot-chunk-begin -->
 ### D {#app:desc-stock-d-pc}
 
-*Current level of stockpc depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
@@ -426,7 +426,7 @@ stockpc@Fdisc <- 0.99
 <!-- slot-chunk-begin -->
 ### Source {#app:desc-stock-source-pc}
 
-*A reference to a website or article from which parameters were taken to define the stockpc object. Single value. Character string.*
+*A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
 
 ```{r desc-stock-source-pc, results = knitr_results, echo = knitr_echo}
 stockpc@Source <- ""
@@ -875,7 +875,7 @@ obspc@Ibiascv <- c(0.333, 3.00)
 <!-- slot-chunk-begin -->
 ### Btobs {#app:desc-obs-pc}
 
-*Log-normal coefficient of variation controlling error in observations of current stockpc biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
@@ -887,7 +887,7 @@ obspc@Btobs <- obspc@Iobs
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-pc}
 
-*Uniform-log bounds for sampling persistent bias in current stockpc biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-btbiascv-pc, results = knitr_results, echo = knitr_echo}
 obspc@Btbiascv <- obspc@Ibiascv
@@ -1077,7 +1077,7 @@ obspc@Dbiascv <- c(0.1, 0.3)
 <!-- slot-chunk-begin -->
 ### Dobs {#app:desc-obs-dobs-pc}
 
-*Log-normal coefficient of variation controlling error in observations of stockpc depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-dobs-pc, results = knitr_results, echo = knitr_echo}
 obspc@Dobs
