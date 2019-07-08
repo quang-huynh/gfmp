@@ -4,7 +4,7 @@
 
 This is a generic review of the available MPs in DLMtool which include TAC-based procedures.
 
-```{r, results='asis', include=FALSE}
+```{r, results='asis', include=FALSE, eval=FALSE}
 mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
   dplyr::filter(Recs == "TAC") %>% 
   dplyr::filter(!MP %in% grep("CC[2-9]+", .$MP, value = TRUE) )
