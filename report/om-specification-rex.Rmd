@@ -8,14 +8,14 @@ knitr_echo <- TRUE
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
 
 ```{r warnings = FALSE}
-stockrex <- methods::new('Stock')
+stock_rex <- methods::new('Stock')
 ```
 
 ```{r, echo=FALSE}
-stockrex@Size_area_1 <- c(0.5, 0.5)
-stockrex@Frac_area_1 <- c(0.5, 0.5)
-stockrex@Prob_staying <- c(0.5, 0.5)
-stockrex@Mexp <- c(NA_real_, NA_real_)
+stock_rex@Size_area_1 <- c(0.5, 0.5)
+stock_rex@Frac_area_1 <- c(0.5, 0.5)
+stock_rex@Prob_staying <- c(0.5, 0.5)
+stock_rex@Mexp <- c(NA_real_, NA_real_)
 ```
 
 <!-- slot-chunk-begin -->
@@ -25,7 +25,7 @@ stockrex@Mexp <- c(NA_real_, NA_real_)
 
 
 ```{r desc-stock-name-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Name <- "Rex Sole"
+stock_rex@Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -35,7 +35,7 @@ stockrex@Name <- "Rex Sole"
 
 
 ```{r desc-stock-common_name-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Common_Name <- "Rex Sole"
+stock_rex@Common_Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -45,7 +45,7 @@ stockrex@Common_Name <- "Rex Sole"
 
 
 ```{r desc-stock-species-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Species <- "Glyptocephalus zachirus"
+stock_rex@Species <- "Glyptocephalus zachirus"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -58,7 +58,7 @@ From @turnock2005. This is the plus group value. TODO Can't find turnock2005
 From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region.
 
 ```{r desc-stock-maxage-rex, results = knitr_results, echo = knitr_echo}
-stockrex@maxage <- 27
+stock_rex@maxage <- 27
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -69,7 +69,7 @@ stockrex@maxage <- 27
 The absolute value is meaningless here. Arbitrarily pick a value.
 
 ```{r desc-stock-r0-rex, results = knitr_results, echo = knitr_echo}
-stockrex@R0 <- 1000
+stock_rex@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -80,29 +80,29 @@ stockrex@R0 <- 1000
 From @mcgilliard2017
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
-stockrex@M <- c(0.17, 0.17) # TODO add uncertainty?
+stock_rex@M <- c(0.17, 0.17) # TODO add uncertainty?
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-rex}
 
-*Steepness of the stockrex recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
 
 @maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that because of the bias in the value estimated for north Atlantic cod in that paper that the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% CI of 0.69--0.98). Here we will choose a value that encompasses this range with some extra uncertainty.
 
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
-stockrex@h <- c(0.70, 0.95)
+stock_rex@h <- c(0.70, 0.95)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### SRrel {#app:desc-stock-srrel-rex}
 
-*Type of stockrex-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
 
 We will use a Beverton-Holt stock-recruit relationship as is been used in most British Columbia groundfish assessments and is assumed in the estimates of steepness used in this operating model.
 
 ```{r desc-stock-srrel-rex, results = knitr_results, echo = knitr_echo}
-stockrex@SRrel <- 1L
+stock_rex@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -115,7 +115,7 @@ FIXME: Need to look at other assessments. For now this was copied from the Short
 @thorson2014 (Table 2) finds the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation.
 
 ```{r desc-stock-perr-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Perr <- c(0.4, 0.9)
+stock_rex@Perr <- c(0.4, 0.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -126,7 +126,7 @@ stockrex@Perr <- c(0.4, 0.9)
 @thorson2014 (Table 2) finds the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will set our uniform distribution to be approximately plus or minus one standard deviation.
 
 ```{r desc-stock-ac-rex, results = knitr_results, echo = knitr_echo}
-stockrex@AC <- c(0.2, 0.7)
+stock_rex@AC <- c(0.2, 0.7)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -145,8 +145,8 @@ TODO: take the linf from the females above and add uncertainty (also for other V
 # mvb_summary <- summary(TMB::sdreport(mvb$model))
 # vb_cv <- mvb_summary[,"Std. Error"] / abs(mvb_summary[,"Estimate"])
 # gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
-# stockrex@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
-stockrex@Linf <- c(39.5, 44.9)
+# stock_rex@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+stock_rex@Linf <- c(39.5, 44.9)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -159,8 +159,8 @@ Alternatively from @turnock2005, table 4.12:
 - Female = 0.31
 
 ```{r desc-stock-k-rex, results = knitr_results, echo = knitr_echo}
-# stockrex@K <- c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
-stockrex@K <- c(0.31, 0.38)
+# stock_rex@K <- c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+stock_rex@K <- c(0.31, 0.38)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -174,8 +174,8 @@ Alternatively from @turnock2005, table 4.12:
 Note - t0 was not reported in @mcgilliard2017, but @turnock2005 reported all values t0, K, and Linf
 
 ```{r desc-stock-t0-rex, results = knitr_results, echo = knitr_echo}
-# stockrex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
-stockrex@t0 <- c(0.69, 0.79)
+# stock_rex@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+stock_rex@t0 <- c(0.69, 0.79)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -187,9 +187,9 @@ TODO: picking a value here
 
 ```{r desc-stock-lencv-rex, results = knitr_results, echo = knitr_echo}
 # sd2cv <- function(.sd) sqrt(exp(.sd ^ 2) - 1)
-# stockrex@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
-# round(stockrex@LenCV, 2)
-stockrex@LenCV <- c(0.2, 0.2)
+# stock_rex@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+# round(stock_rex@LenCV, 2)
+stock_rex@LenCV <- c(0.2, 0.2)
 ```
 <!-- slot-chunk-end -->
 ### L50 {#app:desc-stock-l50-rex}
@@ -205,8 +205,8 @@ se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
 gfplot::plot_mat_ogive(m_mat)
 
-stockrex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
-stockrex@L50
+stock_rex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
+stock_rex@L50
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -221,19 +221,19 @@ se_l50_95m <- gfdlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
-stockrex@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
-stockrex@L50_95
+stock_rex@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
+stock_rex@L50_95
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### D {#app:desc-stock-d-rex}
 
-*Current level of stockrex depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
 
 This will be populated via the SRA model.
 
 ```{r desc-stock-d-rex, results = knitr_results, echo = knitr_echo}
-stockrex@D
+stock_rex@D
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -248,8 +248,8 @@ Alternatively from @mcgilliard2017:
 ```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
-stockrex@a <- exp(mlw$pars[["log_a"]])
-round(log(stockrex@a), 2)
+stock_rex@a <- exp(mlw$pars[["log_a"]])
+round(log(stock_rex@a), 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -262,8 +262,8 @@ Alternatively from @mcgilliard2017:
 - Male = 3.30571
 
 ```{r desc-stock-b-rex, results = knitr_results, echo = knitr_echo}
-stockrex@b <- mlw$pars[["b"]]
-round(stockrex@b, 2)
+stock_rex@b <- mlw$pars[["b"]]
+round(stock_rex@b, 2)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -274,30 +274,30 @@ round(stockrex@b, 2)
 Since there is 100% observer coverage we can assume there is no unreported discards. Therefore the following slot does not get used.
 
 ```{r desc-stock-fdisc-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Fdisc
+stock_rex@Fdisc
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Source {#app:desc-stock-source-rex}
 
-*A reference to a website or article from which parameters were taken to define the stockrex object. Single value. Character string.*
+*A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
 
 
 ```{r desc-stock-source-rex, results = knitr_results, echo = knitr_echo}
-stockrex@Source <- ""
+stock_rex@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-rex}
 
 ```{r warnings = FALSE}
-fleetrex <- DLMtool::Generic_Fleet # TODO: temporary
+fleet_rex <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
 ```{r warnings = FALSE}
-fleetrex@Esd <- c(0, 0)
-fleetrex@qinc <- c(0, 0)
-fleetrex@qcv <- c(0, 0)
+fleet_rex@Esd <- c(0, 0)
+fleet_rex@qinc <- c(0, 0)
+fleet_rex@qcv <- c(0, 0)
 ```
 
 <!-- slot-chunk-begin -->
@@ -307,7 +307,7 @@ fleetrex@qcv <- c(0, 0)
 
 
 ```{r desc-fleet-name-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Name <- "BC Fleet"
+fleet_rex@Name <- "BC Fleet"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -319,7 +319,7 @@ We will set the historical run-up to be approximately the length of the commerci
 
 ```{r desc-fleet-nyears-rex, results = knitr_results, echo = knitr_echo}
 catch_yrs <- unique(drex$catch$year)
-fleetrex@nyears <- length(catch_yrs)
+fleet_rex@nyears <- length(catch_yrs)
 c(catch_yrs[1], catch_yrs[length(catch_yrs)])
 ```
 <!-- slot-chunk-end -->
@@ -331,7 +331,7 @@ c(catch_yrs[1], catch_yrs[length(catch_yrs)])
 We have set up a single area model.
 
 ```{r desc-fleet-spat_targ-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Spat_targ
+fleet_rex@Spat_targ
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -346,10 +346,10 @@ min_caught <- 14
 
 TODO: in the data from this analysis report the minimum length caught in 3C is 14. Need to figure out why these are not in our filtered rex data.
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockrex@L50[[1]]` to `r stockrex@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught`, although commercial samples are only available from 2015 in WCVI.
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught`, although commercial samples are only available from 2015 in WCVI.
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@L5 <- c(min_caught/stockrex@L50[[2]], min_caught/stockrex@L50[[1]])
+fleet_rex@L5 <- c(min_caught/stock_rex@L50[[2]], min_caught/stock_rex@L50[[1]])
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -367,7 +367,7 @@ hist(drex$commercial_samples$length, xlim = c(5, 60), breaks = 50);par(new = TRU
 Based on the observed commercial length samples let's assume that Rex Sole is fully vulnerable to fishing by the like that 50% maturity. FIXME
 
 ```{r desc-fleet-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFS <- c(0.9, 1.1)
+fleet_rex@LFS <- c(0.9, 1.1)
 ```
 
 <!-- slot-chunk-end -->
@@ -379,7 +379,7 @@ fleetrex@LFS <- c(0.9, 1.1)
 We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
 
 ```{r desc-fleet-vmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Vmaxlen <- c(1, 1)
+fleet_rex@Vmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -389,7 +389,7 @@ fleetrex@Vmaxlen <- c(1, 1)
 
 
 ```{r desc-fleet-isrel-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@isRel
+fleet_rex@isRel
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -399,7 +399,7 @@ fleetrex@isRel
 
 
 ```{r desc-fleet-lr5-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LR5
+fleet_rex@LR5
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -409,7 +409,7 @@ fleetrex@LR5
 
 
 ```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@LFR
+fleet_rex@LFR
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -419,7 +419,7 @@ fleetrex@LFR
 
 
 ```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@Rmaxlen
+fleet_rex@Rmaxlen
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -429,7 +429,7 @@ fleetrex@Rmaxlen
 
 
 ```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@DR <- c(0, 0)
+fleet_rex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -439,14 +439,14 @@ fleetrex@DR <- c(0, 0)
 
 
 ```{r desc-fleet-currentyr-rex, results = knitr_results, echo = knitr_echo}
-fleetrex@CurrentYr <- 2018
+fleet_rex@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
 
 ```{r warnings = FALSE}
-obsrex <- DLMtool::Precise_Unbiased
+obs_rex <- DLMtool::Precise_Unbiased
 ```
 
 <!-- slot-chunk-begin -->
@@ -456,11 +456,11 @@ obsrex <- DLMtool::Precise_Unbiased
 
 
 ```{r desc-obs-name-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Name <- "BC Obs"
+obs_rex@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Cobsrex {#app:desc-obs-cobsrex-rex}
+### Cobs {#app:desc-obs-rex}
 
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
@@ -468,8 +468,8 @@ At least since 1996, observation error on catch should be very small. Setting th
 
 TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
 
-```{r desc-obs-cobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cobs <- c(0, 0)
+```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -482,7 +482,7 @@ We will keep the at 0 because observation error on catch should be very small wi
 FIXME: what about the historical period?
 
 ```{r desc-obs-cbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cbiascv <- c(0, 0)
+obs_rex@Cbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -493,7 +493,7 @@ obsrex@Cbiascv <- c(0, 0)
 TODO: critical to get this right
 
 ```{r desc-obs-caa_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obsrex@CAA_nsamp
+obs_rex@CAA_nsamp
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -504,7 +504,7 @@ obsrex@CAA_nsamp
 TODO: critical to get this right
 
 ```{r desc-obs-caa_ess-rex, results = knitr_results, echo = knitr_echo}
-obsrex@CAA_ESS
+obs_rex@CAA_ESS
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -515,7 +515,7 @@ obsrex@CAA_ESS
 TODO: critical to get this right
 
 ```{r desc-obs-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obsrex@CAL_nsamp
+obs_rex@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -525,11 +525,11 @@ obsrex@CAL_nsamp
 
 
 ```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
-obsrex@CAL_ESS
+obs_rex@CAL_ESS
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Iobsrex {#app:desc-obs-iobsrex-rex}
+### Iobs {#app:desc-obs-rex}
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
@@ -541,8 +541,8 @@ average_cv <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
 ```
 This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
-```{r desc-obs-iobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Iobs <- c(average_cv, average_cv)
+```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -552,27 +552,27 @@ obsrex@Iobs <- c(average_cv, average_cv)
 
 
 ```{r desc-obs-ibiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Ibiascv <- c(0, 0)
+obs_rex@Ibiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Btobsrex {#app:desc-obs-btobsrex-rex}
+### Btobs {#app:desc-btobs-rex}
 
-*Log-normal coefficient of variation controlling error in observations of current stockrex biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
-```{r desc-obs-btobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Btobs <- obsrex@Iobs
+```{r desc-obs-btobs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Btobs <- obs_rex@Iobs
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-rex}
 
-*Uniform-log bounds for sampling persistent bias in current stockrex biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Btbiascv <- obsrex@Ibiascv
+obs_rex@Btbiascv <- obs_rex@Ibiascv
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -583,7 +583,7 @@ obsrex@Btbiascv <- obsrex@Ibiascv
 We probably don't have a lot to go on here so let's allow for a wide range:
 
 ```{r desc-obs-beta-rex, results = knitr_results, echo = knitr_echo}
-obsrex@beta <- c(0.666, 1.500)
+obs_rex@beta <- c(0.666, 1.500)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -594,18 +594,18 @@ obsrex@beta <- c(0.666, 1.500)
 It is possible there is some persistent bias in estimates such as length at 50% maturity. Let's set this to a range from a little bit to a moderate amount:
 
 ```{r desc-obs-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LenMbiascv <- c(0.05, 0.10)
+obs_rex@LenMbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Mbiascv {#app:desc-obs-mbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in obsrexerved natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stockrex@M[[1]]` and `r stockrex@M[[2]]`.
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`.
 
 ```{r desc-obs-mbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Mbiascv <- c(0.05, 0.20)
+obs_rex@Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -614,37 +614,37 @@ obsrex@Mbiascv <- c(0.05, 0.20)
 *Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-kbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Kbiascv <- c(0.05, 0.10)
+obs_rex@Kbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### t0biascv {#app:desc-obs-t0biascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in obsrexerved t0. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obs-t0biascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@t0biascv <- c(0.05, 0.10)
+obs_rex@t0biascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Linfbiascv {#app:desc-obs-linfbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in obsrexerved maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obs-linfbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Linfbiascv <- c(0.05, 0.10)
+obs_rex@Linfbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### LFCbiascv {#app:desc-obs-lfcbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in obsrexerved length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obs-lfcbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LFCbiascv <- c(0.05, 0.10)
+obs_rex@LFCbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -654,7 +654,7 @@ obsrex@LFCbiascv <- c(0.05, 0.10)
 
 
 ```{r desc-obs-lfsbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@LFSbiascv <- c(0.05, 0.10)
+obs_rex@LFSbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -664,7 +664,7 @@ obsrex@LFSbiascv <- c(0.05, 0.10)
 
 
 ```{r desc-obs-fmsybiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@FMSYbiascv <- c(0.05, 0.20)
+obs_rex@FMSYbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -674,7 +674,7 @@ obsrex@FMSYbiascv <- c(0.05, 0.20)
 
 
 ```{r desc-obs-fmsy_mbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@FMSY_Mbiascv <- c(0.05, 0.20)
+obs_rex@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -684,7 +684,7 @@ obsrex@FMSY_Mbiascv <- c(0.05, 0.20)
 
 
 ```{r desc-obs-bmsy_b0biascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@BMSY_B0biascv <- c(0.05, 0.20)
+obs_rex@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -694,7 +694,7 @@ obsrex@BMSY_B0biascv <- c(0.05, 0.20)
 
 
 ```{r desc-obs-irefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Irefbiascv <- c(0.05, 0.20)
+obs_rex@Irefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -704,7 +704,7 @@ obsrex@Irefbiascv <- c(0.05, 0.20)
 
 
 ```{r desc-obs-brefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Brefbiascv <- c(0.05, 0.20)
+obs_rex@Brefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -714,27 +714,27 @@ obsrex@Brefbiascv <- c(0.05, 0.20)
 
 
 ```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Crefbiascv <- c(0.05, 0.20)
+obs_rex@Crefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Dbiascv {#app:desc-obs-dbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in stockrex depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
 ```{r desc-obs-dbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Dbiascv <- c(0.1, 0.3)
+obs_rex@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Dobsrex {#app:desc-obs-dobsrex-rex}
+### Dobs {#app:desc-obs-rex}
 
-*Log-normal coefficient of variation controlling error in observations of stockrex depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
-```{r desc-obs-dobsrex-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Dobs
+```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Dobs
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -744,7 +744,7 @@ obsrex@Dobs
 
 
 ```{r desc-obs-hbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@hbiascv <- 0.1
+obs_rex@hbiascv <- 0.1
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -754,14 +754,14 @@ obsrex@hbiascv <- 0.1
 
 
 ```{r desc-obs-recbiascv-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Recbiascv <- c(0.05, 0.20)
+obs_rex@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-rex}
 
 ```{r warnings = FALSE}
-imprex <- methods::new('Imp')
+imp_rex <- methods::new('Imp')
 ```
 
 <!-- slot-chunk-begin -->
@@ -771,7 +771,7 @@ imprex <- methods::new('Imp')
 
 
 ```{r desc-imp-name-rex, results = knitr_results, echo = knitr_echo}
-imprex@Name <- "BC Implementation"
+imp_rex@Name <- "BC Implementation"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -781,7 +781,7 @@ imprex@Name <- "BC Implementation"
 
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
-imprex@TACFrac <- c(0.8, 1.0)
+imp_rex@TACFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
@@ -791,7 +791,7 @@ imprex@TACFrac <- c(0.8, 1.0)
 
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
-imprex@TACSD <- c(0, 0)
+imp_rex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -801,7 +801,7 @@ imprex@TACSD <- c(0, 0)
 *Output the Operating model.*
 
 ```{r output-rex}
-rex_om <- new('OM', stockrex, fleetrex, obsrex, imprex)
+rex_om <- new('OM', stock_rex, fleet_rex, obs_rex, imp_rex)
 saveRDS(rex_om, file = here::here("generated-data", "rex-om.rds"))
 
 ```
