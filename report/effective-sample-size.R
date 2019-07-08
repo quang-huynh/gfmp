@@ -2,8 +2,8 @@
 # Assessing the precision of frequency distributions estimated
 # from trawl-survey samples. Fish. Bull. 100: 74–80.
 
-d <- readRDS("../gfsynopsis/report/data-cache/pacific-ocean-perch.rds")
-d <- readRDS("../gfsynopsis/report/data-cache/redbanded-rockfish.rds")
+# d <- readRDS("../gfsynopsis/report/data-cache/pacific-ocean-perch.rds")
+# d <- readRDS("../gfsynopsis/report/data-cache/redbanded-rockfish.rds")
 d <- readRDS("../gfsynopsis/report/data-cache/arrowtooth-flounder.rds")
 # survey_sets <- d$survey_sets
 d <- d$survey_samples
@@ -14,9 +14,6 @@ d <- d$survey_samples
 library(dplyr)
 d <- filter(d, survey_series_id %in% 1) # Pick an example survey
 glimpse(d)
-
-# weights <- group_by(survey_sets, sample_id) %>%
-#   summarize(weight = sum(density_kgpm2) * 1000000)
 
 # Pick an example year
 dd <- filter(d, year == 2017) %>%
@@ -70,9 +67,8 @@ sigma_2 <- group_by(dd, sample_id) %>%
   pull(result)
 sigma_2 # estimated variance of the population length distribution
 
-# if it were possible to sample m fish at random from the population, then the
-# variance of the sample mean would be equal to sigma_2 / m
-
+# "if it were possible to sample m fish at random from the population, then the
+# variance of the sample mean would be equal to sigma_2 / m"
 sigma_2 / M_bar
 
 # but we observed:
@@ -86,8 +82,9 @@ var_r_hat
 m_hat_eff <- sigma_2 / var_r_hat
 m_hat_eff
 
-# presumably, this is the effective sample size for a given sample
-# the total effective sample size across all samples than would be:
+# this is the effective sample size for a given sample
+
+# the total effective number of fish across all samples then would be:
 m_hat_eff * .n
 
 # this is in comparison to the number of fish actually sampled:
@@ -100,7 +97,7 @@ ratio_sigma <- (sigma_2 / M_bar) / var_r_hat
 ratio_sigma
 
 # Multiply that by the number of total fish sampled again indicates
-# that the effective sample size is:
+# that the effective total number of fish is:
 ratio_sigma * nrow(dd)
 
 hist(d$length)
