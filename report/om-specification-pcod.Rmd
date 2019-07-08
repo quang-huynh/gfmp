@@ -15,7 +15,7 @@ knitr_echo <- TRUE
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-pc}
 
 ```{r warnings = FALSE}
-stockpc <- methods::new('Stock')
+stock_pc <- methods::new('Stock')
 ```
 
 <!-- slot-chunk-begin -->
@@ -24,7 +24,7 @@ stockpc <- methods::new('Stock')
 *The name of the Stock object. Single value. Character string*
 
 ```{r desc-stock-name-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Name <- "Pacific Cod 5ABCD Stock"
+stock_pc@Name <- "Pacific Cod 5ABCD Stock"
 ```
 <!-- slot-chunk-end -->
 
@@ -34,7 +34,7 @@ stockpc@Name <- "Pacific Cod 5ABCD Stock"
 *Common name of the species. Character string*
 
 ```{r desc-stock-common_name-pc, results = knitr_results, echo = knitr_echo}
-(stockpc@Common_Name <- species_name)
+(stock_pc@Common_Name <- species_name)
 ```
 <!-- slot-chunk-end -->
 
@@ -44,7 +44,7 @@ stockpc@Name <- "Pacific Cod 5ABCD Stock"
 *Scientific name of the species. Genus and species name. Character string*
 
 ```{r desc-stock-species-pc, results = knitr_results, echo = knitr_echo}
-(stockpc@Species <- science_name)
+(stock_pc@Species <- science_name)
 ```
 <!-- slot-chunk-end -->
 
@@ -54,7 +54,7 @@ stockpc@Name <- "Pacific Cod 5ABCD Stock"
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
 ```{r desc-stock-maxage-pc, results = knitr_results, echo = knitr_echo}
-stockpc@maxage <- max(dpc$survey_samples$age, na.rm = TRUE)
+stock_pc@maxage <- max(dpc$survey_samples$age, na.rm = TRUE)
 ```
 <!-- slot-chunk-end -->
 
@@ -66,7 +66,7 @@ stockpc@maxage <- max(dpc$survey_samples$age, na.rm = TRUE)
 Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-r0-pc, results = knitr_results, echo = knitr_echo}
-stockpc@R0 <- c(2331,3902)
+stock_pc@R0 <- c(2331,3902)
 ```
 <!-- slot-chunk-end -->
 
@@ -78,7 +78,7 @@ stockpc@R0 <- c(2331,3902)
 Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-m-pc, results = knitr_results, echo = knitr_echo}
-stockpc@M <- c(0.28, 0.347)
+stock_pc@M <- c(0.28, 0.347)
 ```
 <!-- slot-chunk-end -->
 
@@ -90,7 +90,7 @@ stockpc@M <- c(0.28, 0.347)
 Not used.
 
 ```{r desc-stock-m2-pc, results = knitr_results, echo = knitr_echo}
-stockpc@M2
+stock_pc@M2
 ```
 <!-- slot-chunk-end -->
 
@@ -102,7 +102,7 @@ stockpc@M2
 Not used.
 
 ```{r desc-stock-mexp-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Mexp <- c(NA_real_, NA_real_)
+stock_pc@Mexp <- c(NA_real_, NA_real_)
 ```
 <!-- slot-chunk-end -->
 
@@ -114,7 +114,7 @@ stockpc@Mexp <- c(NA_real_, NA_real_)
 Unknown. Picking an arbitrary range.
 
 ```{r desc-stock-msd-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Msd <- c(0.00, 0.1)
+stock_pc@Msd <- c(0.00, 0.1)
 ```
 <!-- slot-chunk-end -->
 
@@ -126,7 +126,7 @@ stockpc@Msd <- c(0.00, 0.1)
 Lower and upper values of the 95% credibility interval of posterior distribution [@forrest2019].
 
 ```{r desc-stock-h-pc, results = knitr_results, echo = knitr_echo}
-stockpc@h <- c(0.432, 0.931)
+stock_pc@h <- c(0.432, 0.931)
 ```
 <!-- slot-chunk-end -->
 
@@ -138,7 +138,7 @@ stockpc@h <- c(0.432, 0.931)
 Beverton-Holt as in stock assessment [@forrest2019].
 
 ```{r desc-stock-srrel-pc, results = knitr_results, echo = knitr_echo}
-stockpc@SRrel <- 1L
+stock_pc@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
 
@@ -152,7 +152,7 @@ stockpc@SRrel <- 1L
 @forrest2018 fixed this at 0.8 - choose arbitrary range between 0.6 and 1.0 (sensitivity tests were done on these values)
 
 ```{r desc-stock-perr-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Perr <- c(0.6, 1.0)
+stock_pc@Perr <- c(0.6, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -165,7 +165,7 @@ stockpc@Perr <- c(0.6, 1.0)
 FIXME: look into meta- analyses. For now we will bound this with a wide range of possibilities. See Thorson paper.
 
 ```{r desc-stock-ac-pc, results = knitr_results, echo = knitr_echo}
-stockpc@AC <- c(0.0, 0.7)
+stock_pc@AC <- c(0.0, 0.7)
 ```
 <!-- slot-chunk-end -->
 
@@ -177,7 +177,7 @@ stockpc@AC <- c(0.0, 0.7)
 Not used. BUT COULD LOOK AT THIS AS ALTERNATIVE OM for Pacific Cod.
 
 ```{r desc-stock-period-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Period
+stock_pc@Period
 ```
 <!-- slot-chunk-end -->
 
@@ -189,7 +189,7 @@ stockpc@Period
 Not used.
 
 ```{r desc-stock-amplitude-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Amplitude
+stock_pc@Amplitude
 ```
 <!-- slot-chunk-end -->
 
@@ -223,7 +223,7 @@ gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-linf-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Linf <- c(88.7,103.4)
+stock_pc@Linf <- c(88.7,103.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -236,7 +236,7 @@ stockpc@Linf <- c(88.7,103.4)
 Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-k-pc, results = knitr_results, echo = knitr_echo}
-stockpc@K <-c(0.17,0.22)
+stock_pc@K <-c(0.17,0.22)
 ```
 <!-- slot-chunk-end -->
 
@@ -248,7 +248,7 @@ stockpc@K <-c(0.17,0.22)
 Lower and upper values of the confidence interval for Hecate Strait and Queen Charlotte Sound combined [@forrest2019, their Appendix C].
 
 ```{r desc-stock-t0-pc, results = knitr_results, echo = knitr_echo}
-stockpc@t0 <- c(-0.91, -0.72)
+stock_pc@t0 <- c(-0.91, -0.72)
 ```
 <!-- slot-chunk-end -->
 
@@ -261,8 +261,8 @@ We will grab this from our data analysis:
 
 ```{r desc-stock-lencv-pc, results = knitr_results, echo = knitr_echo}
 sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
-stockpc@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
-round(stockpc@LenCV, 2)
+stock_pc@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+round(stock_pc@LenCV, 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -274,7 +274,7 @@ round(stockpc@LenCV, 2)
 FIXME: pick this. For now picking an arbitrary range.
 
 ```{r desc-stock-ksd-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Ksd <- c(0, 0.2)
+stock_pc@Ksd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -286,7 +286,7 @@ stockpc@Ksd <- c(0, 0.2)
 FIXME: We don't have much to go on here without some kind of a meta-analysis across other species.
 
 ```{r desc-stock-linfsd-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Linfsd <- c(0, 0.2)
+stock_pc@Linfsd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -306,8 +306,8 @@ gfplot::plot_mat_ogive(m_mat)
 From our model, length that 50% maturity for females is calculated as `r round(mat_perc$f.p0.5, 1)` with a standard error of `r round(se_l50, 1)`. Let's pick a range that is roughly the 95% confidence interval around the estimated length that 50% maturity. Length the maturity looks similar for males and females.
 
 ```{r desc-stock-l50-pc, results = knitr_results, echo = knitr_echo}
-stockpc@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
-stockpc@L50
+stock_pc@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
+stock_pc@L50
 ```
 <!-- slot-chunk-end -->
 
@@ -319,13 +319,13 @@ stockpc@L50
 Similarly we will calculate the increment in length from 50% to 95% maturity.
 
 ```{r desc-stock-l50_95-pc, results = knitr_results, echo = knitr_echo}
-# TODO: Yikes! Need to check this delta method imppclementation.
+# TODO: Yikes! Need to check this delta method imp_pclementation.
 se_l50_95m <- pbs2dlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
-stockpc@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
-stockpc@L50_95
+stock_pc@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
+stock_pc@L50_95
 ```
 <!-- slot-chunk-end -->
 
@@ -339,7 +339,7 @@ TODO: We are probably going to have to bound some reasonable numbers here unless
 Lower and upper values of the 95% credibility interval of posterior distribution of B2019/B0 [@forrest2019].
 
 ```{r desc-stock-d-pc, results = knitr_results, echo = knitr_echo}
-stockpc@D <- c(0.45, 0.92)
+stock_pc@D <- c(0.45, 0.92)
 ```
 <!-- slot-chunk-end -->
 
@@ -359,8 +359,8 @@ gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 We can fill this slot from our fitted model.
 
 ```{r desc-stock-a-pc, results = knitr_results, echo = knitr_echo}
-stockpc@a <- exp(mlw$pars[["log_a"]])
-round(log(stockpc@a), 2)
+stock_pc@a <- exp(mlw$pars[["log_a"]])
+round(log(stock_pc@a), 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -372,8 +372,8 @@ round(log(stockpc@a), 2)
 We can take this from our fitted model.
 
 ```{r desc-stock-b-pc, results = knitr_results, echo = knitr_echo}
-stockpc@b <- mlw$pars[["b"]]
-round(stockpc@b, 2)
+stock_pc@b <- mlw$pars[["b"]]
+round(stock_pc@b, 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -383,7 +383,7 @@ round(stockpc@b, 2)
 *The default OM has two areas. size_area_1 is the geographical size of the area relative to the TOTAL area.Set to 0.5 to approximate single area model*
 
 ```{r desc-stock-size_area_1-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Size_area_1 <- c(0.49,0.51)
+stock_pc@Size_area_1 <- c(0.49,0.51)
 ```
 <!-- slot-chunk-end -->
 
@@ -395,7 +395,7 @@ stockpc@Size_area_1 <- c(0.49,0.51)
 For now, we will set this to the same fraction as the size of area 1.
 
 ```{r desc-stock-frac_area_1-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Frac_area_1 <- c(0.49,0.51)
+stock_pc@Frac_area_1 <- c(0.49,0.51)
 ```
 <!-- slot-chunk-end -->
 
@@ -407,7 +407,7 @@ stockpc@Frac_area_1 <- c(0.49,0.51)
 Let's assume Pacific cod is vulnerable in almost all of its range - set a 50% prob of staying in each area.
 
 ```{r desc-stock-prob_staying-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Prob_staying <- c(0.49,0.51)
+stock_pc@Prob_staying <- c(0.49,0.51)
 ```
 <!-- slot-chunk-end -->
 
@@ -419,7 +419,7 @@ stockpc@Prob_staying <- c(0.49,0.51)
 We can assume that nearly 100% of the discarded Pacific Cod die.
 
 ```{r desc-stock-fdisc-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Fdisc <- 0.99
+stock_pc@Fdisc <- 0.99
 ```
 <!-- slot-chunk-end -->
 
@@ -429,15 +429,15 @@ stockpc@Fdisc <- 0.99
 *A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
 
 ```{r desc-stock-source-pc, results = knitr_results, echo = knitr_echo}
-stockpc@Source <- ""
+stock_pc@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-pc}
 
 ```{r warnings = FALSE}
-fleetpc <- methods::new('Fleet')
-fleetpc <- DLMtool::Generic_Fleet # TODO: temporary
+fleet_pc <- methods::new('Fleet')
+fleet_pc <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
 <!-- slot-chunk-begin -->
@@ -446,7 +446,7 @@ fleetpc <- DLMtool::Generic_Fleet # TODO: temporary
 *Name of the Fleet object. Single value. Character string.*
 
 ```{r desc-fleet-name-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Name <- "BC Trawl Fleet"
+fleet_pc@Name <- "BC Trawl Fleet"
 ```
 <!-- slot-chunk-end -->
 
@@ -458,7 +458,7 @@ fleetpc@Name <- "BC Trawl Fleet"
 We will set the historical run-up to be approximately the length of the commercial fishery:
 
 ```{r desc-fleet-nyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@nyears <- 62
+fleet_pc@nyears <- 62
 ```
 <!-- slot-chunk-end -->
 
@@ -470,7 +470,7 @@ fleetpc@nyears <- 62
 TODO: Need to dig into the code understand this parameter.
 
 ```{r desc-fleet-spat_targ-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Spat_targ
+fleet_pc@Spat_targ
 ```
 <!-- slot-chunk-end -->
 
@@ -479,24 +479,24 @@ fleetpc@Spat_targ
 
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
 
-For now, derive these as approximations of the effort timeseries from the CPUE standardization analyses. Use the time series from our "fleetpc" that is most relevant to catching Pacific Cod.
+For now, derive these as approximations of the effort timeseries from the CPUE standardization analyses. Use the time series from our "fleet_pc" that is most relevant to catching Pacific Cod.
 
 ```{r desc-fleet-effyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc <- read.csv(here::here("report/data/pcod-flt-effort.csv"))
-all_years <- data.frame(year = (2018 - fleetpc@nyears+1):2018)
-fleetpc <- dplyr::left_join(all_years, fleetpc)
-fleetpc <- mutate(fleetpc,
+fleet_pc <- read.csv(here::here("report/data/pcod-flt-effort.csv"))
+all_years <- data.frame(year = (2018 - fleet_pc@nyears+1):2018)
+fleet_pc <- dplyr::left_join(all_years, fleet_pc)
+fleet_pc <- mutate(fleet_pc,
   effort = ifelse(is.na(hours_fished), 50, hours_fished),
   effort_upper = effort * 1.5, effort_lower = effort * 0.667
   )
-fleetpc <- mutate(fleetpc,
+fleet_pc <- mutate(fleet_pc,
   effort_lower = effort_lower/max(effort_upper, na.rm = TRUE),
   effort_upper = effort_upper/max(effort_upper, na.rm = TRUE))
 
-ggplot(fleetpc, aes(year, ymin = effort_lower, ymax = effort_upper)) +
+ggplot(fleet_pc, aes(year, ymin = effort_lower, ymax = effort_upper)) +
   geom_ribbon()
 
-fleetpc@EffYears <- fleetpc$year
+fleet_pc@EffYears <- fleet_pc$year
 ```
 <!-- slot-chunk-end -->
 
@@ -508,7 +508,7 @@ fleetpc@EffYears <- fleetpc$year
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-efflower-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@EffLower <- fleetpc$effort_lower
+fleet_pc@EffLower <- fleet_pc$effort_lower
 ```
 <!-- slot-chunk-end -->
 
@@ -520,7 +520,7 @@ fleetpc@EffLower <- fleetpc$effort_lower
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-effupper-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@EffUpper <- fleetpc$effort_upper
+fleet_pc@EffUpper <- fleet_pc$effort_upper
 ```
 <!-- slot-chunk-end -->
 
@@ -532,7 +532,7 @@ fleetpc@EffUpper <- fleetpc$effort_upper
 TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
 
 ```{r desc-fleet-esd-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Esd <- c(0.1, 0.4)
+fleet_pc@Esd <- c(0.1, 0.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -544,7 +544,7 @@ fleetpc@Esd <- c(0.1, 0.4)
 TODO: We don't have a lot of data to go on for this. We will set this at 0 indicating no expected systematic change in fishing efficiency.
 
 ```{r desc-fleet-qinc-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@qinc <- c(0, 0)
+fleet_pc@qinc <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -556,7 +556,7 @@ fleetpc@qinc <- c(0, 0)
 TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing efficiency.
 
 ```{r desc-fleet-qcv-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@qcv <- c(0.1, 0.2)
+fleet_pc@qcv <- c(0.1, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -565,10 +565,10 @@ fleetpc@qcv <- c(0.1, 0.2)
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the slot `isRel` below, this slot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stockpc@L50[[1]]` to `r stockpc@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(dpc$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stockpc@L50[[2]], 1)`- and `r round(min_caught/stockpc@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+Based on the slot `isRel` below, this slot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock_pc@L50[[1]]` to `r stock_pc@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(dpc$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock_pc@L50[[2]], 1)`- and `r round(min_caught/stock_pc@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@L5 <- c(0.2, 0.4)
+fleet_pc@L5 <- c(0.2, 0.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -580,19 +580,19 @@ fleetpc@L5 <- c(0.2, 0.4)
 Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFS <- c(0.95, 1.1)#c(1.0, 1.2) #
+fleet_pc@LFS <- c(0.95, 1.1)#c(1.0, 1.2) #
 ```
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Vmaxlen {#app:desc-fleet-vmaxlen-pc}
 
-*The vulnerability of fish at `stockpc@Linf` . Uniform distribution lower and upper bounds. Fraction*
+*The vulnerability of fish at `stock_pc@Linf` . Uniform distribution lower and upper bounds. Fraction*
 
 Assume all large fish are vulnerable.
 
 ```{r desc-fleet-vmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Vmaxlen <-  c(1, 1) #c(0.05, 0.95) #
+fleet_pc@Vmaxlen <-  c(1, 1) #c(0.05, 0.95) #
 ```
 <!-- slot-chunk-end -->
 
@@ -602,7 +602,7 @@ fleetpc@Vmaxlen <-  c(1, 1) #c(0.05, 0.95) #
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
 
 ```{r desc-fleet-isrel-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@isRel
+fleet_pc@isRel
 ```
 <!-- slot-chunk-end -->
 
@@ -614,7 +614,7 @@ fleetpc@isRel
 Since we can assume that no Pacific Cod will survive if caught, we will set this to same as L5. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lr5-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LR5 #<- c(0.2, 0.4)
+fleet_pc@LR5 #<- c(0.2, 0.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -626,19 +626,19 @@ fleetpc@LR5 #<- c(0.2, 0.4)
 Use same as LFS. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-lfr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFR #<- c(0.95, 0.99)
+fleet_pc@LFR #<- c(0.95, 0.99)
 ```
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Rmaxlen {#app:desc-fleet-rmaxlen-pc}
 
-*The retention of fish at `stockpc@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
+*The retention of fish at `stock_pc@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 Use same as VmaxLen. Assume this is still relative to length at maturity??
 
 ```{r desc-fleet-rmaxlen-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@Rmaxlen #<- c(0.99, 1.5)
+fleet_pc@Rmaxlen #<- c(0.99, 1.5)
 ```
 <!-- slot-chunk-end -->
 
@@ -648,7 +648,7 @@ fleetpc@Rmaxlen #<- c(0.99, 1.5)
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
 
 ```{r desc-fleet-dr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@DR #<- c(0.01,0.05)
+fleet_pc@DR #<- c(0.01,0.05)
 ```
 <!-- slot-chunk-end -->
 
@@ -658,7 +658,7 @@ fleetpc@DR #<- c(0.01,0.05)
 *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers*
 
 ```{r desc-fleet-selyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@SelYears
+fleet_pc@SelYears
 ```
 <!-- slot-chunk-end -->
 
@@ -668,7 +668,7 @@ fleetpc@SelYears
 *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers*
 
 ```{r desc-fleet-absselyears-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@AbsSelYears
+fleet_pc@AbsSelYears
 ```
 <!-- slot-chunk-end -->
 
@@ -678,7 +678,7 @@ fleetpc@AbsSelYears
 *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
 
 ```{r desc-fleet-l5lower-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@L5Lower
+fleet_pc@L5Lower
 ```
 <!-- slot-chunk-end -->
 
@@ -688,7 +688,7 @@ fleetpc@L5Lower
 *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers*
 
 ```{r desc-fleet-l5upper-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@L5Upper
+fleet_pc@L5Upper
 ```
 <!-- slot-chunk-end -->
 
@@ -698,7 +698,7 @@ fleetpc@L5Upper
 *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
 
 ```{r desc-fleet-lfslower-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFSLower
+fleet_pc@LFSLower
 ```
 <!-- slot-chunk-end -->
 
@@ -708,7 +708,7 @@ fleetpc@LFSLower
 *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers*
 
 ```{r desc-fleet-lfsupper-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@LFSUpper
+fleet_pc@LFSUpper
 ```
 <!-- slot-chunk-end -->
 
@@ -718,7 +718,7 @@ fleetpc@LFSUpper
 *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
 
 ```{r desc-fleet-vmaxlower-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@VmaxLower
+fleet_pc@VmaxLower
 ```
 <!-- slot-chunk-end -->
 
@@ -728,7 +728,7 @@ fleetpc@VmaxLower
 *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction*
 
 ```{r desc-fleet-vmaxupper-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@VmaxUpper
+fleet_pc@VmaxUpper
 ```
 <!-- slot-chunk-end -->
 
@@ -738,7 +738,7 @@ fleetpc@VmaxUpper
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
 
 ```{r desc-fleet-currentyr-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@CurrentYr <- 2018
+fleet_pc@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
@@ -750,15 +750,15 @@ fleetpc@CurrentYr <- 2018
 We will not use this functionality.
 
 ```{r desc-fleet-mpa-pc, results = knitr_results, echo = knitr_echo}
-fleetpc@MPA
+fleet_pc@MPA
 ```
 <!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-pc}
 
 ```{r warnings = FALSE}
-obspc <- methods::new('Obs')
-obspc <- DLMtool::Precise_Unbiased # TODO: temporary
+obs_pc <- methods::new('Obs')
+obs_pc <- DLMtool::Precise_Unbiased # TODO: temporary
 ```
 
 <!-- slot-chunk-begin -->
@@ -767,7 +767,7 @@ obspc <- DLMtool::Precise_Unbiased # TODO: temporary
 *The name of the observation model object. Single value. Character string.*
 
 ```{r desc-obs-name-pc, results = knitr_results, echo = knitr_echo}
-obspc@Name <- "BC Obs"
+obs_pc@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
 
@@ -781,7 +781,7 @@ At least since 1996, observation error on catch should be very small.
 TODO: does this affect historical build up because there was certainly much larger observation are on catch before 1996.
 
 ```{r desc-obs-cobs-pc, results = knitr_results, echo = knitr_echo}
-obspc@Cobs <- c(0.05, 0.15)
+obs_pc@Cobs <- c(0.05, 0.15)
 ```
 <!-- slot-chunk-end -->
 
@@ -793,7 +793,7 @@ obspc@Cobs <- c(0.05, 0.15)
 We will keep the possible sampling bias quite small because observation error on catch should be very small with 100% on board and dockside monitoring.
 
 ```{r desc-obs-cbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Cbiascv <- 0.05
+obs_pc@Cbiascv <- 0.05
 ```
 <!-- slot-chunk-end -->
 
@@ -802,12 +802,12 @@ obspc@Cbiascv <- 0.05
 
 *Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that imppcortant. They will only be used if we also explore some more data-rich management procedures.
+We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that imp_pcortant. They will only be used if we also explore some more data-rich management procedures.
 
 TODO: Therefore, for now, I will not adjust these.
 
 ```{r desc-obs-caa_nsamp-pc, results = knitr_results, echo = knitr_echo}
-obspc@CAA_nsamp
+obs_pc@CAA_nsamp
 ```
 <!-- slot-chunk-end -->
 
@@ -817,7 +817,7 @@ obspc@CAA_nsamp
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-caa_ess-pc, results = knitr_results, echo = knitr_echo}
-obspc@CAA_ESS
+obs_pc@CAA_ESS
 ```
 <!-- slot-chunk-end -->
 
@@ -827,7 +827,7 @@ obspc@CAA_ESS
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_nsamp-pc, results = knitr_results, echo = knitr_echo}
-obspc@CAL_nsamp
+obs_pc@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
 
@@ -837,7 +837,7 @@ obspc@CAL_nsamp
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_ess-pc, results = knitr_results, echo = knitr_echo}
-obspc@CAL_ESS
+obs_pc@CAL_ESS
 ```
 <!-- slot-chunk-end -->
 
@@ -856,7 +856,7 @@ average_cv <- dplyr::filter(dpc$survey_index, survey_abbrev == "SYN WCHG") %>%
 This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's place a range around that for now.
 
 ```{r desc-obs-iobs-pc, results = knitr_results, echo = knitr_echo}
-obspc@Iobs <- c(0.3, 0.5)
+obs_pc@Iobs <- c(0.3, 0.5)
 ```
 <!-- slot-chunk-end -->
 
@@ -868,7 +868,7 @@ obspc@Iobs <- c(0.3, 0.5)
 TODO: I believe this refers to bias from simulation run to run but I'm not sure. For now I will set it to  zero.
 
 ```{r desc-obs-ibiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Ibiascv <- c(0.333, 3.00)
+obs_pc@Ibiascv <- c(0.333, 3.00)
 ```
 <!-- slot-chunk-end -->
 
@@ -880,7 +880,7 @@ obspc@Ibiascv <- c(0.333, 3.00)
 TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
 ```{r desc-obs-btobs-pc, results = knitr_results, echo = knitr_echo}
-obspc@Btobs <- obspc@Iobs
+obs_pc@Btobs <- obs_pc@Iobs
 ```
 <!-- slot-chunk-end -->
 
@@ -890,7 +890,7 @@ obspc@Btobs <- obspc@Iobs
 *Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-btbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Btbiascv <- obspc@Ibiascv
+obs_pc@Btbiascv <- obs_pc@Ibiascv
 ```
 <!-- slot-chunk-end -->
 
@@ -902,7 +902,7 @@ obspc@Btbiascv <- obspc@Ibiascv
 We probably don't have a lot to go on here so let's allow for a wide range:
 
 ```{r desc-obs-beta-pc, results = knitr_results, echo = knitr_echo}
-obspc@beta <- c(0.666, 1.500)
+obs_pc@beta <- c(0.666, 1.500)
 ```
 <!-- slot-chunk-end -->
 
@@ -914,7 +914,7 @@ obspc@beta <- c(0.666, 1.500)
 We don't have a large number of biological samples for the species. It is possible there is some persistent bias in like that 50% maturity. Let's set this to a range from a little to a fair bit.
 
 ```{r desc-obs-lenmbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@LenMbiascv <- c(0.05, 0.20)
+obs_pc@LenMbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -923,10 +923,10 @@ obspc@LenMbiascv <- c(0.05, 0.20)
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stockpc@M[[1]]` and `r stockpc@M[[2]]`.
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_pc@M[[1]]` and `r stock_pc@M[[2]]`.
 
 ```{r desc-obs-mbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Mbiascv <- c(0.05, 0.20)
+obs_pc@Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -938,7 +938,7 @@ obspc@Mbiascv <- c(0.05, 0.20)
 Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
 
 ```{r desc-obs-kbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Kbiascv <- c(0.05, 0.20)
+obs_pc@Kbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -950,7 +950,7 @@ obspc@Kbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-t0biascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@t0biascv <- c(0.05, 0.20)
+obs_pc@t0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -962,7 +962,7 @@ obspc@t0biascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-linfbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Linfbiascv <- c(0.05, 0.20)
+obs_pc@Linfbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -974,7 +974,7 @@ obspc@Linfbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-lfcbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@LFCbiascv <- c(0.05, 0.20)
+obs_pc@LFCbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -986,7 +986,7 @@ obspc@LFCbiascv <- c(0.05, 0.20)
 As above:
 
 ```{r desc-obs-lfsbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@LFSbiascv <- c(0.05, 0.20)
+obs_pc@LFSbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -998,7 +998,7 @@ obspc@LFSbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-fmsybiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@FMSYbiascv <- c(0.05, 0.20)
+obs_pc@FMSYbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1010,7 +1010,7 @@ obspc@FMSYbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-fmsy_mbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@FMSY_Mbiascv <- c(0.05, 0.20)
+obs_pc@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1022,7 +1022,7 @@ obspc@FMSY_Mbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-bmsy_b0biascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@BMSY_B0biascv <- c(0.05, 0.20)
+obs_pc@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1034,7 +1034,7 @@ obspc@BMSY_B0biascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-irefbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Irefbiascv <- c(0.05, 0.20)
+obs_pc@Irefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1046,7 +1046,7 @@ obspc@Irefbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-brefbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Brefbiascv <- c(0.05, 0.20)
+obs_pc@Brefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1058,19 +1058,19 @@ obspc@Brefbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-crefbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Crefbiascv <- c(0.05, 0.20)
+obs_pc@Crefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Dbiascv {#app:desc-obs-dbiascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in stockpc depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in stock_pc depletion. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO:
 
 ```{r desc-obs-dbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Dbiascv <- c(0.1, 0.3)
+obs_pc@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
 
@@ -1080,7 +1080,7 @@ obspc@Dbiascv <- c(0.1, 0.3)
 *Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-dobs-pc, results = knitr_results, echo = knitr_echo}
-obspc@Dobs
+obs_pc@Dobs
 ```
 <!-- slot-chunk-end -->
 
@@ -1090,7 +1090,7 @@ obspc@Dobs
 *Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-hbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@hbiascv <- c(0.05, 0.20)
+obs_pc@hbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1100,17 +1100,17 @@ obspc@hbiascv <- c(0.05, 0.20)
 *Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-recbiascv-pc, results = knitr_results, echo = knitr_echo}
-obspc@Recbiascv <- c(0.05, 0.20)
+obs_pc@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-pc}
 
 ```{r warnings = FALSE}
-imppc <- methods::new('Imp')
+imp_pc <- methods::new('Imp')
 ```
 
-Implementation should be very accurate for the groundfish fleetpc so we will use the perfect imppclementation object and make it just slightly less perfect for now.
+Implementation should be very accurate for the groundfish fleet_pc so we will use the perfect imp_pclementation object and make it just slightly less perfect for now.
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-pc}
@@ -1118,7 +1118,7 @@ Implementation should be very accurate for the groundfish fleetpc so we will use
 *The name of the Implementation error object. Single value. Character string.*
 
 ```{r desc-imp-name-pc, results = knitr_results, echo = knitr_echo}
-imppc@Name <- "BC Implementation"
+imp_pc@Name <- "BC Implementation"
 ```
 <!-- slot-chunk-end -->
 
@@ -1128,7 +1128,7 @@ imppc@Name <- "BC Implementation"
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-tacfrac-pc, results = knitr_results, echo = knitr_echo}
-imppc@TACFrac <- c(0.8, 1.0)
+imp_pc@TACFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1138,7 +1138,7 @@ imppc@TACFrac <- c(0.8, 1.0)
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-tacsd-pc, results = knitr_results, echo = knitr_echo}
-imppc@TACSD <- c(0, 0)
+imp_pc@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1148,7 +1148,7 @@ imppc@TACSD <- c(0, 0)
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-taefrac-pc, results = knitr_results, echo = knitr_echo}
-imppc@TAEFrac <- c(1, 1)
+imp_pc@TAEFrac <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1158,7 +1158,7 @@ imppc@TAEFrac <- c(1, 1)
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-taesd-pc, results = knitr_results, echo = knitr_echo}
-imppc@TAESD <- c(0, 0)
+imp_pc@TAESD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1168,7 +1168,7 @@ imppc@TAESD <- c(0, 0)
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-sizelimfrac-pc, results = knitr_results, echo = knitr_echo}
-imppc@SizeLimFrac <- c(1, 1)
+imp_pc@SizeLimFrac <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1178,7 +1178,7 @@ imppc@SizeLimFrac <- c(1, 1)
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-sizelimsd-pc, results = knitr_results, echo = knitr_echo}
-imppc@SizeLimSD <- c(1, 1)
+imp_pc@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1188,7 +1188,7 @@ imppc@SizeLimSD <- c(1, 1)
 *Output the Operating model.*
 
 ```{r output-pc}
-ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+ompc <- new('OM', stock_pc, fleet_pc, obs_pc, imp_pc)
 saveRDS(ompc, file = here::here("generated-data", "pcod-om.rds"))
 ```
 <!-- slot-chunk-end -->
