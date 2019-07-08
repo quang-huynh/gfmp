@@ -577,7 +577,7 @@ fleetsr@L5 <- c(0.6, 1.0)
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the obssrerved commercial length samples this appears to be around or just slightly larger than the length at maturity.
+Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-sr, results = knitr_results, echo = knitr_echo}
 fleetsr@LFS <- c(1.0, 1.2)
@@ -758,7 +758,7 @@ obssr <- DLMtool::Precise_Unbiased # TODO: temporary
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-sr}
 
-*The name of the obssrervation model object. Single value. Character string.*
+*The name of the observation model object. Single value. Character string.*
 
 ```{r desc-obs-name-sr, results = knitr_results, echo = knitr_echo}
 obssr@Name <- "BC Obs"
@@ -768,7 +768,7 @@ obssr@Name <- "BC Obs"
 <!-- slot-chunk-begin -->
 ### Cobs {#app:desc-obs-cobs-sr}
 
-*Log-normal catch obssrervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 At least since 1996, observation error on catch should be very small. Setting this to 0.
 
@@ -782,9 +782,9 @@ obssr@Cobs <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obs-cbiascv-sr}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch obssrervations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We will keep the at 0 because obssrervation error on catch should be very small with 100% on board and dockside monitoring.
+We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
 
 FIXME: what about the historical period?
 
@@ -796,7 +796,7 @@ obssr@Cbiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### CAA_nsamp {#app:desc-obs-caa_nsamp-sr}
 
-*Number of catch-at-age obssrervation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 
 We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that impsrortant. They will only be used if we also explore some more data-rich management procedures.
 
@@ -810,7 +810,7 @@ obssr@CAA_nsamp
 <!-- slot-chunk-begin -->
 ### CAA_ESS {#app:desc-obs-caa_ess-sr}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age obssrervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-caa_ess-sr, results = knitr_results, echo = knitr_echo}
 obssr@CAA_ESS
@@ -820,7 +820,7 @@ obssr@CAA_ESS
 <!-- slot-chunk-begin -->
 ### CAL_nsamp {#app:desc-obs-cal_nsamp-sr}
 
-*Number of catch-at-length obssrervation per time step. Uniform distribution lower and upper bounds. Positive integers*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_nsamp-sr, results = knitr_results, echo = knitr_echo}
 obssr@CAL_nsamp
@@ -830,7 +830,7 @@ obssr@CAL_nsamp
 <!-- slot-chunk-begin -->
 ### CAL_ESS {#app:desc-obs-cal_ess-sr}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length obssrervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_ess-sr, results = knitr_results, echo = knitr_echo}
 obssr@CAL_ESS
@@ -838,7 +838,7 @@ obssr@CAL_ESS
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Iobssr {#app:desc-obssr-iobssr-sr}
+### Iobs {#app:desc-obs-iobs-sr}
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
@@ -851,15 +851,15 @@ average_cv <- dplyr::filter(.dshort$survey_index, survey_abbrev == "SYN WCHG") %
 
 This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
-```{r desc-obssr-iobssr-sr, results = knitr_results, echo = knitr_echo}
-obssr@Iobssr <- c(average_cv, average_cv)
+```{r desc-obs-iobs-sr, results = knitr_results, echo = knitr_echo}
+obssr@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Ibiascv {#app:desc-obs-ibiascv-sr}
 
-*Log-normal coefficient of variation controlling error in obssrervations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO: I believe this refers to bias from simulation run to run.
 
@@ -871,14 +871,14 @@ obssr@Ibiascv <- c(0, 0)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Btobssr {#app:desc-obssr-btobssr-sr}
+### Btobs {#app:desc-obs-btobs-sr}
 
-*Log-normal coefficient of variation controlling error in obssrervations of current stocksr biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current stocksr biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
-TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobssr`
+TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
-```{r desc-obssr-btobssr-sr, results = knitr_results, echo = knitr_echo}
-obssr@Btobssr <- obssr@Iobssr
+```{r desc-obssr-btobs-sr, results = knitr_results, echo = knitr_echo}
+obssr@Btobs <- obssr@Iobs
 ```
 <!-- slot-chunk-end -->
 
@@ -919,7 +919,7 @@ obssr@LenMbiascv <- c(0.05, 0.10)
 <!-- slot-chunk-begin -->
 ### Mbiascv {#app:desc-obs-mbiascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in obssrerved natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
 We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stocksr@M[[1]]` and `r stocksr@M[[2]]`.
 
@@ -931,7 +931,7 @@ obssr@Mbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### Kbiascv {#app:desc-obs-kbiascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in obssrerved growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 
 Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
 
@@ -943,7 +943,7 @@ obssr@Kbiascv <- c(0.05, 0.10)
 <!-- slot-chunk-begin -->
 ### t0biascv {#app:desc-obs-t0biascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in obssrerved t0. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -955,7 +955,7 @@ obssr@t0biascv <- c(0.05, 0.10)
 <!-- slot-chunk-begin -->
 ### Linfbiascv {#app:desc-obs-linfbiascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in obssrerved maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -967,7 +967,7 @@ obssr@Linfbiascv <- c(0.05, 0.10)
 <!-- slot-chunk-begin -->
 ### LFCbiascv {#app:desc-obs-lfcbiascv-sr}
 
-*Log-normal coefficient of variation for sampling persistent bias in obssrerved length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -1073,12 +1073,12 @@ obssr@Dbiascv <- c(0.1, 0.3)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Dobssr {#app:desc-obssr-dobssr-sr}
+### Dobs {#app:desc-obs-dobs-sr}
 
-*Log-normal coefficient of variation controlling error in obssrervations of stocksr depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
-```{r desc-obssr-dobssr-sr, results = knitr_results, echo = knitr_echo}
-obssr@Dobssr
+```{r desc-obs-dobs-sr, results = knitr_results, echo = knitr_echo}
+obssr@Dobs
 ```
 <!-- slot-chunk-end -->
 
