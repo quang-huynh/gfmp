@@ -12,7 +12,7 @@ knitr_echo <- TRUE
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-sr}
 
 ```{r warnings = FALSE}
-stocksr <- methods::new('Stock')
+stock_sr <- methods::new('Stock')
 ```
 
 <!-- slot-chunk-begin -->
@@ -21,7 +21,7 @@ stocksr <- methods::new('Stock')
 *The name of the Stock object. Single value. Character string*
 
 ```{r desc-stock-name-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Name <- "Shortraker Rockfish Coastwide Stock"
+stock_sr@Name <- "Shortraker Rockfish Coastwide Stock"
 ```
 <!-- slot-chunk-end -->
 
@@ -31,7 +31,7 @@ stocksr@Name <- "Shortraker Rockfish Coastwide Stock"
 *Common name of the species. Character string*
 
 ```{r desc-stock-common_name-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Common_Name <- "Shortraker Rockfish"
+stock_sr@Common_Name <- "Shortraker Rockfish"
 ```
 <!-- slot-chunk-end -->
 
@@ -41,7 +41,7 @@ stocksr@Common_Name <- "Shortraker Rockfish"
 *Scientific name of the species. Genus and species name. Character string*
 
 ```{r desc-stock-species-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Species <- "Sebastes borealis"
+stock_sr@Species <- "Sebastes borealis"
 ```
 <!-- slot-chunk-end -->
 
@@ -51,7 +51,7 @@ stocksr@Species <- "Sebastes borealis"
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
 ```{r desc-stock-maxage-sr, results = knitr_results, echo = knitr_echo}
-stocksr@maxage <- max(.dshort$survey_samples$age, .dshort$commercial_samples$age, na.rm = TRUE)
+stock_sr@maxage <- max(.dshort$survey_samples$age, .dshort$commercial_samples$age, na.rm = TRUE)
 ```
 <!-- slot-chunk-end -->
 
@@ -63,7 +63,7 @@ stocksr@maxage <- max(.dshort$survey_samples$age, .dshort$commercial_samples$age
 The absolute value is meaningless here. Arbitrarily pick a value.
 
 ```{r desc-stock-r0-sr, results = knitr_results, echo = knitr_echo}
-stocksr@R0 <- 1000
+stock_sr@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
 
@@ -72,17 +72,17 @@ stocksr@R0 <- 1000
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
-@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. We could also use the linear regression model from [@hoenig1983], which estimates $\ln(\hat{M})$ as $\ln(\hat{M}) = 1.44 - 0.982 \cdot \ln(t_\mathrm{max})$. If we assume that the maximum age is the oldest age in our samples, `r stocksr@maxage`, then we can estimate $M$ as
+@echave2015 estimated natural mortality in the Gulf of Alaska to be 0.03. We could also use the linear regression model from [@hoenig1983], which estimates $\ln(\hat{M})$ as $\ln(\hat{M}) = 1.44 - 0.982 \cdot \ln(t_\mathrm{max})$. If we assume that the maximum age is the oldest age in our samples, `r stock_sr@maxage`, then we can estimate $M$ as
 
 ```{r}
-exp(1.44 - 0.982 * log(stocksr@maxage))
+exp(1.44 - 0.982 * log(stock_sr@maxage))
 ```
 <!-- slot-chunk-end -->
 
 which corresponds very closely to that used in @echave2015. We will add some uncertainty around this value by allowing for half or double 0.03:
 
 ```{r desc-stock-m-sr, results = knitr_results, echo = knitr_echo}
-stocksr@M <- c(0.015, 0.06)
+stock_sr@M <- c(0.015, 0.06)
 ```
 <!-- slot-chunk-end -->
 
@@ -94,7 +94,7 @@ stocksr@M <- c(0.015, 0.06)
 <!-- Not used. -->
 
 ```{r desc-stock-m2-sr, results = knitr_results, echo = FALSE}
-stocksr@M2
+stock_sr@M2
 ```
 <!-- slot-chunk-end -->
 
@@ -106,7 +106,7 @@ stocksr@M2
 Not used.
 
 ```{r desc-stock-mexp-sr, results = knitr_results, echo = FALSE}
-stocksr@Mexp <- c(NA_real_, NA_real_)
+stock_sr@Mexp <- c(NA_real_, NA_real_)
 ```
 <!-- slot-chunk-end -->
 
@@ -115,10 +115,10 @@ stocksr@Mexp <- c(NA_real_, NA_real_)
 
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-Setting this to 0 to turn off this functionality for simpsrlicity.
+Setting this to 0 to turn off this functionality for simp_srlicity.
 
 ```{r desc-stock-msd-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Msd <- c(0, 0)
+stock_sr@Msd <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -132,7 +132,7 @@ FIXME: maybe there's an assessment in Alaska we could draw on?
 Unless there is a shortraker-specific estimate from assessment elsewhere, we can draw on the posterior predictive distribution from @forrest2010. FIXME: do better than eyeballing the plot. Based on that analysis, let's allow for range that encompasses the mean values for the species considered in that meta-analysis with some additional uncertainty:
 
 ```{r desc-stock-h-sr, results = knitr_results, echo = knitr_echo}
-stocksr@h <- c(0.4, 0.9)
+stock_sr@h <- c(0.4, 0.9)
 ```
 <!-- slot-chunk-end -->
 
@@ -144,7 +144,7 @@ stocksr@h <- c(0.4, 0.9)
 We will choose a Beverton-Holt as has commonly been done for other groundfish assessments... FIXME citations.
 
 ```{r desc-stock-srrel-sr, results = knitr_results, echo = knitr_echo}
-stocksr@SRrel <- 1L
+stock_sr@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
 
@@ -158,7 +158,7 @@ stocksr@SRrel <- 1L
 FIXME: Need to look for data in other assessments of similar rockfish species or of shortraker in other regions.
 
 ```{r desc-stock-perr-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Perr <- c(0.5, 0.9)
+stock_sr@Perr <- c(0.5, 0.9)
 ```
 <!-- slot-chunk-end -->
 
@@ -170,7 +170,7 @@ stocksr@Perr <- c(0.5, 0.9)
 @thorson2014 finds the mean autocorrelation for Scorpaeniformes to be about 0.44 with a standard deviation of about 0.27.
 
 ```{r desc-stock-ac-sr, results = knitr_results, echo = knitr_echo}
-stocksr@AC <- c(0.2, 0.6)
+stock_sr@AC <- c(0.2, 0.6)
 ```
 <!-- slot-chunk-end -->
 
@@ -182,7 +182,7 @@ stocksr@AC <- c(0.2, 0.6)
 <!-- Not used. -->
 
 ```{r desc-stock-period-sr, results = knitr_results, echo = FALSE}
-stocksr@Period
+stock_sr@Period
 ```
 <!-- slot-chunk-end -->
 
@@ -194,7 +194,7 @@ stocksr@Period
 <!-- Not used. -->
 
 ```{r desc-stock-amplitude-sr, results = knitr_results, echo = FALSE}
-stocksr@Amplitude
+stock_sr@Amplitude
 ```
 <!-- slot-chunk-end -->
 
@@ -218,7 +218,7 @@ gfplot::plot_vb(object_all = mvb, col = c("All" = "black"))
 We will grab this from our data analysis:
 
 ```{r desc-stock-linf-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
+stock_sr@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["linf"]]
 ```
 <!-- slot-chunk-end -->
 
@@ -230,7 +230,7 @@ stocksr@Linf <- c(-2, 2) * mvb_summary[,"Std. Error"][["linf"]] + mvb$pars[["lin
 We will grab this from our data analysis:
 
 ```{r desc-stock-k-sr, results = knitr_results, echo = knitr_echo}
-stocksr@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
+stock_sr@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
 ```
 <!-- slot-chunk-end -->
 
@@ -242,7 +242,7 @@ stocksr@K <-c(-2, 2) * mvb_summary[,"Std. Error"][["k"]] + mvb$pars[["k"]]
 We will grab this from our data analysis:
 
 ```{r desc-stock-t0-sr, results = knitr_results, echo = knitr_echo}
-stocksr@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
+stock_sr@t0 <- c(-2, 2) *  mvb_summary[,"Std. Error"][["t0"]] + mvb$pars[["t0"]]
 ```
 <!-- slot-chunk-end -->
 
@@ -255,8 +255,8 @@ We will grab this from our data analysis:
 
 ```{r desc-stock-lencv-sr, results = knitr_results, echo = knitr_echo}
 sd2cv <- function(.sd) sqrt(exp(.sd^2) - 1)
-stocksr@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
-round(stocksr@LenCV, 2)
+stock_sr@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
+round(stock_sr@LenCV, 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -268,7 +268,7 @@ round(stocksr@LenCV, 2)
 FIXME: pick this. For now picking an arbitrary range.
 
 ```{r desc-stock-ksd-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Ksd <- c(0, 0.2)
+stock_sr@Ksd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -280,7 +280,7 @@ stocksr@Ksd <- c(0, 0.2)
 FIXME: We don't have much to go on here without some kind of a meta-analysis across other species.
 
 ```{r desc-stock-linfsd-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Linfsd <- c(0, 0.2)
+stock_sr@Linfsd <- c(0, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -300,8 +300,8 @@ gfplot::plot_mat_ogive(m_mat)
 From our model, length that 50% maturity for females is calculated as `r round(mat_perc$f.p0.5, 1)` with a standard error of `r round(se_l50, 1)`. Let's pick a range that is roughly the 95% confidence interval around the estimated length that 50% maturity. Length the maturity looks similar for males and females.
 
 ```{r desc-stock-l50-sr, results = knitr_results, echo = knitr_echo}
-stocksr@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
-stocksr@L50
+stock_sr@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
+stock_sr@L50
 ```
 <!-- slot-chunk-end -->
 
@@ -313,13 +313,13 @@ stocksr@L50
 Similarly we will calculate the increment in length from 50% to 95% maturity.
 
 ```{r desc-stock-l50_95-sr, results = knitr_results, echo = knitr_echo}
-# TODO: Yikes! Need to check this delta method impsrlementation.
+# TODO: Yikes! Need to check this delta method imp_srlementation.
 se_l50_95m <- pbs2dlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
-stocksr@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
-stocksr@L50_95
+stock_sr@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
+stock_sr@L50_95
 ```
 <!-- slot-chunk-end -->
 
@@ -330,10 +330,10 @@ stocksr@L50_95
 
 TODO: We are probably going to have to bound some reasonable numbers here unless we can fit a basic model such as a surplus production model or a length-based model. For now picking and wide range.
 
-FIXME: This is an impsrortant value that we may want to think more deeply about.
+FIXME: This is an imp_srortant value that we may want to think more deeply about.
 
 ```{r desc-stock-d-sr, results = knitr_results, echo = knitr_echo}
-stocksr@D <- c(0.1, 0.8)
+stock_sr@D <- c(0.1, 0.8)
 ```
 <!-- slot-chunk-end -->
 
@@ -353,8 +353,8 @@ gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 We can fill this slot from our fitted model.
 
 ```{r desc-stock-a-sr, results = knitr_results, echo = knitr_echo}
-stocksr@a <- exp(mlw$pars[["log_a"]])
-round(log(stocksr@a), 2)
+stock_sr@a <- exp(mlw$pars[["log_a"]])
+round(log(stock_sr@a), 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -366,8 +366,8 @@ round(log(stocksr@a), 2)
 We can take this from our fitted model.
 
 ```{r desc-stock-b-sr, results = knitr_results, echo = knitr_echo}
-stocksr@b <- mlw$pars[["b"]]
-round(stocksr@b, 2)
+stock_sr@b <- mlw$pars[["b"]]
+round(stock_sr@b, 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -379,7 +379,7 @@ round(stocksr@b, 2)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-size_area_1-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Size_area_1 <- c(0.5, 0.5)
+stock_sr@Size_area_1 <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 
@@ -391,7 +391,7 @@ stocksr@Size_area_1 <- c(0.5, 0.5)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-frac_area_1-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Frac_area_1 <- c(0.5, 0.5)
+stock_sr@Frac_area_1 <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 
@@ -403,7 +403,7 @@ stocksr@Frac_area_1 <- c(0.5, 0.5)
 We will set this to 0.5 to approximate a single area model.
 
 ```{r desc-stock-prob_staying-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Prob_staying <- c(0.5, 0.5)
+stock_sr@Prob_staying <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 
@@ -415,7 +415,7 @@ stocksr@Prob_staying <- c(0.5, 0.5)
 We can assume that nearly 100% of the discarded shortraker rockfish die from barotrauma. However, we have assumed no discarding elsewhere in our operating model so this will have no effect.
 
 ```{r desc-stock-fdisc-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Fdisc <- 1
+stock_sr@Fdisc <- 1
 ```
 <!-- slot-chunk-end -->
 
@@ -425,15 +425,15 @@ stocksr@Fdisc <- 1
 *A reference to a website or article from which parameters were taken to define the obs object. Single value. Character string.*
 
 ```{r desc-stock-source-sr, results = knitr_results, echo = knitr_echo}
-stocksr@Source <- ""
+stock_sr@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-sr}
 
 ```{r warnings = FALSE}
-fleetsr <- methods::new('Fleet')
-fleetsr <- DLMtool::Generic_Fleet # TODO: temporary
+fleet_sr <- methods::new('Fleet')
+fleet_sr <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
 <!-- slot-chunk-begin -->
@@ -442,7 +442,7 @@ fleetsr <- DLMtool::Generic_Fleet # TODO: temporary
 *Name of the Fleet object. Single value. Character string.*
 
 ```{r desc-fleet-name-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@Name <- "BC Fleet"
+fleet_sr@Name <- "BC Fleet"
 ```
 <!-- slot-chunk-end -->
 
@@ -454,8 +454,8 @@ fleetsr@Name <- "BC Fleet"
 We will set the historical run-up to be approximately the length of the commercial fishery. We have catches from 1978.
 
 ```{r desc-fleet-nyears-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@nyears <- 2018 - 1978
-fleetsr@nyears
+fleet_sr@nyears <- 2018 - 1978
+fleet_sr@nyears
 ```
 <!-- slot-chunk-end -->
 
@@ -467,7 +467,7 @@ fleetsr@nyears
 TODO: Need to dig into the code understand this parameter. Perhaps this only comes into play with the multiple areas model?
 
 ```{r desc-fleet-spat_targ-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@Spat_targ
+fleet_sr@Spat_targ
 ```
 <!-- slot-chunk-end -->
 
@@ -478,24 +478,24 @@ fleetsr@Spat_targ
 
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
-For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleetsr" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
+For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet_sr" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
 
 ```{r desc-fleet-effyears-sr, results = knitr_results, echo = knitr_echo}
-fleetsr <- read.csv(here::here("report/data/shortraker-flt-effort.csv"))
-all_years <- data.frame(year = (2018 - fleetsr@nyears):2018)
-fleetsr <- dplyr::left_join(all_years, fleetsr)
-fleetsr <- mutate(fleetsr,
+fleet_sr <- read.csv(here::here("report/data/shortraker-flt-effort.csv"))
+all_years <- data.frame(year = (2018 - fleet_sr@nyears):2018)
+fleet_sr <- dplyr::left_join(all_years, fleet_sr)
+fleet_sr <- mutate(fleet_sr,
   effort = ifelse(is.na(hours_fished), 50, hours_fished),
   effort_upper = effort * 1.5, effort_lower = effort * 0.667
   )
-fleetsr <- mutate(fleetsr,
+fleet_sr <- mutate(fleet_sr,
   effort_lower = effort_lower/max(effort_upper, na.rm = TRUE),
   effort_upper = effort_upper/max(effort_upper, na.rm = TRUE))
 
-ggplot(fleetsr, aes(year, ymin = effort_lower, ymax = effort_upper)) +
+ggplot(fleet_sr, aes(year, ymin = effort_lower, ymax = effort_upper)) +
   geom_ribbon()
 
-fleetsr@EffYears <- fleetsr$year
+fleet_sr@EffYears <- fleet_sr$year
 ```
 <!-- slot-chunk-end -->
 
@@ -507,7 +507,7 @@ fleetsr@EffYears <- fleetsr$year
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-efflower-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@EffLower <- fleetsr$effort_lower
+fleet_sr@EffLower <- fleet_sr$effort_lower
 ```
 <!-- slot-chunk-end -->
 
@@ -519,7 +519,7 @@ fleetsr@EffLower <- fleetsr$effort_lower
 TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
 ```{r desc-fleet-effupper-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@EffUpper <- fleetsr$effort_upper
+fleet_sr@EffUpper <- fleet_sr$effort_upper
 ```
 
 <!-- slot-chunk-begin -->
@@ -530,7 +530,7 @@ fleetsr@EffUpper <- fleetsr$effort_upper
 TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
 
 ```{r desc-fleet-esd-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@Esd <- c(0.1, 0.4)
+fleet_sr@Esd <- c(0.1, 0.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -542,7 +542,7 @@ fleetsr@Esd <- c(0.1, 0.4)
 TODO: We don't have a lot of data to go on for this. We will set this at 0 indicating no expected systematic change in fishing efficiency.
 
 ```{r desc-fleet-qinc-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@qinc <- c(0, 0)
+fleet_sr@qinc <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -553,10 +553,10 @@ fleetsr@qinc <- c(0, 0)
 
 TODO: We don't have a lot of data to go on for this.
 
-We will set this to 0 to indicate no interannual variability in fishing efficiency for simpsrlicity.
+We will set this to 0 to indicate no interannual variability in fishing efficiency for simp_srlicity.
 
 ```{r desc-fleet-qcv-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@qcv <- c(0, 0)
+fleet_sr@qcv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -565,10 +565,10 @@ fleetsr@qcv <- c(0, 0)
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stocksr@L50[[1]]` to `r stocksr@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(.dshort$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stocksr@L50[[2]], 1)`- and `r round(min_caught/stocksr@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock_sr@L50[[1]]` to `r stock_sr@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(.dshort$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock_sr@L50[[2]], 1)`- and `r round(min_caught/stock_sr@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@L5 <- c(0.6, 1.0)
+fleet_sr@L5 <- c(0.6, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -580,7 +580,7 @@ fleetsr@L5 <- c(0.6, 1.0)
 Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@LFS <- c(1.0, 1.2)
+fleet_sr@LFS <- c(1.0, 1.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -592,7 +592,7 @@ fleetsr@LFS <- c(1.0, 1.2)
 We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
 
 ```{r desc-fleet-vmaxlen-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@Vmaxlen <- c(1, 1)
+fleet_sr@Vmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -602,7 +602,7 @@ fleetsr@Vmaxlen <- c(1, 1)
 *Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
 
 ```{r desc-fleet-isrel-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@isRel
+fleet_sr@isRel
 ```
 <!-- slot-chunk-end -->
 
@@ -612,7 +612,7 @@ fleetsr@isRel
 *Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 ```{r desc-fleet-lr5-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@LR5
+fleet_sr@LR5
 ```
 <!-- slot-chunk-end -->
 
@@ -622,7 +622,7 @@ fleetsr@LR5
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 ```{r desc-fleet-lfr-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@LFR
+fleet_sr@LFR
 ```
 <!-- slot-chunk-end -->
 
@@ -632,7 +632,7 @@ fleetsr@LFR
 *The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 ```{r desc-fleet-rmaxlen-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@Rmaxlen
+fleet_sr@Rmaxlen
 ```
 <!-- slot-chunk-end -->
 
@@ -642,7 +642,7 @@ fleetsr@Rmaxlen
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
 
 ```{r desc-fleet-dr-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@DR <- c(0, 0)
+fleet_sr@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -652,7 +652,7 @@ fleetsr@DR <- c(0, 0)
 <!-- *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers* -->
 
 ```{r desc-fleet-selyears-sr, results = knitr_results, echo = FALSE}
-fleetsr@SelYears
+fleet_sr@SelYears
 ```
 <!-- slot-chunk-end -->
 
@@ -662,7 +662,7 @@ fleetsr@SelYears
 <!-- *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers* -->
 
 ```{r desc-fleet-absselyears-sr, results = knitr_results, echo = FALSE}
-fleetsr@AbsSelYears
+fleet_sr@AbsSelYears
 ```
 <!-- slot-chunk-end -->
 
@@ -672,7 +672,7 @@ fleetsr@AbsSelYears
 <!-- *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 
 ```{r desc-fleet-l5lower-sr, results = knitr_results, echo = FALSE}
-fleetsr@L5Lower
+fleet_sr@L5Lower
 ```
 <!-- slot-chunk-end -->
 
@@ -682,7 +682,7 @@ fleetsr@L5Lower
 <!-- *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 
 ```{r desc-fleet-l5upper-sr, results = knitr_results, echo = FALSE}
-fleetsr@L5Upper
+fleet_sr@L5Upper
 ```
 <!-- slot-chunk-end -->
 
@@ -692,7 +692,7 @@ fleetsr@L5Upper
 <!-- *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 
 ```{r desc-fleet-lfslower-sr, results = knitr_results, echo = FALSE}
-fleetsr@LFSLower
+fleet_sr@LFSLower
 ```
 <!-- slot-chunk-end -->
 
@@ -702,7 +702,7 @@ fleetsr@LFSLower
 <!-- *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
 
 ```{r desc-fleet-lfsupper-sr, results = knitr_results, echo = FALSE}
-fleetsr@LFSUpper
+fleet_sr@LFSUpper
 ```
 <!-- slot-chunk-end -->
 
@@ -712,7 +712,7 @@ fleetsr@LFSUpper
 <!-- *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
 
 ```{r desc-fleet-vmaxlower-sr, results = knitr_results, echo = FALSE}
-fleetsr@VmaxLower
+fleet_sr@VmaxLower
 ```
 <!-- slot-chunk-end -->
 
@@ -722,7 +722,7 @@ fleetsr@VmaxLower
 <!-- *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
 
 ```{r desc-fleet-vmaxupper-sr, results = knitr_results, echo = FALSE}
-fleetsr@VmaxUpper
+fleet_sr@VmaxUpper
 ```
 <!-- slot-chunk-end -->
 
@@ -732,7 +732,7 @@ fleetsr@VmaxUpper
 *The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
 
 ```{r desc-fleet-currentyr-sr, results = knitr_results, echo = knitr_echo}
-fleetsr@CurrentYr <- 2018
+fleet_sr@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
@@ -744,15 +744,15 @@ fleetsr@CurrentYr <- 2018
 <!-- We will not use this functionality. -->
 
 ```{r desc-fleet-mpa-sr, results = knitr_results, echo = FALSE}
-fleetsr@MPA
+fleet_sr@MPA
 ```
 <!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-sr}
 
 ```{r warnings = FALSE}
-obssr <- methods::new('Obs')
-obssr <- DLMtool::Precise_Unbiased # TODO: temporary
+obs_sr <- methods::new('Obs')
+obs_sr <- DLMtool::Precise_Unbiased # TODO: temporary
 ```
 
 <!-- slot-chunk-begin -->
@@ -761,7 +761,7 @@ obssr <- DLMtool::Precise_Unbiased # TODO: temporary
 *The name of the observation model object. Single value. Character string.*
 
 ```{r desc-obs-name-sr, results = knitr_results, echo = knitr_echo}
-obssr@Name <- "BC Obs"
+obs_sr@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
 
@@ -775,7 +775,7 @@ At least since 1996, observation error on catch should be very small. Setting th
 TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
 
 ```{r desc-obs-cobs-sr, results = knitr_results, echo = knitr_echo}
-obssr@Cobs <- c(0, 0)
+obs_sr@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -789,7 +789,7 @@ We will keep the at 0 because observation error on catch should be very small wi
 FIXME: what about the historical period?
 
 ```{r desc-obs-cbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Cbiascv <- c(0, 0)
+obs_sr@Cbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -798,12 +798,12 @@ obssr@Cbiascv <- c(0, 0)
 
 *Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that impsrortant. They will only be used if we also explore some more data-rich management procedures.
+We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that imp_srortant. They will only be used if we also explore some more data-rich management procedures.
 
 TODO: Therefore, for now, I will not adjust these.
 
 ```{r desc-obs-caa_nsamp-sr, results = knitr_results, echo = knitr_echo}
-obssr@CAA_nsamp
+obs_sr@CAA_nsamp
 ```
 <!-- slot-chunk-end -->
 
@@ -813,7 +813,7 @@ obssr@CAA_nsamp
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-caa_ess-sr, results = knitr_results, echo = knitr_echo}
-obssr@CAA_ESS
+obs_sr@CAA_ESS
 ```
 <!-- slot-chunk-end -->
 
@@ -823,7 +823,7 @@ obssr@CAA_ESS
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_nsamp-sr, results = knitr_results, echo = knitr_echo}
-obssr@CAL_nsamp
+obs_sr@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
 
@@ -833,7 +833,7 @@ obssr@CAL_nsamp
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_ess-sr, results = knitr_results, echo = knitr_echo}
-obssr@CAL_ESS
+obs_sr@CAL_ESS
 ```
 <!-- slot-chunk-end -->
 
@@ -852,7 +852,7 @@ average_cv <- dplyr::filter(.dshort$survey_index, survey_abbrev == "SYN WCHG") %
 This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
 ```{r desc-obs-iobs-sr, results = knitr_results, echo = knitr_echo}
-obssr@Iobs <- c(average_cv, average_cv)
+obs_sr@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
 
@@ -863,10 +863,10 @@ obssr@Iobs <- c(average_cv, average_cv)
 
 TODO: I believe this refers to bias from simulation run to run.
 
-For simpsrlicity we will set this to 0.
+For simp_srlicity we will set this to 0.
 
 ```{r desc-obs-ibiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Ibiascv <- c(0, 0)
+obs_sr@Ibiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -877,8 +877,8 @@ obssr@Ibiascv <- c(0, 0)
 
 TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
-```{r desc-obssr-btobs-sr, results = knitr_results, echo = knitr_echo}
-obssr@Btobs <- obssr@Iobs
+```{r desc-obs_sr-btobs-sr, results = knitr_results, echo = knitr_echo}
+obs_sr@Btobs <- obs_sr@Iobs
 ```
 <!-- slot-chunk-end -->
 
@@ -888,7 +888,7 @@ obssr@Btobs <- obssr@Iobs
 *Uniform-log bounds for sampling persistent bias in current obs biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-btbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Btbiascv <- obssr@Ibiascv
+obs_sr@Btbiascv <- obs_sr@Ibiascv
 ```
 <!-- slot-chunk-end -->
 
@@ -900,7 +900,7 @@ obssr@Btbiascv <- obssr@Ibiascv
 We probably don't have a lot to go on here so let's allow for a wide range:
 
 ```{r desc-obs-beta-sr, results = knitr_results, echo = knitr_echo}
-obssr@beta <- c(0.666, 1.500)
+obs_sr@beta <- c(0.666, 1.500)
 ```
 <!-- slot-chunk-end -->
 
@@ -912,7 +912,7 @@ obssr@beta <- c(0.666, 1.500)
 We don't have a large number of biological samples for the species. It is possible there is some persistent bias in estimates such as length at 50% maturity. Let's set this to a range from a little bit to a moderate amount:
 
 ```{r desc-obs-lenmbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@LenMbiascv <- c(0.05, 0.10)
+obs_sr@LenMbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -921,10 +921,10 @@ obssr@LenMbiascv <- c(0.05, 0.10)
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stocksr@M[[1]]` and `r stocksr@M[[2]]`.
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_sr@M[[1]]` and `r stock_sr@M[[2]]`.
 
 ```{r desc-obs-mbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Mbiascv <- c(0.05, 0.20)
+obs_sr@Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -936,7 +936,7 @@ obssr@Mbiascv <- c(0.05, 0.20)
 Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
 
 ```{r desc-obs-kbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Kbiascv <- c(0.05, 0.10)
+obs_sr@Kbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -948,7 +948,7 @@ obssr@Kbiascv <- c(0.05, 0.10)
 As above:
 
 ```{r desc-obs-t0biascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@t0biascv <- c(0.05, 0.10)
+obs_sr@t0biascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -960,7 +960,7 @@ obssr@t0biascv <- c(0.05, 0.10)
 As above:
 
 ```{r desc-obs-linfbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Linfbiascv <- c(0.05, 0.10)
+obs_sr@Linfbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -972,7 +972,7 @@ obssr@Linfbiascv <- c(0.05, 0.10)
 As above:
 
 ```{r desc-obs-lfcbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@LFCbiascv <- c(0.05, 0.10)
+obs_sr@LFCbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -984,7 +984,7 @@ obssr@LFCbiascv <- c(0.05, 0.10)
 As above:
 
 ```{r desc-obs-lfsbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@LFSbiascv <- c(0.05, 0.10)
+obs_sr@LFSbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
 
@@ -996,7 +996,7 @@ obssr@LFSbiascv <- c(0.05, 0.10)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-fmsybiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@FMSYbiascv <- c(0.05, 0.20)
+obs_sr@FMSYbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1008,7 +1008,7 @@ obssr@FMSYbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-fmsy_mbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@FMSY_Mbiascv <- c(0.05, 0.20)
+obs_sr@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1020,7 +1020,7 @@ obssr@FMSY_Mbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-bmsy_b0biascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@BMSY_B0biascv <- c(0.05, 0.20)
+obs_sr@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1032,7 +1032,7 @@ obssr@BMSY_B0biascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-irefbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Irefbiascv <- c(0.05, 0.20)
+obs_sr@Irefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1044,7 +1044,7 @@ obssr@Irefbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-brefbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Brefbiascv <- c(0.05, 0.20)
+obs_sr@Brefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1056,7 +1056,7 @@ obssr@Brefbiascv <- c(0.05, 0.20)
 TODO: Not sure where this gets used.
 
 ```{r desc-obs-crefbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Crefbiascv <- c(0.05, 0.20)
+obs_sr@Crefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
@@ -1068,7 +1068,7 @@ obssr@Crefbiascv <- c(0.05, 0.20)
 TODO:
 
 ```{r desc-obs-dbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Dbiascv <- c(0.1, 0.3)
+obs_sr@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
 
@@ -1078,7 +1078,7 @@ obssr@Dbiascv <- c(0.1, 0.3)
 *Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-dobs-sr, results = knitr_results, echo = knitr_echo}
-obssr@Dobs
+obs_sr@Dobs
 ```
 <!-- slot-chunk-end -->
 
@@ -1088,7 +1088,7 @@ obssr@Dobs
 *Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-hbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@hbiascv <- c(0.1)
+obs_sr@hbiascv <- c(0.1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1098,17 +1098,17 @@ obssr@hbiascv <- c(0.1)
 *Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-recbiascv-sr, results = knitr_results, echo = knitr_echo}
-obssr@Recbiascv <- c(0.05, 0.20)
+obs_sr@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-sr}
 
 ```{r warnings = FALSE}
-impsr <- methods::new('Imp')
+imp_sr <- methods::new('Imp')
 ```
 
-Implementation should be very accurate for the groundfish fleetsr so we will use the perfect impsrlementation object and make it just slightly less perfect for now.
+Implementation should be very accurate for the groundfish fleet_sr so we will use the perfect imp_srlementation object and make it just slightly less perfect for now.
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-sr}
@@ -1116,7 +1116,7 @@ Implementation should be very accurate for the groundfish fleetsr so we will use
 *The name of the Implementation error object. Single value. Character string.*
 
 ```{r desc-imp-name-sr, results = knitr_results, echo = knitr_echo}
-impsr@Name <- "BC Implementation"
+imp_sr@Name <- "BC Implementation"
 ```
 <!-- slot-chunk-end -->
 
@@ -1126,7 +1126,7 @@ impsr@Name <- "BC Implementation"
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-tacfrac-sr, results = knitr_results, echo = knitr_echo}
-impsr@TACFrac <- c(0.8, 1.0)
+imp_sr@TACFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1136,7 +1136,7 @@ impsr@TACFrac <- c(0.8, 1.0)
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-tacsd-sr, results = knitr_results, echo = knitr_echo}
-impsr@TACSD <- c(0, 0)
+imp_sr@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1146,7 +1146,7 @@ impsr@TACSD <- c(0, 0)
 *Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-taefrac-sr, results = knitr_results, echo = knitr_echo}
-impsr@TAEFrac <- c(0.8, 1.0)
+imp_sr@TAEFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1156,7 +1156,7 @@ impsr@TAEFrac <- c(0.8, 1.0)
 *Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-taesd-sr, results = knitr_results, echo = knitr_echo}
-impsr@TAESD <- c(0, 0)
+imp_sr@TAESD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -1166,7 +1166,7 @@ impsr@TAESD <- c(0, 0)
 *The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
 
 ```{r desc-imp-sizelimfrac-sr, results = knitr_results, echo = knitr_echo}
-impsr@SizeLimFrac <- c(1, 1)
+imp_sr@SizeLimFrac <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1176,7 +1176,7 @@ impsr@SizeLimFrac <- c(1, 1)
 *Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 ```{r desc-imp-sizelimsd-sr, results = knitr_results, echo = knitr_echo}
-impsr@SizeLimSD <- c(1, 1)
+imp_sr@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -1186,7 +1186,7 @@ impsr@SizeLimSD <- c(1, 1)
 *Output the Operating model.*
 
 ```{r output-shortraker}
-short_om <- new('OM', stocksr, fleetsr, obssr, impsr)
+short_om <- new('OM', stock_sr, fleet_sr, obs_sr, imp_sr)
 saveRDS(short_om, file = here::here("generated-data", "shortraker-om.rds"))
 ```
 <!-- slot-chunk-end -->
