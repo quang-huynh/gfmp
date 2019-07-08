@@ -772,16 +772,16 @@ obspc@Name <- "BC Obs"
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Cobspc {#app:desc-obspc-pc}
+### Cobs {#app:desc-obs-pc}
 
 *Log-normal catch obspcervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-At least since 1996, obspcervation error on catch should be very small.
+At least since 1996, observation error on catch should be very small.
 
-TODO: does this affect historical build up because there was certainly much larger obspcervation are on catch before 1996.
+TODO: does this affect historical build up because there was certainly much larger observation are on catch before 1996.
 
-```{r desc-obspcod-pc, results = knitr_results, echo = knitr_echo}
-obspc@Cobspc <- c(0.05, 0.15)
+```{r desc-obs-pc, results = knitr_results, echo = knitr_echo}
+obspc@Cobs <- c(0.05, 0.15)
 ```
 <!-- slot-chunk-end -->
 

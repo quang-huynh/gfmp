@@ -460,16 +460,16 @@ obsrex@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Cobsrex {#app:desc-obsrex-rex}
+### Cobs {#app:desc-obs-rex}
 
 *Log-normal catch obsrexervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-At least since 1996, obsrexervation error on catch should be very small. Setting this to 0.
+At least since 1996, observation error on catch should be very small. Setting this to 0.
 
-TODO: does this affect historical build up because there was certainly much larger obsrexervation error on catch before 1996.
+TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
 
 ```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
-obsrex@Cobsrex <- c(0, 0)
+obsrex@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
