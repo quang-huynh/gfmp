@@ -177,9 +177,6 @@ Plot the results
 library(tidyverse)
 library(RColorBrewer)
 
-cols <- brewer.pal(3, "RdBu")
-cols[2] <- "grey80"
-
 Btrue <- pcod_mse@SSB
 nSim <- dim(Btrue)[1]
 nMP <-  dim(Btrue)[2]
@@ -191,7 +188,8 @@ z1 <- apply(Btrue, 3L, c)
 z2 <- expand.grid(dimnames(Btrue)[1:2])
 Btrue <- data.frame(z2, z1) %>% 
   reshape2::melt()%>% 
-  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "Biomass"=value) 
+  rename("Sim"=Var1,"MP"=Var2,"fYear"=variable, "Biomass"=value) %>%
+  mutate(Year=as.numeric(as.factor(fYear)))
 
 Bmed <- Btrue %>% 
   dplyr::group_by(Year) %>% 
@@ -370,5 +368,43 @@ print(g)
 ```
 
 
+Have a look at True F while we're here. Just look at simulation period. DD doesn't seem to output its estimates of F 
 
+```{r}
+Ftrue <- pcod_mse@FM
+nSim <- dim(Ftrue)[1]
+nMP <-  dim(Ftrue)[2]
+nYear <- dim(Ftrue)[3]
+dimnames(Ftrue) <- list(1:nSim, "DD", 1:nYear)
+
+#convert to data frame and plot
+z1 <- apply(Ftrue, 3L, c)
+z2 <- expand.grid(dimnames(Ftrue)[1:2])
+Ftrue <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"MP"=Var2,"fYear"=variable, "FishingMortality"=value) %>%
+  mutate(Year=as.numeric(as.factor(fYear)))
+
+
+Fmed <- Ftrue %>% 
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(Median = median(FishingMortality),
+    q75th = quantile(FishingMortality, probs = 0.75),
+    q25th = quantile(FishingMortality, probs = 0.25),
+    q95th = quantile(FishingMortality, probs = 0.95),
+    q5th = quantile(FishingMortality, probs = 0.05))
+
+
+g <- ggplot(Fmed,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=2) +
+    ggsidekick::theme_sleek() +
+      guides(colour = FALSE) +
+    ylab("Fishing Mortality") + xlab("Year")
+print(g) 
+  
+
+
+```
 
