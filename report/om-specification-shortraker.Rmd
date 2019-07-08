@@ -481,7 +481,7 @@ TODO: May need to come up with some plausible scenarios for these effort traject
 For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleetsr" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
 
 ```{r desc-fleet-effyears-sr, results = knitr_results, echo = knitr_echo}
-fleetsr <- read.csv(here::here("report/data/shortraker-fleetsr-effort.csv"))
+fleetsr <- read.csv(here::here("report/data/shortraker-flt-effort.csv"))
 all_years <- data.frame(year = (2018 - fleetsr@nyears):2018)
 fleetsr <- dplyr::left_join(all_years, fleetsr)
 fleetsr <- mutate(fleetsr,
