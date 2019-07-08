@@ -8,6 +8,9 @@ d <- readRDS("../gfsynopsis/report/data-cache/arrowtooth-flounder.rds")
 # survey_sets <- d$survey_sets
 d <- d$survey_samples
 
+# You can get that same data frame with:
+# d <- gfdata::get_survey_samples("arrowtooth flounder")
+
 library(dplyr)
 d <- filter(d, survey_series_id %in% 1) # Pick an example survey
 glimpse(d)
