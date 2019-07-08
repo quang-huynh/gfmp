@@ -318,9 +318,6 @@ DD_sims_output <- function(x){
 ddout <- sapply(nsims,DD_sims_output)
 dim(ddout)
 
-Simnames <- paste("Sim", 1:nSim)
-colnames(ddout) <- Simnames
-
 Bmed_mp <- ddout %>% 
   reshape2::melt() %>% 
   rename("Year"=Var1,"Sim"=Var2,"MPBiomass"=value) %>%
