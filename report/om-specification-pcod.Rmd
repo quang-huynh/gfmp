@@ -577,7 +577,7 @@ fleetpc@L5 <- c(0.2, 0.4)
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the obspcerved commercial length samples this appears to be around or just slightly larger than the length at maturity.
+Based on the observed commercial length samples this appears to be around or just slightly larger than the length at maturity.
 
 ```{r desc-fleet-lfs-pc, results = knitr_results, echo = knitr_echo}
 fleetpc@LFS <- c(0.95, 1.1)#c(1.0, 1.2) #
@@ -764,7 +764,7 @@ obspc <- DLMtool::Precise_Unbiased # TODO: temporary
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-pc}
 
-*The name of the obspcervation model object. Single value. Character string.*
+*The name of the observation model object. Single value. Character string.*
 
 ```{r desc-obs-name-pc, results = knitr_results, echo = knitr_echo}
 obspc@Name <- "BC Obs"
@@ -774,13 +774,13 @@ obspc@Name <- "BC Obs"
 <!-- slot-chunk-begin -->
 ### Cobs {#app:desc-obs-pc}
 
-*Log-normal catch obspcervation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
 At least since 1996, observation error on catch should be very small.
 
 TODO: does this affect historical build up because there was certainly much larger observation are on catch before 1996.
 
-```{r desc-obs-pc, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-cobs-pc, results = knitr_results, echo = knitr_echo}
 obspc@Cobs <- c(0.05, 0.15)
 ```
 <!-- slot-chunk-end -->
@@ -788,9 +788,9 @@ obspc@Cobs <- c(0.05, 0.15)
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obs-cbiascv-pc}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch obspcervations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We will keep the possible sampling bias quite small because obspcervation error on catch should be very small with 100% on board and dockside monitoring.
+We will keep the possible sampling bias quite small because observation error on catch should be very small with 100% on board and dockside monitoring.
 
 ```{r desc-obs-cbiascv-pc, results = knitr_results, echo = knitr_echo}
 obspc@Cbiascv <- 0.05
@@ -800,7 +800,7 @@ obspc@Cbiascv <- 0.05
 <!-- slot-chunk-begin -->
 ### CAA_nsamp {#app:desc-obs-caa_nsamp-pc}
 
-*Number of catch-at-age obspcervation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
 
 We will be unlikely to be working with any management procedures that use catch-at-age anyways so this and the following slots are not that imppcortant. They will only be used if we also explore some more data-rich management procedures.
 
@@ -814,7 +814,7 @@ obspc@CAA_nsamp
 <!-- slot-chunk-begin -->
 ### CAA_ESS {#app:desc-obs-caa_ess-pc}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age obspcervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-caa_ess-pc, results = knitr_results, echo = knitr_echo}
 obspc@CAA_ESS
@@ -824,7 +824,7 @@ obspc@CAA_ESS
 <!-- slot-chunk-begin -->
 ### CAL_nsamp {#app:desc-obs-cal_nsamp-pc}
 
-*Number of catch-at-length obspcervation per time step. Uniform distribution lower and upper bounds. Positive integers*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_nsamp-pc, results = knitr_results, echo = knitr_echo}
 obspc@CAL_nsamp
@@ -834,7 +834,7 @@ obspc@CAL_nsamp
 <!-- slot-chunk-begin -->
 ### CAL_ESS {#app:desc-obs-cal_ess-pc}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length obspcervation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
 ```{r desc-obs-cal_ess-pc, results = knitr_results, echo = knitr_echo}
 obspc@CAL_ESS
@@ -842,7 +842,7 @@ obspc@CAL_ESS
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Iobspc {#app:desc-obspc-pc}
+### Iobs {#app:desc-obs-iobs-pc}
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
@@ -855,15 +855,15 @@ average_cv <- dplyr::filter(dpc$survey_index, survey_abbrev == "SYN WCHG") %>%
 
 This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's place a range around that for now.
 
-```{r desc-obspcod-pc, results = knitr_results, echo = knitr_echo}
-obspc@Iobspc <- c(0.3, 0.5)
+```{r desc-obs-iobs-pc, results = knitr_results, echo = knitr_echo}
+obspc@Iobs <- c(0.3, 0.5)
 ```
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Ibiascv {#app:desc-obs-ibiascv-pc}
 
-*Log-normal coefficient of variation controlling error in obspcervations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
 
 TODO: I believe this refers to bias from simulation run to run but I'm not sure. For now I will set it to  zero.
 
@@ -873,14 +873,14 @@ obspc@Ibiascv <- c(0.333, 3.00)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Btobspc {#app:desc-obspc-pc}
+### Btobs {#app:desc-obs-pc}
 
-*Log-normal coefficient of variation controlling error in obspcervations of current stockpc biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of current stockpc biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
-TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobspc`
+TODO: I'm not sure where this gets used are where we should draw this from. And how is this different from the index lots above? For now I will make it the same at `Iobs`
 
-```{r desc-obspcod-pc, results = knitr_results, echo = knitr_echo}
-obspc@Btobspc <- obspc@Iobspc
+```{r desc-obs-btobs-pc, results = knitr_results, echo = knitr_echo}
+obspc@Btobs <- obspc@Iobs
 ```
 <!-- slot-chunk-end -->
 
@@ -921,7 +921,7 @@ obspc@LenMbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### Mbiascv {#app:desc-obs-mbiascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in obspcerved natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
 We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stockpc@M[[1]]` and `r stockpc@M[[2]]`.
 
@@ -933,7 +933,7 @@ obspc@Mbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### Kbiascv {#app:desc-obs-kbiascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in obspcerved growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 
 Again we do not have a large number of biological samples and the aging data has a fair bit of error in it, so let's set this to be arranged from a little bit to quite a bit:
 
@@ -945,7 +945,7 @@ obspc@Kbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### t0biascv {#app:desc-obs-t0biascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in obspcerved t0. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -957,7 +957,7 @@ obspc@t0biascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### Linfbiascv {#app:desc-obs-linfbiascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in obspcerved maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -969,7 +969,7 @@ obspc@Linfbiascv <- c(0.05, 0.20)
 <!-- slot-chunk-begin -->
 ### LFCbiascv {#app:desc-obs-lfcbiascv-pc}
 
-*Log-normal coefficient of variation for sampling persistent bias in obspcerved length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
 
 As above:
 
@@ -1075,12 +1075,12 @@ obspc@Dbiascv <- c(0.1, 0.3)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Dobspc {#app:desc-obspc-pc}
+### Dobs {#app:desc-obs-dobs-pc}
 
-*Log-normal coefficient of variation controlling error in obspcervations of stockpc depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal coefficient of variation controlling error in observations of stockpc depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
-```{r desc-obspcod-pc, results = knitr_results, echo = knitr_echo}
-obspc@Dobspc
+```{r desc-obs-dobs-pc, results = knitr_results, echo = knitr_echo}
+obspc@Dobs
 ```
 <!-- slot-chunk-end -->
 
