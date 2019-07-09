@@ -319,7 +319,7 @@ stock_pc@L50
 Similarly we will calculate the increment in length from 50% to 95% maturity.
 
 ```{r desc-stock-l50_95-pc, results = knitr_results, echo = knitr_echo}
-# TODO: Yikes! Need to check this delta method imp_pclementation.
+# TODO: Yikes! Need to check this delta method implementation.
 se_l50_95m <- pbs2dlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
