@@ -511,14 +511,6 @@ fleet_rex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-
-
-
-
-
-
-
-
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
 
@@ -591,7 +583,7 @@ obs_rex@CAA_nsamp
 
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
-TODO: critical to get this right
+This lot will not be used in the main operating model since none of the MPs make use of age data.
 
 ```{r desc-obs-caa_ess-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@CAA_ESS
@@ -603,9 +595,10 @@ obs_rex@CAA_ESS
 
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
-TODO: critical to get this right
+The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000; however, this is only done every second year. We will therefore divide this sample number by two.
 
 ```{r desc-obs-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@CAL_nsamp <- c(3000, 4000)/2
 obs_rex@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
@@ -615,24 +608,30 @@ obs_rex@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
+Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be about 0.4 of the actual samples.
 
 ```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@CAL_ESS <- obs_rex@CAL_nsamp * 0.4
 obs_rex@CAL_ESS
 ```
 <!-- slot-chunk-end -->
-
-
 <!-- slot-chunk-begin -->
-### Ibiascv {#app:desc-obs-ibiascv-rex}
+### Iobs {#app:desc-obs-rex}
 
-*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
+```{r}
+average_cv <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
+  dplyr::pull(re) %>%
+  mean() %>%
+  round(2)
+```
+This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
 
-```{r desc-obs-ibiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Ibiascv <- c(0, 0)
+```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Iobs <- c(average_cv, average_cv)
 ```
 <!-- slot-chunk-end -->
-
 
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-rex}
@@ -644,7 +643,36 @@ obs_rex@Ibiascv <- c(0, 0)
 obs_rex@Btbiascv <- obs_rex@Ibiascv
 ```
 <!-- slot-chunk-end -->
+<!-- slot-chunk-begin -->
+### Ibiascv {#app:desc-obs-ibiascv-rex}
 
+*Log-normal coefficient of variation controlling error in observations of relative abundance index. Uniform distribution lower and upper bounds. Positive real numbers*
+
+
+```{r desc-obs-ibiascv-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Ibiascv <- c(0, 0)
+```
+<!-- slot-chunk-end -->
+<!-- slot-chunk-begin -->
+### Btbiascv {#app:desc-obs-btbiascv-rex}
+
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+
+
+```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Btbiascv <- obs_rex@Ibiascv
+```
+<!-- slot-chunk-end -->
+<!-- slot-chunk-begin -->
+### Btobs {#app:desc-btobs-rex}
+
+*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
+
+
+```{r desc-obs-btobs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Btobs <- obs_rex@Iobs
+```
+<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### beta {#app:desc-obs-beta-rex}
 
@@ -811,8 +839,16 @@ obs_rex@Crefbiascv <- c(0.05, 0.20)
 obs_rex@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
+<!-- slot-chunk-begin -->
+### Dobs {#app:desc-obs-rex}
+
+*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
+```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Dobs
+```
+<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### hbiascv {#app:desc-obs-hbiascv-rex}
 
