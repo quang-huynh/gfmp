@@ -342,8 +342,9 @@ fleet_rex@Esd <- c(0, 0)
 fleet_rex@qinc <- c(0, 0)
 fleet_rex@qcv <- c(0, 0)
 fleet_rex@EffYears <- 1996:2018
-fleet_rex@EffLower <- rep(1, length(all_years))
-fleet_rex@EffUpper <- rep(1, length(all_years))
+fleet_rex@EffLower <- rep(1, length(fleet_rex@EffYears))
+fleet_rex@EffUpper <- rep(1, length(fleet_rex@EffYears))
+fleet_rex@Spat_targ <- c(1, 1)
 ```
 
 <!-- slot-chunk-begin -->
