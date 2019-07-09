@@ -13,6 +13,7 @@ all_years <- seq(starting_year, ending_year)
 
 #get the OM -- this file is made using om-specification-pcod.Rmd
 ompc <- readRDS(here::here("generated-data", "pcod-om.rds"))
+#ompc <- readRDS(here::here("generated-data", "pcod-om-Mbias.rds"))
 
 #Get the data (Areas 5ABCD only)
 pcod_areas <- c("05","06","07","08") #QCS and HS for comm samples, surv samples and catch
@@ -146,6 +147,7 @@ saveRDS(pcod_data_summary, file = here::here("generated-data", "pcod-data-summar
 library(MSEtool); library(dplyr)
 pcod_data_summary <- readRDS(here::here("generated-data", "pcod-data-summary.rds"))
 pcod_om <- readRDS(here::here("generated-data", "pcod-om.rds"))
+#pcod_om <- readRDS(here::here("generated-data", "pcod-om-Mbias.rds"))
 
 # plot CAA - combines QCS and HS surveys
 plot_composition(1956:2018, obs = pcod_data_summary$caa)
@@ -183,7 +185,8 @@ pcod_om@Linfsd <- pcod_om@Msd <- pcod_om@Ksd <- c(0, 0)
 ##### No comps - SRA becomes a de facto delay-difference model
 pcod_no_comps_SRA <- MSEtool:::SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 5),cores = 10, report = TRUE)
 saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om.rds"))
-saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
+#saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om_Mbias.rds"))
+#saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
 
 pcod_no_comps_om <- readRDS("sra/pcod_no_comps_om.rds")
 pcod_no_comps_SRA_report <- readRDS("sra/pcod_no_comps_SRA_report.rds")

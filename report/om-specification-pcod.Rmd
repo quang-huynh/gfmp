@@ -304,7 +304,39 @@ round(stock_pc@b, 2)
 ```
 <!-- slot-chunk-end -->
 
+<!-- slot-chunk-begin -->
+### Size_area_1 {#app:desc-stock-size_area_1-pc}
 
+*The default OM has two areas. size_area_1 is the geographical size of the area relative to the TOTAL area.Set to 0.5 to approximate single area model*
+
+```{r desc-stock-size_area_1-pc, results = knitr_results, echo = knitr_echo}
+stock_pc@Size_area_1 <- c(0.49,0.51)
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Frac_area_1 {#app:desc-stock-frac_area_1-pc}
+
+*frac_area_1 is the amount of unfished habitat in that area, expressed as a fraction of the TOTAL habitat.Set to 0.5 to approximate single area model*
+
+For now, we will set this to the same fraction as the size of area 1.
+
+```{r desc-stock-frac_area_1-pc, results = knitr_results, echo = knitr_echo}
+stock_pc@Frac_area_1 <- c(0.49,0.51)
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Prob_staying {#app:desc-stock-prob_staying-pc}
+
+*The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
+
+Let's assume Pacific cod is vulnerable in almost all of its range - set a 50% prob of staying in each area.
+
+```{r desc-stock-prob_staying-pc, results = knitr_results, echo = knitr_echo}
+stock_pc@Prob_staying <- c(0.49,0.51)
+```
+<!-- slot-chunk-end -->
 
 
 <!-- slot-chunk-begin -->

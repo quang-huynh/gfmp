@@ -468,3 +468,15 @@ print(g)
 
 ```
 
+Try a different operating model with a more bias in M
+
+```{r}
+
+
+
+
+```
+
+
+
+
