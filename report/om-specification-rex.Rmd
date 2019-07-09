@@ -5,17 +5,11 @@ knitr_echo <- TRUE
 ```
 
 
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new('Stock')
-```
-
-```{r, echo=FALSE}
-stock_rex@Size_area_1 <- c(0.5, 0.5)
-stock_rex@Frac_area_1 <- c(0.5, 0.5)
-stock_rex@Prob_staying <- c(0.5, 0.5)
-stock_rex@Mexp <- c(NA_real_, NA_real_)
 ```
 
 <!-- slot-chunk-begin -->
@@ -28,6 +22,7 @@ stock_rex@Mexp <- c(NA_real_, NA_real_)
 stock_rex@Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Common_Name {#app:desc-stock-common_name-rex}
 
@@ -38,6 +33,7 @@ stock_rex@Name <- "Rex Sole"
 stock_rex@Common_Name <- "Rex Sole"
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Species {#app:desc-stock-species-rex}
 
@@ -48,6 +44,7 @@ stock_rex@Common_Name <- "Rex Sole"
 stock_rex@Species <- "Glyptocephalus zachirus"
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### maxage {#app:desc-stock-maxage-rex}
 
@@ -61,6 +58,7 @@ From @munk2001, who document the maximum ages observed in various surveys in Ala
 stock_rex@maxage <- 27
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### R0 {#app:desc-stock-r0-rex}
 
@@ -72,6 +70,7 @@ The absolute value is meaningless here. Arbitrarily pick a value.
 stock_rex@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### M {#app:desc-stock-m-rex}
 
@@ -83,6 +82,11 @@ From @mcgilliard2017
 stock_rex@M <- c(0.17, 0.17) # TODO add uncertainty?
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-rex}
 
@@ -94,6 +98,7 @@ stock_rex@M <- c(0.17, 0.17) # TODO add uncertainty?
 stock_rex@h <- c(0.70, 0.95)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### SRrel {#app:desc-stock-srrel-rex}
 
@@ -105,6 +110,7 @@ We will use a Beverton-Holt stock-recruit relationship as is been used in most B
 stock_rex@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Perr {#app:desc-stock-perr-rex}
 
@@ -118,6 +124,7 @@ FIXME: Need to look at other assessments. For now this was copied from the Short
 stock_rex@Perr <- c(0.4, 0.9)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### AC {#app:desc-stock-ac-rex}
 
@@ -129,6 +136,9 @@ stock_rex@Perr <- c(0.4, 0.9)
 stock_rex@AC <- c(0.2, 0.7)
 ```
 <!-- slot-chunk-end -->
+
+
+
 <!-- slot-chunk-begin -->
 ### Linf {#app:desc-stock-linf-rex}
 
@@ -149,6 +159,7 @@ TODO: take the linf from the females above and add uncertainty (also for other V
 stock_rex@Linf <- c(39.5, 44.9)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### K {#app:desc-stock-k-rex}
 
@@ -163,6 +174,7 @@ Alternatively from @turnock2005, table 4.12:
 stock_rex@K <- c(0.31, 0.38)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### t0 {#app:desc-stock-t0-rex}
 
@@ -178,6 +190,7 @@ Note - t0 was not reported in @mcgilliard2017, but @turnock2005 reported all val
 stock_rex@t0 <- c(0.69, 0.79)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LenCV {#app:desc-stock-lencv-rex}
 
@@ -192,6 +205,12 @@ TODO: picking a value here
 stock_rex@LenCV <- c(0.2, 0.2)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
+<!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-rex}
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
@@ -209,6 +228,7 @@ stock_rex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
 stock_rex@L50
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### L50_95 {#app:desc-stock-l50_95-rex}
 
@@ -225,6 +245,7 @@ stock_rex@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f
 stock_rex@L50_95
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### D {#app:desc-stock-d-rex}
 
@@ -236,6 +257,7 @@ This will be populated via the SRA model.
 stock_rex@D
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### a {#app:desc-stock-a-rex}
 
@@ -252,6 +274,7 @@ stock_rex@a <- exp(mlw$pars[["log_a"]])
 round(log(stock_rex@a), 2)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### b {#app:desc-stock-b-rex}
 
@@ -266,6 +289,10 @@ stock_rex@b <- mlw$pars[["b"]]
 round(stock_rex@b, 2)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
 <!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stock-fdisc-rex}
 
@@ -277,6 +304,7 @@ Since there is 100% observer coverage we can assume there is no unreported disca
 stock_rex@Fdisc
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Source {#app:desc-stock-source-rex}
 
@@ -288,16 +316,11 @@ stock_rex@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
+
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-rex}
 
 ```{r warnings = FALSE}
 fleet_rex <- DLMtool::Generic_Fleet # TODO: temporary
-```
-
-```{r warnings = FALSE}
-fleet_rex@Esd <- c(0, 0)
-fleet_rex@qinc <- c(0, 0)
-fleet_rex@qcv <- c(0, 0)
 ```
 
 <!-- slot-chunk-begin -->
@@ -310,6 +333,7 @@ fleet_rex@qcv <- c(0, 0)
 fleet_rex@Name <- "BC Fleet"
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### nyears {#app:desc-fleet-nyears-rex}
 
@@ -323,6 +347,7 @@ fleet_rex@nyears <- length(catch_yrs)
 c(catch_yrs[1], catch_yrs[length(catch_yrs)])
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Spat_targ {#app:desc-fleet-spat_targ-rex}
 
@@ -334,6 +359,13 @@ We have set up a single area model.
 fleet_rex@Spat_targ
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
+
+
 <!-- slot-chunk-begin -->
 ### L5 {#app:desc-fleet-l5-rex}
 
@@ -352,6 +384,7 @@ Based on the slot `isRel` below, this lot needs to be filled in proportion of si
 fleet_rex@L5 <- c(min_caught/stock_rex@L50[[2]], min_caught/stock_rex@L50[[1]])
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LFS {#app:desc-fleet-lfs-rex}
 
@@ -371,6 +404,7 @@ fleet_rex@LFS <- c(0.9, 1.1)
 ```
 
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Vmaxlen {#app:desc-fleet-vmaxlen-rex}
 
@@ -382,6 +416,7 @@ We will set this to 1. Setting this to a value lower than 1 would be assuming do
 fleet_rex@Vmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### isRel {#app:desc-fleet-isrel-rex}
 
@@ -392,6 +427,7 @@ fleet_rex@Vmaxlen <- c(1, 1)
 fleet_rex@isRel
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LR5 {#app:desc-fleet-lr5-rex}
 
@@ -402,6 +438,7 @@ fleet_rex@isRel
 fleet_rex@LR5
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LFR {#app:desc-fleet-lfr-rex}
 
@@ -412,6 +449,7 @@ fleet_rex@LR5
 fleet_rex@LFR
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Rmaxlen {#app:desc-fleet-rmaxlen-rex}
 
@@ -422,6 +460,7 @@ fleet_rex@LFR
 fleet_rex@Rmaxlen
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### DR {#app:desc-fleet-dr-rex}
 
@@ -432,6 +471,15 @@ fleet_rex@Rmaxlen
 fleet_rex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
+
+
+
+
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
 
@@ -442,6 +490,8 @@ fleet_rex@DR <- c(0, 0)
 fleet_rex@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
+
+
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
 
@@ -459,19 +509,8 @@ obs_rex <- DLMtool::Precise_Unbiased
 obs_rex@Name <- "BC Obs"
 ```
 <!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Cobs {#app:desc-obs-rex}
 
-*Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-At least since 1996, observation error on catch should be very small. Setting this to 0.
-
-TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996.
-
-```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Cobs <- c(0, 0)
-```
-<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obs-cbiascv-rex}
 
@@ -485,6 +524,7 @@ FIXME: what about the historical period?
 obs_rex@Cbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### CAA_nsamp {#app:desc-obs-caa_nsamp-rex}
 
@@ -496,6 +536,7 @@ TODO: critical to get this right
 obs_rex@CAA_nsamp
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### CAA_ESS {#app:desc-obs-caa_ess-rex}
 
@@ -507,6 +548,7 @@ TODO: critical to get this right
 obs_rex@CAA_ESS
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### CAL_nsamp {#app:desc-obs-cal_nsamp-rex}
 
@@ -518,6 +560,7 @@ TODO: critical to get this right
 obs_rex@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### CAL_ESS {#app:desc-obs-cal_ess-rex}
 
@@ -528,23 +571,8 @@ obs_rex@CAL_nsamp
 obs_rex@CAL_ESS
 ```
 <!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Iobs {#app:desc-obs-rex}
 
-*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
-```{r}
-average_cv <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
-  dplyr::pull(re) %>%
-  mean() %>%
-  round(2)
-```
-This will depend on whether we want to use one or more of the trawl surveys or commercial CPUE as the index. For now I will assume that we will work with one of the trawl surveys. In that case, the CV on the index is quite large for this species. For example, the best sampling is probably on the West Coast of Haidai Gwaii, and there the average CV is `r average_cv`. Let's use that for now but we could add some uncertainty around this. FIXME
-
-```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Iobs <- c(average_cv, average_cv)
-```
-<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Ibiascv {#app:desc-obs-ibiascv-rex}
 
@@ -555,16 +583,8 @@ obs_rex@Iobs <- c(average_cv, average_cv)
 obs_rex@Ibiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Btobs {#app:desc-btobs-rex}
-
-*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
-```{r desc-obs-btobs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Btobs <- obs_rex@Iobs
-```
-<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-rex}
 
@@ -575,6 +595,7 @@ obs_rex@Btobs <- obs_rex@Iobs
 obs_rex@Btbiascv <- obs_rex@Ibiascv
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### beta {#app:desc-obs-beta-rex}
 
@@ -586,6 +607,7 @@ We probably don't have a lot to go on here so let's allow for a wide range:
 obs_rex@beta <- c(0.666, 1.500)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LenMbiascv {#app:desc-obs-lenmbiascv-rex}
 
@@ -597,6 +619,7 @@ It is possible there is some persistent bias in estimates such as length at 50% 
 obs_rex@LenMbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Mbiascv {#app:desc-obs-mbiascv-rex}
 
@@ -608,6 +631,7 @@ We don't have good data to go on for natural mortality rate so let's allow for a
 obs_rex@Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Kbiascv {#app:desc-obs-kbiascv-rex}
 
@@ -617,6 +641,7 @@ obs_rex@Mbiascv <- c(0.05, 0.20)
 obs_rex@Kbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### t0biascv {#app:desc-obs-t0biascv-rex}
 
@@ -627,6 +652,7 @@ obs_rex@Kbiascv <- c(0.05, 0.10)
 obs_rex@t0biascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Linfbiascv {#app:desc-obs-linfbiascv-rex}
 
@@ -637,6 +663,7 @@ obs_rex@t0biascv <- c(0.05, 0.10)
 obs_rex@Linfbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LFCbiascv {#app:desc-obs-lfcbiascv-rex}
 
@@ -647,6 +674,7 @@ obs_rex@Linfbiascv <- c(0.05, 0.10)
 obs_rex@LFCbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### LFSbiascv {#app:desc-obs-lfsbiascv-rex}
 
@@ -657,6 +685,7 @@ obs_rex@LFCbiascv <- c(0.05, 0.10)
 obs_rex@LFSbiascv <- c(0.05, 0.10)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### FMSYbiascv {#app:desc-obs-fmsybiascv-rex}
 
@@ -667,6 +696,7 @@ obs_rex@LFSbiascv <- c(0.05, 0.10)
 obs_rex@FMSYbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### FMSY_Mbiascv {#app:desc-obs-fmsy_mbiascv-rex}
 
@@ -677,6 +707,7 @@ obs_rex@FMSYbiascv <- c(0.05, 0.20)
 obs_rex@FMSY_Mbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### BMSY_B0biascv {#app:desc-obs-bmsy_b0biascv-rex}
 
@@ -687,6 +718,7 @@ obs_rex@FMSY_Mbiascv <- c(0.05, 0.20)
 obs_rex@BMSY_B0biascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Irefbiascv {#app:desc-obs-irefbiascv-rex}
 
@@ -697,6 +729,7 @@ obs_rex@BMSY_B0biascv <- c(0.05, 0.20)
 obs_rex@Irefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Brefbiascv {#app:desc-obs-brefbiascv-rex}
 
@@ -707,6 +740,7 @@ obs_rex@Irefbiascv <- c(0.05, 0.20)
 obs_rex@Brefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Crefbiascv {#app:desc-obs-crefbiascv-rex}
 
@@ -717,6 +751,7 @@ obs_rex@Brefbiascv <- c(0.05, 0.20)
 obs_rex@Crefbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Dbiascv {#app:desc-obs-dbiascv-rex}
 
@@ -727,16 +762,8 @@ obs_rex@Crefbiascv <- c(0.05, 0.20)
 obs_rex@Dbiascv <- c(0.1, 0.3)
 ```
 <!-- slot-chunk-end -->
-<!-- slot-chunk-begin -->
-### Dobs {#app:desc-obs-rex}
-
-*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
-```{r desc-obs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Dobs
-```
-<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### hbiascv {#app:desc-obs-hbiascv-rex}
 
@@ -747,6 +774,7 @@ obs_rex@Dobs
 obs_rex@hbiascv <- 0.1
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Recbiascv {#app:desc-obs-recbiascv-rex}
 
@@ -757,6 +785,7 @@ obs_rex@hbiascv <- 0.1
 obs_rex@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
+
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-rex}
 
@@ -774,6 +803,7 @@ imp_rex <- methods::new('Imp')
 imp_rex@Name <- "BC Implementation"
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### TACFrac {#app:desc-imp-tacfrac-rex}
 
@@ -784,6 +814,7 @@ imp_rex@Name <- "BC Implementation"
 imp_rex@TACFrac <- c(0.8, 1.0)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### TACSD {#app:desc-imp-tacsd-rex}
 
@@ -794,6 +825,11 @@ imp_rex@TACFrac <- c(0.8, 1.0)
 imp_rex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
 
 ### Output the OM
 
