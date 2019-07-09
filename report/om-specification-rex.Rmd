@@ -192,6 +192,7 @@ TODO: picking a value here
 stock_rex@LenCV <- c(0.2, 0.2)
 ```
 <!-- slot-chunk-end -->
+<!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-rex}
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
