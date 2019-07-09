@@ -772,7 +772,7 @@ obs_pc@Name <- "BC Obs"
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Cobs {#app:desc-obs-pc}
+### Cobs {#app:desc-obs-cobs-pc}
 
 *Log-normal catch observation error expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
