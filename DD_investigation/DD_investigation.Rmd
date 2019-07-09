@@ -141,7 +141,7 @@ function (m, sd)
 Test what this is doing:
 
 ```{r}
-mort <- 0.2
+mort <- dat@Mort
 par1 <- 1 - exp(-mort * 0.5)
 umsypriorpar <- c(par1,0.3)
 prod(umsypriorpar)
@@ -155,7 +155,65 @@ umsyprior <- c(alphaconv(umsypriorpar[1], prod(umsypriorpar)),
 plot(density(rbeta(100000, umsyprior[1], umsyprior[2])))
 ```
 
-OK so it is giving a prior for Umsy centred on about half of natural mortality.
+OK so it is giving a prior for Umsy centred on about half of natural mortality. TAC is then calculated as Umsy * B_DD_nyr+1.
+
+*RF modified myDLDD() to output UMSY*
+
+```{r}
+
+UMSY <- myDDresults$UMSY
+B_DD_proj <- myDDresults$B_DD[length(myDDresults$B_DD)] #projection year
+TAC <- myDDresults$TAC
+TACtest <- UMSY*B_DD_proj
+
+UMSY
+B_DD_proj
+TAC
+TACtest
+
+```
+
+
+How sensitive is the TAC to the input M value?
+
+```{r}
+#increase dat@Mort to 0.2
+mort_orig <- dat@Mort
+dat@Mort <- 0.2
+mort <- dat@Mort
+par1 <- 1 - exp(-mort * 0.5)
+umsypriorpar <- c(par1,0.3)
+prod(umsypriorpar)
+alphaconv(umsypriorpar[1],prod(umsypriorpar))
+betaconv(umsypriorpar[1],prod(umsypriorpar))
+
+
+umsyprior2 <- c(alphaconv(umsypriorpar[1], prod(umsypriorpar)),
+                 betaconv(umsypriorpar[1], prod(umsypriorpar)))
+
+x2 <- density(rbeta(100000, umsyprior2[1], umsyprior2[2]))
+
+plot(density(rbeta(100000, umsyprior2[1], umsyprior2[2])), ylim=c(0,2.2*max(x2$y)), xlab="UMSY", ylab="Density", main= "UMSY prior")
+lines(density(rbeta(100000, umsyprior[1], umsyprior[2])), col=2)
+legend("topright", legend=c(paste("Mort=",mort),paste("Mort=",mort_orig)), lty=1, col=1:2)
+
+#rerun the DD model with the new dat@Mort and prior
+myDDresults2 <- myDLDD(1,dat,reps=1, hcr=NULL)
+
+UMSY2 <- myDDresults2$UMSY
+TAC2 <- myDDresults2$TAC
+
+UMSY2
+TAC2
+
+uresult <- cbind(c(mort_orig, mort), c(UMSY,UMSY2))
+barplot(uresult[,2], names.arg=uresult[,1], col="salmon", xlab="Input Mortality", ylab="UMSY")
+
+tacresult <- cbind(c(mort_orig, mort), c(TAC,TAC2))
+barplot(tacresult[,2], names.arg=tacresult[,1], col="lightblue", xlab="Input Mortality", ylab="TAC")
+
+
+```
 
 ## Simulation test
 
@@ -285,7 +343,8 @@ Now look at what the DD model thought the biomass was
 First look at one "slice" from the OM simulated data
 
 ```{r}
-#Function by Sean
+
+#Function by Sean to get the output from a delay difference model
 DD_output <- function(x, Data, reps = 1, plot=FALSE) {
   runDD <- DLMtool:::DD_(x, Data, reps)
   TAC <- DLMtool:::TACfilter(runDD$TAC)
@@ -297,6 +356,7 @@ DD_output <- function(x, Data, reps = 1, plot=FALSE) {
   runDD
 }
 
+#Note, always set pcod_mse@Misc$Data[[x]] to x=1
 out <- DD_output(1, pcod_mse@Misc$Data[[1]], reps = 1, plot = TRUE)
 
 ```
