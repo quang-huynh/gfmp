@@ -873,7 +873,7 @@ obs_pc@Ibiascv <- c(0.333, 3.00)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Btobs {#app:desc-obs-pc}
+### Btobs {#app:desc-obs-btobs-pc}
 
 *Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
