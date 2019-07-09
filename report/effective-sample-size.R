@@ -5,6 +5,7 @@
 # d <- readRDS("../gfsynopsis/report/data-cache/pacific-ocean-perch.rds")
 # d <- readRDS("../gfsynopsis/report/data-cache/redbanded-rockfish.rds")
 d <- readRDS("../gfsynopsis/report/data-cache/arrowtooth-flounder.rds")
+d <- readRDS("../gfsynopsis/report/data-cache/rex-sole.rds")
 # survey_sets <- d$survey_sets
 d <- d$survey_samples
 
@@ -12,14 +13,13 @@ d <- d$survey_samples
 # d <- gfdata::get_survey_samples("arrowtooth flounder")
 
 library(dplyr)
-d <- filter(d, survey_series_id %in% 1) # Pick an example survey
+d <- filter(d, survey_series_id %in% 4) # Pick an example survey
 glimpse(d)
 
 # Pick an example year
-dd <- filter(d, year == 2017) %>%
+dd <- dplyr::filter(d, year == 2018) %>%
   filter(!is.na(length)) %>%
-  select(year, grouping_code, sample_id, length) %>%
-  left_join(weights)
+  select(year, grouping_code, sample_id, length)
 
 mean(dd$length)
 nrow(dd)
