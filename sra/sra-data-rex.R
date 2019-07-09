@@ -61,7 +61,7 @@ if ("catch" %in% names(drex)) {
   catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 }
 catch
-plot(all_years, catch)
+plot(all_years, catch, type = "o")
 
 # catch per unit effort from the trawl fleet only:
 # cpue <- read.csv(here::here("generated-data", rex-cpue.csv"))
