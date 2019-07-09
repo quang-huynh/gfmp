@@ -795,7 +795,6 @@ imp_rex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
 ### Output the OM
 
 *Output the Operating model.*
@@ -805,4 +804,3 @@ rex_om <- new('OM', stock_rex, fleet_rex, obs_rex, imp_rex)
 saveRDS(rex_om, file = here::here("generated-data", "rex-om.rds"))
 
 ```
-<!-- slot-chunk-end -->

@@ -1182,7 +1182,6 @@ imp_pc@SizeLimSD <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
 ### Output the OM
 
 *Output the Operating model.*
@@ -1191,4 +1190,3 @@ imp_pc@SizeLimSD <- c(1, 1)
 ompc <- new('OM', stock_pc, fleet_pc, obs_pc, imp_pc)
 saveRDS(ompc, file = here::here("generated-data", "pcod-om.rds"))
 ```
-<!-- slot-chunk-end -->
