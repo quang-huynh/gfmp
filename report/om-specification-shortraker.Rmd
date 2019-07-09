@@ -9,6 +9,7 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-sr}
 
 ```{r warnings = FALSE}
@@ -79,48 +80,9 @@ exp(1.44 - 0.982 * log(stock_sr@maxage))
 ```
 <!-- slot-chunk-end -->
 
-which corresponds very closely to that used in @echave2015. We will add some uncertainty around this value by allowing for half or double 0.03:
 
-```{r desc-stock-m-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@M <- c(0.015, 0.06)
-```
-<!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### M2 {#app:desc-stock-m2-sr} -->
 
-<!-- *(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number* -->
-
-<!-- Not used. -->
-
-```{r desc-stock-m2-sr, results = knitr_results, echo = FALSE}
-stock_sr@M2
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### Mexp {#app:desc-stock-mexp-sr} -->
-
-<!-- *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.* -->
-
-Not used.
-
-```{r desc-stock-mexp-sr, results = knitr_results, echo = FALSE}
-stock_sr@Mexp <- c(NA_real_, NA_real_)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Msd {#app:desc-stock-msd-sr}
-
-*Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-Setting this to 0 to turn off this functionality for simp_srlicity.
-
-```{r desc-stock-msd-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Msd <- c(0, 0)
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-sr}
@@ -174,29 +136,7 @@ stock_sr@AC <- c(0.2, 0.6)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### Period {#app:desc-stock-period-sr} -->
 
-<!-- *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers* -->
-
-<!-- Not used. -->
-
-```{r desc-stock-period-sr, results = knitr_results, echo = FALSE}
-stock_sr@Period
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### Amplitude {#app:desc-stock-amplitude-sr} -->
-
-<!-- *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (eg a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1* -->
-
-<!-- Not used. -->
-
-```{r desc-stock-amplitude-sr, results = knitr_results, echo = FALSE}
-stock_sr@Amplitude
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Linf {#app:desc-stock-linf-sr}
@@ -260,29 +200,9 @@ round(stock_sr@LenCV, 2)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### Ksd {#app:desc-stock-ksd-sr}
 
-*Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-FIXME: pick this. For now picking an arbitrary range.
 
-```{r desc-stock-ksd-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Ksd <- c(0, 0.2)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Linfsd {#app:desc-stock-linfsd-sr}
-
-*Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-FIXME: We don't have much to go on here without some kind of a meta-analysis across other species.
-
-```{r desc-stock-linfsd-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Linfsd <- c(0, 0.2)
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-sr}
@@ -371,41 +291,8 @@ round(stock_sr@b, 2)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### Size_area_1 {#app:desc-stock-size_area_1-sr}
 
-*The size of area 1 relative to the total area (area 1 + area 2). Set to 0.5 to approximate single area model. Uniform distribution lower and upper bounds. Positive real numbers.*
 
-We will set this to 0.5 to approximate a single area model.
-
-```{r desc-stock-size_area_1-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Size_area_1 <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Frac_area_1 {#app:desc-stock-frac_area_1-sr}
-
-*The fraction of the unfished biomass in area 1 relative to the total area (area 1 + area 2). Uniform distribution lower and upper bounds. Positive real numbers.*
-
-We will set this to 0.5 to approximate a single area model.
-
-```{r desc-stock-frac_area_1-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Frac_area_1 <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Prob_staying {#app:desc-stock-prob_staying-sr}
-
-*The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
-
-We will set this to 0.5 to approximate a single area model.
-
-```{r desc-stock-prob_staying-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@Prob_staying <- c(0.5, 0.5)
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stock-fdisc-sr}
@@ -429,10 +316,10 @@ stock_sr@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
+
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-sr}
 
 ```{r warnings = FALSE}
-fleet_sr <- methods::new('Fleet')
 fleet_sr <- DLMtool::Generic_Fleet # TODO: temporary
 ```
 
@@ -471,94 +358,11 @@ fleet_sr@Spat_targ
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### EffYears {#app:desc-fleet-effyears-sr}
 
-*Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers*
 
-TODO: May need to come up with some plausible scenarios for these effort trajectories.
 
-For now, I will derive these as approximations of the effort timeseries from the CPUE standardization analyses. I will use the time series from our "fleet_sr" that is most relevant to catching shortraker. I will also extend a small amount of effort back to the beginning of the historical time, and set the lower and upper limits as 50% above and below the calculated timeseries.
 
-```{r desc-fleet-effyears-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr <- read.csv(here::here("report/data/shortraker-flt-effort.csv"))
-all_years <- data.frame(year = (2018 - fleet_sr@nyears):2018)
-fleet_sr <- dplyr::left_join(all_years, fleet_sr)
-fleet_sr <- mutate(fleet_sr,
-  effort = ifelse(is.na(hours_fished), 50, hours_fished),
-  effort_upper = effort * 1.5, effort_lower = effort * 0.667
-  )
-fleet_sr <- mutate(fleet_sr,
-  effort_lower = effort_lower/max(effort_upper, na.rm = TRUE),
-  effort_upper = effort_upper/max(effort_upper, na.rm = TRUE))
 
-ggplot(fleet_sr, aes(year, ymin = effort_lower, ymax = effort_upper)) +
-  geom_ribbon()
-
-fleet_sr@EffYears <- fleet_sr$year
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### EffLower {#app:desc-fleet-efflower-sr}
-
-*Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
-
-TODO: May need to come up with some plausible scenarios for these effort trajectories.
-
-```{r desc-fleet-efflower-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr@EffLower <- fleet_sr$effort_lower
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### EffUpper {#app:desc-fleet-effupper-sr}
-
-*Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers*
-
-TODO: May need to come up with some plausible scenarios for these effort trajectories.
-
-```{r desc-fleet-effupper-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr@EffUpper <- fleet_sr$effort_upper
-```
-
-<!-- slot-chunk-begin -->
-### Esd {#app:desc-fleet-esd-sr}
-
-*Additional inter-annual variability in fishing mortality rate. Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-TODO: We don't have a lot of data to go on for this. We will use a wide range from very little to moderate interannual variability in fishing mortality rate.
-
-```{r desc-fleet-esd-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr@Esd <- c(0.1, 0.4)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### qinc {#app:desc-fleet-qinc-sr}
-
-*Average percentage change in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-TODO: We don't have a lot of data to go on for this. We will set this at 0 indicating no expected systematic change in fishing efficiency.
-
-```{r desc-fleet-qinc-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr@qinc <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### qcv {#app:desc-fleet-qcv-sr}
-
-*Inter-annual variability in fishing efficiency (applicable only to forward projection and input controls). Uniform distribution lower and upper bounds. Non-negative real numbers*
-
-TODO: We don't have a lot of data to go on for this.
-
-We will set this to 0 to indicate no interannual variability in fishing efficiency for simp_srlicity.
-
-```{r desc-fleet-qcv-sr, results = knitr_results, echo = knitr_echo}
-fleet_sr@qcv <- c(0, 0)
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### L5 {#app:desc-fleet-l5-sr}
@@ -646,85 +450,13 @@ fleet_sr@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### SelYears {#app:desc-fleet-selyears-sr} -->
 
-<!-- *(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers* -->
 
-```{r desc-fleet-selyears-sr, results = knitr_results, echo = FALSE}
-fleet_sr@SelYears
-```
-<!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### AbsSelYears {#app:desc-fleet-absselyears-sr} -->
 
-<!-- *(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers* -->
 
-```{r desc-fleet-absselyears-sr, results = knitr_results, echo = FALSE}
-fleet_sr@AbsSelYears
-```
-<!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### L5Lower {#app:desc-fleet-l5lower-sr} -->
 
-<!-- *(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
-
-```{r desc-fleet-l5lower-sr, results = knitr_results, echo = FALSE}
-fleet_sr@L5Lower
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### L5Upper {#app:desc-fleet-l5upper-sr} -->
-
-<!-- *(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
-
-```{r desc-fleet-l5upper-sr, results = knitr_results, echo = FALSE}
-fleet_sr@L5Upper
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### LFSLower {#app:desc-fleet-lfslower-sr} -->
-
-<!-- *(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
-
-```{r desc-fleet-lfslower-sr, results = knitr_results, echo = FALSE}
-fleet_sr@LFSLower
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### LFSUpper {#app:desc-fleet-lfsupper-sr} -->
-
-<!-- *(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers* -->
-
-```{r desc-fleet-lfsupper-sr, results = knitr_results, echo = FALSE}
-fleet_sr@LFSUpper
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### VmaxLower {#app:desc-fleet-vmaxlower-sr} -->
-
-<!-- *(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
-
-```{r desc-fleet-vmaxlower-sr, results = knitr_results, echo = FALSE}
-fleet_sr@VmaxLower
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-<!-- ### VmaxUpper {#app:desc-fleet-vmaxupper-sr} -->
-
-<!-- *(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction* -->
-
-```{r desc-fleet-vmaxupper-sr, results = knitr_results, echo = FALSE}
-fleet_sr@VmaxUpper
-```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-sr}
@@ -736,23 +468,12 @@ fleet_sr@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-<!-- ### MPA {#app:desc-fleet-mpa-sr} -->
 
-<!-- *(Optional) Matrix specifying spatial closures for historical years.* -->
-
-<!-- We will not use this functionality. -->
-
-```{r desc-fleet-mpa-sr, results = knitr_results, echo = FALSE}
-fleet_sr@MPA
-```
-<!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-sr}
 
 ```{r warnings = FALSE}
-obs_sr <- methods::new('Obs')
-obs_sr <- DLMtool::Precise_Unbiased # TODO: temporary
+obs_sr <- DLMtool::Precise_Unbiased
 ```
 
 <!-- slot-chunk-begin -->
@@ -1102,13 +823,12 @@ obs_sr@Recbiascv <- c(0.05, 0.20)
 ```
 <!-- slot-chunk-end -->
 
+
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-sr}
 
 ```{r warnings = FALSE}
 imp_sr <- methods::new('Imp')
 ```
-
-Implementation should be very accurate for the groundfish fleet_sr so we will use the perfect imp_srlementation object and make it just slightly less perfect for now.
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-sr}
@@ -1140,45 +860,10 @@ imp_sr@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### TAEFrac {#app:desc-imp-taefrac-sr}
 
-*Mean fraction of TAE taken. Uniform distribution lower and upper bounds. Positive real number.*
 
-```{r desc-imp-taefrac-sr, results = knitr_results, echo = knitr_echo}
-imp_sr@TAEFrac <- c(0.8, 1.0)
-```
-<!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### TAESD {#app:desc-imp-taesd-sr}
 
-*Log-normal coefficient of variation in the fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
-
-```{r desc-imp-taesd-sr, results = knitr_results, echo = knitr_echo}
-imp_sr@TAESD <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### SizeLimFrac {#app:desc-imp-sizelimfrac-sr}
-
-*The real minimum size that is retained expressed as a fraction of the size. Uniform distribution lower and upper bounds. Positive real number.*
-
-```{r desc-imp-sizelimfrac-sr, results = knitr_results, echo = knitr_echo}
-imp_sr@SizeLimFrac <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### SizeLimSD {#app:desc-imp-sizelimsd-sr}
-
-*Log-normal coefficient of variation controlling mismatch between a minimum size limit and the real minimum size retained. Uniform distribution lower and upper bounds. Non-negative real numbers.*
-
-```{r desc-imp-sizelimsd-sr, results = knitr_results, echo = knitr_echo}
-imp_sr@SizeLimSD <- c(1, 1)
-```
-<!-- slot-chunk-end -->
 
 ### Output the OM
 
