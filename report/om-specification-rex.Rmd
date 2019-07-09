@@ -12,6 +12,13 @@ knitr_echo <- TRUE
 stock_rex <- methods::new('Stock')
 ```
 
+```{r rex-stock-defaults, echo=FALSE}
+stockrex@Size_area_1 <- c(0.5, 0.5)
+stockrex@Frac_area_1 <- c(0.5, 0.5)
+stockrex@Prob_staying <- c(0.5, 0.5)
+stockrex@Mexp <- c(NA_real_, NA_real_)
+```
+
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stock-name-rex}
 
@@ -50,7 +57,7 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
-From @turnock2005. This is the plus group value. TODO Can't find turnock2005
+<!-- From @turnock2005. This is the plus group value. TODO Can't find turnock2005 -->
 
 From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region.
 
