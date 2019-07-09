@@ -140,6 +140,7 @@ pcod_data_summary$mean_length <- mean_lengthpc
 
 #Write to file
 saveRDS(pcod_data_summary, file = here::here("generated-data", "pcod-data-summary.rds"))
+#saveRDS(pcod_data_summary, file = here::here("generated-data", "pcod-data-summary-Mbias.rds"))
 
 ######
 # Start Quang's analysis here
@@ -186,7 +187,7 @@ pcod_om@Linfsd <- pcod_om@Msd <- pcod_om@Ksd <- c(0, 0)
 pcod_no_comps_SRA <- MSEtool:::SRA_scope(pcod_om, Chist = Chist, Index = Index, I_type = rep(1, 5),cores = 10, report = TRUE)
 saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om.rds"))
 #saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om_Mbias.rds"))
-#saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
+saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
 
 pcod_no_comps_om <- readRDS("sra/pcod_no_comps_om.rds")
 pcod_no_comps_SRA_report <- readRDS("sra/pcod_no_comps_SRA_report.rds")

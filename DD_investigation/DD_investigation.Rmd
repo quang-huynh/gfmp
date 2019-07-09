@@ -9,9 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The function DLMtool::DD_ is saved in the file R/DLMtool_DD_.R as myDLDD()
+The function DLMtool::DD_ is saved in the file R/DLMtool_DD_.R as myDLDD_()
 
-The function optimized by DD_ is DLMtool::DD_R, which is the actual model code. It is saved in the file R/DLMtool_DD_R.R as myDLDDR().
+The function optimized by DD_ is DLMtool::DD_R, which is the actual model code. It is saved in the file R/DLMtool_DD_R.R as myDLDD_R().
 
 First source the DD_ functions.
 
@@ -34,10 +34,10 @@ DLMtool::Can(dat)
 
 DD is on the list, meaning there is sufficient data to run DD_.
 
-Now run the model with the data object ... check it is working. Note that we call myDLDD(), which has been modified to optimize myDLDDR() for this exercise.
+Now run the model with the data object ... check it is working. Note that we call myDLDD_(), which has been modified to optimize myDLDD_R() for this exercise.
 
 ```{r}
-myDDresults <- myDLDD(1,dat,reps=1, hcr=NULL)
+myDDresults <- myDLDD_(1,dat,reps=1, hcr=NULL)
 
 #plot results
 plot(myDDresults$Year, myDDresults$C_hist, type="l")
@@ -58,7 +58,7 @@ Now check on what parameters are estimated and what data the model is fitting to
 
 Parameters are estimated by minimizing the neg log likelihood using the optim function.  
 
-The actual delay difference model that gets optimized is internal function DLMtool::DD_R, which RF renamed myDLDDR for this exercise:
+The actual delay difference model that gets optimized is internal function DLMtool::DD_R, which RF renamed myDLDD_R for this exercise:
 
 * params <- log(c(UMSYpriorpar[1]/(1 - UMSYpriorpar[1]), 3 *
                     mean(C_hist, na.rm = T), Data@Mort[x]))
@@ -157,7 +157,7 @@ plot(density(rbeta(100000, umsyprior[1], umsyprior[2])))
 
 OK so it is giving a prior for Umsy centred on about half of natural mortality. TAC is then calculated as Umsy * B_DD_nyr+1.
 
-*RF modified myDLDD() to output UMSY*
+*RF modified myDLDD_() to output UMSY*
 
 ```{r}
 
@@ -198,7 +198,7 @@ lines(density(rbeta(100000, umsyprior[1], umsyprior[2])), col=2)
 legend("topright", legend=c(paste("Mort=",mort),paste("Mort=",mort_orig)), lty=1, col=1:2)
 
 #rerun the DD model with the new dat@Mort and prior
-myDDresults2 <- myDLDD(1,dat,reps=1, hcr=NULL)
+myDDresults2 <- myDLDD_(1,dat,reps=1, hcr=NULL)
 
 UMSY2 <- myDDresults2$UMSY
 TAC2 <- myDDresults2$TAC
@@ -267,6 +267,10 @@ g <- ggplot(Bmed,aes(x=Year)) +
     ylab("Biomass") + xlab("Year")
 print(g) 
   
+Mtrue <- pcod_mse@OM$M
+FMSYtrue <- pcod_mse@OM$FMSY
+Productivity <- cbind(Mtrue,FMSYtrue)
+boxplot(Productivity, names=c("True M", "True FMSY"), col="lightgray")
 
 
 ```
@@ -340,7 +344,7 @@ print(g)
 
 Now look at what the DD model thought the biomass was
 
-First look at one "slice" from the OM simulated data
+First look at one "slice" from the OM simulated data. Use the standalone version of the DD model to get more outputs (UMSY and M)
 
 ```{r}
 
@@ -428,55 +432,214 @@ print(g)
 ```
 
 
-Have a look at True F while we're here. Just look at simulation period. DD doesn't seem to output its estimates of F 
+*Try a different operating model with  bias in M*
 
-```{r}
-Ftrue <- pcod_mse@FM
-nSim <- dim(Ftrue)[1]
-nMP <-  dim(Ftrue)[2]
-nYear <- dim(Ftrue)[3]
-dimnames(Ftrue) <- list(1:nSim, "DD", 1:nYear)
+Use the Pacific Cod OM. Run with the basic OM.
+```{r echo = TRUE}
+
+ompc2 <- readRDS(here::here("sra/pcod_no_comps_om_Mbias.rds"))
+
+ompc2@nsim <- 150L
+setup()
+pcod_mse2 <- DLMtool::runMSE(OM = ompc2, MPs = "DD", ntrials = 1000, PPD = TRUE, parallel=TRUE)
+saveRDS(pcod_mse2,here::here("DD_investigation/pcod_mse_Mbias.R"))
+
+```
+
+Plot the results
+
+```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
+library(tidyverse)
+library(RColorBrewer)
+
+Btrue2 <- pcod_mse2@SSB
+nSim <- dim(Btrue2)[1]
+nMP <-  dim(Btrue2)[2]
+nYear <- dim(Btrue2)[3]
+dimnames(Btrue2) <- list(1:nSim, "DD", 1:nYear)
 
 #convert to data frame and plot
-z1 <- apply(Ftrue, 3L, c)
-z2 <- expand.grid(dimnames(Ftrue)[1:2])
-Ftrue <- data.frame(z2, z1) %>% 
+z1 <- apply(Btrue2, 3L, c)
+z2 <- expand.grid(dimnames(Btrue2)[1:2])
+Btrue2 <- data.frame(z2, z1) %>% 
   reshape2::melt()%>% 
-  rename("Sim"=Var1,"MP"=Var2,"fYear"=variable, "FishingMortality"=value) %>%
+  rename("Sim"=Var1,"MP"=Var2,"fYear"=variable, "Biomass"=value) %>%
   mutate(Year=as.numeric(as.factor(fYear)))
 
-
-Fmed <- Ftrue %>% 
+Bmed2 <- Btrue2 %>% 
   dplyr::group_by(Year) %>% 
-  dplyr::summarise(Median = median(FishingMortality),
-    q75th = quantile(FishingMortality, probs = 0.75),
-    q25th = quantile(FishingMortality, probs = 0.25),
-    q95th = quantile(FishingMortality, probs = 0.95),
-    q5th = quantile(FishingMortality, probs = 0.05))
+  dplyr::summarise(Median = median(Biomass),
+    q75th = quantile(Biomass, probs = 0.75),
+    q25th = quantile(Biomass, probs = 0.25),
+    q95th = quantile(Biomass, probs = 0.95),
+    q5th = quantile(Biomass, probs = 0.05))
 
 
-g <- ggplot(Fmed,aes(x=Year)) +
+g <- ggplot(Bmed2,aes(x=Year)) +
     geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
     geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
     geom_line(aes(y=Median), lwd=2) +
     ggsidekick::theme_sleek() +
       guides(colour = FALSE) +
-    ylab("Fishing Mortality") + xlab("Year")
+    ylab("Biomass") + xlab("Year")
+print(g) 
+
+Mtrue2 <- pcod_mse2@OM$M
+FMSYtrue2 <- pcod_mse2@OM$FMSY
+Productivity2 <- cbind(Mtrue2,FMSYtrue2)
+boxplot(Productivity2, names=c("True M", "True FMSY"), col="lightblue")
+
+#Compare M values between the two OMs
+Mcompare <- cbind(Mtrue, Mtrue2)
+boxplot(Mcompare, names=c("True M base", "True M bias"), col=c("lightgray", "lightblue"))
+
+
+```
+
+Get the whole time series including the historical biomass
+
+```{r}
+
+
+B1 <- pcod_mse2@SSB_hist[,,,1]
+B2 <- pcod_mse2@SSB_hist[,,,2]
+nSim <- dim(B1)[1]
+nAge <- dim(B1)[2]
+nYear <- dim(B1)[3]
+dimnames(B1) <- list(1:nSim, 1:nAge, as.numeric(1:nYear))
+dimnames(B2) <- list(1:nSim, 1:nAge, as.numeric(1:nYear))
+
+#convert to data frames and get total biomass per year per area
+z1 <- apply(B1, 3L, c)
+z2 <- expand.grid(dimnames(B1)[1:2])
+Btrue2_hist_area1 <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"Age"=Var2,"fYear"=variable, "Biomass"=value) %>% 
+  mutate(Year=as.numeric(as.factor(fYear))) %>% 
+  group_by(Sim,Year) %>%
+  summarise(Btot1=sum(Biomass))
+
+z1 <- apply(B2, 3L, c)
+z2 <- expand.grid(dimnames(B2)[1:2])
+Btrue2_hist_area2 <- data.frame(z2, z1) %>% 
+  reshape2::melt()%>% 
+  rename("Sim"=Var1,"Age"=Var2,"fYear"=variable, "Biomass"=value) %>% 
+  mutate(Year=as.numeric(as.factor(fYear))) %>% 
+  group_by(Sim,Year) %>%
+  summarise(Btot2=sum(Biomass))
+
+#Get total biomass per year
+Btrue2_hist <- left_join(Btrue2_hist_area1, Btrue2_hist_area2) %>% 
+  mutate(Biomass = Btot1 + Btot2)
+
+#Now get medians and quantiles
+Bmed2_hist <- Btrue2_hist %>% 
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(Median = median(Biomass),
+    q75th = quantile(Biomass, probs = 0.75),
+    q25th = quantile(Biomass, probs = 0.25),
+    q95th = quantile(Biomass, probs = 0.95),
+    q5th = quantile(Biomass, probs = 0.05))
+
+#Now join up with MSE results
+#First renumber the years
+nhistYear <- nYear
+Bmed2$Year <- Bmed2$Year + nhistYear
+
+Bmed2_all <- rbind(Bmed2_hist, Bmed2)
+
+#Plot
+g <- ggplot(Bmed2_all,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=1.5) +
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
 print(g) 
   
 
 
 ```
 
-Try a different operating model with a more bias in M
+Now look at what the DD model thought the biomass was. Get the DD estimates of biomass from all the MSE replicates.
 
 ```{r}
 
+nsims <- 1:nSim
+
+DD_sims_output2 <- function(x){
+  out <- DD_output(x, pcod_mse2@Misc$Data[[1]], reps = 1, plot = FALSE)
+  return(out$B_DD)
+}
+
+ddout2 <- sapply(nsims,DD_sims_output2)
+dim(ddout2)
+
+Bmed2_mp <- ddout2 %>% 
+  reshape2::melt() %>% 
+  rename("Year"=Var1,"Sim"=Var2,"MPBiomass"=value) %>%
+  dplyr::group_by(Year) %>% 
+  dplyr::summarise(MedianMP = median(MPBiomass),
+    q75thMP = quantile(MPBiomass, probs = 0.75),
+    q25thMP = quantile(MPBiomass, probs = 0.25),
+    q95thMP = quantile(MPBiomass, probs = 0.95),
+    q5thMP = quantile(MPBiomass, probs = 0.05))
+
+
+#Plot
+g <- ggplot(Bmed2_mp,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5thMP, ymax = q95thMP), fill = "pink1") +
+    geom_ribbon(aes(ymin = q25thMP, ymax = q75thMP), fill = "lightcoral") +
+    geom_line(aes(y=MedianMP), lwd=1.5, colour="red") +
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+
+```
+
+
+Now overlay the two plots
+
+```{r}
+Bmed2_all_short <- Bmed2_all %>% 
+  dplyr::filter(Year %in% 1:(nrow(Bmed2_all)-1))  #Not sure whether the first or last year is missing from B_DD!
+
+Bmed2_combined <- inner_join(Bmed2_all_short, Bmed2_mp)
+
+g <- ggplot(Bmed2_combined,aes(x=Year)) +
+    geom_ribbon(aes(ymin = q5th, ymax = q95th), fill = "grey90") +
+    geom_ribbon(aes(ymin = q25th, ymax = q75th), fill = "grey70") +
+    geom_line(aes(y=Median), lwd=1.5) +
+  
+    geom_ribbon(aes(ymin = q5thMP, ymax = q95thMP), fill = "pink1", alpha=0.4) +
+    geom_ribbon(aes(ymin = q25thMP, ymax = q75thMP), fill = "lightcoral", alpha=0.4) +
+    geom_line(aes(y=MedianMP), lwd=1.5, colour="red", alpha=0.5) +
+  
+    ggsidekick::theme_sleek() +
+    geom_vline(xintercept=nhistYear, linetype="dashed", lwd=0.5)+
+    guides(colour = FALSE) +
+    ylab("Biomass") + xlab("Year")
+print(g) 
+
+
+```
+
+Look at the TAC recommended in the two cases
+
+```{r}
+TACbase <- pcod_mse@TAC
+TACbase2 <- pcod_mse2@TAC
+
+TACcompare <- cbind(TACbase, TACbase2)
+boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "lightblue"), outline=FALSE)
 
 
 
 ```
 
-
-
+Hmm, well I am not sure we are really putting this model to the test. The TACs for the red snapper model on a real dataset were extremely sensitive to the input M value. I tried putting the MBiasCV parameter up to a very high level. It had a big effect on biomass but hardly affected TAC. I'd be curious to know what M is being passed to the DD MP. Can't test it right now as custom MPs aren't working.
 

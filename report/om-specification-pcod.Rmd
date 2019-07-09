@@ -691,7 +691,7 @@ obs_pc@LenMbiascv <- c(0.05, 0.20)
 We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_pc@M[[1]]` and `r stock_pc@M[[2]]`.
 
 ```{r desc-obs-mbiascv-pc, results = knitr_results, echo = knitr_echo}
-obs_pc@Mbiascv <- c(0.05, 0.20)
+obs_pc@Mbiascv <- c(0.00, 0.00)
 ```
 <!-- slot-chunk-end -->
 
