@@ -341,7 +341,7 @@ fleet_rex <- methods::new('Fleet')
 fleet_rex@Esd <- c(0, 0)
 fleet_rex@qinc <- c(0, 0)
 fleet_rex@qcv <- c(0, 0)
-fleet_rex@EffYears <- all_years
+fleet_rex@EffYears <- 1996:2018
 fleet_rex@EffLower <- rep(1, length(all_years))
 fleet_rex@EffUpper <- rep(1, length(all_years))
 ```
