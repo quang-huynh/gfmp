@@ -22,7 +22,6 @@ stock_sr@Prob_staying <- c(0.5, 0.5)
 stock_sr@Mexp <- c(NA_real_, NA_real_)
 ```
 
-
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stock-name-sr}
 
@@ -87,10 +86,6 @@ exp(1.44 - 0.982 * log(stock_sr@maxage))
 ```
 <!-- slot-chunk-end -->
 
-
-
-
-
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-sr}
 
@@ -142,8 +137,6 @@ stock_sr@Perr <- c(0.5, 0.9)
 stock_sr@AC <- c(0.2, 0.6)
 ```
 <!-- slot-chunk-end -->
-
-
 
 <!-- slot-chunk-begin -->
 ### Linf {#app:desc-stock-linf-sr}
@@ -206,10 +199,6 @@ stock_sr@LenCV <- sd2cv(exp(mvb$pars[["log_sigma"]]))
 round(stock_sr@LenCV, 2)
 ```
 <!-- slot-chunk-end -->
-
-
-
-
 
 <!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-sr}
@@ -298,9 +287,6 @@ round(stock_sr@b, 2)
 ```
 <!-- slot-chunk-end -->
 
-
-
-
 <!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stock-fdisc-sr}
 
@@ -329,7 +315,6 @@ stock_sr@Source <- ""
 ```{r warnings = FALSE}
 fleet_sr <- DLMtool::Generic_Fleet
 ```
-
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-fleet-name-sr}
@@ -365,12 +350,6 @@ TODO: Need to dig into the code understand this parameter. Perhaps this only com
 fleet_sr@Spat_targ
 ```
 <!-- slot-chunk-end -->
-
-
-
-
-
-
 
 <!-- slot-chunk-begin -->
 ### L5 {#app:desc-fleet-l5-sr}
@@ -458,14 +437,6 @@ fleet_sr@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-
-
-
-
-
-
-
-
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-sr}
 
@@ -476,14 +447,11 @@ fleet_sr@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
-
-
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-sr}
 
 ```{r warnings = FALSE}
 obs_sr <- DLMtool::Generic_Obs
 ```
-
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-sr}
@@ -839,7 +807,6 @@ obs_sr@Recbiascv <- c(0.05, 0.20)
 imp_sr <- DLMtool::Precise_Unbiased
 ```
 
-
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-sr}
 
@@ -870,26 +837,6 @@ imp_sr@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Output the OM
 
 *Output the Operating model.*
@@ -898,4 +845,3 @@ imp_sr@TACSD <- c(0, 0)
 short_om <- new('OM', stock_sr, fleet_sr, obs_sr, imp_sr)
 saveRDS(short_om, file = here::here("generated-data", "shortraker-om.rds"))
 ```
-
