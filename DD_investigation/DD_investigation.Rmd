@@ -489,11 +489,6 @@ FMSYtrue2 <- pcod_mse2@OM$FMSY
 Productivity2 <- cbind(Mtrue2,FMSYtrue2)
 boxplot(Productivity2, names=c("True M", "True FMSY"), col="lightblue")
 
-#Compare M values between the two OMs
-Mcompare <- cbind(Mtrue, Mtrue2)
-boxplot(Mcompare, names=c("True M base", "True M bias"), col=c("lightgray", "lightblue"))
-
-
 ```
 
 Get the whole time series including the historical biomass
@@ -632,9 +627,9 @@ Look at the TAC recommended in the two cases
 
 ```{r}
 TACbase <- pcod_mse@TAC
-TACbase2 <- pcod_mse2@TAC
+TACbias <- pcod_mse2@TAC
 
-TACcompare <- cbind(TACbase, TACbase2)
+TACcompare <- cbind(TACbase, TACbias)
 boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "lightblue"), outline=FALSE)
 
 
@@ -642,4 +637,96 @@ boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "light
 ```
 
 Hmm, well I am not sure we are really putting this model to the test. The TACs for the red snapper model on a real dataset were extremely sensitive to the input M value. I tried putting the MBiasCV parameter up to a very high level. It had a big effect on biomass but hardly affected TAC. I'd be curious to know what M is being passed to the DD MP. Can't test it right now as custom MPs aren't working.
+
+Look at the distribution of M in the two OMs. Should be the same because only MbiasCV is changed
+
+```{r}
+Mtrue <- pcod_mse@OM$M
+Mtrue2 <- pcod_mse2@OM$M
+Mcompare <- cbind(Mtrue,Mtrue2)
+boxplot(Mcompare, names=c("True M  base", "True M bias"), col=c("lightgray", "lightblue"), outline=FALSE)
+
+```
+
+Now look at M passed to the delay difference model from each OM
+
+```{r}
+Mdat1 <- pcod_mse@Misc$Data[[1]]@Mort
+Mdat2 <- pcod_mse2@Misc$Data[[1]]@Mort
+Mdat_compare <- cbind(Mdat1,Mdat2)
+boxplot(Mdat_compare, names=c("DD M  base", "DD M bias"), col=c("lightgray", "lightblue"), outline=FALSE)
+
+```
+
+Compare True M and the M passed to the delay difference model from each OM
+
+```{r}
+library(reshape2)
+
+om1 <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+om2 <- readRDS(here::here("sra/pcod_no_comps_om_Mbias.rds"))
+
+mbias1 <- om1@Mbiascv
+mbias2 <- om2@Mbiascv
+
+Mall <- as.data.frame(cbind(Mcompare,Mdat_compare))
+colnames(Mall) <- c("True_M_base", "True_M_bias","DD_M_base", "DD_M_bias")
+
+upper.limit <- quantile(Mall$DD_M_bias)[4] + 1.5*IQR(Mall$DD_M_bias)
+lower.limit <- quantile(Mall$DD_M_bias)[2] - 1.5*IQR(Mall$DD_M_bias)
+
+g <- Mall %>% 
+  melt() %>% 
+  mutate(OM=c(rep("M No Bias",nSim), rep("M Bias",nSim),rep("M No Bias",nSim), rep("M Bias",nSim))) %>% 
+  rename(Model=variable, M=value) %>% 
+  ggplot(aes(x=Model,y=M, fill=OM)) +
+  geom_boxplot(outlier.shape=NA)+
+  coord_cartesian(ylim=c(lower.limit, upper.limit))
+print(g)
+  
+
+
+```
+
+Try subsetting the MP results and plotting the TAC for the upper and lower slices
+
+```{r}
+below1 <- pcod_mse@Misc$Data[[1]]@Mort < median(pcod_mse@Misc$Data[[1]]@Mort)
+above1 <- pcod_mse@Misc$Data[[1]]@Mort > median(pcod_mse@Misc$Data[[1]]@Mort)
+
+belowMSE1 <- Sub(pcod_mse, sims=below1)
+aboveMSE1 <- Sub(pcod_mse, sims=above1)
+
+below2 <- pcod_mse2@Misc$Data[[1]]@Mort < median(pcod_mse2@Misc$Data[[1]]@Mort)
+above2 <- pcod_mse2@Misc$Data[[1]]@Mort > median(pcod_mse2@Misc$Data[[1]]@Mort)
+
+belowMSE2 <- Sub(pcod_mse2, sims=below2)
+aboveMSE2 <- Sub(pcod_mse2, sims=above2)
+
+belowMSE1@nsim
+aboveMSE1@nsim
+belowMSE2@nsim
+aboveMSE2@nsim
+
+TAC1_below <- belowMSE1@TAC
+TAC2_below <- belowMSE2@TAC
+
+TACcompare <- cbind(TAC1_below, TAC2_below)
+boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "lightblue"), outline=FALSE, main="Lower slice of M in MP")
+
+TAC1_above <- aboveMSE1@TAC
+TAC2_above <- aboveMSE2@TAC
+
+TACcompare <- cbind(TAC1_above, TAC2_above)
+boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "lightblue"), outline=FALSE, main="Upper slice of M in MP")
+
+
+```
+
+
+
+
+
+
+
 

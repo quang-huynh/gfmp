@@ -692,7 +692,7 @@ plot_probs(probs)
 ```
 
 \newpage
-Show radar plot. They all do more or less the same. DD is worst. I think we should remove this from the MPs. Delay-difference models are not data-limited and have too many decisions to throw into our toolkit of simple models. Plus it is behaving strangelY.
+Show radar plot. Most of them have no long term yield. Why is this? Is LTY relative to refY??
 
 ```{r}
 library(ggspider)
