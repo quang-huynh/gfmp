@@ -827,12 +827,12 @@ obs_rex@Dbiascv
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Dobs {#app:desc-obs-Dobs-rex}
+### Dobs {#app:desc-obs-dobs-rex}
 
 *Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
 
-```{r desc-obs-Dobs-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-dobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Dobs
 ```
 <!-- slot-chunk-end -->
