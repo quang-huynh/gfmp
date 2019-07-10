@@ -3,9 +3,6 @@ library(DLMtool)
 knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
-
-
-
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
 
 ```{r warnings = FALSE}
@@ -560,7 +557,7 @@ Since 1996, observation error on catch should be very small:
 
 <!-- TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996. -->
 
-```{r desc-obs-Cobs-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-cobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Cobs <- c(0, 0.05)
 ```
 <!-- slot-chunk-end -->
@@ -628,7 +625,7 @@ obs_rex@CAL_ESS
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Iobs {#app:desc-obs-Iobs-rex}
+### Iobs {#app:desc-obs-iobs-rex}
 
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
@@ -641,7 +638,7 @@ rex_cv_range <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>
   round(2)
 ```
 
-```{r desc-obs-Iobs-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-iobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Iobs <- rex_cv_range
 obs_rex@Iobs
 ```
