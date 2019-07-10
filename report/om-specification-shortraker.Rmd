@@ -9,12 +9,17 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
-
-
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-sr}
 
 ```{r warnings = FALSE}
 stock_sr <- methods::new('Stock')
+```
+
+```{r rex-stock-defaults, echo=FALSE}
+stock_sr@Size_area_1 <- c(0.5, 0.5)
+stock_sr@Frac_area_1 <- c(0.5, 0.5)
+stock_sr@Prob_staying <- c(0.5, 0.5)
+stock_sr@Mexp <- c(NA_real_, NA_real_)
 ```
 
 
@@ -864,6 +869,16 @@ imp_sr@TACFrac <- c(0.8, 1.0)
 imp_sr@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
+
+
+
+
+
 
 
 

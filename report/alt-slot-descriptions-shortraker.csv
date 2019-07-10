@@ -28,9 +28,9 @@ Stock,L50_95,26,TRUE,FALSE,Length increment from 50 percent to 95 percent maturi
 Stock,D,27,TRUE,FALSE,Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction
 Stock,a,28,TRUE,FALSE,Length-weight parameter alpha. Single value. Positive real number
 Stock,b,29,TRUE,FALSE,Length-weight parameter beta. Single value. Positive real number
-Stock,Size_area_1,30,FALSE,TRUE,The default OM has two areas. size_area_1 is the geographical size of the area relative to the TOTAL area.Set to 0.5 to approximate single area model
-Stock,Frac_area_1,31,FALSE,TRUE,"Frac_area_1 is the amount of unfished habitat in that area, expressed as a fraction of the TOTAL habitat.Set to 0.5 to approximate single area model"
-Stock,Prob_staying,32,FALSE,FALSE,The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.
+Stock,Size_area_1,30,TRUE,TRUE,The default OM has two areas. size_area_1 is the geographical size of the area relative to the TOTAL area.Set to 0.5 to approximate single area model
+Stock,Frac_area_1,31,TRUE,TRUE,"Frac_area_1 is the amount of unfished habitat in that area, expressed as a fraction of the TOTAL habitat.Set to 0.5 to approximate single area model"
+Stock,Prob_staying,32,TRUE,FALSE,The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.
 Stock,Fdisc,33,TRUE,FALSE,Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers
 Stock,Source,34,TRUE,FALSE,A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.
 Fleet,Name,1,TRUE,FALSE,Name of the Fleet object. Single value. Character string.
