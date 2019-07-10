@@ -55,7 +55,7 @@ Get the operating model. For Pacific Cod we are using the operating model fit us
 
 
 ```{r echo = TRUE}
-#ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+#ompc <- new('OM', stock_pc, fleet_pc, obs_pc, imp_pc)
 
 #Use OM that was made in sra-data-pcod.R 
 ompc <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
@@ -77,7 +77,7 @@ ompc@nsim <- 200
 real_catchpc <- read.csv(here::here("report/data/pcod-corrected-catch.csv"))
 real_catchpc <- mutate(real_catchpc, synthetic = real_catchpc$Observed.catch) #Don't use predicted catchpc for P cod
 
-all_years <- data.frame(Year = (2018 - fleetpc@nyears):2018)
+all_years <- data.frame(Year = (2018 - fleet_pc@nyears):2018)
 real_catchpc <- dplyr::left_join(all_years, real_catchpc)
 
 set.seed(193812)
@@ -151,8 +151,8 @@ pcod_mse_C <- pcod_mse@C
 
 nSim <- ompc@nsim
 nYear <- ncol(pcod_mse_C[,1,]) 
-nMP <- length(mppc)
-dimnames(pcod_mse_C) <- list(1:nSim, mppc, 1:nYear)
+nMP <- length(pcod_mse@MPs)
+dimnames(pcod_mse_C) <- list(1:nSim, pcod_mse@MPs, 1:nYear)
 
 #convert to data frame
 z1 <- apply(pcod_mse_C, 3L, c)
@@ -188,8 +188,8 @@ pcod_mse_SSB <- pcod_mse@SSB
 
 nSim <- ompc@nsim
 nYear <- ncol(pcod_mse_SSB[,1,]) 
-nMP <- length(mppc)
-dimnames(pcod_mse_SSB) <- list(1:nSim, mppc, 1:nYear)
+nMP <- length(pcod_mse@MPs)
+dimnames(pcod_mse_SSB) <- list(1:nSim, pcod_mse@MPs, 1:nYear)
 
 #convert to data frame
 z1 <- apply(pcod_mse_SSB, 3L, c)
@@ -221,13 +221,19 @@ We can remove some MPs to make comparison of results easier. Here is the shortli
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 mppc_short <- c("AvC",
+                "CC2",
                 "SBT2",
                 "DD4010", 
                 "GB_CC", 
                 "Islope1", 
-                "IT5", 
+                "IT5",
+                "ITM",
                 "LstepCC2",
-                "Ltarget1", 
+                "LstepCC3",
+                "LstepCC4",
+                "Ltarget1",
+                "Ltarget2",
+                "Ltarget3",
                 "SP_MSY")
 ```
 
@@ -317,9 +323,9 @@ pcod_mse_C_short <- pcod_mse_short@C
 
 nSim <- ompc@nsim
 nYear <- ncol(pcod_mse_SSB[,1,]) 
-nMP <- length(mppc_short)
-dimnames(pcod_mse_SSB_short) <- list(1:nSim, mppc_short, 1:nYear)
-dimnames(pcod_mse_C_short) <- list(1:nSim, mppc_short, 1:nYear)
+nMP <- length(pcod_mse_short@MPs)
+dimnames(pcod_mse_SSB_short) <- list(1:nSim, pcod_mse_short@MPs, 1:nYear)
+dimnames(pcod_mse_C_short) <- list(1:nSim, pcod_mse_short@MPs, 1:nYear)
 
 #convert arrays to data frames
 z1 <- apply(pcod_mse_C_short, 3L, c)
@@ -358,43 +364,6 @@ print(ggssb2)
 
 \newpage
 
-All the MP give the same biomass results. Probably because the catch isn't touching the biomass really.
-
-
-To check, look at Catch relative to RefY for each MP.The pink box in Year 1 shows the range of refY values from the OM, with the median shown as a dashed line.
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-nSim <- ompc@nsim
-RefYield_pc <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=pcod_mse_short@OM$RefY)
-
-#HACK Remove an outlier ... limit refY to 1000 for plotting
-MaxRefY <- max(RefYield_pc$Catch)
-NumOutliers <- length(which(RefYield_pc$Catch>10000))
-func <- function(x) {ifelse(x> 10000,10000,x)}
-RefY_Pc_trunc <- sapply(RefYield_pc$Catch, FUN=func)
-
-#Replace RefY with truncated set, just for plotting
-RefYield_pc$Catch <- RefY_Pc_trunc
-
-#Make a new object so we don't accidentally keep appending to mp_catch_pc_short
-mp_catch_pc_short2 <- rbind(mp_catch_pc_short,RefYield_pc)
-
-ggcatch <- mp_catch_pc_short2 %>% 
-  filter(Year %in% c(1,10,20,30,40,50)) %>%
-  ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
-  geom_boxplot()+
-  geom_hline(yintercept=med_refY_pc, linetype="dashed", color = "black")+
-  ggtitle("Shortlist of MPs: Catch showing ref yield")+ xlab("Year")+ ylab("Catch") +
-  annotate(geom="text", x=4, y=9500, label=paste("Maximum RefY value =", round(MaxRefY,1))) +
-  annotate(geom="text", x=4, y=9000, label=paste("Number of RefY sims > 10000 =", NumOutliers))  
-print(ggcatch)
-
-
-```
-
-
-\newpage
-
 Look at Catch/RefY for each MP.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
@@ -419,11 +388,11 @@ RefY is a proxy for MSY. Not a very useful target for P cod. Perhaps we need to 
 
 \newpage
 
-Look at projected fishing mortality. This is odd. The DD4010 MP produces much higher F than any other MP, yet the spawning biomass is the same across all MPs and catches are the same as the AvC MP, which doesn't have such high F.
+Look at projected fishing mortality.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_F_short <- pcod_mse_short@FM
-dimnames(pcod_mse_F_short) <- list(1:nSim, mppc_short, 1:nYear)
+dimnames(pcod_mse_F_short) <- list(1:nSim, pcod_mse_short@MPs, 1:nYear)
 
 #convert arrays to data frames
 z1 <- apply(pcod_mse_F_short, 3L, c)
@@ -448,7 +417,7 @@ Look at vulnerable biomass ... as expected it's the same more or less as spawnin
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_VB_short <- pcod_mse_short@VB
-dimnames(pcod_mse_VB_short) <- list(1:nSim, mppc_short, 1:nYear)
+dimnames(pcod_mse_VB_short) <- list(1:nSim, pcod_mse_short@MPs, 1:nYear)
 
 #convert arrays to data frames
 z1 <- apply(pcod_mse_VB_short, 3L, c)
@@ -470,34 +439,6 @@ print(ggVB)
 
 
 
-\newpage
-
-Look at B/BMSY trajectories under each MP. They seem identical for each MP.
-
-<!--- Try Cowplot grid version, hard to read but could lay it out better
-
-```{r}
-pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
-dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
-
-#USR_pc
-
-#Give names to the array so they can be used for plotting
-dimnames(pcod_mse_BBMSY_short) <- list(1:nSim, mppc_short, 1:nYear)
-
-gg <- list()
-lapply(1:nMP, function(x){
- tmp <- pcod_mse_BBMSY_short[,x,] %>% 
-   reshape2::melt() 
-   gg[[x]] <<- ggplot(tmp, aes(x=as.factor(Var2),y=value)) +
-   geom_boxplot() +
-   xlab("Year")+ ylab("B/BMSY") 
-})
-cowplot::plot_grid(plotlist=gg)
-
-```
---->
-
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 pcod_mse_BBMSY_short <- pcod_mse_short@B_BMSY
@@ -506,7 +447,7 @@ dim(pcod_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 #Give names to the array so they can be used for plotting
 nSim <- ompc@nsim
 nYear <- ncol(pcod_mse_BBMSY_short[,1,]) #find global parameter for number of projection years
-dimnames(pcod_mse_BBMSY_short) <- list(c(1:nSim), mppc_short, 1:nYear)
+dimnames(pcod_mse_BBMSY_short) <- list(c(1:nSim), pcod_mse_short@MPs, 1:nYear)
 
 #convert to data frame and plot
 z1 <- apply(pcod_mse_BBMSY_short, 3L, c)
@@ -533,41 +474,7 @@ print(p1)
 
 \newpage
 
-Make the subsetted years version of the B/BMSY and F/FMSY plots. 
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-pcod_mse_FFMSY_short <- pcod_mse_short@F_FMSY
-dim(pcod_mse_FFMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
-dimnames(pcod_mse_FFMSY_short) <- list(c(1:nSim), mppc_short, 1:nYear)
-
-#convert to data frame and plot
-z1 <- apply(pcod_mse_FFMSY_short, 3L, c)
-z2 <- expand.grid(dimnames(pcod_mse_FFMSY_short)[1:2])
-mp_ffmsy_pc_short <- data.frame(z2, z1) %>% 
-  reshape2::melt()%>% 
-  rename("Sim"=Var1,"MP"=Var2,"Year"=variable, "FFMSY"=value) %>% 
-  mutate(Year=as.numeric(Year)) 
-
-
-ggb <- mp_bbmsy_pc_short %>% 
-  filter(Year %in% c(1,10,20,30,40,50)) %>%
-  ggplot(aes(x=as.factor(Year),y=BBMSY,fill=MP))+
-  geom_boxplot()+
-  ggtitle("Shortlist of MPs: B/BMSY")+ xlab("Year")+ ylab("B/BMSY")  
-print(ggb)
-
-ggf <- mp_ffmsy_pc_short %>% 
-  filter(Year %in% c(1,10,20,30,40,50)) %>%
-  ggplot(aes(x=as.factor(Year),y=FFMSY,fill=MP))+
-  geom_boxplot()+
-  ggtitle("Shortlist of MPs: F/FMSY")+ xlab("Year")+ ylab("F/FMSY")  
-print(ggf)
-
-```
-
-\newpage
-
-Dig into some results further ... like what is going on with the delay difference model (DD4010)? Show four metrics for all MPs.
+Dig into some results further 
 
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
@@ -703,7 +610,6 @@ g
 
 \newpage
 
-This result is confusing. Isolate DD4010 and AvC. Why is F/FMSY different between the DD4010 and AvC MPs  when catch and biomass look identical?
 
 ```{r, fig.asp=1.9, out.width = "4.8in", fig.width=7}
 mps <-  c("AvC", "SBT2", "DD4010")
@@ -799,13 +705,8 @@ pm_probs <- eval_pm(pcod_mse_short,
                             "PNOF",
                             "AAVY")) 
 
-<<<<<<< Updated upstream
 #r_plot(x, fill_polys = TRUE, inc_yrs = FALSE)
 ggspider::spider_web(pm_probs, "mp", "pm", "prob")
-=======
-ggspider::spider_web(x, "mp", "pm", "prob")
->>>>>>> Stashed changes
-
 
 ```
 

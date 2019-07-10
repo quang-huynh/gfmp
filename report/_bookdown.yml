@@ -21,7 +21,7 @@ rmd_files: ["index.Rmd",
             #"effort-pcod.Rmd",
             "om-specification-pcod.Rmd",
             #"om-specification-pcod-Mbias.Rmd",
-            #"runmse-pcod-explore.Rmd",
+            "runmse-pcod-explore.Rmd",
             #"runmse-pcod.Rmd",
             #"Figures.Rmd",
             "references.Rmd"]
