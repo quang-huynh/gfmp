@@ -3,6 +3,7 @@ library(DLMtool)
 knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
 
 ```{r warnings = FALSE}
@@ -331,7 +332,7 @@ stock_rex@Source <- ""
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-rex}
 
 ```{r warnings = FALSE}
-fleet_rex <- methods::new('Fleet')
+fleet_rex <- DLMtool::Generic_Fleet
 ```
 
 ```{r warnings = FALSE, echo=FALSE}
@@ -369,6 +370,13 @@ fleet_rex@nyears <- length(catch_yrs)
 fleet_rex@nyears
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
+
+
 
 <!-- slot-chunk-begin -->
 ### L5 {#app:desc-fleet-l5-rex}
@@ -519,6 +527,14 @@ fleet_rex@DR <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
+
+
+
+
+
+
+
+
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
 
@@ -535,9 +551,9 @@ fleet_rex@CurrentYr <- 2018
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
 
 ```{r warnings = FALSE}
-obs_rex <- methods::new("Obs")
-obs_rex <- DLMtool::Generic_Obs # TODO: temporary
+obs_rex <- DLMtool::Generic_Obs
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-rex}
@@ -561,6 +577,7 @@ Since 1996, observation error on catch should be very small:
 obs_rex@Cobs <- c(0, 0.05)
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obs-cbiascv-rex}
 
@@ -624,6 +641,7 @@ obs_rex@CAL_ESS <- obs_rex@CAL_nsamp * 0.4
 obs_rex@CAL_ESS
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Iobs {#app:desc-obs-iobs-rex}
 
@@ -644,16 +662,7 @@ obs_rex@Iobs
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### Btbiascv {#app:desc-obs-btbiascv-rex}
 
-*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
-
-
-```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Btbiascv
-```
-<!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
 ### Btobs {#app:desc-obs-btobs-rex}
 
@@ -664,6 +673,18 @@ obs_rex@Btbiascv
 obs_rex@Btobs
 ```
 <!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Btbiascv {#app:desc-obs-btbiascv-rex}
+
+*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
+
+
+```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
+obs_rex@Btbiascv
+```
+<!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### beta {#app:desc-obs-beta-rex}
 
@@ -826,6 +847,7 @@ obs_rex@Crefbiascv
 obs_rex@Dbiascv
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### Dobs {#app:desc-obs-dobs-rex}
 
@@ -836,6 +858,7 @@ obs_rex@Dbiascv
 obs_rex@Dobs
 ```
 <!-- slot-chunk-end -->
+
 <!-- slot-chunk-begin -->
 ### hbiascv {#app:desc-obs-hbiascv-rex}
 
@@ -862,8 +885,9 @@ obs_rex@Recbiascv
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-rex}
 
 ```{r warnings = FALSE}
-imp_rex <- methods::new('Imp')
+imp_rex <- DLMtool::Precise_Unbiased
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-rex}
@@ -897,6 +921,11 @@ imp_rex@TACFrac <- c(0.8, 1.0)
 imp_rex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
 
 
 ### Output the OM
