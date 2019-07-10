@@ -6,19 +6,6 @@ library(here)
 dir.create(here("report/mp-screening/om"), showWarnings = FALSE)
 dir.create(here("report/mp-screening/mse-generated"), showWarnings = FALSE)
 
-download_om <- function(species,
-                        web_file,
-                        base_url = "http://www.datalimitedtoolkit.org/Case_Studies_Table/",
-                        method = "wget",
-                        overwrite = FALSE){
-  fn <- paste0(species, ".rds")
-  if(overwrite | !file.exists(here("report/mp-screening/om", fn))){
-    download.file(paste0(base_url, web_file),
-                  here("report/mp-screening/om", fn),
-                  method = method)
-  }
-}
-
 overwrite <- FALSE
 download_om("pop", "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = overwrite)
 download_om("redbanded", "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
@@ -118,10 +105,6 @@ for (i in seq_along(oms)) {
 }
 snowfall::sfStop()
 
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
 library(gfutilities)
 
 probs <- lapply(mse, function(x) {
