@@ -16,6 +16,17 @@ knitr_echo <- TRUE
 stock_sr <- methods::new('Stock')
 ```
 
+```{r rex-stock-defaults, echo=FALSE}
+stock_sr@Size_area_1 <- c(0.5, 0.5)
+stock_sr@Frac_area_1 <- c(0.5, 0.5)
+stock_sr@Prob_staying <- c(0.5, 0.5)
+stock_sr@Mexp <- c(NA_real_, NA_real_)
+stock_sr@M <- c(0.015, 0.06)
+stock_sr@Msd <- c(0, 0)
+stock_sr@Ksd <- c(0, 0.2)
+stock_sr@Linfsd <- c(0, 0.2)
+```
+
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stock-name-sr}
 
@@ -52,7 +63,7 @@ stock_sr@Species <- "Sebastes borealis"
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
 ```{r desc-stock-maxage-sr, results = knitr_results, echo = knitr_echo}
-stock_sr@maxage <- max(.dshort$survey_samples$age, .dshort$commercial_samples$age, na.rm = TRUE)
+stock_sr@maxage <- max(dshort$survey_samples$age, dshort$commercial_samples$age, na.rm = TRUE)
 ```
 <!-- slot-chunk-end -->
 
@@ -144,10 +155,10 @@ stock_sr@AC <- c(0.2, 0.6)
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r fit-vb, echo = knitr_echo, out.width="4in", fig.width=6, warnings = FALSE}
-mvb <- gfplot::fit_vb(.dshort$survey_samples, sex = "all")
+mvb <- gfplot::fit_vb(dshort$survey_samples, sex = "all")
 
 # for cpars:
-# mvb_stan <- gfplot::fit_vb(.dshort$survey_samples, sex = "all", method = "mcmc",
+# mvb_stan <- gfplot::fit_vb(dshort$survey_samples, sex = "all", method = "mcmc",
 #   control = list(adapt_delta = 0.99), iter = 500, chains = 4)
 
 mvb_summary <- summary(TMB::sdreport(mvb$model))
@@ -210,7 +221,7 @@ round(stock_sr@LenCV, 2)
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r fit-maturity, echo = knitr_echo, out.width="4in", fig.width=6}
-m_mat <- gfplot::fit_mat_ogive(.dshort$survey_samples, type = "length")
+m_mat <- gfplot::fit_mat_ogive(dshort$survey_samples, type = "length")
 mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
 se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
@@ -265,7 +276,7 @@ stock_sr@D <- c(0.1, 0.8)
 We can fit a length-weight growth model with gfplot:
 
 ```{r fit-lw, echo = knitr_echo, out.width="4in", fig.width=6}
-mlw <- gfplot::fit_length_weight(.dshort$survey_samples, sex = "all")
+mlw <- gfplot::fit_length_weight(dshort$survey_samples, sex = "all")
 
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 ```
@@ -320,8 +331,9 @@ stock_sr@Source <- ""
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-sr}
 
 ```{r warnings = FALSE}
-fleet_sr <- DLMtool::Generic_Fleet # TODO: temporary
+fleet_sr <- DLMtool::Generic_Fleet
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-fleet-name-sr}
@@ -369,7 +381,7 @@ fleet_sr@Spat_targ
 
 *Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
 
-Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock_sr@L50[[1]]` to `r stock_sr@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(.dshort$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock_sr@L50[[2]], 1)`- and `r round(min_caught/stock_sr@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
+Based on the slot `isRel` below, this lot needs to be filled in proportion of size-of-maturity. The 95% CI of size at maturity from this analysis is `r stock_sr@L50[[1]]` to `r stock_sr@L50[[2]]`. The shortest length fish in the commercial samples is `r min_caught <- min(dshort$commercial_samples$length, na.rm = TRUE);min_caught`. Presumably much shorter fish could be caught but are not because they are not at locations or depths that would be caught by the gear. That minimum commercial length caught corresponds to between `r round(min_caught/stock_sr@L50[[2]], 1)`- and `r round(min_caught/stock_sr@L50[[1]], 1)`-fold of the length at 50% maturity. Let's take a range a bit wider than that and allow for somewhat smaller fish to possibly be caught. Note that `L5` must be less than `LFS` below.
 
 ```{r desc-fleet-l5-sr, results = knitr_results, echo = knitr_echo}
 fleet_sr@L5 <- c(0.6, 1.0)
@@ -476,6 +488,7 @@ fleet_sr@CurrentYr <- 2018
 obs_sr <- DLMtool::Precise_Unbiased
 ```
 
+
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-sr}
 
@@ -564,7 +577,7 @@ obs_sr@CAL_ESS
 *Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r}
-average_cv <- dplyr::filter(.dshort$survey_index, survey_abbrev == "SYN WCHG") %>%
+average_cv <- dplyr::filter(dshort$survey_index, survey_abbrev == "SYN WCHG") %>%
   dplyr::pull(re) %>%
   mean() %>%
   round(2)
@@ -827,8 +840,9 @@ obs_sr@Recbiascv <- c(0.05, 0.20)
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-sr}
 
 ```{r warnings = FALSE}
-imp_sr <- methods::new('Imp')
+imp_sr <- new('Imp')
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-sr}
@@ -873,4 +887,3 @@ imp_sr@TACSD <- c(0, 0)
 short_om <- new('OM', stock_sr, fleet_sr, obs_sr, imp_sr)
 saveRDS(short_om, file = here::here("generated-data", "shortraker-om.rds"))
 ```
-

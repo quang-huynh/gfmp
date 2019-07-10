@@ -3,40 +3,32 @@ library(ggplot2)
 library(DLMtool)
 library(here)
 
-dir.create(here("report/mp-screening/om"), showWarnings = FALSE)
-dir.create(here("report/mp-screening/mse-generated"), showWarnings = FALSE)
+om_dir <- here("report/mp-screening/om")
+dir.create(om_dir, showWarnings = FALSE)
+mse_gen_dir <- here("report/mp-screening/mse-generated")
+dir.create(mse_gen_dir, showWarnings = FALSE)
 
-download_om <- function(species,
-                        web_file,
-                        base_url = "http://www.datalimitedtoolkit.org/Case_Studies_Table/",
-                        method = "wget",
-                        overwrite = FALSE){
-  fn <- paste0(species, ".rds")
-  if(overwrite | !file.exists(here("report/mp-screening/om", fn))){
-    download.file(paste0(base_url, web_file),
-                  here("report/mp-screening/om", fn),
-                  method = method)
-  }
-}
+ovr <- FALSE
+download_om(file.path(om_dir, "pop"), "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = ovr)
+download_om(file.path(om_dir, "redbanded"), "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+download_om(file.path(om_dir, "rougheye"), "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+download_om(file.path(om_dir, "shortspine"), "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = ovr)
+download_om(file.path(om_dir, "yelloweye"), "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+download_om(file.path(om_dir, "arrowtooth"), "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = ovr)
 
-overwrite <- FALSE
-download_om("pop", "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("redbanded", "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("rougheye", "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("shortspine", "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("yelloweye", "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("arrowtooth", "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = overwrite)
+pop_om <- readRDS(file.path(om_dir, "pop.rds"))
+rdb_om <- readRDS(file.path(om_dir, "redbanded.rds"))
+rgh_om <- readRDS(file.path(om_dir, "rougheye.rds"))
+srt_om <- readRDS(file.path(om_dir, "shortspine.rds"))
+yel_om <- readRDS(file.path(om_dir, "yelloweye.rds"))
+arr_om <- readRDS(file.path(om_dir, "arrowtooth.rds"))
 
-pop_om <- readRDS(here("report/mp-screening/om/pop.rds"))
-rdb_om <- readRDS(here("report/mp-screening/om/redbanded.rds"))
-rgh_om <- readRDS(here("report/mp-screening/om/rougheye.rds"))
-srt_om <- readRDS(here("report/mp-screening/om/shortspine.rds"))
-yel_om <- readRDS(here("report/mp-screening/om/yelloweye.rds"))
-arr_om <- readRDS(here("report/mp-screening/om/arrowtooth.rds"))
-
-folder <- here("report/mp-screening/mse-generated")
-oms <- list(pop = pop_om, rdb = rdb_om, rgh = rgh_om,
-  srt = srt_om, yel = yel_om, arr = arr_om)
+oms <- list(pop = pop_om,
+            rdb = rdb_om,
+            rgh = rgh_om,
+            srt = srt_om,
+            yel = yel_om,
+            arr = arr_om)
 mse <- list()
 
 lapply(oms, function(x) x@beta) # hyper stability/hyper depletion
@@ -108,7 +100,7 @@ for (i in seq_along(oms)) {
   oms[[i]]@Cbiascv <- c(0.05, 0.05)
   oms[[i]]@interval <- 5 # otherwise a mix of 3 and 4
 
-  fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
+  fi <- paste0(file.path(mse_gen_dir, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
     mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE, ntrials = 1000)
     saveRDS(mse[[i]], file = fi)
@@ -118,10 +110,6 @@ for (i in seq_along(oms)) {
 }
 snowfall::sfStop()
 
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
-source("R/plot-probability-table.R")
 library(gfutilities)
 
 probs <- lapply(mse, function(x) {

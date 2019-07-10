@@ -55,7 +55,7 @@ Get the operating model. For Shortraker we are using the DLMtool operating model
 
 
 ```{r echo = TRUE}
-omsr <- new('OM', stock, fleet, obs, imp)
+short_om <- readRDS(here::here("generated-data", "shortraker-om.rds"))
 ```
 
 \newpage
@@ -65,10 +65,10 @@ Run the historical part of the MSE.
 ```{r, fig.asp=0.8}
 
 DLMtool::setup(cpus = parallel::detectCores())
-omsr@nsim <- 50
-short_historical <- runMSE(omsr, Hist = TRUE, parallel = TRUE, ntrials=1000)
-omsr@nsim <- 200
-#saveRDS(omsr,file="C:/GitHub/gfmp/generated-data/omsr.RDS")
+short_om@nsim <- 50
+short_historical <- runMSE(short_om, Hist = TRUE, parallel = TRUE, ntrials=1000)
+short_om@nsim <- 200
+#saveRDS(short_om,file="C:/GitHub/gfmp/generated-data/short_om.RDS")
 
 
 real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
@@ -128,10 +128,10 @@ short_historical@TSdata$B %>%
 Now run the closed loop simulation with the MPs above.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-file_name <- here::here("generated-data", "short-mse.rds")
+file_name <- here::here("generated-data", "shortraker-mse.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  short_mse <- runMSE(OM = omsr, MPs = mpsr, parallel = TRUE, ntrials=1000)
+  short_mse <- runMSE(OM = short_om, MPs = mpsr, parallel = TRUE, ntrials=1000)
   saveRDS(short_mse, file = file_name)
 } else {
   short_mse <- readRDS(file_name)
@@ -155,7 +155,7 @@ Now look to see if we have redundant MPs by plotting the range of catches across
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 short_mse_C <- short_mse@C
 
-nSim <- omsr@nsim
+nSim <- short_om@nsim
 nYear <- ncol(short_mse_C[,1,]) 
 nMP <- length(mpsr)
 dimnames(short_mse_C) <- list(1:nSim, mpsr, 1:nYear)
@@ -192,7 +192,7 @@ It seems as if we have some redundancy among similar MPs based on the catch. Bef
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 short_mse_SSB <- short_mse@SSB
 
-nSim <- omsr@nsim
+nSim <- short_om@nsim
 nYear <- ncol(short_mse_SSB[,1,]) 
 nMP <- length(mpsr)
 dimnames(short_mse_SSB) <- list(1:nSim, mpsr, 1:nYear)
@@ -247,7 +247,7 @@ Rather than subsetting all the results, run the mse again on the shorter set.
 file_name <- here::here("generated-data", "short-mse-short.rds")
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = parallel::detectCores())
-  short_mse_short <- runMSE(OM = omsr, MPs = mpsr_short, parallel = TRUE, ntrials=1000)
+  short_mse_short <- runMSE(OM = short_om, MPs = mpsr_short, parallel = TRUE, ntrials=1000)
   saveRDS(short_mse_short, file = file_name)
 } else {
   short_mse_short <- readRDS(file_name)
@@ -318,7 +318,7 @@ Now look at Catch and Biomass results from the shortlist of MPs together. Biomas
 short_mse_SSB_short <- short_mse_short@SSB
 short_mse_C_short <- short_mse_short@C
 
-nSim <- omsr@nsim
+nSim <- short_om@nsim
 nYear <- ncol(short_mse_SSB[,1,]) 
 nMP <- length(mpsr_short)
 dimnames(short_mse_SSB_short) <- list(1:nSim, mpsr_short, 1:nYear)
@@ -367,7 +367,7 @@ All the MP give the same biomass results. Probably because the catch isn't touch
 To check, look at Catch relative to RefY for each MP.The pink box in Year 1 shows the range of refY values from the OM, with the median shown as a dashed line.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
-nSim <- omsr@nsim
+nSim <- short_om@nsim
 RefYield_sr <- data.frame("Sim"=1:nSim, "MP"=rep("RefY",nSim),"Year"=rep(1,nSim),  "Catch"=short_mse_short@OM$RefY)
 
 #Replace RefY with truncated set, just for plotting
@@ -473,7 +473,7 @@ short_mse_BBMSY_short <- short_mse_short@B_BMSY
 dim(short_mse_BBMSY_short) #dimensions of array are 1:nSim, 1:nMP, 1:nYear
 
 #Give names to the array so they can be used for plotting
-nSim <- omsr@nsim
+nSim <- short_om@nsim
 nYear <- ncol(short_mse_BBMSY_short[,1,]) #find global parameter for number of projection years
 dimnames(short_mse_BBMSY_short) <- list(c(1:nSim), mpsr_short, 1:nYear)
 
