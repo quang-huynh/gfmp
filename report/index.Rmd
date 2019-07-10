@@ -65,6 +65,7 @@ source(here::here("R/plot-probability-table.R"))
 source(here::here("R/trade-plots.R"))
 source(here::here("R/pm-functions.R"))
 source(here::here("R/plot-contours.R"))
+filter <- dplyr::filter
 options(tinytex.verbose = TRUE)
 ```
 <!-- The math symbols greater and less than seem to render in RStudio Rmd files when inside $$..$$ chunks but tinytex doesn't recognize them unless the following are defined -->
