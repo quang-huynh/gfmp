@@ -10,11 +10,13 @@ knitr_echo <- TRUE
 ```
 
 
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-sr}
 
 ```{r warnings = FALSE}
 stock_sr <- methods::new('Stock')
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stock-name-sr}
@@ -320,8 +322,9 @@ stock_sr@Source <- ""
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-sr}
 
 ```{r warnings = FALSE}
-fleet_sr <- DLMtool::Generic_Fleet # TODO: temporary
+fleet_sr <- DLMtool::Generic_Fleet
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-fleet-name-sr}
@@ -473,8 +476,9 @@ fleet_sr@CurrentYr <- 2018
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-sr}
 
 ```{r warnings = FALSE}
-obs_sr <- DLMtool::Precise_Unbiased
+obs_sr <- DLMtool::Generic_Obs
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-sr}
@@ -827,8 +831,9 @@ obs_sr@Recbiascv <- c(0.05, 0.20)
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-sr}
 
 ```{r warnings = FALSE}
-imp_sr <- methods::new('Imp')
+imp_sr <- DLMtool::Precise_Unbiased
 ```
+
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-sr}
@@ -859,6 +864,11 @@ imp_sr@TACFrac <- c(0.8, 1.0)
 imp_sr@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
+
+
+
+
+
 
 
 
