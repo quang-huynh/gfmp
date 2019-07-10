@@ -655,7 +655,7 @@ obs_rex@Btbiascv
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### Btobs {#app:desc-btobs-rex}
+### Btobs {#app:desc-obs-btobs-rex}
 
 *Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
 
