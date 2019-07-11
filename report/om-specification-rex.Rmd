@@ -57,7 +57,7 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 <!-- From @turnock2005. This is the plus group value. TODO Can't find turnock2005 -->
 
-From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region.
+From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region. @mcgilliard2017 used age 20 as the plus group age in their model, since we don't have a plus group, maybe safer to use 27. We should test sensitivity to this. If important this would add to the VOI study.
 
 ```{r desc-stock-maxage-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@maxage <- 27
@@ -81,15 +81,12 @@ stock_rex@R0 <- 1000
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
-From @mcgilliard2017:
+@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. Here add a little uncertainty. 
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@M <- c(0.17, 0.17) # TODO add uncertainty?
+stock_rex@M <- c(0.17, 0.2) 
 ```
 <!-- slot-chunk-end -->
-
-
-
 
 
 <!-- slot-chunk-begin -->
@@ -121,7 +118,7 @@ stock_rex@SRrel <- 1L
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-@thorson2014 finds the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation.
+@thorson2014 finds the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation. @mcgilliard2017 used 0.6 for Gulf of Alaska stocks.
 
 ```{r desc-stock-perr-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Perr <- c(0.4, 0.9)

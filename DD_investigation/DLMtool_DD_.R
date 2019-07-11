@@ -78,6 +78,7 @@ myDLDD_ <-function (x, Data, reps = 100, hcr = NULL)
               hcr = hcr, Year = Data@Year[yind], eff = eff, UMSY=UMSY, Mort=Data@Mort[x]))
 }
 
+
 myDLDD <- function (x, Data, reps = 100, plot = FALSE)
 {
   runDD <- myDLDD_(x, Data, reps)
@@ -90,6 +91,5 @@ myDLDD <- function (x, Data, reps = 100, plot = FALSE)
 }
 
 class(myDLDD) <- "MP"
-
 
 

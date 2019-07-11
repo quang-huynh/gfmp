@@ -18,6 +18,7 @@ First source the DD_ functions.
 ```{r}
 source(here::here("DD_investigation/DLMtool_DD_.R"))
 source(here::here("DD_investigation/DLMtool_DD_R.R"))
+source(here::here("DD_investigation/DLMtool_DD.R"))
 
 ```
 
@@ -723,6 +724,13 @@ boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "light
 
 ```
 
+Try running the custom DD model (myDLDD) to look at Umsy
+
+```{r}
+pcod_mse2b <- DLMtool::runMSE(OM = ompc2, MPs = "myDLDD", ntrials = 1000, PPD = TRUE, parallel=TRUE)
+
+
+```
 
 
 
