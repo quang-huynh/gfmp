@@ -477,11 +477,13 @@ fleet_rex@isRel <- TRUE
 <!-- slot-chunk-begin -->
 ### LR5 {#app:desc-fleet-lr5-rex}
 
-*Shortest length corresponding ot 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Shortest length corresponding to 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
+Let's assume it is quarter of Linf for now. Ask industry.
 
 ```{r desc-fleet-lr5-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@LR5
+quarter_linf <- stock_rex@Linf/4
+fleet_rex@LR5 <- c(quarter_linf,quarter_linf)
 ```
 <!-- slot-chunk-end -->
 
@@ -490,12 +492,12 @@ fleet_rex@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We are assuming no discarding. 
-
-*TO DO: check discards in the database. This species has no TAC so maybe some are discarded* 
+Let's assume it is half of Linf for now. Ask industry.
 
 ```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@LFR <- c(NA_real_, NA_real_)
+
+half_linf    <- stock_rex@Linf/2
+fleet_rex@LFR <- c(half_linf, half_linf)
 ```
 <!-- slot-chunk-end -->
 
