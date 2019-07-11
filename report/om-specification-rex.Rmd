@@ -882,7 +882,7 @@ obs_rex@Recbiascv
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-rex}
 
 ```{r warnings = FALSE}
-imp_rex <- DLMtool::Precise_Unbiased
+imp_rex <- DLMtool::Perfect_Imp
 ```
 
 

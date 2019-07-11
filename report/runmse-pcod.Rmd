@@ -251,7 +251,7 @@ print(p2)
 Show probabilities of meeting performance metrics
 
 ```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
+probs <- gfdlm:::get_probs(pcod_mse, PMlist = c("P40", "P80", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 

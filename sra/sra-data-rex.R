@@ -4,7 +4,7 @@ starting_year <- 1996
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
-drex <- load_data_rex() %>% filter_data_rex()
+drex <- gfdlm:::load_data_rex() %>% gfdlm:::filter_data_rex()
 
 rex_om <- readRDS(here::here("generated-data", "rex-om.rds"))
 rex_om@M

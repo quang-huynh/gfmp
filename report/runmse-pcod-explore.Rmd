@@ -687,7 +687,7 @@ MSEtool::plot_composition(1:16, obs=pcod_mse_short@CAA[1:16,3,])
 Show probabilities of meeting performance metrics
 
 ```{r probability-table-abs-pc, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(pcod_mse_short, PMlist = c("P40", "P80","P100", "PNOF", "AAVY", "LTY"))
+probs <- gfdlm:::get_probs(pcod_mse_short, PMlist = c("P40", "P80","P100", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
@@ -696,7 +696,7 @@ Show radar plot. Most of them have no long term yield. Why is this? Is LTY relat
 
 ```{r}
 library(ggspider)
-pm_probs <- eval_pm(pcod_mse_short,
+pm_probs <- gfdlm:::eval_pm(pcod_mse_short,
              pm_list = list("LTY",
                             "P10",
                             "P40",

@@ -147,13 +147,13 @@ DLMtool::Converge(rex_mse)
 ```
 
 ```{r probability-table-abs-rex, fig.width = 9, fig.asp = 1, out.width = "4in"}
-STY <- pm_factory("LTY", 0.5, c(6, 20))
-LTY <- pm_factory("LTY", 0.5, c(36, 50))
+STY <- gfdlm:::pm_factory("LTY", 0.5, c(6, 20))
+LTY <- gfdlm:::pm_factory("LTY", 0.5, c(36, 50))
 
 PM <- c("P40_yrs36_50", "P80_yrs36_50", "STY", "LTY", "AAVY", "PNOF")
 
 # TODO: Error: PNOF_yrs36_50  is not a valid PM method
-probs <- get_probs(rex_mse, PMlist = as.list(PM))
+probs <- gfdlm:::get_probs(rex_mse, PMlist = as.list(PM))
 plot_probs(probs)
 ```
 
@@ -162,7 +162,7 @@ plot_probs(probs)
 ```
 
 ```{r}
-x <- eval_pm(rex_mse,
+x <- gfdlm:::eval_pm(rex_mse,
   pm_list = as.list(PM)
 ) %>% select(mp, pm, prob)
 satisficed <- filter(probs[[1]], P40_yrs36_50 >= 0.70) %>% pull(MP)

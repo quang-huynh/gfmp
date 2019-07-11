@@ -113,7 +113,7 @@ snowfall::sfStop()
 library(gfutilities)
 
 probs <- lapply(mse, function(x) {
-  get_probs(x, "P40", "P100", "PNOF", "LTY", "AAVY")
+  gfdlm:::get_probs(x, "P40", "P100", "PNOF", "LTY", "AAVY")
 })
 
 lapply(seq_along(probs), function(i) {
@@ -123,7 +123,7 @@ lapply(seq_along(probs), function(i) {
 })
 
 pm <- lapply(mse, function(x) {
-  eval_pm(x,
+  gfdlm:::eval_pm(x,
     pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"))
 })
 for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]

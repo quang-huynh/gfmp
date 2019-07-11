@@ -741,7 +741,7 @@ MSEtool::plot_composition(1:16, obs=short_mse_short@CAA[1:16,3,])
 Show probabilities of meeting performance metrics
 
 ```{r probability-table-abs-sr, fig.width = 9, fig.asp = 1, out.width = "4in"}
-probs <- get_probs(short_mse_short, PMlist = c("P40", "P80","P100", "PNOF", "AAVY", "LTY"))
+probs <- gfdlm:::get_probs(short_mse_short, PMlist = c("P40", "P80","P100", "PNOF", "AAVY", "LTY"))
 plot_probs(probs)
 ```
 
@@ -750,7 +750,7 @@ Show radar plot. They all do more or less the same. DD is worst. I think we shou
 
 ```{r}
 library(ggspider)
-pm_probs <- eval_pm(short_mse_short,
+pm_probs <- gfdlm:::eval_pm(short_mse_short,
              pm_list = list("LTY",
                             "P10",
                             "P40",
