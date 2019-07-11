@@ -516,6 +516,8 @@ fleet_rex@Rmaxlen <- c(1, 1)
 
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
 
+
+```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
 discards <- readRDS(here::here("report/data/rex_catch_discards.rds"))
 
 discard_rate <- discards %>% 
@@ -532,7 +534,7 @@ The discard rate is quite high. set the bounds as mean +/ 1 sd
 frac_low <- mean_frac_d - sd_frac_d
 frac_high <- mean_frac_d + sd_frac_d
 
-```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
+
 fleet_rex@DR <- c(frac_low, frac_high)
 ```
 <!-- slot-chunk-end -->
