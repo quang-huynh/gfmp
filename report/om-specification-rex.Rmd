@@ -144,7 +144,7 @@ stock_rex@AC <- c(0.2, 0.7)
 
 *Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have ages in our database to fit a von Bertalanffy model, but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across these surveys:
+We don't have ages in our database to fit a von Bertalanffy model, but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across these surveys.
 
 ```{r rex-length1, echo=FALSE}
 rex_lengths <- dplyr::filter(drex$survey_samples, !is.na(length))
@@ -170,10 +170,10 @@ dplyr::filter(rex_lengths, sex == 2) %>%
 
 However, $L_\mathrm{inf}$ represents the average maximum length, not the maximum observed length.
 
-@turnock2005 (Table 4.12) found the $L_\mathrm{inf}$ for males was 39.5 cm and $L_\mathrm{inf}$ for females was 44.9 cm in the Gulf of Alaska. This looks roughly in line with the length samples in our database. We will extend these values slightly in our operating model:
+@turnock2005 (Table 4.12) found the $L_\mathrm{inf}$ for males was 39.5 cm and $L_\mathrm{inf}$ for females was 44.9 cm in the Gulf of Alaska. This looks roughly in line with the length samples in our database. We will use these values to be consistent with their other growth parameters.
 
 ```{r desc-stock-linf-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Linf <- c(38, 46)
+stock_rex@Linf <- c(39.5, 44.9)
 ```
 <!-- slot-chunk-end -->
 
@@ -182,10 +182,10 @@ stock_rex@Linf <- c(38, 46)
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
 
-@turnock2005 (Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will extend those values slightly:
+@turnock2005 (Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will use these values.
 
 ```{r desc-stock-k-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@K <- c(0.3, 0.4)
+stock_rex@K <- c(0.31, 0.38)
 ```
 <!-- slot-chunk-end -->
 
@@ -194,10 +194,10 @@ stock_rex@K <- c(0.3, 0.4)
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
 
-@turnock2005 (Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We will extend those values slightly:
+@turnock2005 (Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We assume these should be negative.
 
 ```{r desc-stock-t0-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@t0 <- c(0.65, 0.85)
+stock_rex@t0 <- c(-0.79, -0.69)
 ```
 <!-- slot-chunk-end -->
 
@@ -206,23 +206,19 @@ stock_rex@t0 <- c(0.65, 0.85)
 
 *Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
 
-TODO: picking a value here.
+Given uncertainty in the growth parameters as applied in BC, set a fairly large CV (0.25).
 
 ```{r desc-stock-lencv-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@LenCV <- c(0.2, 0.2)
+stock_rex@LenCV <- c(0.25, 0.25)
 ```
 <!-- slot-chunk-end -->
-
-
-
-
 
 <!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-rex}
 
 *Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We have sufficient maturity and length data to fit a logistic maturity model:
+We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
@@ -270,17 +266,15 @@ stock_rex@D
 
 *Length-weight parameter alpha. Single value. Positive real number*
 
-We have sufficient length and weight to fit model to our data for both sexes combined:
+We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-<!-- Alternatively from @mcgilliard2017: -->
-<!-- - Female = 1.35e-06 -->
-<!-- - Male = 2.18e-06 -->
 
 ```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 stock_rex@a <- exp(mlw$pars[["log_a"]])
 round(log(stock_rex@a), 2)
+round(stock_rex@a,2)
 ```
 <!-- slot-chunk-end -->
 
@@ -299,18 +293,27 @@ round(stock_rex@b, 2)
 ```
 <!-- slot-chunk-end -->
 
+How do these values compare to @mcgilliard2017:
 
+Female a = 1.35e-06 
 
+Male a  = 2.18e-06 
+
+Female b = 3.45 
+
+Male b  = 3.31 
+
+A bit different. Should check sensitivity to these values.
 
 <!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stock-fdisc-rex}
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-Since there is 100% observer coverage we can assume there are no unreported discards. Therefore the following slot does not get used.
+Assume that all discarded fish die.
 
 ```{r desc-stock-fdisc-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Fdisc
+stock_rex@Fdisc <- c(1,1)
 ```
 <!-- slot-chunk-end -->
 
@@ -367,12 +370,6 @@ fleet_rex@nyears <- length(catch_yrs)
 fleet_rex@nyears
 ```
 <!-- slot-chunk-end -->
-
-
-
-
-
-
 
 
 <!-- slot-chunk-begin -->
@@ -493,7 +490,9 @@ fleet_rex@LR5
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We are assuming no discarding.
+We are assuming no discarding. 
+
+*TO DO: check discards in the database. This species has no TAC so maybe some are discarded* 
 
 ```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@LFR <- c(NA_real_, NA_real_)
@@ -505,10 +504,10 @@ fleet_rex@LFR <- c(NA_real_, NA_real_)
 
 *The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-We are assuming no discarding.
+We don't have any length data on discards but assume that they will be retained if they are big.
 
 ```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@Rmaxlen <- c(NA_real_, NA_real_)
+fleet_rex@Rmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -517,10 +516,24 @@ fleet_rex@Rmaxlen <- c(NA_real_, NA_real_)
 
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
 
-We are assuming no discarding.
+discards <- readRDS(here::here("report/data/rex_catch_discards.rds"))
+
+discard_rate <- discards %>% 
+  dplyr::filter(year>1995) %>% 
+  mutate(frac_disc=discarded_t/(landed_t+discarded_t))
+  
+mean_frac_d <- mean(discard_rate$frac_disc)
+sd_frac_d <- sd(discard_rate$frac_disc)
+mean_frac_d
+sd_frac_d
+
+The discard rate is quite high. set the bounds as mean +/ 1 sd
+
+frac_low <- mean_frac_d - sd_frac_d
+frac_high <- mean_frac_d + sd_frac_d
 
 ```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@DR <- c(0, 0)
+fleet_rex@DR <- c(frac_low, frac_high)
 ```
 <!-- slot-chunk-end -->
 
