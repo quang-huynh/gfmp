@@ -519,8 +519,6 @@ fleet_rex@Rmaxlen <- c(1, 1)
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
 Look at the discard rate since observers on the trawl fleet (1996). The discard rate is quite high. Set the bounds as mean +/ 1 sd.
 
-*QUESTION: If there was a quota introduced for Rex, would discarding stop?*
-
 ```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
 discards <- readRDS(here::here("report/data/rex_catch_discards.rds"))
 
@@ -539,12 +537,38 @@ frac_high <- mean_frac_d + sd_frac_d
 
 fleet_rex@DR <- c(frac_low, frac_high)
 ```
+
+
 <!-- slot-chunk-end -->
 
+```{r desc-fleet-dr-rex2, results = knitr_results, echo = knitr_echo}
+
+discards2 <- drex$catch %>% 
+  gfplot::tidy_catch() %>% 
+  dplyr::filter(gear=="Discarded") %>% 
+  rename(Discards=value)%>% 
+  select(-gear)
+
+catch2 <- drex$catch %>% 
+  gfplot::tidy_catch() %>% 
+  dplyr::filter(gear=="Bottom trawl")%>% 
+  rename(Landed=value)%>% 
+  select(-gear)
+
+discard_rate2 <- left_join(discards2,catch2)%>%
+  mutate(frac_disc=Discards/(Landed+Discards))
+
+mean_frac_d2 <- mean(discard_rate2$frac_disc)
+sd_frac_d2 <- sd(discard_rate2$frac_disc)
+mean_frac_d2
+sd_frac_d2
+
+frac_low2 <- mean_frac_d - sd_frac_d
+frac_high2 <- mean_frac_d + sd_frac_d
 
 
-
-
+#fleet_rex@DR <- c(frac_low, frac_high)
+```
 
 
 
@@ -586,6 +610,7 @@ obs_rex@Name <- "BC observation model"
 Since 1996, observation error on catch should be very small:
 
 <!-- TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996. -->
+<!-- RF: No I think the historical catch uncertainty is dealt with in the historical MSE -->
 
 ```{r desc-obs-cobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Cobs <- c(0, 0.05)
@@ -704,8 +729,10 @@ obs_rex@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
 
+Set this to c(0,0) unless we are specifically interested in hyperstability/hyper depletion.
+
 ```{r desc-obs-beta-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@beta
+obs_rex@beta <- c(0,0)
 ```
 <!-- slot-chunk-end -->
 
@@ -715,7 +742,7 @@ obs_rex@beta
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@LenMbiascv
+obs_rex@LenMbiascv <- c(0,0)
 ```
 <!-- slot-chunk-end -->
 
@@ -724,7 +751,11 @@ obs_rex@LenMbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`.
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`. 
+
+Most MPs don't need an estimate of M, although the delay-difference (DD) MP does and may be sensitive to this value. The default value is 0.2 and may cause the DD MP to perform too well.
+
+
 
 ```{r desc-obs-mbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Mbiascv
@@ -736,8 +767,10 @@ obs_rex@Mbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Since there is no ageing data for Rex Sole we are using parameters from other stocks (Gulf of Alaska). For stocks like this, we can expect some bias in von Bertalanffy growth parameters. Default is 0.1 for K and t0. this is probably okay but allow it to go up to 0.2. Default is 0.05 for Linf. Set this to 0.1.
+
 ```{r desc-obs-kbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Kbiascv
+obs_rex@Kbiascv <- c(0.1,0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -748,7 +781,7 @@ obs_rex@Kbiascv
 
 
 ```{r desc-obs-t0biascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@t0biascv
+obs_rex@t0biascv <- c(0.1,0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -759,7 +792,7 @@ obs_rex@t0biascv
 
 
 ```{r desc-obs-linfbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Linfbiascv
+obs_rex@Linfbiascv <- c(0.1,0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -789,6 +822,8 @@ obs_rex@LFSbiascv
 ### FMSYbiascv {#app:desc-obs-fmsybiascv-rex}
 
 *Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+
+Most MPs we are using don't require these inputs. Use the default values of 0.2.
 
 
 ```{r desc-obs-fmsybiascv-rex, results = knitr_results, echo = knitr_echo}
@@ -856,6 +891,8 @@ obs_rex@Crefbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
 
+We are not using MPs that require an estimate of depletion. Use the default values here.
+
 
 ```{r desc-obs-dbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Dbiascv
@@ -889,6 +926,8 @@ obs_rex@hbiascv
 
 *Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
 
+Not sure where this is used. Leave at default value of c(0.1,0.3)
+
 
 ```{r desc-obs-recbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Recbiascv
@@ -919,9 +958,13 @@ imp_rex@Name <- "BC Implementation"
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
 
+We need to discuss carry-over with industry. For many species they only take 70% and carry over 30% into next year.
+
+For now set between 0.7 and 0.9.
+
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
-imp_rex@TACFrac <- c(0.8, 1.0)
+imp_rex@TACFrac <- c(0.7, 0.9)
 ```
 <!-- slot-chunk-end -->
 
@@ -930,16 +973,12 @@ imp_rex@TACFrac <- c(0.8, 1.0)
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
+Assume that if TACFrac is not c(1,1), as it is in Perfect_Imp, then the SD should be set to something non-zero.
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
-imp_rex@TACSD <- c(0, 0)
+imp_rex@TACSD <- c(0.05, 0.05)
 ```
 <!-- slot-chunk-end -->
-
-
-
-
-
 
 
 ### Output the OM
