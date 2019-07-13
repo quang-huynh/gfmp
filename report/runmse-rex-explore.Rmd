@@ -65,7 +65,7 @@ snowfall::sfStop()
 # real_catch <- read.csv(here::here("report/data/shortraker-corrected-catch.csv"))
 # real_catch <- mutate(real_catch, synthetic = ifelse(Year >= 1990 & Year <= 1995, Predicted.catch, Observed.catch))
 #
-# all_years <- data.frame(Year = (2018 - fleet@nyears):2018)
+all_years <- fleet_rex@EffYears
 # real_catch <- dplyr::left_join(all_years, real_catch)
 
 # set.seed(1567)
