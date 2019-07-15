@@ -32,18 +32,20 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 
 *FIXME: do we like a 50-year projection or is that a bit long?*
 
+1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
+1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
 1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
-1. P100: Probability SB > SB~MSY~ (years 1--50)
-1. P40: Probability SB > 0.4 SB~MSY~ (years 1--50)
-1. LTY: Probability yield > 0.5 MSY (years 41--50)
-1. AAVY: Probability AAVY (average annual variability in yield) < 0.2
+1. LTY: Probability yield > 0.5 MSY (years 36--50)
+1. STY: Probability yield > 0.5 MSY (years 6--20)
+1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
-1. Eliminate MPs with P40 < 0.9.
-1. Eliminate MPs with P100 < 0.6.
+1. Eliminate MPs with LT P40 < 0.9.
+1. Eliminate MPs with LT P80 < 0.6.
 1. Eliminate MPs with PNOF < 0.6.
-1. Eliminate MPs with LTY < 0.6.
+1. Eliminate MPs with LTY < 0.5.
+1. Eliminate MPs with STY < 0.5.
 
 *FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
 
@@ -100,7 +102,7 @@ knitr::include_graphics(here::here("report/figure/screening-radar-index.pdf"))
 knitr::include_graphics(here::here("report/figure/screening-radar-average-catch.pdf"))
 ```
 
-```{r screening-radar-moderate, fig.cap="Radar plots of performance metrics across screened management procedures. ('Data-moderate' MPs", fig.pos="p"}
+```{r screening-radar-moderate, fig.cap="Radar plots of performance metrics across screened management procedures. ('Data-moderate' MPs)", fig.pos="p"}
 knitr::include_graphics(here::here("report/figure/screening-radar-data-moderate.pdf"))
 ```
 
