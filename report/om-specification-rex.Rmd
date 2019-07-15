@@ -240,7 +240,7 @@ stock_rex@L50
 We can calculate this as a derived parameter from our logistic maturity model:
 
 ```{r desc-stock-l50_95-rex, results = knitr_results, echo = knitr_echo}
-se_l50_95m <- gfdlm:::delta_method(
+se_l50_95m <- pbs2dlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
