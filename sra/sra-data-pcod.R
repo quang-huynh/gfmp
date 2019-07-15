@@ -189,8 +189,8 @@ saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om.rds"))
 #saveRDS(pcod_no_comps_SRA$OM, file = here::here("sra/pcod_no_comps_om_Mbias.rds"))
 saveRDS(pcod_no_comps_SRA$report, file = here::here("sra/pcod_no_comps_SRA_report.rds"))
 
-pcod_no_comps_om <- readRDS("sra/pcod_no_comps_om.rds")
-pcod_no_comps_SRA_report <- readRDS("sra/pcod_no_comps_SRA_report.rds")
+pcod_no_comps_om <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
+pcod_no_comps_SRA_report <- readRDS(here::here("sra/pcod_no_comps_SRA_report.rds"))
 
 MSEtool:::plot_SRA_scope(pcod_no_comps_om, Chist = matrix(Chist, ncol = 1), Index = Index,
                          report = pcod_no_comps_SRA_report, Year = 1956:2018)

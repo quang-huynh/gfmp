@@ -45,19 +45,41 @@ mprex <- c(
 
 # REX SOLE: RESULTS 
 
-## Constructing the operating model
-
 Get the operating model. For Shortraker we are using the DLMtool operating model.
 
 ```{r echo = TRUE}
 omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 ```
 
+How well does the SRA OM fit the indices?
+
+```{r}
+
+rex_SRA_report <- readRDS(here::here("generated-data/rex-sra-report.rds"))
+
+catch <- drex$catch %>%
+    gfplot::tidy_catch() %>%
+    group_by(year) %>%
+    summarize(value = sum(value)) %>%
+    right_join(tibble(year = all_years), by = "year") %>%
+    pull(value)
+
+indexes <- drex$survey_index %>%
+  dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
+  select(year, biomass, re) %>%
+  right_join(tibble(year = all_years), by = "year") %>%
+  # left_join(rename(select(cpue, year, est), trawl_cpue = est), by = "year") %>%
+  select(-year) %>%
+  as.matrix()
+
+MSEtool:::plot_SRA_scope(omrex, Chist = matrix(catch, ncol = 1), Index=indexes[,1], report = rex_SRA_report)
+```
+
 \newpage
 
 Run the historical part of the MSE. 
 
-```{r, fig.asp=0.8}
+```{r, fig.asp=0.8, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE, include=FALSE}
 DLMtool::setup(cpus = parallel::detectCores())
 rex_historical <- runMSE(omrex, Hist = TRUE, parallel = TRUE, ntrials = 1000)
 snowfall::sfStop()
@@ -109,8 +131,8 @@ rex_historical@Data@CAL[1, , ]
 bins <- rex_historical@Data@CAL_bins
 bins <- bins[-length(bins)]
 
-rex_om@CAL_nsamp
-rex_om@CAL_ESS
+omrex@CAL_nsamp
+omrex@CAL_ESS
 x <- rex_historical@Data@CAL %>%
   reshape2::melt() %>%
   transmute(
@@ -126,9 +148,8 @@ filter(x, year %in% seq(1995, 2020, 5)) %>%
   facet_grid(year ~ sample_id)
 ```
 
-\newpage
 
-Now run the closed loop simulation with the MPs above.
+Now run the closed loop simulation with the MPs.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 file_name <- here::here("generated-data", "rex-mse.rds")
@@ -142,9 +163,13 @@ if (!file.exists(file_name)) {
 }
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE, include=FALSE}
+Check convergence. This is to test whether enough simulations have been run ... does the order of the MPs change across iterations? If so, increase the number of iterations.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, cache=TRUE}
 DLMtool::Converge(rex_mse)
 ```
+
+Look at probabilities of performance metrics.
 
 ```{r probability-table-abs-rex, fig.width = 9, fig.asp = 1, out.width = "4in"}
 STY <- gfdlm:::pm_factory("LTY", 0.5, c(6, 20))
@@ -152,7 +177,6 @@ LTY <- gfdlm:::pm_factory("LTY", 0.5, c(36, 50))
 
 PM <- c("P40_yrs36_50", "P80_yrs36_50", "STY", "LTY", "AAVY", "PNOF")
 
-# TODO: Error: PNOF_yrs36_50  is not a valid PM method
 probs <- gfdlm:::get_probs(rex_mse, PMlist = as.list(PM))
 plot_probs(probs)
 ```
@@ -161,12 +185,86 @@ plot_probs(probs)
 # plot_probs(probs, scale_0_1 = TRUE)
 ```
 
+Which MPs are considered "satisficed"? Right now the only satisficing criteria is that long-term probability of the stock not being in the critical zone is greater than or equal to 75%.
+
 ```{r}
 x <- gfdlm:::eval_pm(rex_mse,
   pm_list = as.list(PM)
 ) %>% select(mp, pm, prob)
 satisficed <- dplyr::filter(probs, P40_yrs36_50 >= 0.70) %>% pull(MP)
+satisficed
+```
+
+
+How does it look if we increase the probability to 75%?
+```{r}
+x <- gfdlm:::eval_pm(rex_mse,
+  pm_list = as.list(PM)
+) %>% select(mp, pm, prob)
+satisficed75 <- dplyr::filter(probs, P40_yrs36_50 >= 0.75) %>% pull(MP)
+satisficed75
+```
+
+How about 95%?
+```{r}
+x <- gfdlm:::eval_pm(rex_mse,
+  pm_list = as.list(PM)
+) %>% select(mp, pm, prob)
+satisficed95 <- dplyr::filter(probs, P40_yrs36_50 >= 0.95) %>% pull(MP)
+satisficed95
+```
+
+Only DD410
+
+For now, stick with 70%. Look at the simulated trajectories of the satisficed MPs
+
+```{r, echo=FALSE}
+set.seed(1)
+rex_mse_satisficed <- Sub(rex_mse, MPs=satisficed)
+plot_projection_ts(rex_mse_satisficed)
+```
+
+Look at trade-offs of the satisficed MPs
+
+```{r, echo=FALSE}
 xx <- dplyr::filter(x, mp %in% satisficed)
 ggspider::spider_web(xx, "mp", "pm", "prob")
 ```
+
+Illustrating some built-in plotting functions:
+
+
+These have DFO zones on them
+
+```{r}
+DFO_plot(rex_mse_satisficed)
+
+```
+
+
+
+```{r}
+
+DFO_proj(rex_mse_satisficed)
+
+```
+
+
+These could be modified to show DFO zones
+
+
+
+```{r}
+wormplot(rex_mse_satisficed)
+```
+
+
+```{r}
+Pplot2(rex_mse_satisficed, traj="quant", quants=c(0.2, 0.8))
+```
+
+```{r}
+Kplot(rex_mse_satisficed)
+```
+
 
