@@ -61,7 +61,7 @@ if ("catch" %in% names(drex)) {
   catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 }
 catch
-plot(all_years, catch, type = "o")
+# plot(all_years, catch, type = "o")
 
 # catch per unit effort from the trawl fleet only:
 # cpue <- read.csv(here::here("generated-data", rex-cpue.csv"))
@@ -75,15 +75,15 @@ indexes <- drex$survey_index %>%
   as.matrix()
 
 indexes
-plot(all_years, indexes[, 1L])
-plot(all_years, indexes[, 2L])
-
-MSEtool::plot_composition(all_years,
-  obs = cal_wcvi$cal,
-  CAL_bins = cal_wcvi$length_bins
-)
-
-# rex_om@nsim <- 8L
+# plot(all_years, indexes[, 1L])
+# plot(all_years, indexes[, 2L])
+#
+# MSEtool::plot_composition(all_years,
+#   obs = cal_wcvi$cal,
+#   CAL_bins = cal_wcvi$length_bins
+# )
+#
+# # rex_om@nsim <- 8L
 # rex_sra1 <- MSEtool:::SRA_scope(rex_om,
 #   Chist = catch, Index = indexes[, 1L],
 #   CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[, 2L],
@@ -109,7 +109,7 @@ I_sd
 rex_om@L5
 rex_om@LFS
 
-rex_om@nsim <- 150
+rex_om@nsim <- 200
 cores <- floor(parallel::detectCores() / 1)
 
 rex_sra2 <- MSEtool:::SRA_scope(rex_om,
@@ -117,16 +117,16 @@ rex_sra2 <- MSEtool:::SRA_scope(rex_om,
   I_sd = I_sd, I_type = 1L, cores = cores, report = TRUE
 )
 
-hist(rex_sra2$OM@cpars$D)
-matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
-hist(rex_sra2$OM@cpars$AC)
-matplot(t(rex_sra2$output$SSB), type = "l", lty = 1, col = "#00000040")
-matplot(t(rex_sra2$OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
+# hist(rex_sra2$OM@cpars$D)
+# matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
+# hist(rex_sra2$OM@cpars$AC)
+# matplot(t(rex_sra2$output$SSB), type = "l", lty = 1, col = "#00000040")
+# matplot(t(rex_sra2$OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
 
-MSEtool::plot_SRA_scope(rex_sra2$OM,
-  Chist = catch,
-  Index = indexes[, 1L], report_list = rex_sra2$report, Year = all_years
-)
+# MSEtool::plot_SRA_scope(rex_sra2$OM,
+#   Chist = catch,
+#   Index = indexes[, 1L], report_list = rex_sra2$report, Year = all_years
+# )
 
 saveRDS(rex_sra2$OM, file = here::here("generated-data", "rex-om-sra.rds"))
 saveRDS(rex_sra2$report, file = here::here("generated-data", "rex-sra-report.rds"))

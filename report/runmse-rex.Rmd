@@ -1,0 +1,109 @@
+\newpage
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+if (!file.exists(here::here("generated-data", "rex-om-sra.rds"))) {
+  source(here::here("sra/sra-data-rex.R"))
+} 
+```
+  
+  
+# REX SOLE: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-rex}
+
+<!-- Use the management procedures that passed the screening test -->
+
+```{r}
+mprex <- c(
+  "AvC",
+  "CC2",
+  "CC3",
+  "DD",
+  "DD4010",
+  "GB_CC",
+  "GB_target",
+  "Islope1",
+  "Islope2",
+  "Islope4",
+  "IT5",
+  "ITM",
+  "LstepCC2",
+  "LstepCC3",
+  "LstepCC4",
+  "Ltarget1",
+  "Ltarget2",
+  "Ltarget3",
+  "SBT2",
+  "SP_4010",
+  "SP_MSY"
+)
+```
+
+# REX SOLE: RESULTS 
+
+<!-- Get the operating model. For Shortraker we are using the DLMtool operating model. -->
+
+```{r echo = TRUE}
+omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
+```
+
+<!-- How well does the SRA OM fit the indices? -->
+
+```{r}
+# rex_SRA_report <- readRDS(here::here("generated-data/rex-sra-report.rds"))
+```
+
+\newpage
+
+<!-- Run the historical part of the MSE.  -->
+
+```{r}
+rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
+```
+
+```{r}
+catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
+gfdlm::plot_historical_ts(rex_historical, observed_ts = catch)
+gfdlm::plot_historical_ts(rex_historical, type = "SSB")
+gfdlm::plot_historical_ts(rex_historical, type = "Rec")
+gfdlm::plot_historical_ts(rex_historical, type = "Find")
+```
+
+```{r}
+file_name <- here::here("generated-data", "rex-mse.rds")
+if (!file.exists(file_name)) {
+  DLMtool::setup(cpus = parallel::detectCores())
+  rex_mse <- runMSE(OM = omrex, MPs = mprex, parallel = TRUE)
+  snowfall::sfStop()
+  saveRDS(rex_mse, file = file_name)
+} else {
+  rex_mse <- readRDS(file_name)
+}
+# DLMtool::Converge(rex_mse)
+```
+
+```{r}
+STY <- gfdlm:::pm_factory("LTY", 0.5, c(6, 20))
+LTY <- gfdlm:::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("P40_yrs36_50", "P80_yrs36_50", "STY", "LTY", "AAVY", "PNOF")
+rex_probs <- gfdlm::get_probs(rex_mse, PM)
+gfdlm::plot_probs(rex_probs)
+```
+
+```{r}
+rex_satisficed <- dplyr::filter(rex_probs, P40_yrs36_50 >= 0.70) %>% pull(MP)
+rex_satisficed
+```
+
+
+```{r}
+rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
+```
+
+
+```{r}
+gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
+```
+
+
+```{r}
+gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4))
+```

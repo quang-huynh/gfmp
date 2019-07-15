@@ -222,8 +222,8 @@ We have sufficient maturity and length data to fit a logistic maturity model. @m
 
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
-mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
-se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+mat_perc <- gfdlm:::extract_maturity_perc(coef(m_mat$model))
+se_l50 <- gfdlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
 gfplot::plot_mat_ogive(m_mat)
 
@@ -240,7 +240,7 @@ stock_rex@L50
 We can calculate this as a derived parameter from our logistic maturity model:
 
 ```{r desc-stock-l50_95-rex, results = knitr_results, echo = knitr_echo}
-se_l50_95m <- pbs2dlm:::delta_method(
+se_l50_95m <- gfdlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
