@@ -144,18 +144,6 @@ plot_pm <- function(x, y, colour) {
 wide_pm <- readRDS(here::here("generated-data/wide-pm-screening.rds"))
 ```
 
-```{r screening-trade-off1, fig.cap="Performance trade-offs 1. FIXME: these made more sense before there were so many candidates MPs."}
-plot_pm("P100", "LTY", "AAVY")
-```
-
-```{r screening-trade-off2, fig.cap="Performance trade-offs 2"}
-plot_pm("P40", "LTY", "PNOF")
-```
-
-```{r screening-trade-off3, fig.cap="Performance trade-offs 3"}
-plot_pm("P100", "PNOF", "LTY")
-```
-
 ```{r screening-probs-table-arr, fig.cap="Performance metrics Pacific Ocean Perch. Need to deal with the length of the column names. This shows all the MPs that were run, not just the filtered ones. The MPs are ordered by performance metric value starting from the leftmost performance metric and working right to break ties.", out.width="3.5in"}
 knitr::include_graphics(here::here("report/figure/screening-probs-pop.pdf"))
 ```
@@ -185,7 +173,7 @@ table_screening <- arrange(table_screening, desc(Candidate),
   `Reason for exclusion`, `Management Procedure`)
 
 knitr::kable(table_screening,
-  caption = "Test",
+  caption = "Management procedures, brief descriptions, and why they were or were not selected as candidates in our screening analysis.",
   booktabs = TRUE,
   longtable = TRUE,
   linesep = "\\addlinespace",

@@ -1,3 +1,13 @@
+\clearpage
+
+```{r}
+library(gfdlm)
+science_name <- "Glyptocephalus zachirusadus"
+drex <- gfdlm:::load_data_rex() %>% gfdlm:::filter_data_rex()
+```
+
+# REX SOLE OPERATING MODEL DEFINITION {#app:desc-om-rex}
+
 ```{r message = FALSE}
 library(DLMtool)
 knitr_results <- TRUE
@@ -517,61 +527,35 @@ fleet_rex@Rmaxlen <- c(1, 1)
 ### DR {#app:desc-fleet-dr-rex}
 
 *Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
-Look at the discard rate since observers on the trawl fleet (1996). The discard rate is quite high. Set the bounds as mean +/ 1 sd.
+
+We looked at the discard rate since observers on the trawl fleet (1996). We set the bounds as mean +/ 1 SD as observed in the data:
 
 ```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
-discards <- readRDS(here::here("report/data/rex_catch_discards.rds"))
-
-discard_rate <- discards %>% 
-  dplyr::filter(year>1995) %>% 
-  mutate(frac_disc=discarded_t/(landed_t+discarded_t))
-  
-mean_frac_d <- mean(discard_rate$frac_disc)
-sd_frac_d <- sd(discard_rate$frac_disc)
-mean_frac_d
-sd_frac_d
-
-frac_low <- mean_frac_d - sd_frac_d
-frac_high <- mean_frac_d + sd_frac_d
-
-
-fleet_rex@DR <- c(frac_low, frac_high)
-```
-
-
-<!-- slot-chunk-end -->
-
-```{r desc-fleet-dr-rex2, results = knitr_results, echo = knitr_echo}
-
-discards2 <- drex$catch %>% 
-  gfplot::tidy_catch() %>% 
-  dplyr::filter(gear=="Discarded") %>% 
-  rename(Discards=value)%>% 
+discards2 <- drex$catch %>%
+  gfplot::tidy_catch() %>%
+  dplyr::filter(gear == "Discarded") %>%
+  rename(Discards = value) %>%
   select(-gear)
 
-catch2 <- drex$catch %>% 
-  gfplot::tidy_catch() %>% 
-  dplyr::filter(gear=="Bottom trawl")%>% 
-  rename(Landed=value)%>% 
+catch2 <- drex$catch %>%
+  gfplot::tidy_catch() %>%
+  dplyr::filter(gear == "Bottom trawl") %>%
+  rename(Landed = value) %>%
   select(-gear)
 
-discard_rate2 <- left_join(discards2,catch2)%>%
-  mutate(frac_disc=Discards/(Landed+Discards))
+discard_rate2 <- left_join(discards2, catch2) %>%
+  mutate(frac_disc = Discards / (Landed + Discards))
 
 mean_frac_d2 <- mean(discard_rate2$frac_disc)
 sd_frac_d2 <- sd(discard_rate2$frac_disc)
-mean_frac_d2
-sd_frac_d2
 
-frac_low2 <- mean_frac_d - sd_frac_d
-frac_high2 <- mean_frac_d + sd_frac_d
-
-
-#fleet_rex@DR <- c(frac_low, frac_high)
+frac_low2 <- mean_frac_d2 - sd_frac_d2
+frac_high2 <- mean_frac_d2 + sd_frac_d2
+fleet_rex@DR <- c(frac_low2, frac_high2)
+fleet_rex@DR
 ```
 
-
-
+<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
@@ -981,9 +965,9 @@ imp_rex@TACSD <- c(0.05, 0.05)
 <!-- slot-chunk-end -->
 
 
-### Output the OM
+<!-- ### Output the OM -->
 
-*Output the Operating model.*
+<!-- *Output the Operating model.* -->
 
 ```{r output-rex}
 rex_om <- new('OM', stock_rex, fleet_rex, obs_rex, imp_rex)

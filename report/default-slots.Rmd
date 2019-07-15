@@ -1,3 +1,9 @@
+```{r message = FALSE}
+library(DLMtool)
+knitr_results <- TRUE
+knitr_echo <- TRUE
+```
+
 \clearpage
 
 # DEFAULT SLOTS

@@ -59,7 +59,7 @@ omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
 ```
 
-```{r, fig.cap="Historical trajectories from the operating model"}
+```{r, fig.cap="Historical trajectories from the operating model", fig.width=9.5, out.width="5in"}
 catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
   xlab("")
@@ -108,7 +108,7 @@ rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
 ```
 
 
-```{r, fig.asp=0.9, fig.cap="Timeseries projections."}
+```{r, fig.asp=1.1, fig.cap="Timeseries projections for Rex Sole closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50 and 90 quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal dashed lines represent 1 and 0.8 and 0.4 in the case of B BMSY"}
 gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
 ```
 
@@ -117,7 +117,7 @@ gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
 gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4))
 ```
 
-```{r, fig.cap="Spider plots", out.width="4.5in"}
+```{r, fig.cap="Spider plots", out.width="4.5in", fig.width=10}
 gfdlm::spider(rex_mse_sub, pm_list = PM, palette = "Set2")
 ```
 
