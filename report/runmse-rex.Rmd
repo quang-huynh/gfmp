@@ -7,7 +7,7 @@ if (!file.exists(here::here("generated-data", "rex-om-sra.rds"))) {
 ```
   
   
-# REX SOLE: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-rex}
+<!-- # REX SOLE: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-rex} -->
 
 <!-- Use the management procedures that passed the screening test -->
 
@@ -41,7 +41,7 @@ mprex <- c(
 
 <!-- Get the operating model. For Shortraker we are using the DLMtool operating model. -->
 
-```{r echo = TRUE}
+```{r}
 omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 ```
 
@@ -59,12 +59,20 @@ omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
 ```
 
-```{r}
+```{r, fig.cap="Historical trajectories from the operating model"}
 catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
-gfdlm::plot_historical_ts(rex_historical, observed_ts = catch)
-gfdlm::plot_historical_ts(rex_historical, type = "SSB")
-gfdlm::plot_historical_ts(rex_historical, type = "Rec")
-gfdlm::plot_historical_ts(rex_historical, type = "Find")
+g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
+  xlab("")
+g2 <- gfdlm::plot_historical_ts(rex_historical, type = "SSB") +
+  ylab("Historical SSB\n(spawning stock biomass)") +
+  xlab("")
+g3 <- gfdlm::plot_historical_ts(rex_historical, type = "Rec") +
+  ylab("Historical recruitment\n(relative numbers)") +
+  xlab("")
+g4 <- gfdlm::plot_historical_ts(rex_historical, type = "Find") +
+  ylab("Historical F\n(fishing mortality)") +
+  xlab("")
+cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
 ```
 
 ```{r}
@@ -80,7 +88,7 @@ if (!file.exists(file_name)) {
 # DLMtool::Converge(rex_mse)
 ```
 
-```{r}
+```{r, fig.asp=1.2, out.width="4in", fig.width=6, fig.cap="Performance metric probability table."}
 STY <- gfdlm:::pm_factory("LTY", 0.5, c(6, 20))
 LTY <- gfdlm:::pm_factory("LTY", 0.5, c(36, 50))
 PM <- c("P40_yrs36_50", "P80_yrs36_50", "STY", "LTY", "AAVY", "PNOF")
@@ -90,20 +98,23 @@ gfdlm::plot_probs(rex_probs)
 
 ```{r}
 rex_satisficed <- dplyr::filter(rex_probs, P40_yrs36_50 >= 0.70) %>% pull(MP)
-rex_satisficed
 ```
-
 
 ```{r}
 rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
 ```
 
 
-```{r}
+```{r, fig.asp=0.9, fig.cap="Timeseries projections."}
 gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
 ```
 
 
-```{r}
+```{r, fig.cap="Kobe plots"}
 gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4))
 ```
+
+```{r, fig.cap="Spider plots", out.width="4.5in"}
+gfdlm::spider(rex_mse_sub, pm_list = PM, palette = "Set2")
+```
+
