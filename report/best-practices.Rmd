@@ -4,7 +4,7 @@ A critical first step in any decision-making processes is defining the decision 
 
 Importantly, decision-makers, stakeholders and other interested parties (First Nations, NGOs, academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics and selection of MPs [e.g., @cox2008a].
 
-*TO DO: figure out how to cite the landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region.) *
+<!-- *TO DO: figure out how to cite the landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region.) * -->
 
 
 ## Step 1. Define the decision context

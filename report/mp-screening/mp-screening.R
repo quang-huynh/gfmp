@@ -112,8 +112,15 @@ snowfall::sfStop()
 
 library(gfutilities)
 
+library(gfdlm)
+`LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
+`LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
+STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
+LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
+
 probs <- lapply(mse, function(x) {
-  gfdlm:::get_probs(x, "P40", "P100", "PNOF", "LTY", "AAVY")
+  gfdlm:::get_probs(x, PM)
 })
 
 lapply(seq_along(probs), function(i) {
@@ -124,7 +131,7 @@ lapply(seq_along(probs), function(i) {
 
 pm <- lapply(mse, function(x) {
   gfdlm:::eval_pm(x,
-    pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"))
+    pm_list = PM)
 })
 for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 
@@ -133,7 +140,7 @@ wide_pm <- bind_rows(pm) %>%
   as.data.frame() %>%
   # filter(!species %in% c("rdb"), mp != "YPR") %>%
   filter(mp != "YPR") %>%
-  filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
+  filter(pm %in% PM) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
 # relative performance:
@@ -155,10 +162,11 @@ top_pm <- wide_pm %>%
   group_by(species) %>%
   mutate(LTY_FMSYref = LTY[mp == "FMSYref"]) %>%
   # filter(LTY  > 0.50 * LTY_FMSYref) %>%
-  filter(LTY  > 0.60) %>%
+  filter(LTY  > 0.50) %>%
+  filter(STY  > 0.50) %>%
   filter(PNOF > 0.60) %>%
-  filter(P100 > 0.60) %>%
-  filter(P40  > 0.90) %>%
+  filter(`LT P80`  > 0.60) %>%
+  filter(`LT P40`  > 0.90) %>%
   filter(class != "Reference") %>%
   group_by(species) %>%
   # top_n(n = 20L, wt = LTY) %>%
@@ -171,22 +179,21 @@ omitted
 top_pm
 sort(table(top_pm$mp))
 
-top_pm_names <- unique(top_pm$mp)
-length(top_pm_names)
+top_mp_names <- unique(top_pm$mp)
+length(top_mp_names)
 saveRDS(top_pm, file = here("generated-data/top-mp-screening.rds"))
 
-top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
-top_top_pm_names
+top_top_mp_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
+top_top_mp_names
 
 species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
   species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
 
-# FIXME: Should the constant catch MPs be removed? They don't have any feedback built in.
 plot_pm <- function(x, y, colour) {
   wide_pm %>%
     left_join(species_names, by = "species") %>%
-    filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
+    filter(mp %in% top_top_mp_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
     ggplot(aes_string(x = x, y = y)) +
     geom_point(aes_string(colour = colour, shape = "class")) +
     xlim(0, 1) + ylim(0, 1) +
@@ -197,11 +204,11 @@ plot_pm <- function(x, y, colour) {
     gfplot::theme_pbs()
 }
 saveRDS(wide_pm, file = here("generated-data/wide-pm-screening.rds"))
-plot_pm("P100", "LTY", "AAVY")
-plot_pm("P100", "LTY", "PNOF")
-plot_pm("P40", "LTY", "AAVY")
-plot_pm("P40", "PNOF", "LTY")
-plot_pm("P100", "PNOF", "LTY")
+# plot_pm("LT P40", "LTY", "AAVY")
+# plot_pm("P100", "LTY", "PNOF")
+# plot_pm("P40", "LTY", "AAVY")
+# plot_pm("P40", "PNOF", "LTY")
+# plot_pm("P100", "PNOF", "LTY")
 
 
 # -------------------------------------------------------------------------------------------------
@@ -210,7 +217,8 @@ make_radar_plot <- function(mps, file_name = NULL, ...){
   out <- lapply(seq_along(species_names$species), function(x){
     tmp <- as.data.frame(pm[[x]]) %>%
       filter(mp %in% mps) %>%
-      filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY"))
+      filter(mp %in% top_top_mp_names | mp %in% reference_mp) %>%
+      filter(pm %in% PM)
     ggspider::spider_web(tmp, "mp", "pm", "prob")
   })
   if (!is.null(file_name)) {
@@ -230,17 +238,22 @@ reference_mp <- c("NFref", "FMSYref", "FMSYref75")
 index_mp <- c("Iratio", "Islope1", "Islope2", "Islope4", "Itarget1",
   "Itarget2", "Itarget3", "Itarget4", "ITM ICI", "ICI2", "SBT1", "SBT2")
 
-make_radar_plot(average_catch_mp,
-  file_name = here::here("report/figure/screening-radar-average-catch.pdf"))
+pdf(here::here("report/figure/screening-radar-average-catch.pdf"), width = 12, height = 12)
+make_radar_plot(average_catch_mp)
+dev.off()
 
-make_radar_plot(data_moderate_mp,
-file_name = here::here("report/figure/screening-radar-data-moderate.pdf"))
+pdf(here::here("report/figure/screening-radar-data-moderate.pdf"), width = 12, height = 12)
+make_radar_plot(data_moderate_mp)
+dev.off()
 
-make_radar_plot(length_mp,
-file_name = here::here("report/figure/screening-radar-length.pdf"))
+pdf(here::here("report/figure/screening-radar-length.pdf"), width = 11, height = 12)
+make_radar_plot(length_mp)
+dev.off()
 
-make_radar_plot(reference_mp,
-  file_name = here::here("report/figure/screening-radar-reference.pdf"))
+pdf(here::here("report/figure/screening-radar-reference.pdf"), width = 11, height = 12)
+make_radar_plot(reference_mp)
+dev.off()
 
-make_radar_plot(index_mp,
-  file_name = here::here("report/figure/screening-radar-index.pdf"))
+pdf(here::here("report/figure/screening-radar-index.pdf"), width = 11, height = 12)
+make_radar_plot(index_mp)
+dev.off()

@@ -1,5 +1,9 @@
 \newpage
 
+`r if(knitr:::is_latex_output()) '\\Appendices'`
+
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
+
 # Management Procedures
 
 This is a generic review of the available MPs in DLMtool which include TAC-based procedures.

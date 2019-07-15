@@ -10,11 +10,11 @@ The majority of species encountered by the integrated groundfish fishery can be 
 
 The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---a Limit Reference Point (LRP) and Upper Stock Reference (USR)---that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:fig-pa)). The LRP and USR delineate three stock status zones ("healthy", "cautious" and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006, @dfo2009].
 
-*TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... *
+<!-- *TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... * -->
 
-*RF: Having read the C-68 implementation plan, I think we stick with the original PA diagram*
+<!-- *RF: Having read the C-68 implementation plan, I think we stick with the original PA diagram* -->
 
-*TO DO: Update dates below to reflect current progress of the Fisheries Act*
+<!-- *TO DO: Update dates below to reflect current progress of the Fisheries Act* -->
 
 On June 21, 2019, major amendments to Canada's *Fisheries Act* received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks to be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "Fish Stocks provisions", the provisions state:
 
@@ -52,7 +52,8 @@ A toolkit for applying closed-loop simulation for data-limited MPs has recently 
 
 ## OBJECTIVES OF THIS DOCUMENT
 
-*TODO: We should include a note about our choice of the terminology "management-procedure framework", as the section above and best practices section refer to MSE and/MOP.See last sentence of the next paragraph as a rough draft. Feel free to change*
+*TODO: We should include a note about our choice of the terminology "management-procedure framework", as the section above and best practices section refer to MSE and/MOP.*
+<!-- See last sentence of the next paragraph as a rough draft. Feel free to change* -->
 
 This project aims to develop a management procedure (MP) framework for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species. The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers. We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 

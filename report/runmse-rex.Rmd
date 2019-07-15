@@ -12,29 +12,38 @@ if (!file.exists(here::here("generated-data", "rex-om-sra.rds"))) {
 <!-- Use the management procedures that passed the screening test -->
 
 ```{r}
+# mprex <- c(
+#   "AvC",
+#   "CC2",
+#   "CC3",
+#   "DD",
+#   "DD4010",
+#   "GB_CC",
+#   "GB_target",
+#   "Islope1",
+#   "Islope2",
+#   "Islope4",
+#   "IT5",
+#   "ITM",
+#   "LstepCC2",
+#   "LstepCC3",
+#   "LstepCC4",
+#   "Ltarget1",
+#   "Ltarget2",
+#   "Ltarget3",
+#   "SBT2",
+#   "SP_4010",
+#   "SP_MSY"
+# )
 mprex <- c(
-  "AvC",
-  "CC2",
-  "CC3",
-  "DD",
-  "DD4010",
-  "GB_CC",
-  "GB_target",
-  "Islope1",
-  "Islope2",
-  "Islope4",
-  "IT5",
-  "ITM",
-  "LstepCC2",
-  "LstepCC3",
-  "LstepCC4",
-  "Ltarget1",
-  "Ltarget2",
-  "Ltarget3",
-  "SBT2",
-  "SP_4010",
-  "SP_MSY"
+  "AvC", "CC2", "CC3", "CC4", "DD", "GB_CC", "GB_slope", "Iratio",
+  "Islope1", "Islope2", "Islope4", "IT10", "IT5", "Itarget1", "Lratio_BHI",
+  "Lratio_BHI2", "Lratio_BHI3", "LstepCC1", "LstepCC2", "LstepCC3",
+  "LstepCC4", "Ltarget1", "Ltarget2", "Ltarget3", "SBT1", "SBT2"
 )
+
+reference_mp <- c("NFref", "FMSYref")
+mprex <- union(mprex, reference_mp)
 ```
 
 # REX SOLE: RESULTS 

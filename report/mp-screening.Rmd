@@ -74,28 +74,11 @@ We then retained only those that made it through the filtering process for at le
 
 The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-reference), \@ref(fig:screening-radar-length), \@ref(fig:screening-radar-average-catch), \@ref(fig:screening-radar-moderate)) Fig. \@ref(fig:screening-trade-off1) Fig. \@ref(fig:screening-trade-off2) Fig. \@ref(fig:screening-trade-off3).
 
-The current top MPs:
-*FIXME: lots of MPs not here depending on how we do the filtering.*
-
-IT5 + IT10: An index target MP where the TAC is modified according to current index levels (mean index over last 5 years) relative to a target level. IT5: Maximum annual changes in TAC are 5 per cent. IT10: Maximum annual changes are 10 per cent.
-
-ITM: An index target MP where the TAC is modified according to current index levels (mean index over last number of years determined by natural mortality (M)) relative to a target level.
-
-SB2: An MP that makes incremental adjustments to TAC recommendations based on index levels relative to target levels (BMSY/B0) and catch levels relative to target levels (MSY).
-
-GB_target: An MP similar to SBT2 that modifies a time-series of catch recommendations and aims for target catch rate and catch level based on BMSY/B0 and MSY, respectively.
-
-GB_CC: A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information.
-
-DD: Delay difference
-
-DD: Delay difference with a 4010 rule. We could tweak the harvest control rule to perhaps put it more inline with the Canadian precautionary approach.
-
 -------------------
 
 ## Observations and things I just don't understand in the plots
 
-1. Why is AAVY so low for POP with AvC (average historical catch)? There should be no variability! The others looked fine for average catch.
+<!-- 1. Why is AAVY so low for POP with AvC (average historical catch)? There should be no variability! The others looked fine for average catch. -->
 
 1. It looks like all of the length-based MPs perform very similarly with a couple minor exceptions. Maybe we can narrow this down more at this stage?
 
