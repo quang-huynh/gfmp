@@ -18,7 +18,6 @@ First source the DD_ functions.
 ```{r}
 source(here::here("DD_investigation/DLMtool_DD_.R"))
 source(here::here("DD_investigation/DLMtool_DD_R.R"))
-source(here::here("DD_investigation/DLMtool_DD.R"))
 
 ```
 
