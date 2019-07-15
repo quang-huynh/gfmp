@@ -89,15 +89,18 @@ if (!file.exists(file_name)) {
 ```
 
 ```{r, fig.asp=1.2, out.width="4in", fig.width=6, fig.cap="Performance metric probability table."}
-STY <- gfdlm:::pm_factory("LTY", 0.5, c(6, 20))
-LTY <- gfdlm:::pm_factory("LTY", 0.5, c(36, 50))
-PM <- c("P40_yrs36_50", "P80_yrs36_50", "STY", "LTY", "AAVY", "PNOF")
+`LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
+`LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
+STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
+LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
 rex_probs <- gfdlm::get_probs(rex_mse, PM)
 gfdlm::plot_probs(rex_probs)
 ```
 
 ```{r}
-rex_satisficed <- dplyr::filter(rex_probs, P40_yrs36_50 >= 0.70) %>% pull(MP)
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` >= 0.70) %>% 
+  pull(MP)
 ```
 
 ```{r}
