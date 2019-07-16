@@ -7,7 +7,7 @@ Stock,R0,5,TRUE,FALSE,The magnitude of unfished recruitment. Single value. Posit
 Stock,M,6,TRUE,FALSE,Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number
 Stock,M2,7,FALSE,FALSE,(Optional) Natural mortality rate at age. Vector of length maxage . Positive real number
 Stock,Mexp,8,FALSE,FALSE,Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.
-Stock,Msd,9,FALSE,FALSE,Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
+Stock,Msd,9,TRUE,FALSE,Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
 Stock,Mgrad,10,FALSE,FALSE,"No longer used. Previously mean temporal trend in natural mortality rate, expressed as a percentage change in M per year."
 Stock,h,11,TRUE,FALSE,Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1
 Stock,SRrel,12,TRUE,FALSE,"Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer"
@@ -19,9 +19,9 @@ Stock,Linf,17,TRUE,FALSE,Maximum length. Uniform distribution lower and upper bo
 Stock,K,18,TRUE,FALSE,von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers
 Stock,t0,19,TRUE,FALSE,von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers
 Stock,LenCV,20,TRUE,FALSE,Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers
-Stock,Ksd,21,FALSE,FALSE,Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
+Stock,Ksd,21,TRUE,FALSE,Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
 Stock,Kgrad,22,FALSE,FALSE,"No longer used. Previously mean temporal trend in growth parameter k, expressed as a percentage change in k per year."
-Stock,Linfsd,23,FALSE,FALSE,Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
+Stock,Linfsd,23,TRUE,FALSE,Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers
 Stock,Linfgrad,24,FALSE,FALSE,"No longer used. Previously mean temporal trend in maximum length, expressed as a percentage change in Linf per year."
 Stock,L50,25,TRUE,FALSE,Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers
 Stock,L50_95,26,TRUE,FALSE,Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers
