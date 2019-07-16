@@ -9,7 +9,6 @@ library(dplyr)
 library(ggplot2)
 ```
   
-  
 <!-- # REX SOLE: MANAGEMENT PROCEDURE SPECIFICATIONS {#app:desc-mp-rex} -->
 
 <!-- Use the management procedures that passed the screening test -->
@@ -52,6 +51,18 @@ mprex <- union(mprex, reference_mp)
 # REX SOLE CASE STUDY: RESULTS
 
 West Coast Vancouver Island Rex Sole
+  
+The performance metrics are defined as:
+
+1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
+1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
+1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
+1. LTY: Probability yield > 0.5 MSY (years 36--50)
+1. STY: Probability yield > 0.5 MSY (years 6--20)
+1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
+
+where SB is spawning biomass.
+  
 
 <!-- Get the operating model. For Shortraker we are using the DLMtool operating model. -->
 
@@ -71,7 +82,7 @@ omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
 ```
 
-```{r, fig.cap="Historical trajectories from the Rex Sole WCVI operating model. Light shaded region represents the upper and lower bounds of the historical simulation. Thin grey lines represent 50 draws from the simulation.", fig.width=9.5, out.width="5in"}
+```{r, fig.cap="Historical trajectories from the Rex Sole WCVI operating model. Light shaded region represents the upper and lower bounds of the historical simulation. Thin grey lines represent 50 draws from the simulation. The numbers are relative to the chosen scale of the simulation.", fig.width=9.5, out.width="5in"}
 catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
   xlab("")
@@ -100,7 +111,7 @@ if (!file.exists(file_name)) {
 # DLMtool::Converge(rex_mse)
 ```
 
-```{r, fig.asp=1.2, out.width="4in", fig.width=6, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MPs are ordered by performance metric from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only 'satisficed' MPs that have LT P40 > 0.70."}
+```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only 'satisficed' MPs that have LT P40 > 0.75."}
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
@@ -111,26 +122,43 @@ gfdlm::plot_probs(rex_probs)
 ```
 
 ```{r}
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.70) %>%
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.80) %>%
+  # dplyr::filter(rex_probs, `LT P40` > 0.75) %>% 
   arrange(-`LT P40`) %>%
   pull(MP)
+rex_satisficed_ref <- union(rex_satisficed, reference_mp)
+rex_satisficed <- rex_satisficed[-which(rex_satisficed %in% reference_mp)]
 ```
 
 ```{r}
 rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
+rex_mse_sub_ref <- DLMtool::Sub(rex_mse, MPs = rex_satisficed_ref)
 ```
 
 
-```{r, fig.asp=1.1, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50 and 90 quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal dashed lines represent 1 and 0.8 and 0.4 in the case of B BMSY"}
-gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
+```{r, fig.asp=1.6, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50\\% and 90\\% quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal light grey lines represent values of 1.0 for F/F~MSY~ and 0.8, and 0.4 for B/B~MSY~.", out.width="5in", fig.width=7.1}
+gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("F_FMSY", "B_BMSY")) +
+  ggplot2::coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
+  ggplot2::scale_y_continuous(breaks = c(1, 2, 3, 4))
+```
+
+```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
+gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C")) +
+  theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
+```
+
+```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. Dots represent individual simulation iterations. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates. Axes are cut off at maximum values of 3.5 although some simulation iterations extend beyond these boundaries.", fig.asp=0.8, fig.width=8, out.width="5.75in"}
+gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 3.5), ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
+```
+
+```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation (constant catch and index-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
+DLMtool::Sub(rex_mse, MPs = rex_satisficed[!grepl("^L", rex_satisficed)]) %>% 
+gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
 
 
-```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. Dots represent individual simulation iterations. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates. Axes are cut off at maximum values of 4 although some simulation iterations extend beyond these boundaries.", fig.width=8, out.width="5.75in"}
-gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4), alpha = c(0.1, 0.25, 0.50))
-```
-
-```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
-gfdlm::spider(rex_mse_sub, pm_list = PM, palette = "Set2", lwd = 1.0)
+```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation (length-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
+DLMtool::Sub(rex_mse, MPs = rex_satisficed[grepl("^L", rex_satisficed)]) %>% 
+gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
 
