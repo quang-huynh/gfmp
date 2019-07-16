@@ -39,10 +39,13 @@ library(ggplot2)
 # )
 mprex <- c(
   "AvC", "CC2", "CC3", "CC4", "DD", "GB_CC", "GB_slope", "Iratio",
-  "Islope1", "Islope2", "Islope4", "IT10", "IT5", "Itarget1", "Lratio_BHI",
+  "Islope1", "Islope2", "Islope3_", "Islope4", "IT10", "IT5", "Itarget1", "Lratio_BHI",
   "Lratio_BHI2", "Lratio_BHI3", "LstepCC1", "LstepCC2", "LstepCC3",
   "LstepCC4", "Ltarget1", "Ltarget2", "Ltarget3", "SBT1", "SBT2"
 )
+# TODO: fix in DLMtool and pull request:
+Islope3_ <- DLMtool::Islope3
+class(Islope3_) <- "MP"
 
 reference_mp <- c("NFref", "FMSYref")
 mprex <- union(mprex, reference_mp)
