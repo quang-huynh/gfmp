@@ -74,7 +74,7 @@ We then retained only those that made it through the filtering process for at le
 
 *FIXME: do we like that filtering?*
 
-The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-reference), \@ref(fig:screening-radar-length), \@ref(fig:screening-radar-average-catch), \@ref(fig:screening-radar-moderate)) Fig. \@ref(fig:screening-trade-off1) Fig. \@ref(fig:screening-trade-off2) Fig. \@ref(fig:screening-trade-off3).
+The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-reference), \@ref(fig:screening-radar-length), \@ref(fig:screening-radar-average-catch), \@ref(fig:screening-radar-moderate))
 
 -------------------
 
