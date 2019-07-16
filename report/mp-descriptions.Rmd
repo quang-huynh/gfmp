@@ -4,9 +4,46 @@
 
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
 
-# Management Procedures
+# DATA-LIMITED MANAGEMENT PROCEDURES
 
-This is a generic review of the available TAC-based MPs in DLMtool .
+## SELECTION OF CANDIDATE MANAGEMENT PROCEDURES BASED ON DATA REQUIREMENTS
+
+```{r screening-table}
+library(dplyr)
+table_screening <- readr::read_csv(here::here("report/data/dlmtool-mps.csv")) %>%
+  select(-Comment) %>%
+  mutate(Candidate = ifelse(Candidate == "Y", "Yes", "No")) %>%
+  mutate(`Reason for exclusion` =
+      ifelse(is.na(`Reason for exclusion`), "", `Reason for exclusion`))
+
+table_screening$`Management Procedure` <-
+  sapply(table_screening$`Management Procedure`, function(x) {
+  paste(paste0("\\texttt{", strsplit(x, " ")[[1]], "}"), collapse = " ")
+})
+
+table_screening$`Management Procedure` <- gsub("\\_", "\\\\_", table_screening$`Management Procedure`)
+
+table_screening <- arrange(table_screening, desc(Candidate),
+  `Reason for exclusion`, `Management Procedure`)
+
+knitr::kable(table_screening,
+  caption = "Management procedures, brief descriptions, and why they were or were not selected as candidates in our screening analysis.",
+  booktabs = TRUE,
+  longtable = TRUE,
+  linesep = "\\addlinespace",
+  escape = FALSE,
+  format = "latex") %>%
+  kableExtra::column_spec(column = 1, width = "4cm") %>%
+  kableExtra::column_spec(column = 2, width = "5.5cm") %>%
+  kableExtra::column_spec(column = 4, width = "3.5cm") %>%
+  kableExtra::kable_styling(latex_options = "repeat_header",
+    repeat_header_text = "", repeat_header_method = "replace") %>%
+  sub("\\caption\\[\\]\\{\\}", "\\caption*{}", .)
+```
+
+## MANAGEMENT PROCEDURE DESCRIPTIONS
+
+This is a brief review of the available TAC-based MPs in DLMtool that were selected as described in Table \@ref(tab:screening-table).
 
 ```{r, results='asis', include=FALSE, eval=FALSE}
 mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
@@ -369,7 +406,7 @@ $$
 
 where $epsR$ is a control parameter and $R = \frac{\bar{r}}{\phi}$ where $\bar{r}$ is the mean recruitment over the last 5 years and $\phi$ is the mean recruitment over the last 10 years.
 
-### `YPR_ML`: Yield per recruit analysis to get $F~MSY~ proxy with a mean-length estimator
+### `YPR_ML`: Yield per recruit analysis to get F~MSY~ proxy with a mean-length estimator
 
 A yield per recruit (YPR) approximation to F~MSY~, which is the position of the ascending YPR curve for which $\mathrm{d} \textrm{YPR}/ \mathrm{d} F = 0.1 ( \mathrm{d} \textrm{YPR}/ \mathrm{d} 0)$. The ML variant uses a mean length estimate of $Z$ to infer current abundance.
 
@@ -381,3 +418,5 @@ $$
 where $F_{0.1}$ is the fishing mortality $F$, the slope of the YRP curve is 10% of the slope at the origin, and $A$ is the estimate of current abundance. For the ML variant, a mean length estimate of recent $Z$ is used to infer current abundance. TODO
 
 The YPR curve is calculated using an equilibrium age-structured model with life-history and selectivity parameters sampled from the Data object.
+
+<!-- TODO: missing `SPmod` and potentially others -->

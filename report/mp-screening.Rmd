@@ -136,38 +136,3 @@ knitr::include_graphics(here::here("report/figure/screening-probs-pop.pdf"))
 ```{r screening-probs-table-yel, fig.cap="Performance metrics Yelloweye Rockfish", out.width="3.5in"}
 knitr::include_graphics(here::here("report/figure/screening-probs-yel.pdf"))
 ```
-
-\clearpage 
-
-```{r screening-table}
-library(dplyr)
-table_screening <- readr::read_csv(here::here("report/data/dlmtool-mps.csv")) %>% 
-  select(-Comment) %>% 
-  mutate(Candidate = ifelse(Candidate == "Y", "Yes", "No")) %>% 
-  mutate(`Reason for exclusion` = 
-      ifelse(is.na(`Reason for exclusion`), "", `Reason for exclusion`))
-
-table_screening$`Management Procedure` <- 
-  sapply(table_screening$`Management Procedure`, function(x) {
-  paste(paste0("\\texttt{", strsplit(x, " ")[[1]], "}"), collapse = " ")
-})
-
-table_screening$`Management Procedure` <- gsub("\\_", "\\\\_", table_screening$`Management Procedure`)
-
-table_screening <- arrange(table_screening, desc(Candidate), 
-  `Reason for exclusion`, `Management Procedure`)
-
-knitr::kable(table_screening,
-  caption = "Management procedures, brief descriptions, and why they were or were not selected as candidates in our screening analysis.",
-  booktabs = TRUE,
-  longtable = TRUE,
-  linesep = "\\addlinespace",
-  escape = FALSE,
-  format = "latex") %>%
-  kableExtra::column_spec(column = 1, width = "4cm") %>% 
-  kableExtra::column_spec(column = 2, width = "5.5cm") %>% 
-  kableExtra::column_spec(column = 4, width = "3.5cm") %>% 
-  kableExtra::kable_styling(latex_options = "repeat_header", 
-    repeat_header_text = "", repeat_header_method = "replace") %>% 
-  sub("\\caption\\[\\]\\{\\}", "\\caption*{}", .)
-```

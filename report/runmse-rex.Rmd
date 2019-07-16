@@ -46,7 +46,9 @@ reference_mp <- c("NFref", "FMSYref")
 mprex <- union(mprex, reference_mp)
 ```
 
-# REX SOLE: RESULTS 
+# REX SOLE CASE STUDY: RESULTS
+
+West Coast Vancouver Island Rex Sole
 
 <!-- Get the operating model. For Shortraker we are using the DLMtool operating model. -->
 
@@ -60,15 +62,13 @@ omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
 # rex_SRA_report <- readRDS(here::here("generated-data/rex-sra-report.rds"))
 ```
 
-\newpage
-
 <!-- Run the historical part of the MSE.  -->
 
 ```{r}
 rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
 ```
 
-```{r, fig.cap="Historical trajectories from the operating model", fig.width=9.5, out.width="5in"}
+```{r, fig.cap="Historical trajectories from the Rex Sole WCVI operating model. Light shaded region represents the upper and lower bounds of the historical simulation. Thin grey lines represent 50 draws from the simulation.", fig.width=9.5, out.width="5in"}
 catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
   xlab("")
@@ -97,7 +97,7 @@ if (!file.exists(file_name)) {
 # DLMtool::Converge(rex_mse)
 ```
 
-```{r, fig.asp=1.2, out.width="4in", fig.width=6, fig.cap="Performance metric probability table."}
+```{r, fig.asp=1.2, out.width="4in", fig.width=6, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MPs are ordered by performance metric from left to right and the shading corresponds to the probability value indicated in each cell."}
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
@@ -108,7 +108,8 @@ gfdlm::plot_probs(rex_probs)
 ```
 
 ```{r}
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` >= 0.70) %>% 
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` >= 0.70) %>%
+  arrange(-`LT P40`) %>%
   pull(MP)
 ```
 
@@ -117,16 +118,16 @@ rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
 ```
 
 
-```{r, fig.asp=1.1, fig.cap="Timeseries projections for Rex Sole closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50 and 90 quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal dashed lines represent 1 and 0.8 and 0.4 in the case of B BMSY"}
+```{r, fig.asp=1.1, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50 and 90 quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal dashed lines represent 1 and 0.8 and 0.4 in the case of B BMSY"}
 gfdlm::plot_projection_ts(rex_mse_sub, type = c("F_FMSY", "B_BMSY"))
 ```
 
 
-```{r, fig.cap="Kobe plots"}
-gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4))
+```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates."}
+gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 4), ylim = c(0, 4), alpha = c(0.1, 0.25, 0.50))
 ```
 
-```{r, fig.cap="Spider plots", out.width="4.5in", fig.width=10}
+```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation.", out.width="4.5in", fig.width=10}
 gfdlm::spider(rex_mse_sub, pm_list = PM, palette = "Set2")
 ```
 
