@@ -1,18 +1,16 @@
 book_filename: "resdoc"
 chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
-            #"introduction.Rmd",
-            #"best-practices.Rmd",
-            #"rexsole-summary.Rmd",
-            #"shortraker-summary.Rmd",
-            #"discussion.Rmd",
-            #"mp-descriptions.Rmd",
-            #"dlmtool-om.Rmd",
-            #"mp-screening.Rmd",
-            #"default-slots.Rmd",
-            "get-data-pcod.Rmd",
-            "om-specification-pcod.Rmd",
-            #"runmse-rex.Rmd",
+            "introduction.Rmd",
+            "best-practices.Rmd",
+            "rexsole-summary.Rmd",
+            "shortraker-summary.Rmd",
+            "discussion.Rmd",
+            "mp-descriptions.Rmd",
+            "dlmtool-om.Rmd",
+            "mp-screening.Rmd",
+            "default-slots.Rmd",
+            "runmse-rex.Rmd",
             "references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]
 delete_merged_file: true
