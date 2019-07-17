@@ -1,8 +1,8 @@
 # BEST PRACTICES FOR IMPLEMENTING A MANAGEMENT PROCEDURE APPROACH
 
-A critical first step in any decision-making processes is defining the decision context [@gregory2012]. This is particularly important in complex decision-making environments such as MSE, where it is necessary to clarify the decision that needs to be made and, importantly, the planned approach for reaching a decision([^1]). Some key questions to be answered at this stage are provided under Step 1 below. @punt2016 reviewed best practices for MSE and identified five key steps in the process (described under Steps 2--6 below). In large part, DLMtool has been designed to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018].
+A critical first step in any decision-making processes is defining the decision context [@gregory2012]. This is particularly important in complex decision-making environments such as MSE, where it is necessary to clarify the decision that needs to be made and, importantly, the planned approach for reaching a decision. Some key questions to be answered at this stage are provided under Step 1 below. @punt2016 reviewed best practices for MSE and identified five key steps in the process (described under Steps 2--6 below). In large part, DLMtool has been designed to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018].
 
-(ref:fig-mse-chart) DRAFT: The steps of the MSE process following @punt2016 as implemented in DLMtool.
+(ref:fig-mse-chart) DRAFT: The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018.
 
 ```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="6.3in"}
 knitr::include_graphics(here::here("report/figure/mse-chart.pdf"))

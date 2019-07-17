@@ -10,7 +10,7 @@ The majority of species encountered by the integrated groundfish fishery can be 
 
 The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---a Limit Reference Point (LRP) and Upper Stock Reference (USR)---that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious" and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
-(ref:fig-pa) DRAFT: PLACEHOLDER: Illustration of DFO's PA Framework [@dfo2009].
+(ref:fig-pa) PLACEHOLDER: Illustration of DFO's PA Framework [@dfo2009].
 
 ```{r pa-illustration, fig.cap="(ref:fig-pa)", out.width="3.5in"}
 knitr::include_graphics(here::here("report/figure/pa-approach.jpg"))
@@ -46,19 +46,23 @@ In 2016, a CSAS workshop was held in the Pacific region to review international 
 
 ## MANAGEMENT-ORIENTED APPROACHES
 
-In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented, or management-strategy-evaluation (MSE), approach focuses on identifying management procedures (MPs) that perform best with respect to agreed-upon management objectives when implemented in a closed-loop simulation environment (Figure \@ref(fig:mse-chart)). 
+In the scientific literature and in practice around the world, there has been a movement towards mnagement-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment traditionally focuses on estimation of biological parameters, a management-oriented, or management-strategy-evaluation (MSE), approach focuses on identifying management procedures (MPs) that perform best with respect to agreed-upon management objectives when implemented in a closed-loop simulation environment (Figure \@ref(fig:mse-chart-basic)).
 
 Management strategy evaluation is distinguished from conventional stock assessment approaches because it simulates feedback between implementation of the MPs and one or more OMs. Through closed-loop simulation, MSE not only takes into account the effect of the MPs on the system but also the future data collected from the system and its use in the MPs [@punt2016]. The MP may be a simple empirical rule such as an adjustment to catch based on a change in index of abundance, or may represent a more complex set of choices including data collection, stock assessment method, and a harvest control rule. 
 
-*TODO: add a simple Closed-Loop Simulation figure here*
+(ref:fig-mse-chart-basic) PLACEHOLDER: Illustration of the MSE process [@punt2016].
+
+```{r mse-chart-basic, fig.cap="(ref:fig-mse-chart-basic)", out.width="3in"}
+knitr::include_graphics(here::here("report/figure/mse-chart-basic.png"))
+```
 
 The scientific literature reports a great number of data-limited MPs, which have been shown to have variable performance across conditions such as species life history and levels of biomass depletion [e.g., @carruthers2014; @carruthers2016]. Closed-loop simulation testing of data-limited MPs allows for evaluation of relative performance of MPs across a range of uncertainties in, for example, underlying fish biology, observation error, estimation error, and implementation error [e.g., @kell2006; @carruthers2016]. Importantly, a management-oriented approach enables ranking of MPs with respect to meeting objectives, and enables evaluation of trade-offs among competing objectives (e.g., conservation and economic objectives).
 
-A toolkit for applying closed-loop simulation for data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners [@carruthers2018]. The Data-Limited Toolkit, "[DLMtool](https://www.datalimitedtoolkit.org/)" enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below the LRP). 
+A toolkit for applying closed-loop simulation for data-limited MPs has recently been developed by researchers at the University of British Columbia, in partnership with the Natural Resources Defense Council, DFO and other partners [@carruthers2018]. The Data-Limited Toolkit, [DLMtool](https://www.datalimitedtoolkit.org/) enables rapid assessment of a large number of data-limited MPs and ranking of MPs according to to identified conservation and economic objectives (e.g., probability biomass is below the LRP). 
 
 ## OBJECTIVES OF THIS DOCUMENT
 
-*TODO: We should include a note about our choice of the terminology "management-procedure framework", as the section above and best practices section refer to MSE and/MOP.*
+<!-- *TODO: We should include a note about our choice of the terminology "management-procedure framework", as the section above and best practices section refer to MSE and/MOP.* -->
 <!-- See last sentence of the next paragraph as a rough draft. Feel free to change* -->
 
 This project aims to develop a management procedure (MP) framework for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species. The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers. We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
