@@ -3,18 +3,18 @@
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
 * How this is compliant with the DFO precautionary framework and Bill C68
-* Not just a backup solution, could be argued that this is a better solution then the usual "explicit" knowledge
+* Not just a backup solution, could be argued that this is "implicit" knowledge is a better solution then the usual "explicit" knowledge
 
 ## FORMAT OF THE ADVICE
 
-* Suggested elements to include in a research document
+* Suggested elements to include in a Research Document
 * Suggested elements to include in a SAR
 * Potential use of SRs to update advice
-* Potential to assess multiple related species simultaneously
+* Potential to assess multiple spatial regions and related species simultaneously
 
 ## REASSESSMENT FREQUENCY AND TRIGGERS
 
-* Annual updating of catch recommendation
+* Annual(?) updating of catch recommendation
 * Less frequent revisiting of the OM and potential changes to MP/HCR
 * Some suggested interval barring a trigger
 

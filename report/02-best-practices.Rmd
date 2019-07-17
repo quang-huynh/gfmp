@@ -14,7 +14,7 @@ Importantly, decision-makers, stakeholders and other interested parties (First N
 
 ## STEP 1. DEFINE THE DECISION CONTEXT
 
-Defining the decision context . Key questions to guide definition of the decision context for MSE include:
+Key questions to guide definition of the decision context for MSE include:
 
 * What is the the exact decision to be made?
 
@@ -38,7 +38,7 @@ Uncertainties inherent in the underlying system are represented in the OM. These
 
 Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured within a single OM by expressing distributions for these parameters. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in one model. Therefore, best practice recommends dividing MSE trials into a "reference" set, represented by a baseline OM, and a "robustness" set, represented by other plausible OM formulations that represent alternative structural hypotheses (e.g., time-varying natural mortality vs constant natural mortality, climate-driven recruitment, or alternative depletion states of the stock) [@rademeyer2007]. @punt2016 provide a list of factors whose uncertainty commonly has a large impact on MSE performance (their Table 3). They note that, in some cases, where the data used to parameterize the OM are in conflict (e.g., indices of abundance are in conflict), the best practice may be to develop alternative OMs based on the different data sources.
 
-Ideally, OMs should be calibrated to real data to ensure they can reproduce historical observations [e.g., @cox2008a; @forrest2018]. In very data-limited cases, of course, this may not always be possible. In these cases, best practice would be to develop a set of OMs that differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
+Ideally, OMs should be calibrated to real data to ensure they can reproduce historical observations [e.g., @cox2008a; @forrest2018]. In very data-limited cases, of course, this may not be possible. In these cases, best practice would be to develop a set of OMs that differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
 ## STEP 4. IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES
 
