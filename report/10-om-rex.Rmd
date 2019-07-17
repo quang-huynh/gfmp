@@ -8,6 +8,20 @@ drex <- gfdlm:::load_data_rex() %>% gfdlm:::filter_data_rex()
 
 # REX SOLE OPERATING MODEL DEFINITION {#app:desc-om-rex}
 
+(ref:fig-rex-synopsis1) PLACEHOLDER: The first page for Rex Sole from @anderson2019synopsis.
+
+```{r rex-synopsis1, fig.cap="(ref:fig-rex-synopsis1)", out.width="5.8in", fig.pos="h"}
+knitr::include_graphics(here::here("report/figure/rex-sole-1.pdf"))
+```
+
+(ref:fig-rex-synopsis2) PLACEHOLDER: The second page for Rex Sole from @anderson2019synopsis.
+
+```{r rex-synopsis2, fig.cap="(ref:fig-rex-synopsis2)", out.width="5.8in", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/rex-sole-2.pdf"))
+```
+
+\clearpage
+
 ```{r message = FALSE}
 library(DLMtool)
 knitr_results <- TRUE
