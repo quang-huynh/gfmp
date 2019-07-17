@@ -138,12 +138,12 @@ gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C")) +
 gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 3.5), ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
 ```
 
-```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation (constant catch and index-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (constant catch and index-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
 DLMtool::Sub(rex_mse, MPs = rex_satisficed[!grepl("^L", rex_satisficed)]) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
 
-```{r, fig.cap="Spider plots for the Rex Sole WCVI closed-loop simulation (length-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (length-based MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
 DLMtool::Sub(rex_mse, MPs = rex_satisficed[grepl("^L", rex_satisficed)]) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
