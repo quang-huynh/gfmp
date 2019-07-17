@@ -106,7 +106,7 @@ where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch
 
 ### `DD`: Delay Difference
 
-A simple delay-difference assessment with $U_\textrm{MSY}$ and MSY as leading parameters that estimate the TAC using a time-series of catch. This model includes observation error only and has does not estimate process error (recruitment deviations). There is the assumption that knife-edge selectivity occurs at the age of 50. It depends on other assumptions such as temporally stationary productivity and. See @carruthers2012 and @hilborn1992\.
+A simple delay-difference assessment with $U_\textrm{MSY}$ and MSY as leading parameters that estimate the TAC using a time-series of catch. This model includes observation error only and has does not estimate process error (recruitment deviations). There is the assumption that knife-edge selectivity-at-age occurs age of 50% selectivity (which is back-calculated from the growth curve based on an input value of length at 50% selectivity). It depends on other assumptions such as temporally stationary productivity and that fishing mortality can be derived from an estimated catchability and effort series. See @carruthers2012 and @hilborn1992\.
 
 The TAC is calculated as:
 $$
