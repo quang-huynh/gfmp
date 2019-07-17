@@ -71,6 +71,7 @@ where SB is spawning biomass.
 
 ```{r}
 omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
+omrex@interval <- 4
 ```
 
 <!-- How well does the SRA OM fit the indices? -->

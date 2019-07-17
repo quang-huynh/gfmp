@@ -230,7 +230,7 @@ stock_rex@LenCV <- c(0.25, 0.25)
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
-```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
 mat_perc <- gfdlm:::extract_maturity_perc(coef(m_mat$model))
 se_l50 <- gfdlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
@@ -552,7 +552,7 @@ sd_frac_d2 <- sd(discard_rate2$frac_disc)
 frac_low2 <- mean_frac_d2 - sd_frac_d2
 frac_high2 <- mean_frac_d2 + sd_frac_d2
 fleet_rex@DR <- c(frac_low2, frac_high2)
-fleet_rex@DR
+round(fleet_rex@DR, 2)
 ```
 
 <!-- slot-chunk-end -->

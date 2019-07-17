@@ -9,6 +9,10 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
+```{r download-data-sr}
+science_name <- "Sebastes borealis"
+dshort <- load_data_shortraker()
+```
 
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-sr}
 
@@ -16,7 +20,7 @@ knitr_echo <- TRUE
 stock_sr <- methods::new('Stock')
 ```
 
-```{r rex-stock-defaults, echo=FALSE}
+```{r sr-stock-defaults, echo=FALSE}
 stock_sr@Size_area_1 <- c(0.5, 0.5)
 stock_sr@Frac_area_1 <- c(0.5, 0.5)
 stock_sr@Prob_staying <- c(0.5, 0.5)
