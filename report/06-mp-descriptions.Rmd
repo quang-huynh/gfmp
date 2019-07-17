@@ -98,11 +98,11 @@ $$
 
 where $x$ lies between 0 and 1, and $C_\textrm{ave}$ is average historical catch over the previous 5 years. The TAC is constant for all future projections. There are five variants of this procedure, which are the same besides the value of $x$:
 
-- CC1: $x = 1.0$
-- CC2: $x = 0.9$
-- CC3: $x = 0.8$
-- CC4: $x = 0.7$
-- CC5: $x = 0.6$
+- CC1: $x = 0$
+- CC2: $x = 0.1$
+- CC3: $x = 0.2$
+- CC4: $x = 0.3$
+- CC5: $x = 0.4$
 
 ### `DD`: Delay Difference
 
