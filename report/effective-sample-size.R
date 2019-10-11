@@ -4,13 +4,21 @@
 
 # d <- readRDS("../gfsynopsis/report/data-cache/pacific-ocean-perch.rds")
 # d <- readRDS("../gfsynopsis/report/data-cache/redbanded-rockfish.rds")
-d <- readRDS("../gfsynopsis/report/data-cache/arrowtooth-flounder.rds")
-d <- readRDS("../gfsynopsis/report/data-cache/rex-sole.rds")
+# d <- readRDS("../gfsynopsis/report/data-cache/arrowtooth-flounder.rds")
+# d <- readRDS("../gfsynopsis/report/data-cache/rex-sole.rds")
 # survey_sets <- d$survey_sets
-d <- d$survey_samples
+# d <- d$survey_samples
 
 # You can get that same data frame with:
 # d <- gfdata::get_survey_samples("arrowtooth flounder")
+
+f <- "data/arrowtooth-flounder-survey-samples.rds"
+if (!file.exists(f)) {
+  d <- gfdata::get_survey_samples("arrowtooth flounder")
+  saveRDS(d, file = f)
+} else {
+  d <- readRDS(f)
+}
 
 library(dplyr)
 d <- filter(d, survey_series_id %in% 4) # Pick an example survey
@@ -31,7 +39,7 @@ r_hat <- group_by(dd, sample_id) %>%
   mutate(r_hat = numerator / denominator) %>%
   pull(r_hat)
 r_hat # mean length of fish across sampling events
-mean(dd$length) # that was a fancy way of doing this
+mean(dd$length) # that was a fancy way of doing this because we don't have stations (M_i)
 
 M_bar <- group_by(dd, sample_id) %>%
   summarize(M_i = n()) %>%
@@ -90,7 +98,7 @@ m_hat_eff * .n
 # this is in comparison to the number of fish actually sampled:
 nrow(dd)
 
-# Alternatively, I think we can get there like this:
+# Alternatively, we can get there like this:
 
 # The ratio of expected versus observed variance of mean length:
 ratio_sigma <- (sigma_2 / M_bar) / var_r_hat
