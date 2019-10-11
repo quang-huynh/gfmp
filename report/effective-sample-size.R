@@ -70,7 +70,7 @@ sigma_2 <- group_by(dd, sample_id) %>%
   ungroup() %>%
   summarize(
     result =
-      sum((M_i / m_i) * (x_ij - r_hat)^2) / (sum(M_i) - 1)
+      sum((M_i / m_i) * (x_ij - r_hat)^2) / (nrow(dd) - 1)
   ) %>%
   pull(result)
 sigma_2 # estimated variance of the population length distribution
