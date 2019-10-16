@@ -1,4 +1,5 @@
 library(dplyr)
+library(ggplot2)
 
 get_ess_hat <- function(x) {
 
