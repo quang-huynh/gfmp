@@ -2,6 +2,8 @@ library(dplyr)
 library(ggplot2)
 library(DLMtool)
 library(here)
+library(gfdlm)
+library(gfutilities)
 
 om_dir <- here("report/mp-screening/om")
 dir.create(om_dir, showWarnings = FALSE)
@@ -9,12 +11,12 @@ mse_gen_dir <- here("report/mp-screening/mse-generated")
 dir.create(mse_gen_dir, showWarnings = FALSE)
 
 ovr <- FALSE
-download_om(file.path(om_dir, "pop"), "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = ovr)
-download_om(file.path(om_dir, "redbanded"), "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
-download_om(file.path(om_dir, "rougheye"), "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
-download_om(file.path(om_dir, "shortspine"), "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = ovr)
-download_om(file.path(om_dir, "yelloweye"), "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
-download_om(file.path(om_dir, "arrowtooth"), "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "pop"), "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "redbanded"), "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "rougheye"), "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "shortspine"), "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "yelloweye"), "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "arrowtooth"), "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = ovr)
 
 pop_om <- readRDS(file.path(om_dir, "pop.rds"))
 rdb_om <- readRDS(file.path(om_dir, "redbanded.rds"))
@@ -85,10 +87,7 @@ mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, " ")))
 mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 
 library(MSEtool)
-mps_keep <- union(mps_keep, c("DDSS_MSY", "DDSS_4010", "SP_MSY", "SP_4010"))
-
-# FIXME: Error: Islope3 is not a valid MP!?
-mps_keep <- mps_keep[!mps_keep %in% c("Islope3")]
+mps_keep <- union(mps_keep, c(".DDSS_MSY", ".DDSS_4010", ".SP_MSY", ".SP_4010"))
 mps_keep <- sort(mps_keep)
 
 DLMtool::setup(cpus = parallel::detectCores())
@@ -110,9 +109,6 @@ for (i in seq_along(oms)) {
 }
 snowfall::sfStop()
 
-library(gfutilities)
-
-library(gfdlm)
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
