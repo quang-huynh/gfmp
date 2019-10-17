@@ -29,7 +29,7 @@ oms <- list(pop = pop_om,
             rdb = rdb_om,
             rgh = rgh_om,
             srt = srt_om,
-            yel = yel_om,
+            # yel = yel_om,
             arr = arr_om)
 mse <- list()
 
@@ -61,24 +61,33 @@ oms$pop@Iobs <- c(0.20, 0.35)
 oms$arr@Iobs <- c(0.15, 0.25)
 
 # TODO: FINISH THIS:
-# based on the synopsis report:
-oms$pop@CAL_nsamp
-oms$pop@CAL_ESS
+oms$pop@CAL_nsamp <- c(100, 100)
+oms$pop@CAL_ESS <- c(100, 100)
+oms$pop@Ibiascv
+oms$pop@beta
 
-oms$rdb@CAL_nsamp
-oms$rdb@CAL_ESS
+oms$rdb@CAL_nsamp <- c(100, 100)
+oms$rdb@CAL_ESS <- c(100, 100)
+oms$rdb@Ibiascv
+oms$rdb@beta
 
-oms$rgh@CAL_nsamp
-oms$rgh@CAL_ESS <- c(100, 200)
+oms$rgh@CAL_nsamp <- c(100, 100)
+oms$rgh@CAL_ESS <- c(100, 100)
+oms$rgh@Ibiascv
+oms$rgh@beta
 
-oms$srt@CAL_nsamp <- c(300, 1300) # all commercial
-oms$srt@CAL_ESS
+oms$srt@CAL_nsamp <- c(100, 100)
+oms$srt@CAL_ESS <- c(100, 100)
+oms$srt@Ibiascv
+oms$srt@beta
 
-oms$yel@CAL_nsamp
-oms$yel@CAL_ESS
+# oms$yel@CAL_nsamp
+# oms$yel@CAL_ESS
 
-oms$arr@CAL_nsamp
-oms$arr@CAL_ESS
+oms$arr@CAL_nsamp <- c(100, 100)
+oms$arr@CAL_ESS <- c(100, 100)
+oms$arr@Ibiascv
+oms$arr@beta
 
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
@@ -89,6 +98,7 @@ mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 library(MSEtool)
 mps_keep <- union(mps_keep, c(".DDSS_MSY", ".DDSS_4010", ".SP_MSY", ".SP_4010"))
 mps_keep <- sort(mps_keep)
+mps_keep <- mps_keep[!grepl("L", mps_keep)] # no length-based MPs
 
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
@@ -160,9 +170,9 @@ top_pm <- wide_pm %>%
   # filter(LTY  > 0.50 * LTY_FMSYref) %>%
   filter(LTY  > 0.50) %>%
   filter(STY  > 0.50) %>%
-  filter(PNOF > 0.60) %>%
-  filter(`LT P80`  > 0.60) %>%
-  filter(`LT P40`  > 0.90) %>%
+  filter(PNOF > 0.50) %>%
+  filter(`LT P80`  > 0.50) %>%
+  filter(`LT P40`  > 0.80) %>%
   filter(class != "Reference") %>%
   group_by(species) %>%
   # top_n(n = 20L, wt = LTY) %>%
@@ -173,7 +183,7 @@ omitted <- filter(wide_pm, !mp %in% as.character(unique(top_pm$mp)), class != "R
 omitted
 
 top_pm
-sort(table(top_pm$mp))
+rev(sort(table(top_pm$mp)))
 
 top_mp_names <- unique(top_pm$mp)
 length(top_mp_names)
