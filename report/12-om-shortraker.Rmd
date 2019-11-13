@@ -601,7 +601,7 @@ obs_sr@Iobs <- c(average_cv, average_cv)
 
 TODO: I believe this refers to bias from simulation run to run.
 
-For simp_srlicity we will set this to 0.
+For simplicity we will set this to 0.
 
 ```{r desc-obs-ibiascv-sr, results = knitr_results, echo = knitr_echo}
 obs_sr@Ibiascv <- c(0, 0)
