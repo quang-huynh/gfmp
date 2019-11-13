@@ -19,7 +19,6 @@ rex_om@LFS
 rex_om@L5
 rex_om@Cobs
 rex_om@Perr
-rex_om@nsim <- 4
 rex_om@Msd <- c(0, 0)
 rex_om@Linfsd <- c(0, 0)
 rex_om@Ksd <- c(0, 0)

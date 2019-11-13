@@ -48,12 +48,12 @@ if (!file.exists(f)) {
   d <- readRDS(f)
 }
 
-x <- filter(d, year == 2018, survey_series_id == 4) %>% # pick one
+x <- dplyr::filter(d, year == 2018, survey_series_id == 4) %>% # pick one
   select(length, sample_id)
 length_bins <- seq(min(x$length) - 1, max(x$length) + 1, length.out = 25)
 x$length_bin <- length_bins[findInterval(x$length, length_bins)]
 
-x %>% filter(sample_id %in% sample(unique(x$sample_id), 24)) %>%
+x %>% dplyr::filter(sample_id %in% sample(unique(x$sample_id), 24)) %>%
   group_by(sample_id, length_bin) %>%
   summarise(value = n()) %>%
   ggplot(aes(length_bin, value)) + facet_wrap(~sample_id, ncol = 4) + geom_col()

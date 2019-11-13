@@ -658,10 +658,10 @@ obs_rex@CAA_ESS
 
 *Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
 
-The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000; however, this is only done every second year. We will therefore divide this sample number by two.
+The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000.
 
 ```{r desc-obs-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAL_nsamp <- c(3000, 4000)/2
+obs_rex@CAL_nsamp <- c(3000, 4000)
 obs_rex@CAL_nsamp
 ```
 <!-- slot-chunk-end -->
@@ -671,11 +671,10 @@ obs_rex@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
 
-Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be about 0.4 of the actual samples.
+Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 400.
 
 ```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAL_ESS <- obs_rex@CAL_nsamp * 0.4
-obs_rex@CAL_ESS
+obs_rex@CAL_ESS <- c(300, 400)
 ```
 <!-- slot-chunk-end -->
 
@@ -752,8 +751,6 @@ obs_rex@LenMbiascv <- c(0,0)
 We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`. 
 
 Most MPs don't need an estimate of M, although the delay-difference (DD) MP does and may be sensitive to this value. The default value is 0.2 and may cause the DD MP to perform too well.
-
-
 
 ```{r desc-obs-mbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Mbiascv
