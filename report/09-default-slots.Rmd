@@ -6,7 +6,7 @@ knitr_echo <- TRUE
 
 \clearpage
 
-# DEFAULT SLOTS
+# DEFAULT SLOTS {#app:default-slots}
 
 The following are OM values or "slots" that we suggest by default be "turned off" or set to default values for the sake of simplicity. On a case-by-case basis, an analysis might choose to set some of these slots to other values or include other values as part of a robustness set. However, unless specified otherwise, the following slots can be assumed to be specified as follows.
 

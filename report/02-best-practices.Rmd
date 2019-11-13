@@ -64,12 +64,109 @@ A satisficing step may be used to screen out MPs that did not meet a minimum sta
 
 ## STEP 1. DEFINE THE DECISION CONTEXT
 
+Much of the decision context is laid out by the...
+
+The decision to be made on the timeframe for making the decision are laid out in the request for science advice...
+
+The boundaries on the project and decision are often decided on by the technical committee for a given assessment, which is typically comprised of representatives from DFO Science, Management, recreational and commercial industry, First Nations representatives, NGOs, ... other interested parties.
+
+We suggested the technical committee being responsible for proposing a set of objectives and performance metrics for a specific stock. This may require somewhat more consultation then technical committees for traditional stock assessments, but we are not proposing a full MSE process... which require a level of consultation that is not feasible for all Pacific Region groundfish stocks.
+
+As laid out in... decisions on catch limits are ultimately decided by Fisheries Management based on a consensus on science advice from a regional peer review meeting and in consideration of...
+
+We emphasize that the decision to be made in the context of the MP Framework is what MP to choose based on trade-offs in performance amongst MPs. The simulation framework tests the performance of specific MPs---it does not test posthoc adjustments to the catch limit recommended by an MP.
+
+This is in contrast to the traditional decision tables presented in most Pacific Region groundfish stock assessments in recent years.
+
 ## STEP 2. SELECTION OF OBJECTIVES AND PERFORMANCE METRICS
+
+* Here we describe a set of provisional objectives and associated performance metrics.
+* We call the provisional because they are by no means final but represent a starting point and may be used if there is not reason to change them for a given stock.
+* Tie this into the PA Framework.
+
+We propose the following provisional operational/tactical conservation and fisheries objectives:
+    * Maintain stock status above the LRP in the long-term with extremely high probability.
+    * Maintain stock status above the USR...!?
+    * Avoid overfishing with high probability.
+    * Given the conservation objectives are achieved, maximize short- and 
+      long-term fisheries yield.
+    * Given the conservation objectives are achieved, minimize variability 
+      in fisheries yield from year to year.
+    
+* The specific probabilities assigned to successfully achieving each objective likely need some consideration on a stock by stock basis. But we provisionally suggest the following based on the PA Framework and precedents in other DFO Pacific Region assessments...
+
+* We provisionally suggest a 50 year projection.
+    * Shorter-lived stocks may use a shorter projection period; longer-live stocks may use a longer projection period.
+    * Applications for specific uses like COSEWIC may require a specific projection period.
+
+We propose the following provisional performance metrics, where SB refers to spawning biomass and MSY refers to maximum sustainable yield:
+
+1. LT P40: Probability SB > 0.4 SBMSY (years 36--50)
+2. LT P80: Probability SB > 0.8 SBMSY (years 36--50)
+3. PNOF: Probability of not overfishing P(F < F[MSY]) (years 1--50)
+4. STY: Probability yield > 0.5 MSY (years 6--20)
+5. LTY: Probability yield > 0.5 MSY (years 36--50)
+6. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
+
+LT P40, LT P80, and PNOF are conservation performance metrics. LTY, STY, and AAVY are fisheries metrics.
 
 ## STEP 3. SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS
 
+Uncertainties inherent in the underlying system are represented in the OM. These may be related to the biology of the stock (e.g., growth, natural mortality, recruitment, migration), the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear), the observation process (e.g., bias or imprecision in survey data or age/length composition data), and the implementation process (e.g., exceeding catch limits) [@carruthers2018]. 
+
+Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured within a single OM by expressing distributions for these parameters. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in one model. Therefore, best practice recommends dividing MSE trials into a "reference set", representing a core set of of OMs that include the most important uncertainties, and a "robustness set", representing other plausible OM formulations that represent alternative structural hypotheses (e.g., time-varying natural mortality, climate-driven recruitment, or changes to available resource monitoring in the future [@rademeyer2007]). @punt2016 provide a list of factors whose uncertainty commonly has a large impact on MSE performance (their Table 3). They note that, in some cases, where the data used to parameterize the OM are in conflict (e.g., indices of abundance are in conflict), the best practice may be to develop alternative OMs based on the different data sources.
+
+Ideally, OMs should be calibrated to real data to ensure they can reproduce historical observations [e.g., @cox2008a; @forrest2018]. In very data-limited cases, of course, this may not be possible. In these cases, best practice would be to develop a set of OMs that differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
+
+* We recommend dividing operating models into reference and robustness sets [@rademeyer2007].
+* Major axes of uncertainty that are likely across most stocks this framework will apply to include: natural mortality, depletion, and 
+
+DLMtool allows for incorporation of uncertainty in most OM parameters by specifying a distribution, typically a uniform distribution between two bounds.
+
+There can also be value in dividing the uncertainty into specific OMs to understand the applications of different scenarios.
+
+The most important axes of uncertainty in reference sets for most but not all stocks are likely to include:
+
+* Natural mortality (M)
+* Steepness
+* Depletion
+
+Candidates for robustness sets may include:
+
+* Predation scenarios (e.g., seal predation)
+* Changes in availability of prey
+* The effectiveness of or changes to closed areas such as Rockfish Conservation Areas (RCAs)
+* Implementation error (actual catches are above or below the TAC)
+
+DLMtool includes a very large number of parameters in the OM that can vary through time or be biased from one stochastic iteration to the next. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we propose fixing a number of parameters to be unbiased and fixed through time unless this is an axis of uncertainty that makes sense to explore for specific stock (Appendix \@ref(app:default-slots)).
+
 ## STEP 4. IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES
+
+We screened all MPs available in DLMtool as of November 2019 to consider their appropriateness for the MP Framework (Appendix \@ref(#app:MPs)).
+
+In summary, we excluded all MPs the required as input knowledge of:
+
+* absolute abundance
+* depletion
+* steepness
+* recent age composition data
+
+DLMtool contains a number of MPs that make catch recommendations based on trends in mean fish length. These may be appropriate for some stocks, but ...
+
+We suggest the empirical index-based MPs are likely to be most suitable for most data-limited groundfish stocks in the Pacific Region. This family of MPs generally try to maintain an index (usually a relative biomass or abundance index from a fisheries-independent survey) at some level by adjusting catch recommendations up or down as the index moves up or down. Different MPs include various levels of smoothing or thresholds and various methods of deriving a target index level. Such MPs have been considered as part of ... in the Pacific Region (REFs).
+
+In addition to the empirical index-based MPs DLMtool and MSEtool include simple surplus production models, which may be considered for some stocks. We emphasize that these model-based MPs are simpler than the implementations often used in previous Pacific Region stock assessments. The point of using these models is to test their success at achieving the performance metrics and not the specific assumptions made within the implementations of the model.
+
+DLMtool currently generates a single index of abundance for use in the data- or model-based MPs. In the future the software may include multiple indices of abundance; however, the vast majority of published data-limited MPs are based on single indices of abundance. This presents a conundrum for groundfish stocks in the Pacific Region since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis alternating amongst areas. We suggest the following solutions at the present time:
+
+* Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas.
+
+* Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs.
+
 
 ## STEP 5. SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES
 
 ## STEP 6. PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE
+
+For this step we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
+
