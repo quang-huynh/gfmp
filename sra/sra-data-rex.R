@@ -79,36 +79,17 @@ MSEtool::plot_composition(all_years,
   obs = cal_wcvi$cal,
   CAL_bins = cal_wcvi$length_bins
 )
-#
-# # rex_om@nsim <- 8L
-# rex_sra1 <- MSEtool:::SRA_scope(rex_om,
-#   Chist = catch, Index = indexes[, 1L],
-#   CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins, I_sd = indexes[, 2L],
-#   I_type = 1L, cores = 1L, report = TRUE
-# )
-#
-# MSEtool::plot_SRA_scope(rex_sra1$OM,
-#   Chist = catch,
-#   CAL = cal_wcvi$cal,
-#   Index = indexes[, 1L], report_list = rex_sra1$report, Year = all_years
-# )
 
 I_sd <- indexes[, 2L]
-# I_sd[all_years == 2004] <- 1
-# I_sd[all_years == 2006] <- 1
 I_sd
 
-# rex_om@M <- c(0.12, 0.12)
-# rex_om@M <- c(0.17, 0.17)
-# rex_om@maxage <- 50
-# rex_om@maxage <- 27
-
+rex_om@M
+rex_om@maxage
 rex_om@L5
 rex_om@LFS
 
 rex_om@nsim <- 100
-cores <- floor(parallel::detectCores() / 1)
-# cores <- floor(1)
+cores <- floor(parallel::detectCores() / 2)
 
 library(MSEtool)
 rex_sra2 <- MSEtool::SRA_scope(rex_om,
@@ -119,16 +100,10 @@ rex_sra2 <- MSEtool::SRA_scope(rex_om,
 )
 
 plot(rex_sra2)
-# hist(rex_sra2$OM@cpars$D)
-# matplot(t(rex_sra2$OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
-# hist(rex_sra2$OM@cpars$AC)
-# matplot(t(rex_sra2$output$SSB), type = "l", lty = 1, col = "#00000040")
-# matplot(t(rex_sra2$OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
+hist(rex_sra2@OM@cpars$D)
+matplot(t(rex_sra2@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
+hist(rex_sra2@OM@cpars$AC)
+matplot(t(rex_sra2@SSB), type = "l", lty = 1, col = "#00000040")
+matplot(t(rex_sra2@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
 
-# MSEtool::plot_SRA_scope(rex_sra2$OM,
-#   Chist = catch,
-#   Index = indexes[, 1L], report_list = rex_sra2$report, Year = all_years
-# )
-
-saveRDS(rex_sra2$OM, file = here::here("generated-data", "rex-om-sra.rds"))
-saveRDS(rex_sra2$report, file = here::here("generated-data", "rex-sra-report.rds"))
+saveRDS(rex_sra2, file = here::here("generated-data", "rex-sra.rds"))
