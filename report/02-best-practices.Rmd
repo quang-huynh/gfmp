@@ -112,20 +112,13 @@ LT P40, LT P80, and PNOF are conservation performance metrics. LTY, STY, and AAV
 
 ## STEP 3. SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS
 
-Uncertainties inherent in the underlying system are represented in the OM. These may be related to the biology of the stock (e.g., growth, natural mortality, recruitment, migration), the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear), the observation process (e.g., bias or imprecision in survey data or age/length composition data), and the implementation process (e.g., exceeding catch limits) [@carruthers2018]. 
-
-Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured within a single OM by expressing distributions for these parameters. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in one model. Therefore, best practice recommends dividing MSE trials into a "reference set", representing a core set of of OMs that include the most important uncertainties, and a "robustness set", representing other plausible OM formulations that represent alternative structural hypotheses (e.g., time-varying natural mortality, climate-driven recruitment, or changes to available resource monitoring in the future [@rademeyer2007]). @punt2016 provide a list of factors whose uncertainty commonly has a large impact on MSE performance (their Table 3). They note that, in some cases, where the data used to parameterize the OM are in conflict (e.g., indices of abundance are in conflict), the best practice may be to develop alternative OMs based on the different data sources.
-
-Ideally, OMs should be calibrated to real data to ensure they can reproduce historical observations [e.g., @cox2008a; @forrest2018]. In very data-limited cases, of course, this may not be possible. In these cases, best practice would be to develop a set of OMs that differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
-
 * We recommend dividing operating models into reference and robustness sets [@rademeyer2007].
-* Major axes of uncertainty that are likely across most stocks this framework will apply to include: natural mortality, depletion, and 
 
-DLMtool allows for incorporation of uncertainty in most OM parameters by specifying a distribution, typically a uniform distribution between two bounds.
+* DLMtool allows for incorporation of uncertainty in most OM parameters by specifying a distribution, typically a uniform distribution between two bounds.
 
-There can also be value in dividing the uncertainty into specific OMs to understand the applications of different scenarios.
+* There can also be value in dividing the uncertainty into specific OMs to understand the applications of different scenarios.
 
-The most important axes of uncertainty in reference sets for most but not all stocks are likely to include:
+The most important axes of uncertainty in reference sets that are likely across most stocks this framework will apply to include:
 
 * Natural mortality (M)
 * Steepness
@@ -140,16 +133,57 @@ Candidates for robustness sets may include:
 
 DLMtool includes a very large number of parameters in the OM that can vary through time or be biased from one stochastic iteration to the next. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we propose fixing a number of parameters to be unbiased and fixed through time unless this is an axis of uncertainty that makes sense to explore for specific stock (Appendix \@ref(app:default-slots)).
 
+In the spirit of reproducible research and transparency, we suggest that the full specification of all parameters in the operating model be clearly documented in an implementation of the MP Framework. We demonstrate this in our case studies within this document (Appendix TODO and Appendix TODO).
+
+*TODO: Abbreviate the following and put many more details into the appendix including the model description*
+
+DLMtool includes an implementation of a Stock Reduction Analysis (REF), which is effectively a catch-at-age or surplus production model (depending on data inputs) that explores the combinations of historical fishing mortality and recruitment would be consistent with the observed data.
+
+Kimura and Tagart (1982)
+Walters et al. (2006)
+
+The SRA implementation in MSEtool includes stochastic sampling of the specified operating model parameters. For example, if steepness is defined as being drawn from a uniform distribution between 0.6 and 0.9 across 200 stochastic iterations, then the SRA model will be fit 200 times, each time drawing a different value from that uniform distribution. Those sampled values of steepness are then stored and associated with the estimated parameters in the SRA model such as depletion and annual fishing mortality.
+
+The SRA implementation in MSEtool can be conditioned on catch or effort timeseries. For most applications for groundfish in the Pacific Region, we suggest that conditioning on catch would make the most sense given that we tend to have a better handle on historical trajectories of catch than effort.
+
+If catch are not available going back to unfished conditions, the user can specify a range of initial depletion associated with the first year of available catch.
+
+The SRA function can take as input:
+
+* indices of relative abundance or biomass
+* age composition data
+* length composition data
+* mean length data
+
+Given that in the Pacific Region we tend to have full-length composition data rather than just mean length data, the mean length data input is unlikely to be used within the MP Framework.
+
+Although the SRA requires a complete time series of catch, it can make use of potentially sparse inputs of relative abundance and age or length composition data.
+
+The SRA model can accommodate multiple indices of abundance and multiple fishing fleets.
+
+Selectivity is fixed based on input values in the operating model if there are not any age or length composition data included.
+
+The SRA model conditions the following OM parameters:
+
+* unfished recruitment
+* depletion
+* relative fishing effort
+* annual recruitment deviations
+* selectivity parameters if age or length composition data are included
+
+Details on the SRA model are available in Appendix TODO.
+
 ## STEP 4. IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES
 
 We screened all MPs available in DLMtool as of November 2019 to consider their appropriateness for the MP Framework (Appendix \@ref(#app:MPs)).
 
-In summary, we excluded all MPs the required as input knowledge of:
-
+In summary, we excluded all MPs that required knowledge of:
 * absolute abundance
-* depletion
-* steepness
 * recent age composition data
+* depletion
+* steepness.
+
+We excluded MPs that required knowledge of absolute abundance since they are unlikely to be cases where we have such knowledge in a data limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age competition data are not available. We excluded MPs that required knowledge of depletion and steepness since these are likely to be major axes of uncertainty stocks that the framework will be applied to. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data would require choosing a value of depletion and steepness, which we argue would be a hard choice to justify and would be challenging to incorporate our true levels of uncertainty about and levels of bias in these parameters. 
 
 DLMtool contains a number of MPs that make catch recommendations based on trends in mean fish length. These may be appropriate for some stocks, but ...
 
@@ -161,12 +195,34 @@ DLMtool currently generates a single index of abundance for use in the data- or 
 
 * Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas.
 
-* Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs.
+* Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs].
 
+
+Important to include reference MPs to bound the range of expected performance under scenarios such as: no fishing, perfect information, and maintaining the status quo TAC.
 
 ## STEP 5. SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES
+
+* Once the OM and MPs are fully specified, DLMtool can be used to repeatedly simulate from the operating model and apply the management procedures.
+
+* Replicates from run to run differ in  ...
+
+* We suggest that sufficient replicates be run until the rank order of the various MPs across the various performance metrics within any given operating model remains consistent.
+
+* We suggest only including replicates with MPs that converged (only applicable to the model-based MPs).
 
 ## STEP 6. PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE
 
 For this step we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
+
+Spider plots [REF]. These illustrate performance trade-offs amongst the various MPs in a condensed visual fashion that lends itself to small multiples [REF] to explore a variety of OMs and MPs in a small amount of space.
+
+Visualizations highlight the reference MPs for ease of comparison.
+
+A performance metric Table/Figure. Shaded by probability of achieving that performance metric with rows ordered by performance metric starting with the leftmost performance metric and working across the columns to break ties. We think the shading helps to draw the eye to differences and similarities in performance.
+
+Important to show historical trajectories of parameters such as: historical catch, historical recruitment, historical SSB, historical F, ... and any others that make particular sense for a given stock.
+
+We developed projection plots that show the range of projected values in B/B[MSY], F/F[MSY], catch, and TAC recommendations along with example replicates for the various MPs.
+
+We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
 
