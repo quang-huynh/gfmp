@@ -10,10 +10,10 @@ The majority of species encountered by the integrated groundfish fishery can be 
 
 The Canadian Sustainable Fisheries Framework lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP)--that delineate when fishing mortality is reduced or ceased (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones, and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
-(ref:fig-pa) PLACEHOLDER: Illustration of DFO's PA Framework [@dfo2009].
+(ref:fig-pa) Illustration of DFO's PA Framework [@dfo2009].
 
-```{r pa-illustration, fig.cap="(ref:fig-pa)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/pa-approach.jpg"))
+```{r pa-illustration, fig.cap="(ref:fig-pa)", out.width="3.8in"}
+knitr::include_graphics(here::here("images/pa-framework.png"))
 ```
 
 <!-- *TO DO: Decide whether to run with the existing PA diagram or delineate Operational Control Points from Reference Points. Would also include text here. Argument against is to keep things simple and focused on the PA as stated. Argument for is that we should follow up on previous published advice for Groundfish and Herring that the fishing "cutoff" needs to be separated from the LRP to be consistent with definition of the LRP as a point of "serious harm", i.e., we shouldn't fish right down to it ... * -->
