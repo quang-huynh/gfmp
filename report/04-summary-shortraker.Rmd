@@ -1,1 +1,53 @@
 # SHORTRAKER ROCKFISH CASE STUDY
+
+## BACKGROUND
+
+## BIOLOGY?
+
+Shortraker rockfish, which represents a small portion of the trawl and hook and 
+line fisheries, was last assessed as part of the slope rockfish assemblage 
+(Pacific ocean perch, yellowmouth rockfish, redstripe rockfish,
+rougheye rockfish, shortspine/longspine thornyheads and shortraker rockfish) in 
+1998 {@Schnute1999a} and updated in 1999 {@Schnute1999b}. 
+These seven species were managed within six major
+areas (3C, 3D,AS, 5CD, 5EN, 5ES) for a total of 42 species-area combinations,
+called \emph{assessment units}. A detailed catch-at-age analysis was conducted
+for one of these assessment units, Pacific ocean perch in area 5AB, as a
+benchmark stock, and quoatas for the roteher 41 assessment units resulted from 
+scale factors relating each unit to the benchmark stock. Scale factors were 
+estimated from historical fisheries data, research surveys, and knowledge from 
+expert fishermen. 
+
+All slope rockfish assessments suffer from the lack of reliable time series on
+fishery catch. The port monitoring program initiated in 1994 and the at-sea 
+observer program initiated in 0ct 1995 have led to major improvements in data 
+quality. In the 1998 assessment report, it was noted that depth was an important factor 
+influencing trawl catch per unit effort (CPUE), and therefore all analyses
+of CPUE data incorporated depth stratification. It was also noted that
+CPUE in commercial tows was lower than in survey tows for some species in 
+similar time, place and depth. Commercial CPUE data was determined to therefore
+not reflect stock abundance; consequently, a fishery-independent industry-
+sponsered survey of the slope rockfish was developed in collaboration between
+industry and DFO. Also, a newly developed observer database (housing trawl 
+observer data starting in 1996, with hook and line observer data to be
+added starting in 2006) began to be incorporated into assessments
+{@Schnute1999a, @Richards1998}. 
+
+Shortraker rockfish has not been assessed since the 1999 report. 
+##?? is it that there was no assessment done because (someone, industry? was an
+##assessment attempted?) didn't think we had enough data if CPUE couldn't be used?
+
+
+Fishery-independent trawl surveys have been conducted in 4 areas, alternately covering two areas 
+each year, since 2003. Longline surveys have been conducted in the north and 
+south in alternating years since 2006, and the International Pacific Halibut
+Commission Fishery Independent Setline Survey has sampled rockfish species 
+since 1995 (either on all hooks or the first 20 of each skate).
+
+The trawl fishery underwent a major change in 1997 through the introduction of
+individual vessel quotas (IVQs).
+
+
+## biology?
+
+SR misidentified as rougheye
