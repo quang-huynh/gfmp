@@ -1,9 +1,36 @@
 # SHORTRAKER ROCKFISH CASE STUDY
 
+## BIOLOGY
+Available biological data (lengths, weights, maturities and ages) are housed 
+in the GFBio database and come primarily from fishery-independent surveys. Shortraker rockfish ages
+all come from survey data only, and are in the database from surveys conducted
+in 1997, 2002-2003, 2006-2008 and 2010-2012. Structures were also collected in
+2013-present which have yet to be aged. The oldest aged of Shortraker rockfish
+
+```r
+x <- gfdata::get_survey_samples(403)
+survey <- x %>% dplyr::summarise(max_age = max(age, na.rm = TRUE),
+  min_age = min(age, na.rm = TRUE),
+  max_length = max(length, na.rm = TRUE),
+  min_length = min(length, na.rm = TRUE),
+  max_weight = max(weight, na.rm = TRUE),
+  min_weight = min(weight, na.rm = TRUE)) %>% 
+  dplyr::mutate(source = "survey")
+
+comm <- y %>% dplyr::summarise(max_age = max(age, na.rm = TRUE),
+  min_age = min(age, na.rm = TRUE),
+  max_length = max(length, na.rm = TRUE),
+  min_length = min(length, na.rm = TRUE),
+  max_weight = max(weight, na.rm = TRUE),
+  min_weight = min(weight, na.rm = TRUE)) %>% 
+  dplyr::mutate(source = "comm")
+
+all <- rbind(survey, comm)
+```
+
+
+
 ## BACKGROUND
-
-## BIOLOGY?
-
 Shortraker rockfish, which represents a small portion of the trawl and hook and 
 line fisheries, was last assessed as part of the slope rockfish assemblage 
 (Pacific ocean perch, yellowmouth rockfish, redstripe rockfish,
