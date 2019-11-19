@@ -1,0 +1,131 @@
+### `GB_target`: Geromont and Butterworth target CPUE and catch
+
+An MP that modifies a time-series of catch recommendations and aims for a target catch rate and catch level based on $B\textrm{MSY}/B_0$ and MSY, respectively.
+
+If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
+
+$$
+\textrm{TAC}= C_\textrm{ref}\left( w + (1-w)\frac{I_\textrm{rec}-I_0}{I_\textrm{target}-I_0} \right),
+$$
+
+otherwise:
+$$
+\textrm{TAC}= wC_\textrm{ref} \frac{I_\textrm{rec}}{I_0}^2,
+$$
+
+where $C_\textrm{ref}$ is a reference catch assumed to be a proxy for MSY, $w$ is a gain parameter, $I_\textrm{rec}$ is the average index over the last 4 years, $I\textrm{target}$ is the target Index, and $I_0$ is 0.2 x the average index over the past 5 years.
+
+In the MSE $C_\textrm{ref}$ is the calculated MSY subject to observation error, and $I\textrm{target}$ is assumed to be the index at MSY subject to observation error.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+*TODO: this one assumes a proxy for MSY! remove?*
+
+### `GB_CC`: Geromont and Butterworth constant catch
+
+A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY. The TAC is calculated as:
+
+$$
+\textrm{TAC} = C_\textrm{ref},
+$$
+
+where $C_{ref}$ is the reference catch. In the MSE $C_{ref}$ is the calculated MSY subject to observation error, therefore it is important to adequately represent error on assumed MSY if this MP is then to be applied to real data. See @geromont2015\.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+*TODO: remove this MP because it assumes knowing MSY?*
+
+### `IT`: Iterative index target
+
+An index target MP where the TAC is modified according to current index levels, which is calculated as the mean index over the last 5 years, relative to a target level.
+
+The TAC is calculated as:
+
+$$
+\textrm{TAC}_y = C_{y-1} I_\delta,
+$$
+
+where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to a reference index level. The reference index level is assumed to be a proxy for MSY. In the MSE $I_{ref}$ is the index at MSY subject to observation error. The performance of these methods in the MSE is therefore strongly determined by the uncertainty in the reference index.
+
+There are two variants of this procedure:
+
+- IT5: Maximum annual changes to the TAC are 5%
+- IT10: Maximum annual changes to the TAC are 10%
+
+*TODO: depends on knowing MSY! Remove?*
+
+### `Itarget`: Incremental index target
+
+A management procedure that incrementally adjusts the TAC from a reference level that is a fraction of mean recent catches to a target CPUE or relative abundance index.
+
+If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
+
+$$
+\textrm{TAC}= 0.5\ \textrm{TAC}^* \left[1+\left(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0}\right)\right],
+$$
+
+otherwise:
+
+$$
+\textrm{TAC}= 0.5\ \textrm{TAC}^*\left[\frac{I_\textrm{recent}^2}{I_0}\right],
+$$
+where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $TAC^*$ is $(1-xx)C$ where $xx$ is an argument to the function and $C$ is the average catch over the last 5 years of the historical period.
+
+There are four index/CPUE target MPs proposed by @geromont2015:
+
+- Itarget1: The least precautionary, with $xx = 0$ and $I_\textrm{multi} = 1.5$
+- Itarget2: Increasingly biological precautionary, with $xx = 0$ and $I_\textrm{multi} = 2.0$
+- Itarget3: Increasingly biological precautionary, with $xx = 0$ and $I_\textrm{multi} = 2.5$
+- Itarget4: Most biological precautionary, with $xx = 0.3$ and $I_\textrm{multi} = 2.5$
+
+### `ITM`: Index target based on natural mortality rate
+
+An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over last number of years determined by natural mortality $M$ relative to a target level.
+
+$$
+\textrm{TAC}_y = \textrm{TAC}_{y-1} \delta I,
+$$
+
+where $\delta I$ is the ratio of the mean index over $4 (\frac{1}{M})^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left(\frac{5+25M}{100}, 0.2\right)$
+
+### `SBT1`: Simple management procedure
+
+An MP that makes incremental adjustments to TAC recommendations based on the apparent trend in relative abundance index levels relative to target levels (B~MSY~/B0) and catch levels relative to target levels (MSY).
+
+For SBT1 the TAC is calculated as:
+
+$$
+\textrm{TAC}_y =
+\begin{cases}
+C_{y-1} (1 - K_1 \lambda^\gamma) & \textrm{if}\ \lambda \lt 0 \\
+C_{y-1} (1 + K_2 \lambda) & \textrm{if}\ \lambda \ge 0,
+\end{cases}
+$$
+
+where $\lambda$ is the slope of the index over the last 5 years, and $K_1$, $K_2$, and $\gamma$ are arguments to the MP.
+
+For SBT2, the TAC is calculated as:
+
+$$
+\textrm{TAC}_y = 0.5 (C_{y-1} + C_\textrm{targ} \delta),
+$$
+
+where $C_{y-1}$ is catch in the previous year, $C_\textrm{targ}$ is a target catch, and:
+
+$$
+\delta =
+\begin{cases}
+R^{1+epsR} & \textrm{if}\ R \lt 1 \\
+R^{1-epsR} & \textrm{if}\ R \ge 1,
+\end{cases}
+$$
+
+where $epsR$ is a control parameter and $R = \frac{\bar{r}}{\phi}$ where $\bar{r}$ is the mean recruitment over the last 5 years and $\phi$ is the mean recruitment over the last 10 years.
+
+*TODO: requires knowledge of MSY! remove?*
