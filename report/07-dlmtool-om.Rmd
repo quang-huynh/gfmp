@@ -202,7 +202,7 @@ $$
 $$
 
 The realized catches \(\dot{C}\ \) are the TAC recommendations accounting
-for implementation error in the TAC $I_\textrm{TAC}$ (see TODO for the implementation error equations), retention rates $R$ and post-release mortality rate $M_{\textrm{disc}}$:
+for implementation error in the TAC $I_\textrm{TAC}$ (see TODO for the implementation error equations), retention rates $R$ and post-release mortality rate $\theta_{M{\textrm{disc}}}$:
 
 $$
 \dot{C}_{y,a} = \frac{{\dot{V}}_{y,a}} {\sum_{a}^{n_{a}}{\dot{V}}_{y,a}}
