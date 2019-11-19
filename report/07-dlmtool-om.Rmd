@@ -12,7 +12,7 @@ The full operating model with many parameters varying by year, multiple subareas
 
 <!-- Last historical year, the ``current'' year is denoted by $c$. -->
 
-The DLMtool population dynamics model is at its core a classical age-structured model. The numbers of fish $N$ in consecutive years $y$ are
+The DLMtool population dynamics model is an age-structured model. The numbers of fish $N$ in consecutive years $y$ are
 calculated from those from the previous year and age class $a$,
 subject to the instantaneous mortality rate $Z$:
 
@@ -20,6 +20,11 @@ $$
 N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} . 
 $$
 
+Numbers-at-age are initialized in the first historical year using unfinished recruitment \({{R}}_{0}\) as:
+
+$$
+N_{1,a} = {{R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}\ \cdot \varepsilon_{R,y - a}.
+$$
 
 Fish older than the maximum age $n_a$ are assumed to die. Total mortality rate $Z$ is the sum of natural mortality ($M$) and fishing mortality ($F$) rates:
 
@@ -84,7 +89,7 @@ $$
 S_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}.
 $$
 
-Weight-at-age ($W_a$) is then assumed to be related to length by:
+Weight-at-age ($W_a$) is then assumed to be related to length-at-age ($L_a$) by:
 
 $$
 W_{y,a} = \beta_{W}\ {L_{a}}^{\alpha_{W}}.
@@ -99,13 +104,117 @@ $$
 and to these initial draws ($\dot{\varepsilon}_{R,y}$), temporal autocorrelation is added as:
 
 $$
-{\widehat{\varepsilon}}_{R,y} = {{\theta}}_{\text{AC}}{\ \dot{\varepsilon}}_{R,y - 1} + {\ \dot{\varepsilon}}_{R,y}\sqrt{\left( 1 - {{{\theta}}_{\text{AC}}}^{2} \right)},
+\varepsilon_{R,y} = {{\theta}}_{\text{AC}}{\ \dot{\varepsilon}}_{R,y - 1} + {\ \dot{\varepsilon}}_{R,y}\sqrt{\left( 1 - {{{\theta}}_{\text{AC}}}^{2} \right)},
 $$
 
-where  $\theta_{\text{AC}}$ represents a first-order autocorrelation term.
+where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term.
 
-Numbers at age are initialized in the first historical year using unfinished recruitment \({{R}}_{0}\) as:
+# FISHING DYNAMICS
+
+TODO: reword some of this!
+
+Fishing mortality rate $F$ is calculated according to a catchability coefficient, annual effort $E$, age-selectivity $s$, the retention rate (probability of retaining a fish given it is caught) and $R$ the discard mortality rate $\theta_{M \text{disc}}$ (fraction of released fish that die):
 
 $$
-N_{1,a} = {{R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}\ \cdot \varepsilon_{R,y - a}.
+F_{y,a} = q E_y  s_{a} \left( R_{a} + \ \left( 1 - R_{a} \right)\ {\theta}_{M \text{disc}} \right).
+$$
+
+The catchability coefficient is calculated by numerical optimization such that stock depletion in the current year matches user-specified depletion \(D\) (spawning biomass relative to unfished levels):
+
+$$
+q = \text{opt}\left( D\ \vert \ E_{y}, s_{a}, R_{a}, {\theta}_{M \text{disc}}, M, {h}, W \right).
+$$
+
+The overall retention rate at age $R_a$, is a combination of an age-specific retention $r$ with a maximum value of $1$, and a constant rate of discarding \(\gamma\):
+
+$$
+R_{a} = r_{a}\ (1 - \gamma).
+$$
+
+Vulnerable biomass is the product of numbers $N$, weight $W$, and age selectivity $s$:
+
+$$
+V_{y} = \sum_{a = 1}^{n_{a}}N_{y,a}W_{a} s_{a}.
+$$
+
+The vulnerability-at-age $s_{a}$ is calculated from a double-normal selectivity curve and length-at-age:
+
+TODO
+
+<!-- s_{y,a} = \left\{ \begin{matrix} -->
+<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\text{smax}})}^{2}}{\sigma_{\text{sasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\text{smax}} \\ -->
+<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\text{smax}})}^{2}}{\sigma_{\text{sdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\text{smax}} \\ -->
+<!-- \end{matrix} \right -->
+
+The length at maximum selectivity \(L_{\text{smax}}\) is
+defined in the OM (Table App.D.1). The standard deviation parameters of the
+ascending limb is given by user-specified length at 5%
+vulnerability \({L}_{5}\):
+
+$$
+\sigma_{\text{sasc}}^{2} = \frac{{{L}}_{5} - {{L}}_{\text{smax}}}{\sqrt{- \log_{2^{0.05}}}}
+$$
+
+While the standard deviation of the descending limb is given by user-specified vulnerability \({V}_{\overline{L}} \) of fish of
+length \(\overline{L}\):
+
+$$
+\sigma_{\text{sdesc}}^{2} = \frac{\overline{L} - {{L}}_{\text{smax}}}{\sqrt{- \log_{2^{{{V}}_{\overline{L}}}}}}
+$$
+
+Age-specific retention $r$, is modelled using the same double-normal curve as selectivity:
+
+TODO
+<!-- \(r_{y,a} = \left\{ \begin{matrix} -->
+<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\text{rmax}})}^{2}}{\sigma_{\text{rasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\text{rmax}} \\ -->
+<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\text{rmax}})}^{2}}{\sigma_{\text{rdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\text{rmax}} \\ -->
+<!-- \end{matrix} \right.\ \) -->
+
+
+The length at maximum retention \({L}_{\text{rmax}}\) is
+user-specified. The standard deviation parameters of the
+ascending limb is given by user-specified length at 5% retention
+\({r}_{5}\):
+
+$$
+\sigma_{\text{rasc}}^{2} = \frac{{{r}}_{5} - {L}_{\text{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
+$$
+
+While the standard deviation of the descending limb is given by
+user-specified retention \({{r}}_{\overline{L}} \) of fish of
+length \(\overline{L}\):
+
+$$
+\sigma_{\text{rdesc}}^{2} = \frac{\overline{L} - {{L}}_{\text{rmax}}}{\sqrt{- \log_{2^{{{r}}_{\overline{L}}}}}}
+$$
+
+In historical simulations, catch in numbers $C$ are calculated
+using the Baranov equation:
+
+$$
+C_{y,a} = N_{y,a}\left( 1 - e^{- Z_{y,a}} \right) \frac{E_{y} s_{a} R_{a}\ }{Z_{y,a}}.
+$$
+
+In projected years when TACs are recommended by MPs, the equations are reversed and fishing mortality rates are calculated from prescribed catches. To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass (post retention because this is used to distribute landings) across ages:
+
+$$
+{\dot{V}}_{y,a} = N_{y,a} W_{a} s_{a} R_{a}.
+$$
+
+The realized catches \(\dot{C}\ \) are the TAC recommendations accounting
+for implementation error in the TAC $I_\text{TAC}$ (see TODO for the implementation error equations), retention rates $R$ and post-release mortality rate $M_{\text{disc}}$:
+
+$$
+\dot{C}_{y,a} = \frac{{\dot{V}}_{y,a}} {\sum_{a}^{n_{a}}{\dot{V}}_{y,a}}
+\text{TAC}_{\mathrm{MP},y}\ I_{\mathrm{TAC},y}\
+\frac{R_{y,a} + \left( 1 - R_{a} \right)
+{{\theta}}_{\text{Mdisc}}}{R_{a}}
+$$
+
+Fishing mortality rates are then calculated from these realized catches
+subject to the constraint that they do not exceed user-specified
+${F_\text{max}}$:
+
+$$
+F_{y,a} = \min \left( - \ln\left( 1 - \frac{{\dot{C}}_{y,a}}{N_{y,a}{W}_{a}} \right),F_{\max} \right).
 $$
