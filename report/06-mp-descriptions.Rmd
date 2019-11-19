@@ -90,8 +90,8 @@ $$
 
 where $C_{y-1}$ is catch from the previous year, $I$ is the slope of the linear regression of the log of an abundance index over the last 5 years, and $\lambda$ is a gain parameter the controls how quickly TAC is adjusted based on the slope of the index. The TAC is subject to the following conditions:
 
-- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
-- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+- if next TAC > 1.2 last catch, then TAC = 1.2 $\cdot$ catch
+- if next TAC < 0.8 last catch, then TAC = 0.8 $\cdot$ last catch
 
 These values limit the rate at which the TAC can be adjusted up or down.
 
@@ -151,7 +151,7 @@ $$
 \textrm{TAC} = \textrm{TAC}^*(1+\lambda I),
 $$
 
-where $TAC^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of the log relative abundance index over the past 5 years.
+where $\textrm{TAC}^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of the log relative abundance index over the past 5 years.
 
 There are four variants of this procedure:
 
@@ -162,3 +162,26 @@ There are four variants of this procedure:
 
 
 <!-- TODO: missing `SPmod` and potentially others -->
+
+### `IDX`: Index-based MP from Cox et al. (In press)
+
+This MP was used in the Cox et al. (In press) rebuilding plan for outside Yelloweye Rockfish in BC. The MP assigns TAC based on:
+
+$$
+\textrm{TAC}_y =
+\begin{cases}
+\textrm{TAC}_\textrm{Floor}, & \textrm{if}\ \Delta I_y \leq \delta_\textrm{min} \\
+(1 + \Delta I_y ) \textrm{TAC}_{y-1}, & \textrm{if}\ \delta_\textrm{min} \lt \delta I_y \leq 0.25 \\
+(1 + 0.25) \textrm{TAC}_{y-1}, & \textrm{if}\ \Delta I_y \gt 0.25,
+\end{cases}
+$$
+
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$). We set $\delta_\textrm{min} = -0.50$ as in TODO, but this could be tuned for individual stocks. The maximum increase in TAC is capped at 25% by default.
+
+This MP can be additionally smoothed:
+
+$$
+\textrm{TAC}_y = \lambda \cdot \textrm{TAC} + (1-\lambda) \cdot \textrm{TAC}_{y-1},
+$$
+
+where $\lambda$ controls the degree of smoothing and can range between 0 and 1. TODO used $\lambda=0.5$. We define these MPs for DLMtool as `IDX` and `IDXsmooth`.
