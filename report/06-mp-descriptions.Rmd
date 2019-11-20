@@ -99,12 +99,12 @@ See @geromont2015 for more information.
 
 ### `ICI`: Index confidence interval
 
-This MP adjusts catch based on the value of the index in the current year relative to the time series mean and standard error.
+This MP adjusts catch based on the value of the relative abundance index in the current year divided by the relative abundance index mean and standard error.
 
 The TAC is calculated as:
 
 $$
-\textrm{TAC}_y=C_{y-1} \alpha,
+\textrm{TAC}_y= \alpha C_{y-1},
 $$
 
 where $C_{y-1}$ is the catch from the previous year, and $\alpha$ is defined as:
@@ -148,10 +148,10 @@ See @jardim2015 for more information.
 A management procedure that incrementally adjusts the TAC to maintain a constant relative abundance index. The TAC is calculated as:
 
 $$
-\textrm{TAC} = \textrm{TAC}^*(1+\lambda I),
+\textrm{TAC}_y = \textrm{TAC}^*(1+\lambda I),
 $$
 
-where $\textrm{TAC}^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first year and catch from the previous year in projection years, $\lambda$ is a gain parameter, and $I$ is the slope of the log relative abundance index over the past 5 years.
+where $\textrm{TAC}^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first projection year. In subsequent years, $\textrm{TAC}^*$ is simply the TAC from the previous year. $\lambda$ is a gain parameter, and $I$ is the slope of the log relative abundance index over the past $n$ years (default $n = 5$).
 
 There are four variants of this procedure:
 
@@ -160,8 +160,95 @@ There are four variants of this procedure:
 - Islope3: Increasingly biologically precautionary, with  $\lambda = 0.4$ and $xx = 0.4$
 - Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $xx = 0.2$
 
+```{r mps-islope-demo, fig.cap="Illustration of Islope."}
+f <- function(catch_mean_recent = 100, xx = 0.2, lambda = 0.4,
+  slope = 0.2) {
+  tac_star <- (1 - xx) * catch_mean_recent
+  tac_star * (1 + lambda * slope)
+}
+
+pars <- expand.grid(
+  catch_mean_recent = 100,
+  xx = c(0),
+  lambda = c(0.2, 0.4),
+  slope = seq(-0.5, 0.5, length.out = 200)
+)
+
+pars$tac <- purrr::pmap_dbl(pars, f)
+
+library(ggplot2)
+library(dplyr)
+pars %>%
+  mutate(xx = paste("xx =", xx)) %>%
+  # mutate(lambda = paste("lambda =", lambda)) %>%
+  ggplot(aes(slope, tac, color = as.factor(lambda))) +
+  geom_line() +
+  facet_wrap(~ xx) +
+  ggsidekick::theme_sleek() +
+  labs(
+    colour = expression(gamma),
+    x = "Slope in ln(index)",
+    y = "TAC (based on 100 last year)"
+  ) +
+  geom_hline(yintercept = 100, lty = 2) +
+  scale_color_brewer(palette ="Set2")
+
+# median(Islope_(1, DLMtool::SimulatedData, lambda = 0.4, xx = 0.2, reps = 1000L)$TAC)
+#
+# median(Islope_(1, DLMtool::SimulatedData, lambda = 0.4, xx = 0.2, reps = 1000L)$TACstar)
+#
+# median(Islope_(1, DLMtool::SimulatedData, lambda = 0.4, xx = 0.2, reps = 1000L)$TAC)
+```
 
 <!-- TODO: missing `SPmod` and potentially others -->
+
+### `SBT1`: "Simple" management procedure
+
+SBT1 is an MP that makes incremental adjustments to TAC recommendations based on the trend in relative abundance index levels. The TAC is calculated as:
+
+$$
+\textrm{TAC}_y =
+\begin{cases}
+C_{y-1} (1 - K_1 |\lambda|^\gamma) & \textrm{if}\ \lambda \lt 0 \\
+C_{y-1} (1 + K_2 |\lambda|) & \textrm{if}\ \lambda \ge 0,
+\end{cases}
+$$
+
+where $\lambda$ is the slope of the index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. By default they are $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$.
+
+```{r mp-sbt1-demo, fig.cap="Illustration of SBT1."}
+f <- function(c_y1, lambda, k1, k2, gamma) {
+  if (lambda >= 0) tac <- c_y1 * (1 + k2 * abs(lambda))
+  if (lambda < 0) tac <- c_y1 * (1 - k1 * abs(lambda)^gamma)
+  if (tac < 0) tac <- 0
+  tac
+}
+
+pars <- expand.grid(
+  c_y1 = 100,
+  lambda = seq(-0.5, 0.5, length.out = 200),
+  k1 = c(1, 1.5, 3),
+  k2 = c(1.5, 3, 5),
+  gamma = c(0.5, 1, 1.5)
+)
+
+pars$tac <- purrr::pmap_dbl(pars, f)
+pars %>%
+  mutate(k1 = paste("K1 =", k1)) %>%
+  mutate(k2 = paste("K2 =", k2)) %>%
+  ggplot(aes(lambda, tac, colour = as.factor(gamma))) +
+  geom_line() +
+  facet_grid(k1 ~ k2) +
+  ggsidekick::theme_sleek() +
+  labs(
+    colour = expression(gamma),
+    x = expression(lambda ~ (Slope ~ "in" ~ index)),
+    y = "TAC (based on 100 last year)"
+  )+
+  geom_hline(yintercept = 100, lty = 2) +
+  scale_color_brewer(palette ="Set2")
+# FIXME: why does SBT1 do lm(I_hist ~ ind)) not in log space! Units!?
+```
 
 ### `IDX`: Index-based MP from Cox et al. (In press)
 
@@ -171,7 +258,7 @@ $$
 \textrm{TAC}_y =
 \begin{cases}
 \textrm{TAC}_\textrm{Floor}, & \textrm{if}\ \Delta I_y \leq \delta_\textrm{min} \\
-(1 + \Delta I_y ) \textrm{TAC}_{y-1}, & \textrm{if}\ \delta_\textrm{min} \lt \delta I_y \leq \delta_\textrm{max} \\
+(1 + \Delta I_y ) \textrm{TAC}_{y-1}, & \textrm{if}\ \delta_\textrm{min} \lt \Delta I_y \leq \delta_\textrm{max} \\
 (1 + \delta_\textrm{max}) \textrm{TAC}_{y-1}, & \textrm{if}\ \Delta I_y \gt \delta_\textrm{max},
 \end{cases}
 $$
@@ -185,3 +272,41 @@ $$
 $$
 
 where $\lambda$ controls the degree of smoothing and can range between 0 and 1. TODO used $\lambda=0.5$. We define these MPs for DLMtool as `IDX` and `IDXsmooth`.
+
+```{r mp-idx-demo, fig.cap="Illustration of SBT1."}
+f <- function(tac_prev, tac_floor, delta_min, delta_max, delta_ind) {
+  if (delta_ind <= delta_min) tac <- tac_floor
+  if (delta_ind > delta_min && delta_ind <= delta_max)
+    tac <- (1 + delta_ind) * tac_prev
+  if (delta_ind > delta_max)
+    tac <- (1 + delta_max) * tac_prev
+  if (tac < 0) tac <- 0
+  tac
+}
+
+pars <- expand.grid(
+  tac_prev = 100,
+  tac_floor = c(0, 10),
+  delta_min = c(-0.5, -0.25),
+  delta_max = c(0.2, 0.4),
+  delta_ind = seq(-0.6, 0.6, length.out = 100)
+)
+
+pars$tac <- purrr::pmap_dbl(pars, f)
+pars %>%
+  mutate(delta_min = paste("delta_min =", delta_min)) %>%
+  mutate(delta_max = paste("delta_max =", delta_max)) %>%
+  # mutate(delta_ind = ifelse(tac_floor == 0, delta_ind, delta_ind + 0.01)) %>%
+  ggplot(aes(delta_ind, tac, colour = as.factor(tac_floor))) +
+  geom_line() +
+  facet_grid(delta_min ~ delta_max) +
+  ggsidekick::theme_sleek() +
+  labs(
+    colour = expression(TAC[Floor]),
+    x = expression(Delta ~ I[y]),
+    y = "TAC (based on 100 last year)"
+  )+
+  geom_hline(yintercept = 100, lty = 2) +
+  scale_color_brewer(palette ="Set2")
+# FIXME: why does SBT1 do lm(I_hist ~ ind)) not in log space! Units!?
+```

@@ -22,7 +22,11 @@ The TAC is subject to the following conditions:
 - if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
 - if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
 
-*TODO: this one assumes a proxy for MSY! remove?*
+<!-- *TODO: this one assumes a proxy for MSY! remove?* -->
+<!-- Thoughts:
+- requires a reference index level and a reference catch (MSY)
+- not suitable to combine with a historical reference level because we don't have index values going back that far to match up between the real and simulated data
+-->
 
 ### `GB_CC`: Geromont and Butterworth constant catch
 
@@ -39,7 +43,10 @@ The TAC is subject to the following conditions:
 - if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
 - if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
 
-*TODO: remove this MP because it assumes knowing MSY?*
+<!-- *TODO: remove this MP because it assumes knowing MSY?* -->
+<!-- Thoughts:
+- this one might be a candidate to substitute an historical reference point
+-->
 
 ### `IT`: Iterative index target
 
@@ -58,7 +65,12 @@ There are two variants of this procedure:
 - IT5: Maximum annual changes to the TAC are 5%
 - IT10: Maximum annual changes to the TAC are 10%
 
-*TODO: depends on knowing MSY! Remove?*
+<!-- *TODO: depends on knowing MSY! Remove?* -->
+
+<!-- Thoughts:
+- might not be a great candidate for substituting an historical reference point since it depends on knowing the index at MSY
+- although here and elsewhere perhaps we could pick a recent index level as a reference, which implies that the stock is approximately at MSY currently
+-->
 
 ### `Itarget`: Incremental index target
 
@@ -75,6 +87,7 @@ otherwise:
 $$
 \textrm{TAC}= 0.5\ \textrm{TAC}^*\left[\frac{I_\textrm{recent}^2}{I_0}\right],
 $$
+
 where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $TAC^*$ is $(1-xx)C$ where $xx$ is an argument to the function and $C$ is the average catch over the last 5 years of the historical period.
 
 There are four index/CPUE target MPs proposed by @geromont2015:
@@ -86,7 +99,7 @@ There are four index/CPUE target MPs proposed by @geromont2015:
 
 ### `ITM`: Index target based on natural mortality rate
 
-An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over last number of years determined by natural mortality $M$ relative to a target level.
+An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over some number of years determined by natural mortality $M$ relative to a target level.
 
 $$
 \textrm{TAC}_y = \textrm{TAC}_{y-1} \delta I,
@@ -94,21 +107,11 @@ $$
 
 where $\delta I$ is the ratio of the mean index over $4 (\frac{1}{M})^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left(\frac{5+25M}{100}, 0.2\right)$
 
-### `SBT1`: Simple management procedure
+<!--
 
-An MP that makes incremental adjustments to TAC recommendations based on the apparent trend in relative abundance index levels relative to target levels (B~MSY~/B0) and catch levels relative to target levels (MSY).
+### `SBT2`: Complex SBT1 Simple management procedure
 
-For SBT1 the TAC is calculated as:
-
-$$
-\textrm{TAC}_y =
-\begin{cases}
-C_{y-1} (1 - K_1 \lambda^\gamma) & \textrm{if}\ \lambda \lt 0 \\
-C_{y-1} (1 + K_2 \lambda) & \textrm{if}\ \lambda \ge 0,
-\end{cases}
-$$
-
-where $\lambda$ is the slope of the index over the last 5 years, and $K_1$, $K_2$, and $\gamma$ are arguments to the MP.
+SBT2, requires, amongst other things, knowledge of mean recruitment over the last 5 and 10 years! not realistic to apply in our case
 
 For SBT2, the TAC is calculated as:
 
@@ -127,5 +130,7 @@ R^{1-epsR} & \textrm{if}\ R \ge 1,
 $$
 
 where $epsR$ is a control parameter and $R = \frac{\bar{r}}{\phi}$ where $\bar{r}$ is the mean recruitment over the last 5 years and $\phi$ is the mean recruitment over the last 10 years.
+
+-->
 
 *TODO: requires knowledge of MSY! remove?*
