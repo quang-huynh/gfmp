@@ -1,38 +1,20 @@
 # SHORTRAKER ROCKFISH CASE STUDY
 
-## BIOLOGY
-Available biological data (lengths, weights, maturities and ages) are housed 
-in the GFBio database and come primarily from fishery-independent surveys. Shortraker rockfish ages
-all come from survey data only, and are in the database from surveys conducted
-in 1997, 2002-2003, 2006-2008 and 2010-2012. Structures were also collected in
-2013-present which have yet to be aged. The oldest aged of Shortraker rockfish
-
-```r
-x <- gfdata::get_survey_samples(403)
-survey <- x %>% dplyr::summarise(max_age = max(age, na.rm = TRUE),
-  min_age = min(age, na.rm = TRUE),
-  max_length = max(length, na.rm = TRUE),
-  min_length = min(length, na.rm = TRUE),
-  max_weight = max(weight, na.rm = TRUE),
-  min_weight = min(weight, na.rm = TRUE)) %>% 
-  dplyr::mutate(source = "survey")
-
-comm <- y %>% dplyr::summarise(max_age = max(age, na.rm = TRUE),
-  min_age = min(age, na.rm = TRUE),
-  max_length = max(length, na.rm = TRUE),
-  min_length = min(length, na.rm = TRUE),
-  max_weight = max(weight, na.rm = TRUE),
-  min_weight = min(weight, na.rm = TRUE)) %>% 
-  dplyr::mutate(source = "comm")
-
-all <- rbind(survey, comm)
-```
-
-
 
 ## BACKGROUND
-Shortraker rockfish, which represents a small portion of the trawl and hook and 
-line fisheries, was last assessed as part of the slope rockfish assemblage 
+Shortraker rockfish (*Sebastes borealis*) occurs throughout the North Pacific 
+from Japan, the Okhotsk Sea, and southeastern Kamchatka to the Bering Sea and
+Aleutian Islands and south to California. It has been caught in BC at depths
+between 20 m and 1300 m, with most captured between 30 m and 140 m. 
+Shortraker can grow as large as 120 cm and up to 30 kg, and has been caught in 
+BC waters as large as 108 cm and up to 21.7 kg. The oldest Shortraker aged in BC
+was a female caught in a trawl survey on the West Coast of Haida Gwaii in 1997
+aged at 157 years (ages are known from otoliths collected in surveys conducted
+in 1997, 2002-2003, 2006-2008 and 2010-2012; otoliths were also collected on
+surveys from 2013-present which have yet to be aged). 
+
+Shortraker rockfish represents a small portion of the trawl and hook and 
+line fisheries, and was last assessed as part of the slope rockfish assemblage 
 (Pacific ocean perch, yellowmouth rockfish, redstripe rockfish,
 rougheye rockfish, shortspine/longspine thornyheads and shortraker rockfish) in 
 1998 {@Schnute1999a} and updated in 1999 {@Schnute1999b}. 
@@ -75,6 +57,8 @@ The trawl fishery underwent a major change in 1997 through the introduction of
 individual vessel quotas (IVQs).
 
 
-## biology?
+
+## BIOLOGY
+
 
 SR misidentified as rougheye
