@@ -142,7 +142,7 @@ where $C_{y-1}$ is catch from the previous year, $I$ is the slope of the linear 
 
 The default $\lambda$ value is 1 in DLMtool. Here we propose adding versions with lower versions of $\lambda$ ($\lambda = 0.50$ and $\lambda = 0.66$), which are therefore slightly less responsive to changes in the relative abundance index. Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data. The gain parameter, and the number of years included in the slope calculation, could be explored as tuning parameters.
 
-```{r mp-gbslope-demo, fig.cap="Illustration of GB\\_slope across different values of $\\lambda$, the gain/smoothing parameter that controls how sensitive the TAC recommendations are to changes in the relative abundance index.", fig.width=6, out.width="3.75in", pos="H"}
+```{r mp-gbslope-demo, fig.cap="Illustration of GB\\_slope across different values of $\\lambda$, the gain/smoothing parameter that controls how sensitive the TAC recommendations are to changes in the relative abundance index.", fig.width=6, out.width="3.75in"}
 f <- function(catch_previous = 100, lambda = 1, slope) {
   tac_star <- catch_previous * (1 + lambda * slope)
   tac <- tac_star
@@ -194,7 +194,7 @@ There are four variants of this procedure:
 
 We have modified this MP to add a maximum proportional increase in TAC from one year to the next of 1.25.
 
-```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $xx$ parameter only affects the TAC in the initial projection year it is therefore not shown.", fig.width=6, out.width="3.75in", pos="H"}
+```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $xx$ parameter only affects the TAC in the initial projection year it is therefore not shown.", fig.width=6, out.width="3.75in"}
 f <- function(catch_mean_recent = 100, xx = 0.2, lambda = 0.4,
   slope = 0.2) {
   tac_star <- (1 - xx) * catch_mean_recent
@@ -270,7 +270,7 @@ The values of 1.96 and 0.44 are derived from the normal distribution in which ap
 <!-- TODO: make sure this and others work if the last survey index value was NA -->
 <!-- TODO: fix nI <- length(Index) to be number of non NAs in DLMtool -->
 
-```{r mp-ici-demo, fig.cap="Illustration of the ICI and ICI2 MPs across different values of the current relative abundance index value compared to the long-term mean and various standard errors on that long-term mean.", pos="H"}
+```{r mp-ici-demo, fig.cap="Illustration of the ICI and ICI2 MPs across different values of the current relative abundance index value compared to the long-term mean and various standard errors on that long-term mean."}
 f_ici <- function(tac_prev, index_value, mu, sigma) {
   alpha <- 1
   ci_l <- mu - 0.44 * sigma
@@ -342,7 +342,7 @@ $$
 
 where $\lambda$ is the slope of the ln relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. By default of these parameters are $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.25 on the fraction that the TAC can be increased from one year to the next.
 
-```{r mp-sbt1-demo, fig.cap="Illustration of SBT1.", pos="H"}
+```{r mp-sbt1-demo, fig.cap="Illustration of SBT1."}
 f <- function(c_y1, lambda, k1, k2, gamma) {
   if (lambda < 0) tac <- c_y1 * (1 - k1 * abs(lambda)^gamma)
   if (lambda >= 0) tac <- c_y1 * (1 + k2 * abs(lambda))
@@ -375,8 +375,6 @@ pars %>%
 # TODO: why does SBT1 do lm(I_hist ~ ind)) not in log space! Units!?
 ```
 
-\clearpage
-
 ### IDX: Index-based MP from Cox et al. (In press)
 
 This MP was used in the Cox et al. (In press) rebuilding plan for outside Yelloweye Rockfish in BC (Fig. \@ref(fig:mp-idx-demo)). The MP assigns TAC based on:
@@ -400,7 +398,7 @@ $$
 
 where $\lambda$ controls the degree of smoothing and can range between 0 and 1. Cox et al. (In press) used $\lambda=0.5$. We define these MPs for DLMtool as IDX and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$, and $\textrm{TAC}_\textrm{Floor} = 0$) and IDXsmooth (same as IDX with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one implemented the previous year).
 
-```{r mp-idx-demo, fig.cap="Illustration of IDX.", pos="H"}
+```{r mp-idx-demo, fig.cap="Illustration of IDX."}
 f <- function(tac_prev, tac_floor, delta_min, delta_max, delta_ind) {
   if (delta_ind <= delta_min) tac <- tac_floor
   if (delta_ind > delta_min && delta_ind <= delta_max)
@@ -495,7 +493,7 @@ $$
 
 where $\delta I$ is the ratio of the mean index over $4 \left(1/M\right)^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left( \left( 5+25M \right) / 100,\ 0.2\right)$. As in the other reference index MPs, instead of using the default relative index value at MSY as the reference, we use an historical period of the index, provisionally 2002--2012.
 
-```{r mp-itm-demo, fig.cap="Illustration of the ITM MP. (a) Illustration of how TAC recommendation is based on natural mortality (M) and $\\delta I$, the proportional change in the recent relative abundance index compared to a reference level. Note that the effect of M only appears for large values of M---0.2 and 0.5 are overlapping in this figure. (b) Illustration of how M relates to the number of years over which to calculate the mean recent relative abundance index.", pos="H", fig.asp=0.385}
+```{r mp-itm-demo, fig.cap="Illustration of the ITM MP. (a) Illustration of how TAC recommendation is based on natural mortality (M) and $\\delta I$, the proportional change in the recent relative abundance index compared to a reference level. Note that the effect of M only appears for large values of M---0.2 and 0.5 are overlapping in this figure. (b) Illustration of how M relates to the number of years over which to calculate the mean recent relative abundance index.", fig.asp=0.385}
 f <- function(tac_prev, M, deltaI) {
  mc <- max(c((5 + 25 * M)/100), 0.2)
  if (deltaI < (1 - mc)) 

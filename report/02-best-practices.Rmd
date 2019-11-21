@@ -85,13 +85,13 @@ This is in contrast to the traditional decision tables presented in most Pacific
 * Tie this into the PA Framework.
 
 We propose the following provisional operational/tactical conservation and fisheries objectives:
-    * Maintain stock status above the LRP in the long-term with extremely high probability.
-    * Maintain stock status above the USR...!?
-    * Avoid overfishing with high probability.
-    * Given the conservation objectives are achieved, maximize short- and 
-      long-term fisheries yield.
-    * Given the conservation objectives are achieved, minimize variability 
-      in fisheries yield from year to year.
+* Maintain stock status above the LRP in the long-term with extremely high  ability.
+* Maintain stock status above the USR...!?
+* Avoid overfishing with high probability.
+* Given the conservation objectives are achieved, maximize short- and
+  long-term fisheries yield.
+* Given the conservation objectives are achieved, minimize variability
+  in fisheries yield from year to year.
     
 * The specific probabilities assigned to successfully achieving each objective likely need some consideration on a stock by stock basis. But we provisionally suggest the following based on the PA Framework and precedents in other DFO Pacific Region assessments...
 
@@ -175,9 +175,10 @@ Details on the SRA model are available in Appendix TODO.
 
 ## STEP 4. IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES
 
-We screened all MPs available in DLMtool as of November 2019 to consider their appropriateness for the MP Framework (Appendix \@ref(#app:MPs)).
+We screened all MPs available in DLMtool as of November 2019 to consider their appropriateness for the MP Framework (Appendix \@ref(app:MPs)).
 
 In summary, we excluded all MPs that required knowledge of:
+
 * absolute abundance
 * recent age composition data
 * depletion
@@ -196,7 +197,6 @@ DLMtool currently generates a single index of abundance for use in the data- or 
 * Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas.
 
 * Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs].
-
 
 Important to include reference MPs to bound the range of expected performance under scenarios such as: no fishing, perfect information, and maintaining the status quo TAC.
 
