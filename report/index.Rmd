@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
   fig.path = if (knitr:::is_latex_output()) "knitr-figs-pdf/" else "knitr-figs-docx/",
   cache.path = if (knitr:::is_latex_output()) "knitr-cache-tex/" else "knitr-cache-docx/",
   fig.asp = 0.618,
-  fig.width = 8,
+  fig.width = 7.5,
   out.width = "5in",
   echo = FALSE,
   autodep = TRUE,
