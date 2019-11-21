@@ -125,7 +125,7 @@ $$
 $$
 
 <!-- TODO: add this longer version of Iratio -->
-<!-- TODO: make a consistent whether we use C_y-1 or TAC_y-1 -->
+<!-- TODO: make a consistent decision whether we use C_y-1 or TAC_y-1 -->
 
 ### GB_slope: Geromont and Butterworth index slope
 
@@ -269,6 +269,7 @@ The values of 1.96 and 0.44 are derived from the normal distribution in which ap
 
 <!-- TODO: make sure this and others work if the last survey index value was NA -->
 <!-- TODO: fix nI <- length(Index) to be number of non NAs in DLMtool -->
+<!-- TODO: should be log space or CV!! -->
 
 ```{r mp-ici-demo, fig.cap="Illustration of the ICI and ICI2 MPs across different values of the current relative abundance index value compared to the long-term mean and various standard errors on that long-term mean."}
 f_ici <- function(tac_prev, index_value, mu, sigma) {
@@ -323,14 +324,6 @@ pars %>%
 SBT1 is an MP that makes incremental adjustments to TAC recommendations based on the trend in relative abundance index levels (Fig. \@ref(fig:mp-sbt1-demo)). The TAC is calculated as:
 
 <!-- TODO: ref?  Rich Hillary at CSIRO?-->
-
-<!-- $$ -->
-<!-- \textrm{TAC}_y = -->
-<!-- \begin{cases} -->
-<!-- %C_{y-1} (1 - K_1 \left| \lambda \right| ^ \gamma ) & \textrm{if}\ \lambda < 0 \\ -->
-<!-- C_{y-1} (1 + K_2 \left| \lambda \right| ) & \textrm{if}\ \lambda \ge 0, -->
-<!-- \end{cases} -->
-<!-- $$ -->
 
 $$
 \textrm{TAC}_y =
@@ -451,7 +444,7 @@ There are two variants of this procedure:
 - IT5 where the maximum annual changes to the TAC are 5%
 - IT10 where the maximum annual changes to the TAC are 10%
 
-<!-- *TODO: implement this historical reference version* -->
+<!-- TODO: implement this historical reference version -->
 
 ### Itarget: Incremental index target
 
@@ -595,7 +588,6 @@ g2 <- pars %>%
 cowplot::plot_grid(g1, g2, labels = "auto")
 ```
 
-<!-- TODO: look at trlnorm even for 1 rep here!  -->
 <!-- TODO: implement the historical reference -->
 
 ## MODEL-BASED MANAGEMENT PROCEDURES
@@ -644,7 +636,7 @@ $$
 \log(I_t) \sim N(\log[\hat{I}_t], \sigma^2).
 $$
 
-<!-- TODO: finish up -->
+<!-- TODO: finish up SP description -->
 
 We pair this surplus production model with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
 
@@ -702,5 +694,4 @@ pars %>%
   geom_vline(aes(xintercept = TRP), lty = 2, alpha = 0.4)
 ```
 
-
-
+<!-- TODO: impliment SP HCR8040 -->
