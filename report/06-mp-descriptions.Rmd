@@ -493,7 +493,7 @@ $$
 \textrm{TAC}_y = \textrm{TAC}_{y-1} \delta I,
 $$
 
-where $\delta I$ is the ratio of the mean index over $4 (\frac{1}{M})^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left(\frac{5+25M}{100}, 0.2\right)$. As in the other reference index MPs, instead of using the default relative index value at MSY as the reference, we use an historical period of the index, provisionally 2002--2012.
+where $\delta I$ is the ratio of the mean index over $4 \left(1/M\right)^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left( \left( 5+25M \right) / 100,\ 0.2\right)$. As in the other reference index MPs, instead of using the default relative index value at MSY as the reference, we use an historical period of the index, provisionally 2002--2012.
 
 ```{r mp-itm-demo, fig.cap="Illustration of the ITM MP. (a) Illustration of how TAC recommendation is based on natural mortality (M) and $\\delta I$, the proportional change in the recent relative abundance index compared to a reference level. Note that the effect of M only appears for large values of M---0.2 and 0.5 are overlapping in this figure. (b) Illustration of how M relates to the number of years over which to calculate the mean recent relative abundance index.", pos="H", fig.asp=0.385}
 f <- function(tac_prev, M, deltaI) {
