@@ -177,7 +177,7 @@ pars %>%
 
 ### Islope: Index slope tracking
 
-This management procedure incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)). The MP is similar to GB_slope with the addition of a parameter that determines the TAC in the first projectionn and different choices of the gain/smoothing parameter. The TAC is calculated as:
+This management procedure incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)). The MP is similar to GB_slope with the addition of a parameter that determines the TAC in the first projection year and different choices of the gain/smoothing parameter. The TAC is calculated as:
 
 $$
 \textrm{TAC}_y = \textrm{TAC}^*(1+\lambda I),
@@ -194,7 +194,7 @@ There are four variants of this procedure:
 
 We have modified this MP to add a maximum proportional increase in TAC from one year to the next of 1.25.
 
-```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $xx$ parameter only affects the TAC in the initial projection year it is therefore not shown.", fig.width=6, out.width="3.75in"}
+```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $xx$ parameter only affects the TAC in the initial projection year and is therefore not shown.", fig.width=6, out.width="3.75in"}
 f <- function(catch_mean_recent = 100, xx = 0.2, lambda = 0.4,
   slope = 0.2) {
   tac_star <- (1 - xx) * catch_mean_recent
