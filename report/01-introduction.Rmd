@@ -80,3 +80,5 @@ There are a number of expected benefits of this project. Compared to the current
 * help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock assessment advice. 
 
 Importantly, the framework will demonstrate methods to improve capacity for DFO Science to provide sustainable catch advice for data-limited stocks that is consistent with Canada's PA Framework, and therefore bring data-limited stocks into compliance with the Fish Stocks provisions of the *Fisheries Act*.
+
+<!-- TODO: cite [@cox2013] -->
