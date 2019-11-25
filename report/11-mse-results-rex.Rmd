@@ -121,13 +121,13 @@ filter(rex_satisficed_df, type == "Index slope") %>%
 ```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (index target MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
 filter(rex_satisficed_df, type == "Index target") %>% 
   pull(mp) %>% 
-  DLMtool::Sub(rex_mse, .)
+  DLMtool::Sub(rex_mse, .) %>% 
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
 
 ```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (constant catch MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
 filter(rex_satisficed_df, type == "Constant catch") %>% 
   pull(mp) %>% 
-  DLMtool::Sub(rex_mse, .)
+  DLMtool::Sub(rex_mse, .) %>% 
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
 ```
