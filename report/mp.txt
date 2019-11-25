@@ -1,0 +1,52 @@
+mp,type
+
+AvC20, "Constant catch"
+AvC, "Constant catch"
+
+CC1, "Constant catch"
+CC2, "Constant catch"
+CC3, "Constant catch"
+CC4, "Constant catch"
+CC5, "Constant catch"
+
+.GB_slope6_0.66, "Index slope"
+.GB_slope6_1, "Index slope"
+.GB_slope8_0.66, "Index slope"
+.GB_slope8_1, "Index slope"
+
+.ICI, "Index slope"
+.ICI2, "Index slope"
+
+.IDX, "Index slope"
+.IDX_smooth, "Index slope"
+
+.IT10_hist, "Index target"
+.IT5_hist, "Index target"
+
+.ITM, "Index target"
+
+.Iratio6, "Index slope"
+.Iratio8, "Index slope"
+
+.Islope_0.2_80, "Index slope"
+.Islope_0.2_100, "Index slope"
+.Islope_0.4_80, "Index slope"
+.Islope_0.4_100, "Index slope"
+
+.Itarget1, "Index target"
+.Itarget2, "Index target"
+.Itarget3, "Index target"
+.Itarget4, "Index target"
+
+.SBT1, "Index target"
+
+.SP4010, "Surplus production"
+.SP6040, "Surplus production"
+.SP6040_Fox, "Surplus production"
+.SP8040, "Surplus production"
+.SP8040_Fox, "Surplus production"
+.SP_MSY, "Surplus production"
+.SP_MSY_Fox, "Surplus production"
+
+NFref, "Reference"
+FMSYref, "Reference"

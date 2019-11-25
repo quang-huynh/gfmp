@@ -43,9 +43,9 @@ knitr::kable(table_screening,
 
 ## MANAGEMENT PROCEDURE DESCRIPTIONS
 
-Here we include an overview of the output-controlled (TAC-based) MPs available in DLMtool that are relevant to this framework along with some additional variants and MPs used in recent assessments for other BC groundfish.
+Here we include an overview of a selection of output-controlled (TAC-based) MPs that may be used as part of this framework. The MPs are a combination of those from the literature that have been implemented in DLMtool and some MPs that have been used in recent assessments for other BC groundfish.
 
-The notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or other publications where MPs were developed wherever possible.
+We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or other publications where MPs were developed wherever possible.
 
 <!-- TODO: or just make it consistent! slope, tuning parameters, C or TAC, index symbol...-->
 
@@ -58,7 +58,7 @@ csasdown::csas_table(mps)
 
 ### AvC: Average catch
 
-The mean historical catch is calculated and used to set a constant TAC. The TAC in year $y$ is calculated as:
+This is a simple management procedure in which the mean historical catch is calculated and used to set a constant TAC. The TAC in year $y$ is calculated as:
 
 $$
 \textrm{TAC}_y = \frac{\sum_{i=1}^{n}C_i}{n},
@@ -132,7 +132,7 @@ where $C_{y-1}$ is catch from the previous year, $\beta_I$ is the slope of a lin
 - if next TAC > 1.2 last catch, then TAC = 1.2 $\times$ last catch
 - if next TAC < 0.8 last catch, then TAC = 0.8 $\times$ last catch.
 
-The default $\lambda$ value is 1 in DLMtool. Here we propose adding a version with a lower version of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index. Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data. We denote these MPs as "GC_slope_6_1", "GC_slope_6_0.66", "GC_slope_8_1", and "GC_slope_8_0.66" where the numbers indicate the number of years and $\lambda$ value in order. The number of years and the gain parameter could be explored as tuning parameters for specific stocks.
+The default $\lambda$ value is 1 in DLMtool. Here we propose adding a version with a lower version of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index. Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data. We denote these MPs as "GB_slope_6_1", "GB_slope_6_0.66", "GB_slope_8_1", and "GB_slope_8_0.66" where the numbers indicate the number of years and $\lambda$ value in order. The number of years and the gain parameter could be explored as tuning parameters for specific stocks.
 
 ```{r mp-gbslope-demo, fig.cap="Illustration of GB\\_slope across different values of $\\lambda$, the gain/smoothing parameter that controls how sensitive the TAC recommendations are to changes in the relative abundance index.", fig.width=6, out.width="3.75in"}
 f <- function(catch_previous = 100, lambda = 1, slope) {
@@ -167,41 +167,48 @@ pars %>%
 
 ### Islope: Index slope tracking
 
-This management procedure incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)). The MP is similar to "GB_slope" with the addition of a parameter that determines the TAC in the first projection year and different choices of the gain/smoothing parameter. The TAC is calculated as:
+This management procedure incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)). The MP is similar to GB_slope with the addition of a parameter that determines the TAC in the first projection year and different choices of the gain/smoothing parameter. The TAC is calculated as:
 
 $$
 \textrm{TAC}_y = \textrm{TAC}^*(1+\lambda \beta_I),
 $$
 
-where $\textrm{TAC}^*$ is $(1-xx)$ multiplied by the mean catch from the past 5 years for the first projection year. In subsequent years, $\textrm{TAC}^*$ is the TAC from the previous year. $\lambda$ is a gain parameter, and $\beta I$ is the slope of the log relative abundance index over the past $n$ years (we have set $n = 6$).
+where $\textrm{TAC}^*$ is $(1-x)$ multiplied by the mean catch from the past 5 years for the first projection year. In subsequent years, $\textrm{TAC}^*$ is the TAC from the previous year. $\lambda$ is a gain parameter, and $\beta I$ is the slope of the log relative abundance index over the past $n$ years (we have set $n = 6$).
 
-There are four variants of this procedure:
+There are four variants of this procedure as described in @geromont2015a:
 
-- Islope1: The least biologically precautionary, with $\lambda = 0.4$ and $xx = 0.2$
-- Islope2: Increasingly biologically precautionary, with $\lambda = 0.4$ and $xx = 0.3$
-- Islope3: Increasingly biologically precautionary, with  $\lambda = 0.4$ and $xx = 0.4$
-- Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $xx = 0.2$
+- Islope1: The least biologically precautionary, with $\lambda = 0.4$ and $x = 0.2$
+- Islope2: Increasingly biologically precautionary, with $\lambda = 0.4$ and $x = 0.3$
+- Islope3: Increasingly biologically precautionary, with  $\lambda = 0.4$ and $x = 0.4$
+- Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $x = 0.4$
 
-We have additionally modified this MP to add a maximum proportional increase in TAC from one year to the next of 1.2. We denote our modified versions of "Islope" as "Islope_mod" combined with the numbers as indicated above ("Islope_mod1", "Islope_mod2", etc.).
+Because of the $x$ values, these all start TAC at 60--80% of recent average catch. For our BC groundfish fisheries, we do not have an a priori expectation that they are currently being overfished, we propose the following set that start TAC at 80% or 100% of average catch over the last 5 historical years:
 
-```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $xx$ parameter only affects the TAC in the initial projection year and is therefore not shown.", fig.width=6, out.width="3.75in"}
-f <- function(catch_mean_recent = 100, xx = 0.2, lambda = 0.4,
+- Islope_0.4_100: $\lambda = 0.4$ and $x = 0$
+- Islope_0.4_80: $\lambda = 0.4$ and $x = 0.2$
+- Islope_0.2_100: $\lambda = 0.2$ and $x = 0$
+- Islope_0.2_80: $\lambda = 0.2$ and $x = 0.2$
+
+We have additionally modified this MP to add a maximum proportional increase in TAC from one year to the next of 1.2.
+
+```{r mp-islope-demo, fig.cap="Illustration of the Islope MPs across 2 values of $\\lambda$. The $x$ parameter only affects the TAC in the initial projection year and is therefore not shown.", fig.width=6, out.width="3.75in"}
+f <- function(catch_mean_recent = 100, x = 0.2, lambda = 0.4,
   slope = 0.2) {
-  tac_star <- (1 - xx) * catch_mean_recent
+  tac_star <- (1 - x) * catch_mean_recent
   tac <- tac_star * (1 + lambda * slope)
   if (tac < 0) tac <- 0
-  if (tac / catch_mean_recent > 1.25) tac <- catch_mean_recent * 1.25
+  if (tac / catch_mean_recent > 1.2) tac <- catch_mean_recent * 1.2
   tac
 }
 pars <- expand.grid(
   catch_mean_recent = 100,
-  xx = c(0),
+  x = c(0),
   lambda = c(0.2, 0.4),
   slope = seq(-0.75, 0.75, length.out = 200)
 )
 pars$tac <- purrr::pmap_dbl(pars, f)
 pars %>%
-  mutate(xx = paste("xx =", xx)) %>%
+  mutate(x = paste("x =", x)) %>%
   ggplot(aes(slope, tac, color = as.factor(lambda))) +
   geom_line() +
   ggsidekick::theme_sleek() +
@@ -321,14 +328,14 @@ C_{y-1} (1 + K_2 \lvert \lambda \rvert) & \textrm{if}\ \lambda \ge 0,
 \end{cases}
 $$
 
-where $\lambda$ is the slope of the ln relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. By default of these parameters are $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.25 on the fraction that the TAC can be increased from one year to the next.
+where $\lambda$ is the slope of the ln relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. By default of these parameters are $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.2 on the fraction that the TAC can be increased from one year to the next.
 
 ```{r mp-sbt1-demo, fig.cap="Illustration of SBT1."}
 f <- function(c_y1, lambda, k1, k2, gamma) {
   if (lambda < 0) tac <- c_y1 * (1 - k1 * abs(lambda)^gamma)
   if (lambda >= 0) tac <- c_y1 * (1 + k2 * abs(lambda))
   if (tac < 0) tac <- 0
-  if (tac / c_y1 > 1.25) tac <- c_y1 * 1.25
+  if (tac / c_y1 > 1.2) tac <- c_y1 * 1.2
   tac
 }
 pars <- expand.grid(
@@ -452,18 +459,18 @@ $$
 \textrm{TAC}_y = 0.5\ \textrm{TAC}^*\left(\frac{I_\textrm{recent}}{I_0}\right)^2,
 $$
 
-where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $(1-xx)C$ where $xx$ and $I_\textrm{multi}$ are arguments to the function and $C$ is the average catch over the last 5 years of the historical period.
+where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $(1-x)C$ where $x$ and $I_\textrm{multi}$ are arguments to the function and $C$ is the average catch over the last 5 years of the historical period.
 
 There are four index/CPUE target MPs proposed by @geromont2015:
 
-- Itarget1: The least biologically precautionary, with $xx = 0$ and $I_\textrm{multi} = 1.5$
-- Itarget2: Increasingly biological precautionary, with $xx = 0$ and $I_\textrm{multi} = 2.0$
-- Itarget3: Increasingly biological precautionary, with $xx = 0$ and $I_\textrm{multi} = 2.5$
-- Itarget4: Most biological precautionary, with $xx = 0.3$ and $I_\textrm{multi} = 2.5$
+- Itarget1: The least biologically precautionary, with $x = 0$ and $I_\textrm{multi} = 1.5$
+- Itarget2: Increasingly biological precautionary, with $x = 0$ and $I_\textrm{multi} = 2.0$
+- Itarget3: Increasingly biological precautionary, with $x = 0$ and $I_\textrm{multi} = 2.5$
+- Itarget4: Most biological precautionary, with $x = 0.3$ and $I_\textrm{multi} = 2.5$
 
 ```{r mp-itarget-demo, fig.cap="Illustration of the Itarget MP."}
-f <- function(avg_catch_hist, Irecent, Iave, xx, Imulti, ...) {
-  TACstar <- (1 - xx) * avg_catch_hist
+f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, ...) {
+  TACstar <- (1 - x) * avg_catch_hist
   Itarget <- Iave * Imulti
   I0 <- 0.8 * Iave
   if (Irecent >= I0) {
@@ -478,7 +485,7 @@ pars1 <- expand.grid(
   avg_catch_hist = 100,
   Irecent = seq(0.1, 3, length.out = 300),
   Iave = c(1),
-  xx = c(0.0),
+  x = c(0.0),
   Imulti = c(1.5),
   type = "Itarget1", stringsAsFactors = FALSE
 )
@@ -493,17 +500,17 @@ pars3$Imulti <- 2.5
 pars4 <- pars1
 pars4$type <- "Itarget4"
 pars4$Imulti <- 2.5
-pars4$xx <- 0.3
+pars4$x <- 0.3
 
 pars <- bind_rows(list(pars1, pars2, pars3, pars4))
 pars$tac <- purrr::pmap_dbl(pars, f)
 pars %>%
-  mutate(xx = paste("xx =", xx)) %>% 
+  mutate(x = paste("x =", x)) %>% 
   mutate(Imulti = paste("Imulti =", Imulti)) %>% 
   ggplot(aes(Irecent, tac, colour = type)) +
   geom_line() +
   ggsidekick::theme_sleek() +
-  facet_grid(xx~Imulti) +
+  facet_grid(x~Imulti) +
   labs(
     colour = "MP",
     x = expression(I[recent]/I[target]),
@@ -606,7 +613,7 @@ $$
 \gamma = \dfrac{1}{n-1}n^{n/(n-1)}.
 $$
 
-We fix $n = 2$ to represent a symmetrical Schaefer (REF) production curve.
+We fix $n = 2$ to represent a symmetrical Schaefer (REF) production curve or $n = 1$ to represent a Fox (REF) production curve.
 
 By conditioning the model on observed catch, the predicted index $\hat{I}_y$ is
 
@@ -630,7 +637,7 @@ where $\sigma$ represents the standard deviation.
 
 <!-- TODO: finish up SP description -->
 
-We pair this surplus production model with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
+We pair these surplus production models with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
 
 - HCR-MSY: Fish at the calculated MSY.
 
@@ -639,6 +646,8 @@ We pair this surplus production model with the following harvest control rules (
 - HCR-8040: Above 80% of estimated $\textrm{B}/\textrm{B}_{\textrm{MSY}}$, fish at the calculated MSY; at 40% of estimated $\textrm{B}/\textrm{B}_{\textrm{MSY}}$, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on $\textrm{B}_{\textrm{MSY}}$ whereas HCR-4010 is based on $\textrm{B}_0$. This HCR creates operational control points (OCRs) that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework. We note, however, that an MP's HCR OCPs does not necessarily need to match the biological reference points (BRPs) to be consistent with the BRPs in the Sustainable Fisheries Framework. For example, a model may generate biased estimates of $\textrm{B}/\textrm{B}_{\textrm{MSY}}$ and be better paired with OCRs that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
 
 - HCR-6040: A slightly less conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until $\textrm{B}/\textrm{B}_{\textrm{MSY}} < 0.6$.
+
+We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the the choice of production function should not affect this depletion-based harvest control rule. 
 
 ```{r, mp-hcrs, fig.cap="Proposed provisional harvest control rules to associate with model-based MPs.", fig.asp=0.25, fig.width=9, warning=FALSE, out.width="\\textwidth"}
 f <- function (Brel, LRP, TRP, rel_min = 0, rel_max = 1, ...) {
