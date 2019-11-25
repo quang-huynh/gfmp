@@ -11,7 +11,7 @@ rmd_files: ["index.Rmd",
             #"08-mp-screening.Rmd",
             #"09-default-slots.Rmd",
             #"10-om-rex.Rmd",
-            #"11-mse-results-rex.Rmd",
+            "11-mse-results-rex.Rmd",
             # "12-om-shortraker.Rmd",
             # "13-mse-results-shortraker.Rmd",
             "99-references.Rmd"]
