@@ -441,7 +441,7 @@ fleet_rex@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds.*
 
-Here's a comparison of the commercial (from the entire coast) and survey samples (from WCVI):
+We can look at a comparison of the commercial (from the entire coast) and survey samples (from WCVI) with the commercial samples shown is a histogram in the survey samples shown as line density. We will indicated the lower and upper bounds of the `L50` (length at 50% maturity) slot with red lines.
 
 ```{r}
 hist(rex_commercial$length, xlim = c(5, 60), breaks = 50)
@@ -492,7 +492,7 @@ fleet_rex@isRel <- TRUE
 
 *Shortest length corresponding ot 5% retention. Uniform distribution lower and upper bounds.*
 
-Let's assume it is quarter of Linf for now. Ask industry.
+We will assume this is 1/4 of `Linf` for now. TODO: Ask industry.
 
 ```{r desc-fleet-lr5-rex, results = knitr_results, echo = knitr_echo}
 quarter_linf <- stock_rex@Linf / 4
@@ -505,7 +505,7 @@ fleet_rex@LR5 <- c(quarter_linf, quarter_linf)
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds.*
 
-Let's assume it is half of Linf for now. Ask industry.
+We will assume this is 1/2 of `Linf` for now. TODO: Ask industry.
 
 ```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
 
@@ -519,7 +519,7 @@ fleet_rex@LFR <- c(half_linf, half_linf)
 
 *The retention of fish at `Linf` . Uniform distribution lower and upper bounds.*
 
-We don't have any length data on discards but assume that they will be retained if they are big.
+We do not have any length data on discards but assume that they will be retained if they are large (at `Linf`).
 
 ```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@Rmaxlen <- c(1, 1)
@@ -531,23 +531,25 @@ fleet_rex@Rmaxlen <- c(1, 1)
 
 *Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
 
-We looked at the discard rate since observers on the trawl fleet (1996). We set the bounds as mean +/ 1 SD as observed in the data:
+We looked at the discard rate since observer coverage on the trawl fleet (1996). We set the bounds as the mean +/ 1 standard deviation as observed in the data:
 
 ```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
 discards2 <- drex$catch %>%
   gfplot::tidy_catch() %>%
+  dplyr::filter(year >= 1996) %>% 
   dplyr::filter(gear == "Discarded") %>%
-  rename(Discards = value) %>%
-  select(-gear)
+  dplyr::rename(Discards = value) %>%
+  dplyr::select(-gear)
 
 catch2 <- drex$catch %>%
   gfplot::tidy_catch() %>%
+  dplyr::filter(year >= 1996) %>% 
   dplyr::filter(gear == "Bottom trawl") %>%
-  rename(Landed = value) %>%
-  select(-gear)
+  dplyr::rename(Landed = value) %>%
+  dplyr::select(-gear)
 
-discard_rate2 <- left_join(discards2, catch2) %>%
-  mutate(frac_disc = Discards / (Landed + Discards))
+discard_rate2 <- dplyr::left_join(discards2, catch2) %>%
+  dplyr::mutate(frac_disc = Discards / (Landed + Discards))
 
 mean_frac_d2 <- mean(discard_rate2$frac_disc)
 sd_frac_d2 <- sd(discard_rate2$frac_disc)
