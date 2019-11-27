@@ -39,6 +39,7 @@ stock_rex@Size_area_1 <- c(0.5, 0.5)
 stock_rex@Frac_area_1 <- c(0.5, 0.5)
 stock_rex@Prob_staying <- c(0.5, 0.5)
 stock_rex@Mexp <- c(NA_real_, NA_real_)
+stock_rex@R0 <- 1000
 ```
 
 <!-- slot-chunk-begin -->
@@ -79,24 +80,10 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
 
-<!-- From @turnock2005. This is the plus group value. TODO Can't find turnock2005 -->
-
-From @munk2001, who document the maximum ages observed in various surveys in Alaska, note the maximum age observe for Rex Sole in the Gulf of Alaska is 27 years. We don't have ages in our database to inform the maximum age for this region. @mcgilliard2017 used age 20 as the plus group age in their model, since we don't have a plus group, maybe safer to use 27. We should test sensitivity to this. If important this would add to the VOI study.
+@munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years. We do not have ages in our database to inform the maximum age for this region.
 
 ```{r desc-stock-maxage-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@maxage <- 27
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### R0 {#app:desc-stock-r0-rex}
-
-*The magnitude of unfished recruitment. Single value. Positive real number*
-
-The absolute value is meaningless here. Arbitrarily pick a value.
-
-```{r desc-stock-r0-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@R0 <- 1000
 ```
 <!-- slot-chunk-end -->
 
@@ -105,10 +92,10 @@ stock_rex@R0 <- 1000
 
 *Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
 
-@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. Here add a little uncertainty. 
+@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. Here add a little uncertainty.
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@M <- c(0.17, 0.2) 
+stock_rex@M <- c(0.17, 0.2)
 ```
 <!-- slot-chunk-end -->
 
@@ -319,13 +306,13 @@ round(stock_rex@b, 2)
 
 How do these values compare to @mcgilliard2017:
 
-Female a = 1.35e-06 
+Female a = 1.35e-06
 
-Male a  = 2.18e-06 
+Male a  = 2.18e-06
 
-Female b = 3.45 
+Female b = 3.45
 
-Male b  = 3.31 
+Male b  = 3.31
 
 A bit different. Should check sensitivity to these values.
 
@@ -726,10 +713,10 @@ obs_rex@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
 
-Set this to c(0,0) unless we are specifically interested in hyperstability/hyper depletion.
+Set this to `c(1, 1)` unless we are specifically interested in hyperstability/hyper depletion.
 
 ```{r desc-obs-beta-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@beta <- c(0,0)
+obs_rex@beta <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -739,7 +726,7 @@ obs_rex@beta <- c(0,0)
 *Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
 
 ```{r desc-obs-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@LenMbiascv <- c(0,0)
+obs_rex@LenMbiascv <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -748,7 +735,7 @@ obs_rex@LenMbiascv <- c(0,0)
 
 *Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`. 
+We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`.
 
 Most MPs don't need an estimate of M, although the delay-difference (DD) MP does and may be sensitive to this value. The default value is 0.2 and may cause the DD MP to perform too well.
 
@@ -955,11 +942,9 @@ imp_rex@Name <- "BC Implementation"
 
 We need to discuss carry-over with industry. For many species they only take 70% and carry over 30% into next year.
 
-For now set between 0.7 and 0.9.
-
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
-imp_rex@TACFrac <- c(0.7, 0.9)
+imp_rex@TACFrac <- c(1.0, 1.0)
 ```
 <!-- slot-chunk-end -->
 
@@ -968,7 +953,7 @@ imp_rex@TACFrac <- c(0.7, 0.9)
 
 *Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-Assume that if TACFrac is not c(1,1), as it is in Perfect_Imp, then the SD should be set to something non-zero.
+Assume that if `TACFrac` is not `c(1, 1)`, as it is in `Perfect_Imp`, then the SD should be set to something non-zero.
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACSD <- c(0.05, 0.05)
