@@ -45,8 +45,7 @@ stock_rex@R0 <- 1000
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-stock-name-rex}
 
-*The name of the Stock object. Single value. Character string*
-
+*The name of the Stock object.*
 
 ```{r desc-stock-name-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Name <- "Rex Sole"
@@ -56,8 +55,7 @@ stock_rex@Name <- "Rex Sole"
 <!-- slot-chunk-begin -->
 ### Common_Name {#app:desc-stock-common_name-rex}
 
-*Common name of the species. Character string*
-
+*Common name of the species.*
 
 ```{r desc-stock-common_name-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Common_Name <- "Rex Sole"
@@ -67,8 +65,7 @@ stock_rex@Common_Name <- "Rex Sole"
 <!-- slot-chunk-begin -->
 ### Species {#app:desc-stock-species-rex}
 
-*Scientific name of the species. Genus and species name. Character string*
-
+*Scientific name of the species.*
 
 ```{r desc-stock-species-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Species <- "Glyptocephalus zachirus"
@@ -78,7 +75,7 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 <!-- slot-chunk-begin -->
 ### maxage {#app:desc-stock-maxage-rex}
 
-*The maximum age of individuals that is simulated (there is no plus group ). Single value. Positive integer*
+*The maximum age of individuals that is simulated (there is no plus group). Positive integer.*
 
 @munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years. We do not have ages in our database to inform the maximum age for this region.
 
@@ -90,7 +87,7 @@ stock_rex@maxage <- 27
 <!-- slot-chunk-begin -->
 ### M {#app:desc-stock-m-rex}
 
-*Natural mortality rate. Uniform distribution lower and upper bounds. Positive real number*
+*Natural mortality rate. Uniform distribution lower and upper bounds.*
 
 @mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. Here add a little uncertainty.
 
@@ -99,11 +96,10 @@ stock_rex@M <- c(0.17, 0.2)
 ```
 <!-- slot-chunk-end -->
 
-
 <!-- slot-chunk-begin -->
 ### h {#app:desc-stock-h-rex}
 
-*Steepness of the stock recruit relationship. Uniform distribution lower and upper bounds. Values from 1/5 to 1*
+*Steepness of the stock-recruit relationship. Uniform distribution lower and upper bounds with values from 1/5 to 1.*
 
 @maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% CI of 0.69--0.98). Here we will choose a value that approximately encompasses this range.
 
@@ -115,7 +111,7 @@ stock_rex@h <- c(0.70, 0.95)
 <!-- slot-chunk-begin -->
 ### SRrel {#app:desc-stock-srrel-rex}
 
-*Type of stock-recruit relationship. Single value, switch (1) Beverton-Holt (2) Ricker. Integer*
+*Type of stock-recruit relationship. Single integer value, switch (1) Beverton-Holt (2) Ricker.*
 
 We will use a Beverton-Holt stock-recruit relationship as is been used in most British Columbia groundfish assessments and is assumed in the estimates of steepness defined in this operating model.
 
@@ -127,7 +123,7 @@ stock_rex@SRrel <- 1L
 <!-- slot-chunk-begin -->
 ### Perr {#app:desc-stock-perr-rex}
 
-*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds.*
 
 @thorson2014 finds the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation. @mcgilliard2017 used 0.6 for Gulf of Alaska stocks.
 
@@ -139,7 +135,7 @@ stock_rex@Perr <- c(0.4, 0.9)
 <!-- slot-chunk-begin -->
 ### AC {#app:desc-stock-ac-rex}
 
-*Autocorrelation in recruitment deviations rec(t)=AC*rec(t-1)+(1-AC)*sigma(t). Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Autocorrelation in recruitment deviations. Uniform distribution lower and upper bounds.*
 
 @thorson2014 finds the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will set our uniform distribution to be approximately plus or minus one standard deviation.
 
@@ -148,12 +144,10 @@ stock_rex@AC <- c(0.2, 0.7)
 ```
 <!-- slot-chunk-end -->
 
-
-
 <!-- slot-chunk-begin -->
 ### Linf {#app:desc-stock-linf-rex}
 
-*Maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
+*Maximum length. Uniform distribution lower and upper bounds.*
 
 We don't have ages in our database to fit a von Bertalanffy model, but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across these surveys.
 
@@ -191,7 +185,7 @@ stock_rex@Linf <- c(39.5, 44.9)
 <!-- slot-chunk-begin -->
 ### K {#app:desc-stock-k-rex}
 
-*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds. Positive real numbers*
+*von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds.*
 
 @turnock2005 (Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will use these values.
 
@@ -203,7 +197,7 @@ stock_rex@K <- c(0.31, 0.38)
 <!-- slot-chunk-begin -->
 ### t0 {#app:desc-stock-t0-rex}
 
-*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds. Non-positive real numbers*
+*von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds.*
 
 @turnock2005 (Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We assume these should be negative.
 
@@ -215,7 +209,7 @@ stock_rex@t0 <- c(-0.79, -0.69)
 <!-- slot-chunk-begin -->
 ### LenCV {#app:desc-stock-lencv-rex}
 
-*Coefficient of variation of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds. Positive real numbers*
+*CV of length-at-age (assumed constant for all age classes). Uniform distribution lower and upper bounds.*
 
 Given uncertainty in the growth parameters as applied in BC, set a fairly large CV (0.25).
 
@@ -227,7 +221,7 @@ stock_rex@LenCV <- c(0.25, 0.25)
 <!-- slot-chunk-begin -->
 ### L50 {#app:desc-stock-l50-rex}
 
-*Length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+*Length at 50% maturity. Uniform distribution lower and upper bounds.*
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
@@ -246,7 +240,7 @@ stock_rex@L50
 <!-- slot-chunk-begin -->
 ### L50_95 {#app:desc-stock-l50_95-rex}
 
-*Length increment from 50 percent to 95 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+*Length increment from 50% to 95% maturity. Uniform distribution lower and upper bounds.*
 
 We can calculate this as a derived parameter from our logistic maturity model:
 
@@ -263,7 +257,7 @@ stock_rex@L50_95
 <!-- slot-chunk-begin -->
 ### D {#app:desc-stock-d-rex}
 
-*Current level of stock depletion SSB(current)/SSB(unfished). Uniform distribution lower and upper bounds. Fraction*
+*Current level of stock depletion SSB~current~/SSB~unfished~. Uniform distribution lower and upper bounds representing a fraction.*
 
 This will be populated via the SRA model and so we will leave it blank here.
 
@@ -275,10 +269,9 @@ stock_rex@D
 <!-- slot-chunk-begin -->
 ### a {#app:desc-stock-a-rex}
 
-*Length-weight parameter alpha. Single value. Positive real number*
+*Length-weight parameter alpha. Positive real number.*
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
-
 
 ```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
@@ -292,11 +285,18 @@ round(stock_rex@a,2)
 <!-- slot-chunk-begin -->
 ### b {#app:desc-stock-b-rex}
 
-*Length-weight parameter beta. Single value. Positive real number*
+*Length-weight parameter beta. Positive real number.*
 
 <!-- Alternatively from @mcgilliard2017: -->
 <!-- - Female = 3.44963 -->
 <!-- - Male = 3.30571 -->
+
+<!-- How do these values compare to @mcgilliard2017: -->
+<!-- Female a = 1.35e-06 -->
+<!-- Male a  = 2.18e-06 -->
+<!-- Female b = 3.45 -->
+<!-- Male b  = 3.31 -->
+<!-- A bit different. Should check sensitivity to these values. -->
 
 ```{r desc-stock-b-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@b <- mlw$pars[["b"]]
@@ -304,22 +304,10 @@ round(stock_rex@b, 2)
 ```
 <!-- slot-chunk-end -->
 
-How do these values compare to @mcgilliard2017:
-
-Female a = 1.35e-06
-
-Male a  = 2.18e-06
-
-Female b = 3.45
-
-Male b  = 3.31
-
-A bit different. Should check sensitivity to these values.
-
 <!-- slot-chunk-begin -->
 ### Fdisc {#app:desc-stock-fdisc-rex}
 
-*Fraction of discarded fish that die. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Fraction of discarded fish that die. Uniform distribution lower and upper bounds.*
 
 Assume that all discarded fish die.
 
@@ -331,14 +319,12 @@ stock_rex@Fdisc <- c(1,1)
 <!-- slot-chunk-begin -->
 ### Source {#app:desc-stock-source-rex}
 
-*A reference to a website or article from which parameters were taken to define the stock object. Single value. Character string.*
-
+*A reference to a website or article from which parameters were taken to define the stock object.*
 
 ```{r desc-stock-source-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Source <- ""
 ```
 <!-- slot-chunk-end -->
-
 
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-rex}
 
@@ -359,8 +345,7 @@ fleet_rex@Spat_targ <- c(1, 1)
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-fleet-name-rex}
 
-*Name of the Fleet object. Single value. Character string.*
-
+*Name of the Fleet object.*
 
 ```{r desc-fleet-name-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@Name <- "BC Fleet"
@@ -370,7 +355,7 @@ fleet_rex@Name <- "BC Fleet"
 <!-- slot-chunk-begin -->
 ### nyears {#app:desc-fleet-nyears-rex}
 
-*The number of years for the historical spool-up simulation. Single value. Positive integer*
+*The number of years for the historical spool-up simulation.*
 
 We will set the historical run-up to be approximately the length of the recorded commercial fishery.
 
@@ -382,11 +367,10 @@ fleet_rex@nyears
 ```
 <!-- slot-chunk-end -->
 
-
 <!-- slot-chunk-begin -->
 ### L5 {#app:desc-fleet-l5-rex}
 
-*Shortest length corresponding to 5 percent vulnerability. Uniform distribution lower and upper bounds. Positive real numbers*
+*Shortest length corresponding to 5% vulnerability. Uniform distribution lower and upper bounds.*
 
 There are very few commercial length samples to inform this parameter for our commercial WCVI samples:
 
@@ -438,7 +422,7 @@ fleet_rex@L5
 <!-- slot-chunk-begin -->
 ### LFS {#app:desc-fleet-lfs-rex}
 
-*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds. Positive real numbers*
+*Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds.*
 
 Here's a comparison of the commercial (from the entire coast) and survey samples (from WCVI):
 
@@ -464,7 +448,7 @@ fleet_rex@LFS <- c(0.8, 1.2)
 <!-- slot-chunk-begin -->
 ### Vmaxlen {#app:desc-fleet-vmaxlen-rex}
 
-*The vulnerability of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Fraction*
+*The vulnerability of fish at `Linf`. Uniform distribution lower and upper bounds. Fraction.*
 
 We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
 
@@ -476,7 +460,7 @@ fleet_rex@Vmaxlen <- c(1, 1)
 <!-- slot-chunk-begin -->
 ### isRel {#app:desc-fleet-isrel-rex}
 
-*Selectivity parameters in units of size-of-maturity (or absolute eg cm). Single value. Boolean.*
+*Are the selectivity parameters in units of size-of-maturity (`TRUE`) (or absolute units, for example, cm) (`FALSE`).*
 
 As mentioned above, the slots have been entered as units of size at maturity.
 
@@ -488,7 +472,7 @@ fleet_rex@isRel <- TRUE
 <!-- slot-chunk-begin -->
 ### LR5 {#app:desc-fleet-lr5-rex}
 
-*Shortest length corresponding to 5 percent retention. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Shortest length corresponding ot 5% retention. Uniform distribution lower and upper bounds.*
 
 Let's assume it is quarter of Linf for now. Ask industry.
 
@@ -501,7 +485,7 @@ fleet_rex@LR5 <- c(quarter_linf,quarter_linf)
 <!-- slot-chunk-begin -->
 ### LFR {#app:desc-fleet-lfr-rex}
 
-*Shortest length that is fully retained. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Shortest length that is fully retained. Uniform distribution lower and upper bounds.*
 
 Let's assume it is half of Linf for now. Ask industry.
 
@@ -515,7 +499,7 @@ fleet_rex@LFR <- c(half_linf, half_linf)
 <!-- slot-chunk-begin -->
 ### Rmaxlen {#app:desc-fleet-rmaxlen-rex}
 
-*The retention of fish at `Stock@Linf` . Uniform distribution lower and upper bounds. Non-negative real numbers*
+*The retention of fish at `Linf` . Uniform distribution lower and upper bounds.*
 
 We don't have any length data on discards but assume that they will be retained if they are big.
 
@@ -527,7 +511,7 @@ fleet_rex@Rmaxlen <- c(1, 1)
 <!-- slot-chunk-begin -->
 ### DR {#app:desc-fleet-dr-rex}
 
-*Discard rate - the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction*
+*Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
 
 We looked at the discard rate since observers on the trawl fleet (1996). We set the bounds as mean +/ 1 SD as observed in the data:
 
@@ -561,28 +545,23 @@ round(fleet_rex@DR, 2)
 <!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
 
-*The current calendar year (final year) of the historical simulations (eg 2011). Single value. Positive integer.*
-
+*The current calendar year (final year) of the historical simulations (e.g., 2019).*
 
 ```{r desc-fleet-currentyr-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@CurrentYr <- 2018
 ```
 <!-- slot-chunk-end -->
 
-
-
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
 
 ```{r warnings = FALSE}
-obs_rex <- DLMtool::Generic_Obs
+obs_rex <- DLMtool::Precise_Unbiased
 ```
-
 
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-obs-name-rex}
 
-*The name of the observation model object. Single value. Character string.*
-
+*The name of the observation model object.*
 
 ```{r desc-obs-name-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Name <- "BC observation model"
@@ -591,6 +570,8 @@ obs_rex@Name <- "BC observation model"
 
 <!-- slot-chunk-begin -->
 ### Cobs {#app:desc-obs-cobs-rex}
+
+*Log-normal catch observation error expressed as a CV. Uniform distribution lower and upper bounds.*
 
 Since 1996, observation error on catch should be very small:
 
@@ -605,7 +586,7 @@ obs_rex@Cobs <- c(0, 0.05)
 <!-- slot-chunk-begin -->
 ### Cbiascv {#app:desc-obs-cbiascv-rex}
 
-*Log-normal coefficient of variation controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds. Non-negative real numbers*
+*Log-normal CV controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds.*
 
 We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
 
@@ -619,7 +600,7 @@ obs_rex@Cbiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### CAA_nsamp {#app:desc-obs-caa_nsamp-rex}
 
-*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds. Positive real numbers*
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds.*
 
 This slot will not be relevant in the main operating model since none of the MPs make use of age data.
 
@@ -631,7 +612,7 @@ obs_rex@CAA_nsamp
 <!-- slot-chunk-begin -->
 ### CAA_ESS {#app:desc-obs-caa_ess-rex}
 
-*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds.*
 
 This slot will not be relevant in the main operating model since none of the MPs make use of age data.
 
@@ -643,7 +624,7 @@ obs_rex@CAA_ESS
 <!-- slot-chunk-begin -->
 ### CAL_nsamp {#app:desc-obs-cal_nsamp-rex}
 
-*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds. Positive integers*
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds.*
 
 The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000.
 
@@ -656,7 +637,7 @@ obs_rex@CAL_nsamp
 <!-- slot-chunk-begin -->
 ### CAL_ESS {#app:desc-obs-cal_ess-rex}
 
-*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds. Positive integers*
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds.*
 
 Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 400.
 
@@ -668,7 +649,7 @@ obs_rex@CAL_ESS <- c(300, 400)
 <!-- slot-chunk-begin -->
 ### Iobs {#app:desc-obs-iobs-rex}
 
-*Observation error in the relative abundance indices expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Positive real numbers*
+*Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
 We will set this to the range of observed CV in the SYN WCVI survey:
 
@@ -685,12 +666,10 @@ obs_rex@Iobs
 ```
 <!-- slot-chunk-end -->
 
-
 <!-- slot-chunk-begin -->
 ### Btobs {#app:desc-obs-btobs-rex}
 
-*Log-normal coefficient of variation controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-btobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Btobs
@@ -700,8 +679,7 @@ obs_rex@Btobs
 <!-- slot-chunk-begin -->
 ### Btbiascv {#app:desc-obs-btbiascv-rex}
 
-*Uniform-log bounds for sampling persistent bias in current stock biomass. Uniform-log distribution lower and upper bounds. Positive real numbers*
-
+*Uniform log bounds for persistent sampling bias in current stock biomass. Uniform log distribution lower and upper bounds.*
 
 ```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Btbiascv
@@ -711,7 +689,7 @@ obs_rex@Btbiascv
 <!-- slot-chunk-begin -->
 ### beta {#app:desc-obs-beta-rex}
 
-*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases slower than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds. Positive real numbers*
+*A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases more slowly than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds.*
 
 Set this to `c(1, 1)` unless we are specifically interested in hyperstability/hyper depletion.
 
@@ -723,7 +701,7 @@ obs_rex@beta <- c(1, 1)
 <!-- slot-chunk-begin -->
 ### LenMbiascv {#app:desc-obs-lenmbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LenMbiascv <- c(0, 0)
@@ -733,7 +711,7 @@ obs_rex@LenMbiascv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### Mbiascv {#app:desc-obs-mbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds.*
 
 We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`.
 
@@ -747,7 +725,7 @@ obs_rex@Mbiascv
 <!-- slot-chunk-begin -->
 ### Kbiascv {#app:desc-obs-kbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds.*
 
 Since there is no ageing data for Rex Sole we are using parameters from other stocks (Gulf of Alaska). For stocks like this, we can expect some bias in von Bertalanffy growth parameters. Default is 0.1 for K and t0. this is probably okay but allow it to go up to 0.2. Default is 0.05 for Linf. Set this to 0.1.
 
@@ -759,8 +737,7 @@ obs_rex@Kbiascv <- c(0.1,0.2)
 <!-- slot-chunk-begin -->
 ### t0biascv {#app:desc-obs-t0biascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-t0biascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@t0biascv <- c(0.1,0.2)
@@ -770,8 +747,7 @@ obs_rex@t0biascv <- c(0.1,0.2)
 <!-- slot-chunk-begin -->
 ### Linfbiascv {#app:desc-obs-linfbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-linfbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Linfbiascv <- c(0.1,0.2)
@@ -781,8 +757,7 @@ obs_rex@Linfbiascv <- c(0.1,0.2)
 <!-- slot-chunk-begin -->
 ### LFCbiascv {#app:desc-obs-lfcbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-lfcbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LFCbiascv
@@ -792,8 +767,7 @@ obs_rex@LFCbiascv
 <!-- slot-chunk-begin -->
 ### LFSbiascv {#app:desc-obs-lfsbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-lfsbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LFSbiascv
@@ -803,10 +777,9 @@ obs_rex@LFSbiascv
 <!-- slot-chunk-begin -->
 ### FMSYbiascv {#app:desc-obs-fmsybiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds.*
 
 Most MPs we are using don't require these inputs. Use the default values of 0.2.
-
 
 ```{r desc-obs-fmsybiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@FMSYbiascv
@@ -816,8 +789,7 @@ obs_rex@FMSYbiascv
 <!-- slot-chunk-begin -->
 ### FMSY_Mbiascv {#app:desc-obs-fmsy_mbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in FMSY/M. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-fmsy_mbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@FMSY_Mbiascv
@@ -827,8 +799,7 @@ obs_rex@FMSY_Mbiascv
 <!-- slot-chunk-begin -->
 ### BMSY_B0biascv {#app:desc-obs-bmsy_b0biascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in BMSY relative to unfished. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-bmsy_b0biascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@BMSY_B0biascv
@@ -838,8 +809,7 @@ obs_rex@BMSY_B0biascv
 <!-- slot-chunk-begin -->
 ### Irefbiascv {#app:desc-obs-irefbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in relative abundance index at BMSY. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-irefbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Irefbiascv
@@ -849,8 +819,7 @@ obs_rex@Irefbiascv
 <!-- slot-chunk-begin -->
 ### Brefbiascv {#app:desc-obs-brefbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in BMSY. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-brefbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Brefbiascv
@@ -860,8 +829,7 @@ obs_rex@Brefbiascv
 <!-- slot-chunk-begin -->
 ### Crefbiascv {#app:desc-obs-crefbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in MSY. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in MSY. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Crefbiascv
@@ -871,10 +839,9 @@ obs_rex@Crefbiascv
 <!-- slot-chunk-begin -->
 ### Dbiascv {#app:desc-obs-dbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in stock depletion. Uniform distribution lower and upper bounds.*
 
 We are not using MPs that require an estimate of depletion. Use the default values here.
-
 
 ```{r desc-obs-dbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Dbiascv
@@ -884,8 +851,7 @@ obs_rex@Dbiascv
 <!-- slot-chunk-begin -->
 ### Dobs {#app:desc-obs-dobs-rex}
 
-*Log-normal coefficient of variation controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV controlling error in observations of stock depletion among years. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-dobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Dobs
@@ -895,8 +861,7 @@ obs_rex@Dobs
 <!-- slot-chunk-begin -->
 ### hbiascv {#app:desc-obs-hbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in steepness. Uniform distribution lower and upper bounds. Positive real numbers*
-
+*Log-normal CV for sampling persistent bias in steepness. Uniform distribution lower and upper bounds.*
 
 ```{r desc-obs-hbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@hbiascv
@@ -906,16 +871,14 @@ obs_rex@hbiascv
 <!-- slot-chunk-begin -->
 ### Recbiascv {#app:desc-obs-recbiascv-rex}
 
-*Log-normal coefficient of variation for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds. Positive real numbers*
+*Log-normal CV for sampling persistent bias in recent recruitment strength. Uniform distribution lower and upper bounds.*
 
 Not sure where this is used. Leave at default value of c(0.1,0.3)
-
 
 ```{r desc-obs-recbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Recbiascv
 ```
 <!-- slot-chunk-end -->
-
 
 ## IMP SLOT DESCRIPTIONS {#app:desc-imp-rex}
 
@@ -923,12 +886,10 @@ obs_rex@Recbiascv
 imp_rex <- DLMtool::Perfect_Imp
 ```
 
-
 <!-- slot-chunk-begin -->
 ### Name {#app:desc-imp-name-rex}
 
-*The name of the Implementation error object. Single value. Character string.*
-
+*The name of the Implementation error object.*
 
 ```{r desc-imp-name-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@Name <- "BC Implementation"
@@ -938,10 +899,9 @@ imp_rex@Name <- "BC Implementation"
 <!-- slot-chunk-begin -->
 ### TACFrac {#app:desc-imp-tacfrac-rex}
 
-*Mean fraction of TAC taken. Uniform distribution lower and upper bounds. Positive real number.*
+*Mean fraction of TAC taken. Uniform distribution lower and upper bounds.*
 
 We need to discuss carry-over with industry. For many species they only take 70% and carry over 30% into next year.
-
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACFrac <- c(1.0, 1.0)
@@ -951,7 +911,7 @@ imp_rex@TACFrac <- c(1.0, 1.0)
 <!-- slot-chunk-begin -->
 ### TACSD {#app:desc-imp-tacsd-rex}
 
-*Log-normal coefficient of variation in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal CV in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds.*
 
 Assume that if `TACFrac` is not `c(1, 1)`, as it is in `Perfect_Imp`, then the SD should be set to something non-zero.
 
@@ -959,7 +919,6 @@ Assume that if `TACFrac` is not `c(1, 1)`, as it is in `Perfect_Imp`, then the S
 imp_rex@TACSD <- c(0.05, 0.05)
 ```
 <!-- slot-chunk-end -->
-
 
 <!-- ### Output the OM -->
 
