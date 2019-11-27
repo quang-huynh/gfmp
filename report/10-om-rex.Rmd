@@ -285,7 +285,7 @@ stock_rex@L50_95
 
 *Current level of stock depletion SSB~current~/SSB~unfished~. Uniform distribution lower and upper bounds representing a fraction.*
 
-This will be populated via the SRA model and so we will leave it blank here.
+This will be populated via the SRA conditioning model and so we will leave it blank here.
 
 ```{r desc-stock-d-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@D
@@ -304,7 +304,7 @@ mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 stock_rex@a <- exp(mlw$pars[["log_a"]])
 round(log(stock_rex@a), 2)
-round(stock_rex@a, 2)
+round(stock_rex@a, 7)
 ```
 <!-- slot-chunk-end -->
 
@@ -339,16 +339,6 @@ We will assume that all discarded fish die.
 
 ```{r desc-stock-fdisc-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Fdisc <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Source {#app:desc-stock-source-rex}
-
-*A reference to a website or article from which parameters were taken to define the stock object.*
-
-```{r desc-stock-source-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Source <- ""
 ```
 <!-- slot-chunk-end -->
 
@@ -616,7 +606,7 @@ obs_rex@Cobs <- c(0, 0.05)
 
 *Log-normal CV controlling the sampling of bias in catch observations for each simulation. Uniform distribution lower and upper bounds.*
 
-We will keep the at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
+We will keep this at 0 because observation error on catch should be very small with 100% on board and dockside monitoring.
 
 <!-- FIXME: what about the historical period? -->
 
@@ -633,7 +623,7 @@ obs_rex@Cbiascv <- c(0, 0)
 This slot will not be relevant in the main operating model since none of the MPs make use of age data.
 
 ```{r desc-obs-caa_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAA_nsamp
+obs_rex@CAA_nsamp <- c(100, 200)
 ```
 <!-- slot-chunk-end -->
 
@@ -645,7 +635,7 @@ obs_rex@CAA_nsamp
 This slot will not be relevant in the main operating model since none of the MPs make use of age data.
 
 ```{r desc-obs-caa_ess-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAA_ESS
+obs_rex@CAA_ESS <- c(50, 100)
 ```
 <!-- slot-chunk-end -->
 
@@ -667,10 +657,10 @@ obs_rex@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds.*
 
-Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 400.
+Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 100 to 400, depending on the year.
 
 ```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAL_ESS <- c(300, 400)
+obs_rex@CAL_ESS <- c(100, 400)
 ```
 <!-- slot-chunk-end -->
 
@@ -679,7 +669,7 @@ obs_rex@CAL_ESS <- c(300, 400)
 
 *Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
-We will set this to the range of observed CV in the SYN WCVI survey:
+This will get replaced by the SRA conditioning model with the actual annual values. For now, we will fill this with the range of CV for the survey.
 
 ```{r}
 rex_cv_range <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
@@ -699,6 +689,8 @@ obs_rex@Iobs
 
 *Log-normal CV controlling error in observations of current stock biomass among years. Uniform distribution lower and upper bounds.*
 
+This will not affect our results because we will not make use of MPs that use this slot.
+
 ```{r desc-obs-btobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Btobs
 ```
@@ -708,6 +700,8 @@ obs_rex@Btobs
 ### Btbiascv {#app:desc-obs-btbiascv-rex}
 
 *Uniform log bounds for persistent sampling bias in current stock biomass. Uniform log distribution lower and upper bounds.*
+
+This will not affect our results because we will not make use of MPs that use this slot.
 
 ```{r desc-obs-btbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Btbiascv
@@ -719,7 +713,7 @@ obs_rex@Btbiascv
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases more slowly than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds.*
 
-Set this to `c(1, 1)` unless we are specifically interested in hyperstability/hyper depletion.
+We will set this to 1 to imply no hyperstability or hyperdepletion. This may be an important slot to explore as part of the robustness set since many candidate MPs in this framework rely on the survey index.
 
 ```{r desc-obs-beta-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@beta <- c(1, 1)
@@ -731,6 +725,8 @@ obs_rex@beta <- c(1, 1)
 
 *Log-normal CV for sampling persistent bias in length at 50 percent maturity. Uniform distribution lower and upper bounds.*
 
+This will not affect our results because we will not make use of MPs that use this slot. TODO: check SP models.
+
 ```{r desc-obs-lenmbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LenMbiascv <- c(0, 0)
 ```
@@ -741,9 +737,7 @@ obs_rex@LenMbiascv <- c(0, 0)
 
 *Log-normal CV for sampling persistent bias in observed natural mortality rate. Uniform distribution lower and upper bounds.*
 
-We don't have good data to go on for natural mortality rate so let's allow for a fairly large range in persistent bias. As a reminder, we set M to be drawn from a uniform distribution between `r stock_rex@M[[1]]` and `r stock_rex@M[[2]]`.
-
-Most MPs don't need an estimate of M, although the delay-difference (DD) MP does and may be sensitive to this value. The default value is 0.2 and may cause the DD MP to perform too well.
+This will not affect our results because we will not make use of MPs that require an assumed value of M. TODO: check SP models.
 
 ```{r desc-obs-mbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Mbiascv
@@ -755,7 +749,9 @@ obs_rex@Mbiascv
 
 *Log-normal CV for sampling persistent bias in observed growth parameter K. Uniform distribution lower and upper bounds.*
 
-Since there is no ageing data for Rex Sole we are using parameters from other stocks (Gulf of Alaska). For stocks like this, we can expect some bias in von Bertalanffy growth parameters. Default is 0.1 for K and t0. this is probably okay but allow it to go up to 0.2. Default is 0.05 for Linf. Set this to 0.1.
+Since there is no ageing data for Rex Sole in BC, we are using parameters from other stocks (Gulf of Alaska). For stocks like this, we can expect some bias in von Bertalanffy growth parameters. Default is 0.1 for K and t0. this is probably okay but allow it to go up to 0.2. Default is 0.05 for Linf. Set this to 0.1. TODO: delete?
+
+This will not affect our results because we will not make use of MPs that require an assumed value of K. TODO: SP?
 
 ```{r desc-obs-kbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Kbiascv <- c(0.1, 0.2)
@@ -767,6 +763,10 @@ obs_rex@Kbiascv <- c(0.1, 0.2)
 
 *Log-normal CV for sampling persistent bias in observed t0. Uniform distribution lower and upper bounds.*
 
+This will not affect our results because we will not make use of MPs that require an assumed value of t0. TODO: SP?
+
+TODO: delete many of these observation slots that will not be used by our MPs?
+
 ```{r desc-obs-t0biascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@t0biascv <- c(0.1, 0.2)
 ```
@@ -776,6 +776,8 @@ obs_rex@t0biascv <- c(0.1, 0.2)
 ### Linfbiascv {#app:desc-obs-linfbiascv-rex}
 
 *Log-normal CV for sampling persistent bias in observed maximum length. Uniform distribution lower and upper bounds.*
+
+This will not affect our results because we will not make use of MPs that require an assumed value of maximum length.
 
 ```{r desc-obs-linfbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Linfbiascv <- c(0.1, 0.2)
@@ -787,6 +789,8 @@ obs_rex@Linfbiascv <- c(0.1, 0.2)
 
 *Log-normal CV for sampling persistent bias in observed length at first capture. Uniform distribution lower and upper bounds.*
 
+This will not affect our results because we will not make use of MPs that require an assumed value that this slot corresponds to.
+
 ```{r desc-obs-lfcbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LFCbiascv
 ```
@@ -796,6 +800,8 @@ obs_rex@LFCbiascv
 ### LFSbiascv {#app:desc-obs-lfsbiascv-rex}
 
 *Log-normal CV for sampling persistent bias in length-at-full selection. Uniform distribution lower and upper bounds.*
+
+This will not affect our results because we will not make use of MPs that require an assumed value that this slot corresponds to.
 
 ```{r desc-obs-lfsbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@LFSbiascv
@@ -807,7 +813,7 @@ obs_rex@LFSbiascv
 
 *Log-normal CV for sampling persistent bias in FMSY. Uniform distribution lower and upper bounds.*
 
-Most MPs we are using don't require these inputs. Use the default values of 0.2.
+This will not affect our results because we will not make use of MPs that require an assumed value that this slot corresponds to.
 
 ```{r desc-obs-fmsybiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@FMSYbiascv
@@ -929,7 +935,7 @@ imp_rex@Name <- "BC Implementation"
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds.*
 
-We need to discuss carry-over with industry. For many species they only take 70% and carry over 30% into next year.
+We will assume that there is no persistent bias from iteration to iteration of the fraction of TAC taken.
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACFrac <- c(1.0, 1.0)
@@ -941,7 +947,7 @@ imp_rex@TACFrac <- c(1.0, 1.0)
 
 *Log-normal CV in the fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds.*
 
-Assume that if `TACFrac` is not `c(1, 1)`, as it is in `Perfect_Imp`, then the SD should be set to something non-zero.
+We will allow for a small amount of variation in fraction of TAC taken from year to year.
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACSD <- c(0.05, 0.05)
