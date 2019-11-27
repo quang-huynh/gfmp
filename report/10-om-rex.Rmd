@@ -517,7 +517,7 @@ fleet_rex@LFR <- c(half_linf, half_linf)
 <!-- slot-chunk-begin -->
 ### Rmaxlen {#app:desc-fleet-rmaxlen-rex}
 
-*The retention of fish at `Linf` . Uniform distribution lower and upper bounds.*
+*The retention of fish at `Linf`. Uniform distribution lower and upper bounds.*
 
 We do not have any length data on discards but assume that they will be retained if they are large (at `Linf`).
 
