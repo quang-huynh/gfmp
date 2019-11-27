@@ -1,6 +1,7 @@
 \clearpage
 
 ```{r, echo=FALSE}
+library(here)
 filter_data_rex <- function(d,
                             minimum_year = 1996,
                             maximum_year = 2018,
@@ -12,7 +13,7 @@ filter_data_rex <- function(d,
     dplyr::filter(year <= maximum_year, year >= minimum_year)
 
   d$survey_samples <- d$survey_samples %>%
-    dplyr::filter(major_stat_area_code %in% major_stat_area_codes) %>%
+    dplyr::filter(survey_series_desc %in% survey_series_descs) %>%
     dplyr::mutate(year = lubridate::year(trip_start_date)) %>%
     dplyr::filter(year <= maximum_year, year >= minimum_year)
 
@@ -33,7 +34,6 @@ load_data_rex <- gfdlm::load_data_factory("rex sole",
 ```
 
 ```{r}
-library(gfdlm)
 science_name <- "Glyptocephalus zachirusadus"
 drex <- load_data_rex() %>% filter_data_rex()
 ```
