@@ -192,10 +192,10 @@ We can look at the 95%, 99%, and 100% quantiles for males and then for females:
 
 ```{r rex-length3}
 dplyr::filter(rex_lengths, sex == 1) %>%
-  pull(length) %>%
+  dplyr::pull(length) %>%
   quantile(probs = c(0.95, 0.99, 1.00))
 dplyr::filter(rex_lengths, sex == 2) %>%
-  pull(length) %>%
+  dplyr::pull(length) %>%
   quantile(probs = c(0.95, 0.99, 1.00))
 ```
 
