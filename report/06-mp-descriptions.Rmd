@@ -96,7 +96,7 @@ where $x$ lies between 0 and 1. The TAC is constant for all future projections. 
 
 ## INDEX-SLOPE MANAGEMENT PROCEDURES
 
-Management procedures in this category make a TAC recommendation based on a change in a relative abundance index over time. The term "slope" is used since many MPs in this category fit a linear regression to the relative abundance index (usually analog space) and make a recommendation that generally decreases the TAC if the slope is negative and increases the TAC if the slope is positive. Some of the MPs are based on ratios of relative abundance in certain years.
+Management procedures in this category make a TAC recommendation based on a change in a relative abundance index over time. The term "slope" is used since many MPs in this category fit a linear regression to the relative abundance index (usually in log space) and make a recommendation that generally decreases the TAC if the slope is negative and increases the TAC if the slope is positive. Some of the MPs are based on ratios of relative abundance in certain years.
 
 ### Iratio: Mean index ratio
 
