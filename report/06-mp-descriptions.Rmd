@@ -548,9 +548,9 @@ g2 <- pars %>%
 cowplot::plot_grid(g1, g2, labels = "auto")
 ```
 
-### SBT1: "Simple" relative biomass target management procedure
+### SBT1: "Southern bluefin tuna" relative biomass target management procedure
 
-SBT1 is an MP that makes incremental adjustments to TAC recommendations based on the trend in relative abundance index levels (Fig. \@ref(fig:mp-sbt1-demo)). The TAC is calculated as:
+SBT1 is an MP that makes incremental adjustments to TAC recommendations based on the trend in relative abundance index levels (Fig. \@ref(fig:mp-sbt1-demo)). It is based on an MP that was developed for Southern Bluefin Tuna (REF). The TAC is calculated as:
 
 <!-- TODO: ref?  Rich Hillary at CSIRO?-->
 
@@ -562,7 +562,7 @@ C_{y-1} (1 + K_2 \lvert \lambda \rvert) & \textrm{if}\ \lambda \ge 0,
 \end{cases}
 \end{equation}
 
-where $\lambda$ is the slope of the ln relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. By default of these parameters are $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.2 on the fraction that the TAC can be increased from one year to the next.
+where $\lambda$ is the slope of the log relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. We note that our implementation uses a regression with the log of the relative abundance index, whereas the implementation in DLMtool at the time of writing uses a regression in natural space. We estimate the slope in log space so that the slope represents a percent change in relative abundance and is therefore independent of the scale of the abundance index. By default, these parameters are set to $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.2 on the fraction that the TAC can be increased from one year to the next.
 
 ```{r mp-sbt1-demo, fig.cap="Illustration of SBT1."}
 f <- function(c_y1, lambda, k1, k2, gamma) {
