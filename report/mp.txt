@@ -38,7 +38,7 @@ CC60, "Constant catch"
 
 .ITM_hist, "Index target"
 
-.SBT1, "Index target"
+.SBT1_log, "Index target"
 
 .SP4010, "Surplus production"
 .SP6040, "Surplus production"
