@@ -1,4 +1,5 @@
 library(dplyr)
+library(DLMtool)
 species_name <- "rex sole"
 starting_year <- 1996
 ending_year <- 2018
@@ -71,7 +72,7 @@ plot(all_years, catch, type = "o")
 indexes <- drex$survey_index %>%
   dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
   select(year, biomass, re) %>%
-  right_join(tibble(year = all_years), by = "year") %>%
+  right_join(tibble(year = all_years),by  = "year") %>%
   # left_join(rename(select(cpue, year, est), trawl_cpue = est), by = "year") %>%
   select(-year) %>%
   as.matrix()
@@ -93,13 +94,17 @@ rex_om@maxage
 rex_om@L5
 rex_om@LFS
 
-rex_om@nsim <- 100
-cores <- floor(parallel::detectCores() / 2)
+rex_om@nsim <- 200
+cores <- floor(parallel::detectCores() / 4)
+cores <- 4
 
+rex_om@Cobs <- c(0, 0)
+rex_om@Cbiascv <- c(0, 0)
 library(MSEtool)
 rex_sra2 <- MSEtool::SRA_scope(rex_om,
   # CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0, ESS = c(30, 30),
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
