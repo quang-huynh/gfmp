@@ -106,7 +106,7 @@ gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("F_FMSY", "B_BMSY")) +
 ```
 
 ```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C"), clip = 1.3) +
+gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C"), clip_ylim = 1.5) +
   theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 ```
 
