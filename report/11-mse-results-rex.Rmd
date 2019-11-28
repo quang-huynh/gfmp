@@ -131,7 +131,7 @@ dups_df %>%
   csasdown::csas_table(caption = "Duplicates in terms of PMs.")
 ```
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each 'spoke' (constant-catch MPs). Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each ``spoke'' (constant-catch MPs). Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
 
 cols <- viridisLite::viridis(5)
 names(cols) <- paste0("CC", seq(60, 100, 10))
@@ -146,7 +146,7 @@ filter(mp, type == "Constant catch") %>%
 
 <!-- TODO: allow passing factor levels to fix order of MPs -->
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each ``spoke''. Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
 
 # rex_satisficed_df %>%
 #   pull(mp) %>%
