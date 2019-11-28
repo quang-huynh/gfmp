@@ -1,4 +1,4 @@
-\newpage
+\clearpage
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 if (!file.exists(here::here("generated-data", "rex-om-sra.rds"))) {
@@ -9,14 +9,14 @@ library(dplyr)
 library(ggplot2)
 library(gfdlm)
 ```
-  
+
+# REX SOLE CASE STUDY: RESULTS
+
 ```{r}
 mp <- readr::read_csv(here::here("report", "mp.txt"))
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp)
+csasdown::csas_table(mp, caption = "MPs")
 ```
-
-# REX SOLE CASE STUDY: RESULTS
 
 West Coast Vancouver Island Rex Sole
   
@@ -32,8 +32,10 @@ The performance metrics are defined as:
 where SB is spawning biomass.
   
 ```{r}
-omrex <- readRDS(here::here("generated-data", "rex-om-sra.rds"))
+omrex_sra <- readRDS(here::here("generated-data", "rex-sra.rds"))
+omrex <- omrex_sra@OM
 omrex@interval <- 2
+omrex@nsim <- 100
 ```
 
 ```{r}
@@ -57,10 +59,12 @@ cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
 ```
 
 ```{r}
-file_name <- here::here("generated-data", "rex-mse.rds")
+file_name <- here::here("generated-data", "rex-mse2.rds")
+omrex@cpars$Data <- NULL # bug
+
 if (!file.exists(file_name)) {
-  DLMtool::setup(cpus = parallel::detectCores())
-  omrex@nsim <- 50
+  DLMtool::setup(cpus = floor(parallel::detectCores()/2))
+  omrex@TACSD <- c(0, 0)
   rex_mse <- runMSE(OM = omrex, MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
   saveRDS(rex_mse, file = file_name)
@@ -70,7 +74,7 @@ if (!file.exists(file_name)) {
 # DLMtool::Converge(rex_mse)
 ```
 
-```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only 'satisficed' MPs that have LT P40 > 0.75."}
+```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only ``satisficed'' MPs that have LT P40 > 0.8 and STY > 0.4."}
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
@@ -82,11 +86,11 @@ gfdlm::plot_probs(rex_probs)
 
 ```{r}
 reference_mp <- c("NFref", "FMSYref")
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.80) %>%
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.8, STY > 0.4) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
-rex_satisficed <- rex_satisficed[-which(rex_satisficed %in% reference_mp)]
+rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 ```
 
 ```{r}
@@ -102,32 +106,55 @@ gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("F_FMSY", "B_BMSY")) +
 ```
 
 ```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C")) +
+gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C"), clip = 1.3) +
   theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 ```
 
 ```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. Dots represent individual simulation iterations. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates. Axes are cut off at maximum values of 3.5 although some simulation iterations extend beyond these boundaries.", fig.asp=0.8, fig.width=8, out.width="5.75in"}
-gfdlm::plot_contours(rex_mse_sub, xlim = c(0, 3.5), ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
+gfdlm::plot_contours(rex_mse_sub_ref, xlim = c(0, 3.5), ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
 ```
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (index slope MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
+```{r}
+rex_probs_sat <- rex_probs %>% filter(MP %in% rex_satisficed) %>% 
+    arrange(`LT P40`, `LT P80`, `STY`)
+dups_df <- rex_probs_sat %>%
+  select(-MP) %>% 
+  mutate(Duplicated = duplicated(.)) %>% 
+  mutate(MP = rex_probs_sat$MP) %>% 
+  `[`(1:nrow(rex_probs_sat),c(8, 1:7))
 
-filter(rex_satisficed_df, type == "Index slope") %>% 
-  pull(mp) %>% 
-  DLMtool::Sub(rex_mse, .) %>% 
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
+mp_unique <- rex_probs_sat[!dups_df$Duplicated,,drop=FALSE] %>% pull(MP)
 ```
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (index target MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
-filter(rex_satisficed_df, type == "Index target") %>% 
-  pull(mp) %>% 
-  DLMtool::Sub(rex_mse, .) %>% 
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
+```{r}
+dups_df %>%
+  csasdown::csas_table(caption = "Duplicates in terms of PMs.")
 ```
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation (constant catch MPs). Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures.", out.width="4.5in", fig.width=10}
-filter(rex_satisficed_df, type == "Constant catch") %>% 
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each 'spoke' (constant-catch MPs). Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
+
+cols <- viridisLite::viridis(5)
+names(cols) <- paste0("CC", seq(60, 100, 10))
+filter(mp, type == "Constant catch") %>%
+  filter(grepl("^CC[0-9]+", mp)) %>% 
   pull(mp) %>% 
   DLMtool::Sub(rex_mse, .) %>% 
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0)
+  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
+  scale_color_manual(values = cols) +
+  labs(colour = "MP")
+```
+
+<!-- TODO: allow passing factor levels to fix order of MPs -->
+
+```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each 'spoke'. Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
+
+# rex_satisficed_df %>%
+#   pull(mp) %>%
+mp_unique %>%
+  union(c("NFref", "FMSYref")) %>% 
+  DLMtool::Sub(rex_mse, .) %>% 
+  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
+  scale_color_manual(values = 
+      c(RColorBrewer::brewer.pal(length(mp_unique), "Set2"), "grey30", "grey65")) +
+  labs(colour = "MP")
 ```
