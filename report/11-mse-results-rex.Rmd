@@ -8,12 +8,13 @@ library(DLMtool)
 library(dplyr)
 library(ggplot2)
 library(gfdlm)
+library(MSEtool)
 ```
 
 # REX SOLE CASE STUDY: RESULTS
 
 ```{r}
-mp <- readr::read_csv(here::here("report", "mp.txt"))
+mp <- readr::read_csv(here::here("report", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
 csasdown::csas_table(mp, caption = "MPs")
 ```
@@ -35,7 +36,7 @@ where SB is spawning biomass.
 omrex_sra <- readRDS(here::here("generated-data", "rex-sra.rds"))
 omrex <- omrex_sra@OM
 omrex@interval <- 2
-omrex@nsim <- 100
+omrex@nsim <- 48
 ```
 
 ```{r}
@@ -60,12 +61,67 @@ cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
 
 ```{r}
 file_name <- here::here("generated-data", "rex-mse2.rds")
-omrex@cpars$Data <- NULL # bug
+# omrex@cpars$Data <- NULL # bug
+
+# sp_debug <- function (x, Data, reps = 1) {
+#   dependencies <- "Data@Cat, Data@Ind"
+#   do_Assessment <- SP(x = x, Data = Data)
+#   Rec <- HCR_MSY(Assessment = do_Assessment, reps = reps)
+#   if (x == 2 && max(Data@Year) > 28) {
+#     print(max(Data@Year))
+#     print(Rec)
+#     plot(do_Assessment)
+#     browser()
+#   }
+#   Rec@Misc <- MSEtool:::Assess_diagnostic(x, Data, do_Assessment, include_assessment = FALSE)
+#   return(Rec)
+# }
+# class(sp_debug) <- "MP"
+# 
+# SP_prior <- MSEtool::SP
+# formals(SP_prior)$use_r_prior <- TRUE
+# class(SP_prior) <- "Assess"
+# SP4010_prior <- MSEtool::make_MP("SP_prior", "HCR_ramp", LRP = 0.1, TRP = 0.4, RP_type = "SSB_SSB0")
+
+# ---------------------------------------------------------
+
+# omrex@TACSD <- c(0, 0)
+# omrex@nsim <- 48
+# omrex@seed <- 1
+# omrex@interval <- 2
+# omrex@DR <- 0
+# rex_mse <- runMSE(OM = omrex, MPs = c("FMSYref75"))
+# Data <- rex_mse@Misc$Data[[1]]
+# r_priors <- purrr::map_dbl(1:omrex@nsim, ~mean(MSEtool:::r_prior_fn(.x, Data)))
+# mean(r_priors)
+# sd(r_priors)
 
 if (!file.exists(file_name)) {
   DLMtool::setup(cpus = floor(parallel::detectCores()/2))
+  snowfall::sfExport('.SP4010_prior', '.SP6040_prior', '.SP8040_prior')
   omrex@TACSD <- c(0, 0)
-  rex_mse <- runMSE(OM = omrex, MPs = mp$mp, parallel = TRUE)
+  omrex@nsim <- 20
+  omrex@seed <- 1
+  omrex@interval <- 2
+  omrex@DR <- 0
+  
+  rex_mse <- runMSE(OM = omrex, MPs = mp$mp[1:2], parallel = FALSE)
+  
+  # gfdlm::plot_projection_ts(rex_mse, type = c("F_FMSY", "B_BMSY"))
+  # gfdlm::plot_projection_ts(rex_mse, type = c("TAC")) + ylim(0, NA)
+  # Data <- rex_mse@Misc$Data[[1]]
+  # matplot(t(Data@Ind), type = "l")
+  # matplot(t(Data@Cat), type = "l")
+  
+  # gfdlm::plot_projection_ts(rex_mse, type = c("TAC"), clip_ylim = 1.5)
+  # gfdlm::plot_projection_ts(rex_mse, type = c("F_FMSY", "B_BMSY"))
+  
+#   sp_debug <- make_MP(SP, HCR_MSY, diagnostic = 'full')
+# MSE <- runMSE(omrex, MPs = "sp_debug", PPD = TRUE)
+# diagnostic_AM(MSE) # convergence diagnostics
+# retrospective_AM(MSE, 1) # Assessment estimates of biomass, F, etc over time
+
+#   
   snowfall::sfStop()
   saveRDS(rex_mse, file = file_name)
 } else {
@@ -74,7 +130,7 @@ if (!file.exists(file_name)) {
 # DLMtool::Converge(rex_mse)
 ```
 
-```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only ``satisficed'' MPs that have LT P40 > 0.8 and STY > 0.4."}
+```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only ``satisficed'' MPs that have LT P40 > 0.8 and STY > 0.5."}
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
@@ -86,7 +142,7 @@ gfdlm::plot_probs(rex_probs)
 
 ```{r}
 reference_mp <- c("NFref", "FMSYref")
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.8, STY > 0.4) %>%
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.95, STY > 0.75) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
@@ -100,13 +156,13 @@ rex_satisficed_df <- left_join(tibble(mp = rex_satisficed), mp, by = "mp")
 ```
 
 ```{r, fig.asp=1.6, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50\\% and 90\\% quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal light grey lines represent values of 1.0 for F/F~MSY~ and 0.8, and 0.4 for B/B~MSY~.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("F_FMSY", "B_BMSY")) +
+gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM")) +
   ggplot2::coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
   ggplot2::scale_y_continuous(breaks = c(1, 2, 3, 4))
 ```
 
 ```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub, type = c("TAC", "C"), clip_ylim = 1.5) +
+gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("C"), clip_ylim = 1.5) +
   theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
 ```
 
@@ -151,10 +207,11 @@ filter(mp, type == "Constant catch") %>%
 # rex_satisficed_df %>%
 #   pull(mp) %>%
 mp_unique %>%
-  union(c("NFref", "FMSYref")) %>% 
-  DLMtool::Sub(rex_mse, .) %>% 
+  union(c("NFref", "FMSYref")) %>%
+  DLMtool::Sub(rex_mse, .) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = 
+  # scale_color_viridis_d() +
+  scale_color_manual(values =
       c(RColorBrewer::brewer.pal(length(mp_unique), "Set2"), "grey30", "grey65")) +
   labs(colour = "MP")
 ```
