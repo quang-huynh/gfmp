@@ -531,33 +531,10 @@ fleet_rex@Rmaxlen <- c(1, 1)
 
 *Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
 
-We looked at the discard rate since observer coverage on the trawl fleet (1996). We set the bounds as the mean +/ 1 standard deviation as observed in the data:
+Since all the discards are included in the catch, we will set this to 0.
 
-```{r desc-fleet-dr-rex, results = knitr_results, echo = knitr_echo}
-discards2 <- drex$catch %>%
-  gfplot::tidy_catch() %>%
-  dplyr::filter(year >= 1996) %>% 
-  dplyr::filter(gear == "Discarded") %>%
-  dplyr::rename(Discards = value) %>%
-  dplyr::select(-gear)
-
-catch2 <- drex$catch %>%
-  gfplot::tidy_catch() %>%
-  dplyr::filter(year >= 1996) %>% 
-  dplyr::filter(gear == "Bottom trawl") %>%
-  dplyr::rename(Landed = value) %>%
-  dplyr::select(-gear)
-
-discard_rate2 <- dplyr::left_join(discards2, catch2) %>%
-  dplyr::mutate(frac_disc = Discards / (Landed + Discards))
-
-mean_frac_d2 <- mean(discard_rate2$frac_disc)
-sd_frac_d2 <- sd(discard_rate2$frac_disc)
-
-frac_low2 <- mean_frac_d2 - sd_frac_d2
-frac_high2 <- mean_frac_d2 + sd_frac_d2
-fleet_rex@DR <- c(frac_low2, frac_high2)
-round(fleet_rex@DR, 2)
+```{r desc-fleet-dr-rex, results = knitr_results, echo = FALSE}
+fleet_rex@DR <- 0
 ```
 
 <!-- slot-chunk-end -->
