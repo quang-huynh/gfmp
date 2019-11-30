@@ -94,26 +94,29 @@ rex_om@maxage
 rex_om@L5
 rex_om@LFS
 
-rex_om@nsim <- 200
-cores <- floor(parallel::detectCores() / 4)
+rex_om@nsim <- 48
+cores <- floor(parallel::detectCores() / 2)
 cores <- 4
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
 library(MSEtool)
-rex_sra2 <- MSEtool::SRA_scope(rex_om,
+rex_sra3 <- MSEtool::SRA_scope(rex_om,
   # CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0, ESS = c(30, 30),
+  # C_eq = catch[1],
+  C_eq = 0,
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
 
-plot(rex_sra2)
+plot(rex_sra3)
 hist(rex_sra2@OM@cpars$D)
 matplot(t(rex_sra2@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
 hist(rex_sra2@OM@cpars$AC)
 matplot(t(rex_sra2@SSB), type = "l", lty = 1, col = "#00000040")
 matplot(t(rex_sra2@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
 
-saveRDS(rex_sra2, file = here::here("generated-data", "rex-sra.rds"))
+saveRDS(rex_sra3, file = here::here("generated-data", "rex-sra.rds"))
+
+matplot(t(Data@Cat)[, 1], type = "l")
