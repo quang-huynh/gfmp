@@ -145,8 +145,8 @@ reference_mp <- c("NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.95, STY > 0.75) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
+rex_satisficed <- union(rex_satisficed[!rex_satisficed %in% reference_mp], ".IDX")
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 ```
 
 ```{r}
@@ -156,14 +156,19 @@ rex_satisficed_df <- left_join(tibble(mp = rex_satisficed), mp, by = "mp")
 ```
 
 ```{r, fig.asp=1.6, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50\\% and 90\\% quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal light grey lines represent values of 1.0 for F/F~MSY~ and 0.8, and 0.4 for B/B~MSY~.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM")) +
+g1 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM"), n_samples = 3) +
   ggplot2::coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
-  ggplot2::scale_y_continuous(breaks = c(1, 2, 3, 4))
+  ggplot2::scale_y_continuous(breaks = c(1, 2, 3, 4)) +
+  ggplot2::theme(strip.text.y = element_blank())
 ```
 
 ```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
-gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("C"), clip_ylim = 1.5) +
-  theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank())
+g2 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("C"), clip_ylim = 1.5, n_samples = 3) +
+  theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank()) +
+  ggplot2::theme(axis.title.y = element_blank()) +
+  ggplot2::geom_hline(yintercept = mean(catch[23:23]), lty = 2)
+
+cowplot::plot_grid(g1, g2, rel_widths = c(2, 1))
 ```
 
 ```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. Dots represent individual simulation iterations. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates. Axes are cut off at maximum values of 3.5 although some simulation iterations extend beyond these boundaries.", fig.asp=0.8, fig.width=8, out.width="5.75in"}
