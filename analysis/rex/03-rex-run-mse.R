@@ -51,8 +51,8 @@ g1 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM")) +
 
 g2 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = "C", clip_ylim = 1.3,
   catch_reference = 1) +
-  theme(axis.text.y = ggplot2::element_blank(),
-    axis.ticks.y = ggplot2::element_blank(),
+  theme(axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
     axis.title.y = element_blank())
 
 g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
@@ -75,7 +75,6 @@ ggsave("report/figure/rex-spider-cc-base.png", width = 6, height = 6)
 g <- rex_satisficed %>%
   DLMtool::Sub(rex_mse, .) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_viridis_d() +
   scale_color_manual(values =
       c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey50"))
 ggsave("report/figure/rex-spider-base.png", width = 6, height = 6)
