@@ -5,7 +5,6 @@ author: |
   R.E. Forrest^1^,
   C.J. Grandin^1^,
   E.A. Keppel^1^,
-  A.R. Kronlund^2^,
   ...
 author_list: "Anderson, S.C., Forrest, R.E., Grandin, C.J., Keppel, E.A., Kronlund, A.R., ..."
 address: |

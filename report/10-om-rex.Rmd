@@ -36,6 +36,7 @@ load_data_rex <- gfdlm::load_data_factory("rex sole",
 ```{r}
 science_name <- "Glyptocephalus zachirusadus"
 drex <- load_data_rex() %>% filter_data_rex()
+saveRDS(drex, here::here("generated-data", "rex-filter-data.rds"))
 ```
 
 # REX SOLE OPERATING MODEL DEFINITION {#app:desc-om-rex}
