@@ -38,7 +38,7 @@ ggsave("report/figure/rex-pm-table-base.png", width = 4.25, height = 7)
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
   arrange(-`LT P40`) %>% pull(MP)
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp] #remove the satisficed ref MPs because putting them all back in below
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 
 rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
@@ -78,3 +78,4 @@ g <- rex_satisficed %>%
   scale_color_manual(values =
       c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey50"))
 ggsave("report/figure/rex-spider-base.png", width = 6, height = 6)
+

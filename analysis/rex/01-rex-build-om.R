@@ -5,7 +5,7 @@ library(DLMtool)
 library(MSEtool)
 library(dplyr)
 library(ggplot2)
-filter <- dplyr::filter # Chris sometimes has problems
+filter <- dplyr::filter # Chris sometimes has problems. #So does Robyn :-D
 
 source_rmd <- function(rmd_file){
   knitr::knit(rmd_file, output = tempfile())

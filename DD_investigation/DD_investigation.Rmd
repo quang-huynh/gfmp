@@ -723,17 +723,17 @@ boxplot(TACcompare, names=c("TAC base", "TAC M bias"), col=c("lightgray", "light
 
 ```
 
-Try running the custom DD model (myDLDD) to look at Umsy
-*TO DO: export the myDLDD MP so can run in parallel*
+<!-- Try running the custom DD model (myDLDD) to look at Umsy -->
+<!-- *TO DO: export the myDLDD MP so can run in parallel* -->
 
-```{r}
-ompc1 <- readRDS(here::here("sra/pcod_no_comps_om.rds"))
-ompc2 <- readRDS(here::here("sra/pcod_no_comps_om_Mbias.rds"))
-ompc3 <- readRDS(here::here("generated-data/pcod-om.rds"))
-pcod_mse2b <- DLMtool::runMSE(OM = ompc3, MPs = "myDLDD", ntrials = 1000, PPD = TRUE, parallel=FALSE)
+<!-- ```{r} -->
+<!-- ompc1 <- readRDS(here::here("sra/pcod_no_comps_om.rds")) -->
+<!-- ompc2 <- readRDS(here::here("sra/pcod_no_comps_om_Mbias.rds")) -->
+<!-- ompc3 <- readRDS(here::here("generated-data/pcod-om.rds")) -->
+<!-- pcod_mse2b <- DLMtool::runMSE(OM = ompc3, MPs = "myDLDD", ntrials = 1000, PPD = TRUE, parallel=FALSE) -->
 
 
-```
+<!-- ``` -->
 
 
 
