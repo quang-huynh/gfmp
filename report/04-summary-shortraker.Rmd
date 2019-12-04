@@ -5,9 +5,9 @@
 Shortraker rockfish (*Sebastes borealis*) occurs throughout the North Pacific 
 from Japan, the Okhotsk Sea, and southeastern Kamchatka to the Bering Sea and
 Aleutian Islands and south to California. It has been caught in BC at depths
-between 20 m and 1300 m, with most captured between 30 m and 140 m. 
+between 25 m and 1250 m, with most captured between 100 m and 650 m. 
 Shortraker can grow as large as 120 cm and up to 30 kg, and has been caught in 
-BC waters as large as 108 cm and up to 21.7 kg. The oldest Shortraker aged in BC
+BC waters as large as 108 cm and up to 25.4 kg. The oldest Shortraker aged in BC
 was a female caught in a trawl survey on the West Coast of Haida Gwaii in 1997
 aged at 157 years (ages are known from otoliths collected in surveys conducted
 in 1997, 2002-2003, 2006-2008 and 2010-2012; otoliths were also collected on
@@ -15,23 +15,24 @@ surveys from 2013-present which have yet to be aged).
 
 Shortraker rockfish represents a small portion of the trawl and hook and 
 line fisheries, and was last assessed as part of the slope rockfish assemblage 
-(Pacific ocean perch, yellowmouth rockfish, redstripe rockfish,
-rougheye rockfish, shortspine/longspine thornyheads and shortraker rockfish) in 
-1998 {@Schnute1999a} and updated in 1999 {@Schnute1999b}. 
-These seven species were managed within six major
+(Pacific ocean perch, yellowmouth rockfish, redstripe rockfish, rougheye 
+rockfish, shortspine/longspine thornyheads and shortraker rockfish) in1998
+{@Schnute1999a} and updated in 1999 {@Schnute1999b}. Historic catches of 
+shortraker may be confounded by misidentification as rougheye rockfish with which
+they can be easily confused. These seven species were managed within six major
 areas (3C, 3D,AS, 5CD, 5EN, 5ES) for a total of 42 species-area combinations,
 called \emph{assessment units}. A detailed catch-at-age analysis was conducted
 for one of these assessment units, Pacific ocean perch in area 5AB, as a
-benchmark stock, and quoatas for the roteher 41 assessment units resulted from 
+benchmark stock, and quoatas for the other 41 assessment units resulted from 
 scale factors relating each unit to the benchmark stock. Scale factors were 
 estimated from historical fisheries data, research surveys, and knowledge from 
 expert fishermen. 
 
 All slope rockfish assessments suffer from the lack of reliable time series on
 fishery catch. The port monitoring program initiated in 1994 and the at-sea 
-observer program initiated in 0ct 1995 have led to major improvements in data 
-quality. In the 1998 assessment report, it was noted that depth was an important factor 
-influencing trawl catch per unit effort (CPUE), and therefore all analyses
+observer program initiated in 0ctober 1995 have led to major improvements in data 
+quality. In the 1998 assessment report, it was noted that depth was an important
+factor influencing trawl catch per unit effort (CPUE), and therefore all analyses
 of CPUE data incorporated depth stratification. It was also noted that
 CPUE in commercial tows was lower than in survey tows for some species in 
 similar time, place and depth. Commercial CPUE data was determined to therefore
@@ -44,21 +45,22 @@ added starting in 2006) began to be incorporated into assessments
 
 Shortraker rockfish has not been assessed since the 1999 report. 
 ##?? is it that there was no assessment done because (someone, industry? was an
-##assessment attempted?) didn't think we had enough data if CPUE couldn't be used?
+## assessment attempted?) didn't think we had enough data if CPUE couldn't be used?
 
 
-Fishery-independent trawl surveys have been conducted in 4 areas, alternately covering two areas 
-each year, since 2003. Longline surveys have been conducted in the north and 
-south in alternating years since 2006, and the International Pacific Halibut
-Commission Fishery Independent Setline Survey has sampled rockfish species 
-since 1995 (either on all hooks or the first 20 of each skate).
+Fishery-independent trawl surveys have been conducted in 4 areas (Hecate Strait,
+Queen Charlotte Sound, West Coast Vancouver Island and West Coast Haida Gwaii),
+alternately covering two areas each year, since 2003. Longline surveys have been
+conducted in the north and south in alternating years since 2006, and the 
+International Pacific Halibut Commission Fishery Independent Setline Survey 
+has sampled rockfish species since 1995 (either on all hooks or the first 20
+of each skate).
 
-The trawl fishery underwent a major change in 1997 through the introduction of
-individual vessel quotas (IVQs).
+Quotas were first introduced for shortraker rockfish in 1996. 
+The groundfish fishery underwent a major change in 1997 through the introduction
+of individual vessel quotas (IVQs) which can be reallocated between 
+vessels and fisheries to cover catch of non-directed species. The management of
+the fishery is integrated with all groups subject to 100% at-sea monitoring and 
+100% dockside monitoring, individual vessel accountability for all catch (both
+retained and released).
 
-
-
-## BIOLOGY
-
-
-SR misidentified as rougheye
