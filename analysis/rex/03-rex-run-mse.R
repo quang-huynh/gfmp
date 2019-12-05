@@ -16,6 +16,7 @@ assertthat::assert_that(scenarios[[1]] == "base")
 
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
+mp_types <- unique(mp$type)
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -136,48 +137,40 @@ make_spider <- function(scenario, MPs, mptype) {
   g
 }
 
-make_spider_no_save <- function(scenario, MPs, mptype) {
+make_spider_no_save <- function(scenario, MPs) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
     gfdlm::spider(pm_list = PM, palette = "Set2")
   g
 }
 
-
+#Function for making multipanel plot for mp types. Base only. [Base is the only scenario with all MPs]
+make_spider_mptypes_no_save <- function(MPtypes) {
+  mp_type <- filter(mp, type == MPtypes) %>%   pull(mp)
+  g <- DLMtool::Sub(rex_mse[["base"]], MPs = mp_type) %>%
+    gfdlm::spider(pm_list = PM, palette = "Set2")
+  g
+}
 
 purrr::walk(scenarios, make_table_plot)
 purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
 purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
 spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, mptype = "satisficed")
 
-#Make multipanel plot
+#Make multipanel plot of satisficed spider plots for all scenarios
 # TO DO: make robust to number of scenarios
-spider_plots2  <- purrr::map(scenarios, make_spider_no_save, MPs = rex_satisficed_ref, mptype = "satisficed")
+spider_plots2  <- purrr::map(scenarios, make_spider_no_save, MPs = rex_satisficed_ref)
 g <- cowplot::plot_grid(spider_plots2[[1]], spider_plots2[[2]],align = "hv",nrow = 1, ncol = 2)
+ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
+       width = 11, height = 12)
+
+#Make multipanel plot of spider plots for all MPtypes - Base scenario only
+spider_plots3  <- purrr::map(mp_types, make_spider_mptypes_no_save)
+g <- cowplot::plot_grid(spider_plots3[[1]], spider_plots3[[2]], spider_plots3[[3]], spider_plots3[[4]], spider_plots3[[5]],align = "hv",nrow = 3, ncol = 2)
+ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base-panel.png")),
+       width = 11, height = 12)
 
 #make not satisficed plot for base (these MPs not tested in other scenarios)
 make_projection_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_kobe_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_spider("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
-
-
-#Make spider plots for all MPs by MP type for base scenario
-mp_type <- filter(mp, type == "Constant catch") %>%   pull(mp)
-g1 <- make_spider_no_save("base",MPs = mp_type, mptype = "Constant catch")
-
-mp_type <- filter(mp, type == "Index slope") %>%   pull(mp)
-g2 <- make_spider_no_save("base",MPs = mp_type, mptype = "Index slope")
-
-mp_type <- filter(mp, type == "Index target") %>%   pull(mp)
-g3 <- make_spider_no_save("base",MPs = mp_type, mptype = "Index target")
-
-mp_type <- filter(mp, type == "Surplus production") %>%   pull(mp)
-g4 <- make_spider_no_save("base",MPs = mp_type, mptype = "Surplus production")
-
-mp_type <- filter(mp, type == "Reference") %>%   pull(mp)
-g5 <- make_spider_no_save("base",MPs = mp_type, mptype = "Reference")
-
-g <- cowplot::plot_grid(g1, g2,g3,g4,g5, align = "hv",nrow = 3, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base.png")),
-       width = 11, height = 12)
-
 
