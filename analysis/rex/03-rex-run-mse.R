@@ -5,7 +5,9 @@ library(ggplot2)
 library(gfdlm)
 
 #Set up scenario directory for results
-rex_scenario <- "report/figure/rex-base"
+scenario_name <- "base"
+
+rex_scenario <- paste0("report/figure/rex-", scenario_name)
 if(!dir.exists(rex_scenario)) dir.create(rex_scenario)
 outputDir <- rex_scenario
 
@@ -18,7 +20,7 @@ STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
 LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
 PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
 
-omrex_sra <- readRDS(here::here("generated-data", "rex-sra.rds"))
+omrex_sra <- readRDS(here::here("generated-data", paste0("rex-sra-",scenario_name, ".rds")))
 omrex <- omrex_sra@OM
 omrex@nsim <- 48
 omrex@interval <- 2
