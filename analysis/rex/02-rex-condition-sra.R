@@ -1,15 +1,16 @@
 library(dplyr)
 library(DLMtool)
 library(MSEtool)
+library(here)
 
 species_name <- "Rex Sole"
 starting_year <- 1996
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
-drex <- readRDS(here::here("generated-data", "rex-filter-data.rds"))
+drex <- readRDS(here("generated-data", "rex-filter-data.rds"))
 
-rex_om <- readRDS(here::here("generated-data", "rex-om.rds"))
+rex_om <- readRDS(here("generated-data", "rex-om.rds"))
 rex_om@M
 rex_om@Linf
 rex_om@K
@@ -27,6 +28,10 @@ rex_om@Linfsd <- c(0, 0)
 rex_om@Ksd <- c(0, 0)
 rex_om@nyears
 rex_om@maxage
+rex_om@M
+rex_om@maxage
+rex_om@L5
+rex_om@LFS
 assertthat::assert_that(identical(rex_om@nyears, length(all_years)))
 
 make_cal <- function(dat, survey, yrs, length_bin = 5) {
@@ -85,34 +90,33 @@ MSEtool::plot_composition(all_years,
 I_sd <- indexes[, 2L]
 I_sd
 
-rex_om@M
-rex_om@maxage
-rex_om@L5
-rex_om@LFS
-
-rex_om@nsim <- 48
+rex_om@nsim <- 100
 cores <- floor(parallel::detectCores() / 2)
-cores <- 4
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
 library(MSEtool)
-rex_sra3 <- MSEtool::SRA_scope(rex_om,
+rex_sra_base <- MSEtool::SRA_scope(rex_om,
   # CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  # C_eq = catch[1],
-  # FIXME: consider setting this to assumed equilibrium catch to estimate initial depletion:
   C_eq = 0,
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
+rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.5,
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE
+)
 
-plot(rex_sra33)
-hist(rex_sra3@OM@cpars$D)
-matplot(t(rex_sra3@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
-hist(rex_sra3@OM@cpars$AC)
-matplot(t(rex_sra3@SSB), type = "l", lty = 1, col = "#00000040")
-matplot(t(rex_sra3@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
-matplot(t(Data@Cat)[, 1], type = "l")
+# plot(rex_sra33)
+# hist(rex_sra3@OM@cpars$D)
+# matplot(t(rex_sra3@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
+# hist(rex_sra3@OM@cpars$AC)
+# matplot(t(rex_sra3@SSB), type = "l", lty = 1, col = "#00000040")
+# matplot(t(rex_sra3@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
+# matplot(t(Data@Cat)[, 1], type = "l")
 
-saveRDS(rex_sra3, file = here::here("generated-data", "rex-sra.rds"))
+saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
+saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
