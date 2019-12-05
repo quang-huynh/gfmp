@@ -1,18 +1,23 @@
 library(DLMtool)
 library(MSEtool)
 library(dplyr)
+library(purrr)
 library(ggplot2)
 library(gfdlm)
+library(here)
 
-# Set up scenario directory for results
-scenario_name <- "ceq50"
+cores <- floor(parallel::detectCores() / 2)
 
-rex_scenario <- paste0("report/figure/rex-", scenario_name)
-if (!dir.exists(rex_scenario)) dir.create(rex_scenario)
-outputDir <- rex_scenario
+fig_dir <- here("report", "figure")
+if (!dir.exists(fig_dir)) dir.create(fig_dir)
+
+scenarios <- c("base", "ceq50")
+assertthat::assert_that(scenarios[[1]] == "base")
 
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
+
+# Set up PMs ------------------------------------------------------------------
 
 `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
@@ -20,65 +25,124 @@ STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
 LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
 PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
 
-omrex_sra <- readRDS(here::here("generated-data", paste0("rex-sra-", scenario_name, ".rds")))
-omrex <- omrex_sra@OM
-omrex@nsim <- 48
-omrex@interval <- 2
+# Read OMs --------------------------------------------------------------------
 
-# rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
+omrex <- map(scenarios, ~ {
+  om <- readRDS(here(
+    "generated-data",
+    paste0("rex-sra-", .x, ".rds")))@OM
+  om@nsim <- 48
+  om@interval <- 2
+  om
+})
+names(omrex) <- scenarios
 
-file_name <- here::here("generated-data", "rex-mse2.rds")
+# Fit base MSE ----------------------------------------------------------------
+
+file_name <- here("generated-data", "rex-mse-base.rds")
 if (!file.exists(file_name)) {
-  DLMtool::setup(cpus = floor(parallel::detectCores() / 2))
-  rex_mse <- runMSE(OM = omrex, MPs = mp$mp, parallel = TRUE)
+  DLMtool::setup(cpus = cores)
+  rex_mse_base <- runMSE(OM = omrex[["base"]], MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
-  saveRDS(rex_mse, file = file_name)
+  saveRDS(rex_mse_base, file = file_name)
 } else {
-  rex_mse <- readRDS(file_name)
+  rex_mse_base <- readRDS(file_name)
 }
-# DLMtool::Converge(rex_mse)
+# DLMtool::Converge(rex_mse_base)
 
-rex_probs <- gfdlm::get_probs(rex_mse, PM)
-gfdlm::plot_probs(rex_probs)
-ggsave(paste0(outputDir, "/rex-pm-table-base.png"), width = 4.25, height = 7)
-
+rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp] # remove the satisficed ref MPs because putting them all back in below
+# remove the satisficed ref MPs because putting them all back in below:
+rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 
-rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
-rex_mse_sub_ref <- DLMtool::Sub(rex_mse, MPs = rex_satisficed_ref)
-
-# For illustration get MPS that are NOT satisficed
+# For illustration get MPs that are NOT satisficed:
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
-rex_mse_sub_not_satisficed <- DLMtool::Sub(rex_mse, MPs = rex_not_satisficed)
 
-g1 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM")) +
-  coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
-  scale_y_continuous(breaks = c(1, 2, 3, 4)) +
-  theme(strip.text.y = element_blank())
+# May not need:
+# rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
+# rex_mse_sub_ref <- DLMtool::Sub(rex_mse, MPs = rex_satisficed_ref)
+# rex_mse_sub_not_satisficed <- DLMtool::Sub(rex_mse, MPs = rex_not_satisficed)
 
-g2 <- gfdlm::plot_projection_ts(rex_mse_sub_ref,
-  type = "C", clip_ylim = 1.3,
-  catch_reference = 1
-) +
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.title.y = element_blank()
+# Fit satisficed MPs to other OMs----------------------------------------------
+
+fit_scenario <- function(scenario) {
+  file_name <- here("generated-data", paste0("rex-mse-", scenario, ".rds"))
+  if (!file.exists(file_name)) {
+    DLMtool::setup(cpus = cores)
+    mse <- runMSE(OM = omrex[[scenario]], MPs = rex_satisficed_ref, parallel = TRUE)
+    snowfall::sfStop()
+    saveRDS(mse, file = file_name)
+  } else {
+    mse <- readRDS(file_name)
+  }
+  mse
+}
+
+# First is always "base", fit the rest:
+rex_mse_scenarios <- map(scenarios[-1], fit_scenario)
+rex_mse <- c(rex_mse_base, rex_mse_scenarios)
+names(rex_mse) <- scenarios
+
+# Plots ---------------------------------------------------------
+
+make_table_plot <- function(scenario) {
+  gfdlm::get_probs(rex_mse[[scenario]], PM) %>%
+    gfdlm::plot_probs()
+  ggsave(file.path(fig_dir, paste0("rex-pm-table-", scenario, ".png")),
+    width = 4.25, height = 7)
+}
+
+make_projection_plot <- function(scenario, MPs) {
+  x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
+  g1 <- gfdlm::plot_projection_ts(x, type = c("SSB", "FM")) +
+    coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
+    scale_y_continuous(breaks = c(1, 2, 3, 4)) +
+    theme(strip.text.y = element_blank())
+
+  g2 <- gfdlm::plot_projection_ts(x,
+    type = "C", clip_ylim = 1.3,
+    catch_reference = 1
+  ) +
+    theme(
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.title.y = element_blank()
+    )
+
+  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
+  ggsave(file.path(fig_dir, paste0("rex-projections-", scenario, ".png")),
+    width = 11, height = 12)
+}
+
+make_kobe_plot <- function(scenario, MPs) {
+  x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
+  g <- gfdlm::plot_contours(x,
+    xlim = c(0, 3.5),
+    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
   )
+  ggsave(file.path(fig_dir, paste0("rex-kobe-", scenario, ".png")),
+    width = 8, height = 7.5)
+}
 
-g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
-ggsave(paste0(outputDir, "/rex-projections-satisficed.png"), width = 11, height = 12)
+make_spider <- function(scenario, MPs) {
+  g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
+    gfdlm::spider(pm_list = PM, palette = "Set2")
+  ggsave(file.path(fig_dir, paste0("rex-spider-", scenario, ".png")),
+    width = 6, height = 6)
+  g
+}
 
-g <- gfdlm::plot_contours(rex_mse_sub_ref,
-  xlim = c(0, 3.5),
-  ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
-)
-ggsave(paste0(outputDir, "/rex-kobe-satisficed.png"), width = 8, height = 7.5)
+purrr::walk(scenarios, make_table_plot)
+purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref)
+purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref)
+spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref)
+
+# Finished here for now 2019-12-05 -----------------------------------------
+# Can now automate the following in few lines and make a multi-panel version
 
 # Spider plots
 g <- rex_satisficed %>%
@@ -87,7 +151,7 @@ g <- rex_satisficed %>%
   scale_colour_viridis_d()
 # scale_color_manual(values =
 # c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey50"))
-ggsave(paste0(outputDir, "/rex-spider-satisficed.png"), width = 6, height = 6)
+ggsave(file.path(fig_dir, "rex-spider-satisficed.png"), width = 6, height = 6)
 
 # Constant catch
 cols <- viridisLite::viridis(5)
