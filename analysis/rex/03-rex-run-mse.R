@@ -147,7 +147,6 @@ make_kobe_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_spider("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 
 #Make spider plots for all MPs by MP type for base scenario
-# Constant catch
 mp_type <- filter(mp, type == "Constant catch") %>%   pull(mp)
 g1 <- make_spider("base",MPs = mp_type, mptype = "Constant catch")
 
@@ -163,7 +162,7 @@ g4 <- make_spider("base",MPs = mp_type, mptype = "Surplus production")
 mp_type <- filter(mp, type == "Reference") %>%   pull(mp)
 g5 <- make_spider("base",MPs = mp_type, mptype = "Reference")
 
-g <- cowplot::plot_grid(g1, g2,g3,g4,g5, rel_widths = c(1, 1), align = "v")
+g <- cowplot::plot_grid(g1, g2,g3,g4,g5, align = "hv",nrow = 3, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-projections-all-mptypes-base.png")),
        width = 11, height = 12)
 
