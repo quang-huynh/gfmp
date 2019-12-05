@@ -167,7 +167,7 @@ pars %>%
   labs(
     colour = expression(gamma),
     x = "Slope in ln(index)",
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   scale_color_brewer(palette ="Set2")
@@ -223,7 +223,7 @@ pars %>%
   labs(
     colour = expression(gamma),
     x = "Slope in ln(index)",
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   scale_color_brewer(palette ="Set2") +
@@ -315,7 +315,7 @@ pars %>%
   ggsidekick::theme_sleek() +
   labs(
     x = "Ratio of current index value to longterm mean",
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
@@ -375,7 +375,7 @@ pars %>%
   labs(
     colour = expression(TAC[Floor]),
     x = expression(Delta ~ I[y]),
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   )+
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   scale_color_brewer(palette ="Set2")
@@ -477,7 +477,7 @@ pars %>%
   labs(
     colour = "MP",
     x = expression(I[recent]/I[target]),
-    y = "TAC (based on 100 average\nin last 5 historical years)"
+    y = "TAC (based on 100 t average\nin last 5 historical years)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
@@ -524,7 +524,7 @@ g1 <- pars %>%
   labs(
     colour = expression(M),
     x = expression(delta ~ I),
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   )+
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   scale_color_brewer(palette ="Set2") +
@@ -590,7 +590,7 @@ pars %>%
   labs(
     colour = expression(gamma),
     x = expression(lambda ~ (Slope ~ "in" ~ ln(index))),
-    y = "TAC (based on 100 last year)"
+    y = "TAC (based on 100 t last year)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   scale_color_brewer(palette ="Set2")
