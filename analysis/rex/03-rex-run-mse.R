@@ -5,7 +5,7 @@ library(ggplot2)
 library(gfdlm)
 
 #Set up scenario directory for results
-scenario_name <- "base"
+scenario_name <- "ceq50"
 
 rex_scenario <- paste0("report/figure/rex-", scenario_name)
 if(!dir.exists(rex_scenario)) dir.create(rex_scenario)
