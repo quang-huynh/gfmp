@@ -142,15 +142,23 @@ make_spider_no_save <- function(scenario, MPs, mptype) {
   g
 }
 
+
+
 purrr::walk(scenarios, make_table_plot)
 purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
 purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
 spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, mptype = "satisficed")
 
+#Make multipanel plot
+# TO DO: make robust to number of scenarios
+spider_plots2  <- purrr::map(scenarios, make_spider_no_save, MPs = rex_satisficed_ref, mptype = "satisficed")
+g <- cowplot::plot_grid(spider_plots2[[1]], spider_plots2[[2]],align = "hv",nrow = 1, ncol = 2)
+
 #make not satisficed plot for base (these MPs not tested in other scenarios)
 make_projection_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_kobe_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_spider("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+
 
 #Make spider plots for all MPs by MP type for base scenario
 mp_type <- filter(mp, type == "Constant catch") %>%   pull(mp)
