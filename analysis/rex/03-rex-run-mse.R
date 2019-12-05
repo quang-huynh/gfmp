@@ -136,6 +136,12 @@ make_spider <- function(scenario, MPs, mptype) {
   g
 }
 
+make_spider_no_save <- function(scenario, MPs, mptype) {
+  g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
+    gfdlm::spider(pm_list = PM, palette = "Set2")
+  g
+}
+
 purrr::walk(scenarios, make_table_plot)
 purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
 purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
@@ -148,22 +154,22 @@ make_spider("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 
 #Make spider plots for all MPs by MP type for base scenario
 mp_type <- filter(mp, type == "Constant catch") %>%   pull(mp)
-g1 <- make_spider("base",MPs = mp_type, mptype = "Constant catch")
+g1 <- make_spider_no_save("base",MPs = mp_type, mptype = "Constant catch")
 
 mp_type <- filter(mp, type == "Index slope") %>%   pull(mp)
-g2 <- make_spider("base",MPs = mp_type, mptype = "Index slope")
+g2 <- make_spider_no_save("base",MPs = mp_type, mptype = "Index slope")
 
 mp_type <- filter(mp, type == "Index target") %>%   pull(mp)
-g3 <- make_spider("base",MPs = mp_type, mptype = "Index target")
+g3 <- make_spider_no_save("base",MPs = mp_type, mptype = "Index target")
 
 mp_type <- filter(mp, type == "Surplus production") %>%   pull(mp)
-g4 <- make_spider("base",MPs = mp_type, mptype = "Surplus production")
+g4 <- make_spider_no_save("base",MPs = mp_type, mptype = "Surplus production")
 
 mp_type <- filter(mp, type == "Reference") %>%   pull(mp)
-g5 <- make_spider("base",MPs = mp_type, mptype = "Reference")
+g5 <- make_spider_no_save("base",MPs = mp_type, mptype = "Reference")
 
 g <- cowplot::plot_grid(g1, g2,g3,g4,g5, align = "hv",nrow = 3, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-projections-all-mptypes-base.png")),
+ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base.png")),
        width = 11, height = 12)
 
 
