@@ -432,18 +432,44 @@ There are four index/CPUE target MPs proposed by @geromont2015:
 - Itarget4: Most biological precautionary, with $x = 0.3$ and $I_\textrm{multi} = 2.5$
 
 ```{r mp-itarget-demo, fig.cap="Illustration of the Itarget MP."}
-f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, ...) {
+f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, I0_ratio = 0.8, TACstar_ratio = 0.5, ...) {
   TACstar <- (1 - x) * avg_catch_hist
   Itarget <- Iave * Imulti
-  I0 <- 0.8 * Iave
+  I0 <- I0_ratio * Iave
   if (Irecent >= I0) {
-    TAC <- 0.5 * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
+    TAC <- TACstar_ratio * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
   } else {
-    TAC <- 0.5 * TACstar * (Irecent/I0)^2
+    TAC <- TACstar_ratio * TACstar * (Irecent/I0)^2
   }
   if (TAC < 0) tac <- 0
+  if (TAC > 1.2 * avg_catch_hist) TAC <- 1.2 * avg_catch_hist
   TAC
 }
+pars <- expand.grid(
+  avg_catch_hist = 100,
+  Irecent = seq(0.1, 3, length.out = 300),
+  Iave = c(1),
+  x = c(0, 0.3),
+  Imulti = c(1.5, 2.5),
+  I0_ratio = c(1),
+  TACstar_ratio = c(1),
+  stringsAsFactors = FALSE
+)
+pars$tac <- purrr::pmap_dbl(pars, f)
+pars %>%
+  mutate(x = paste("x =", x)) %>%
+  mutate(Imulti = paste("Imulti =", Imulti)) %>%
+  ggplot(aes(Irecent, tac)) +
+  geom_line() +
+  ggsidekick::theme_sleek() +
+  facet_grid(x~Imulti) +
+  geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
+  geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
+  labs(
+    x = expression(I[recent]/I[target]),
+    y = "TAC (based on 100 t average\nin last 5 historical years)"
+  )
+
 pars1 <- expand.grid(
   avg_catch_hist = 100,
   Irecent = seq(0.1, 3, length.out = 300),
