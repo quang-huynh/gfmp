@@ -96,7 +96,7 @@ make_table_plot <- function(scenario) {
     width = 4.25, height = 7)
 }
 
-make_projection_plot <- function(scenario, MPs) {
+make_projection_plot <- function(scenario, MPs, mptype) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g1 <- gfdlm::plot_projection_ts(x, type = c("SSB", "FM")) +
     coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
@@ -114,125 +114,57 @@ make_projection_plot <- function(scenario, MPs) {
     )
 
   g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
-  ggsave(file.path(fig_dir, paste0("rex-projections-", scenario, ".png")),
+  ggsave(file.path(fig_dir, paste0("rex-projections-",mptype,"-", scenario, ".png")),
     width = 11, height = 12)
 }
 
-make_kobe_plot <- function(scenario, MPs) {
+make_kobe_plot <- function(scenario, MPs, mptype) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g <- gfdlm::plot_contours(x,
     xlim = c(0, 3.5),
     ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
   )
-  ggsave(file.path(fig_dir, paste0("rex-kobe-", scenario, ".png")),
+  ggsave(file.path(fig_dir, paste0("rex-kobe-", mptype,"-", scenario, ".png")),
     width = 8, height = 7.5)
 }
 
-make_spider <- function(scenario, MPs) {
+make_spider <- function(scenario, MPs, mptype) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
     gfdlm::spider(pm_list = PM, palette = "Set2")
-  ggsave(file.path(fig_dir, paste0("rex-spider-", scenario, ".png")),
+  ggsave(file.path(fig_dir, paste0("rex-spider-", mptype,"-", scenario, ".png")),
     width = 6, height = 6)
   g
 }
 
 purrr::walk(scenarios, make_table_plot)
-purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref)
-purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref)
-spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref)
+purrr::walk(scenarios, make_projection_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
+purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref, mptype = "satisficed")
+spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, mptype = "satisficed")
 
-# Finished here for now 2019-12-05 -----------------------------------------
-# Can now automate the following in few lines and make a multi-panel version
+#make not satisficed plot for base (these MPs not tested in other scenarios)
+make_projection_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+make_kobe_plot("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+make_spider("base",MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 
-# Spider plots
-g <- rex_satisficed %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_colour_viridis_d()
-# scale_color_manual(values =
-# c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey50"))
-ggsave(file.path(fig_dir, "rex-spider-satisficed.png"), width = 6, height = 6)
-
+#Make spider plots for all MPs by MP type for base scenario
 # Constant catch
-cols <- viridisLite::viridis(5)
-names(cols) <- paste0("CC", seq(60, 100, 10))
-g <- filter(mp, type == "Constant catch") %>%
-  filter(grepl("^CC[0-9]+", mp)) %>%
-  pull(mp) %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = cols)
-ggsave(paste0(outputDir, "/rex-spider-cc.png"), width = 6, height = 6)
+mp_type <- filter(mp, type == "Constant catch") %>%   pull(mp)
+g1 <- make_spider("base",MPs = mp_type, mptype = "Constant catch")
 
-# Index slope
-cols <- viridisLite::viridis(length(mp_list$`Index slope`$mp))
-names(cols) <- mp_list$`Index slope`$mp
-g <- filter(mp, type == "Index slope") %>%
-  pull(mp) %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = cols)
-ggsave(paste0(outputDir, "/rex-spider-IdxSlope.png"), width = 6, height = 6)
+mp_type <- filter(mp, type == "Index slope") %>%   pull(mp)
+g2 <- make_spider("base",MPs = mp_type, mptype = "Index slope")
 
-# Index target
-cols <- viridisLite::viridis(length(mp_list$`Index target`$mp))
-names(cols) <- mp_list$`Index target`$mp
-g <- filter(mp, type == "Index target") %>%
-  pull(mp) %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = cols)
-ggsave(paste0(outputDir, "/rex-spider-IdxTarget.png"), width = 6, height = 6)
+mp_type <- filter(mp, type == "Index target") %>%   pull(mp)
+g3 <- make_spider("base",MPs = mp_type, mptype = "Index target")
 
-# Surplus production
-cols <- viridisLite::viridis(length(mp_list$`Surplus production`$mp))
-names(cols) <- mp_list$`Surplus production`$mp
-g <- filter(mp, type == "Surplus production") %>%
-  pull(mp) %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = cols)
-ggsave(paste0(outputDir, "/rex-spider-surplus-production.png"), width = 6, height = 6)
+mp_type <- filter(mp, type == "Surplus production") %>%   pull(mp)
+g4 <- make_spider("base",MPs = mp_type, mptype = "Surplus production")
 
-# Reference
-cols <- viridisLite::viridis(length(mp_list$`Reference`$mp))
-names(cols) <- mp_list$`Reference`$mp
-g <- filter(mp, type == "Reference") %>%
-  pull(mp) %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_color_manual(values = cols)
-ggsave(paste0(outputDir, "/rex-spider-Reference.png"), width = 6, height = 6)
+mp_type <- filter(mp, type == "Reference") %>%   pull(mp)
+g5 <- make_spider("base",MPs = mp_type, mptype = "Reference")
+
+g <- cowplot::plot_grid(g1, g2,g3,g4,g5, rel_widths = c(1, 1), align = "v")
+ggsave(file.path(fig_dir, paste0("rex-projections-all-mptypes-base.png")),
+       width = 11, height = 12)
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Plot the not satisficed MP results
-g11 <- gfdlm::plot_projection_ts(rex_mse_sub_not_satisficed, type = c("SSB", "FM")) +
-  coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
-  scale_y_continuous(breaks = c(1, 2, 3, 4)) +
-  theme(strip.text.y = element_blank())
-
-g22 <- gfdlm::plot_projection_ts(rex_mse_sub_not_satisficed,
-  type = "C", clip_ylim = 1.3,
-  catch_reference = 1
-) +
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.title.y = element_blank()
-  )
-
-g <- cowplot::plot_grid(g11, g22, rel_widths = c(2, 1), align = "h")
-ggsave(paste0(outputDir, "/rex-projections-NOT-satisficed.png"), width = 11, height = 12)
-
-g <- gfdlm::plot_contours(rex_mse_sub_not_satisficed,
-  xlim = c(0, 3.5),
-  ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
-)
-ggsave(paste0(outputDir, "/rex-kobe-NOT-satisficed.png"), width = 8, height = 7.5)
-
-g <- rex_not_satisficed %>%
-  DLMtool::Sub(rex_mse, .) %>%
-  gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-  scale_colour_viridis_d()
-ggsave(paste0(outputDir, "/rex-spider-NOT-satisficed.png"), width = 6, height = 6)
