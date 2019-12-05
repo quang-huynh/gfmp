@@ -4,6 +4,11 @@ library(dplyr)
 library(ggplot2)
 library(gfdlm)
 
+rex_scenario <- "report/figure/rex-base"
+if(!file.exists(rex_scenario)) dir.create(rex_scenario)
+
+outputDir <- rex_scenario
+
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
 
@@ -33,7 +38,7 @@ if (!file.exists(file_name)) {
 
 rex_probs <- gfdlm::get_probs(rex_mse, PM)
 gfdlm::plot_probs(rex_probs)
-ggsave("report/figure/rex-pm-table-base.png", width = 4.25, height = 7)
+ggsave(paste0(outputDir,"/rex-pm-table-base.png"), width = 4.25, height = 7)
 
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
@@ -56,11 +61,11 @@ g2 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = "C", clip_ylim = 1.3,
     axis.title.y = element_blank())
 
 g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
-ggsave("report/figure/rex-projections-base.png", width = 11, height = 12)
+ggsave(paste0(outputDir,"/rex-projections.png"), width = 11, height = 12)
 
 g <- gfdlm::plot_contours(rex_mse_sub_ref, xlim = c(0, 3.5),
   ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
-ggsave("report/figure/rex-kobe-base.png", width = 8, height = 7.5)
+ggsave(paste0(outputDir,"/rex-kobe.png"), width = 8, height = 7.5)
 
 cols <- viridisLite::viridis(5)
 names(cols) <- paste0("CC", seq(60, 100, 10))
@@ -70,12 +75,12 @@ g <- filter(mp, type == "Constant catch") %>%
   DLMtool::Sub(rex_mse, .) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
   scale_color_manual(values = cols)
-ggsave("report/figure/rex-spider-cc-base.png", width = 6, height = 6)
+ggsave(paste0(outputDir,"/rex-spider-cc.png"), width = 6, height = 6)
 
 g <- rex_satisficed %>%
   DLMtool::Sub(rex_mse, .) %>%
   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
   scale_color_manual(values =
       c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey50"))
-ggsave("report/figure/rex-spider-base.png", width = 6, height = 6)
+ggsave(paste0(outputDir,"/rex-spider.png"), width = 6, height = 6)
 

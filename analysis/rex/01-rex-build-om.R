@@ -14,3 +14,5 @@ source_rmd <- function(rmd_file){
 rex_om_rmd <- list.files("report", pattern = "om-rex\\.Rmd",
   full.names = TRUE)
 source_rmd(rex_om_rmd)
+
+
