@@ -10,13 +10,15 @@ library(here)
 
 cores <- floor(parallel::detectCores() / 1)
 scenarios <- c("base", "ceq50", "ceq10")
+scenarios_human <- c("Base OM", "Catch eq. 50%", "Catch eq. 10%")
 .nsim <- 100
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 
 # Set up and checks: ----------------------------------------------------------
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-stopifnot(scenarios[[1]] == "base")
+stopifnot(identical(scenarios[[1]], "base"))
+stopifnot(identical(length(scenarios_human), length(scenarios)))
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -74,8 +76,10 @@ fit_scenario <- function(scenario) {
   if (!file.exists(file_name)) {
     message("Running closed-loop-simulation for ", scenario, " OM")
     DLMtool::setup(cpus = cores)
-    mse <- runMSE(OM = omrex[[scenario]], MPs = rex_satisficed_ref,
-      parallel = TRUE)
+    mse <- runMSE(
+      OM = omrex[[scenario]], MPs = rex_satisficed_ref,
+      parallel = TRUE
+    )
     snowfall::sfStop()
     saveRDS(mse, file = file_name)
   } else {
@@ -100,7 +104,7 @@ make_table_plot <- function(scenario) {
   )
 }
 
-make_projection_plot <- function(scenario, MPs, mptype) {
+make_projection_plot <- function(scenario, MPs, mptype, height = 12) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g1 <- gfdlm::plot_projection_ts(x, type = c("SSB", "FM")) +
     coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
@@ -118,9 +122,11 @@ make_projection_plot <- function(scenario, MPs, mptype) {
     )
 
   g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
-  ggsave(file.path(fig_dir,
-    paste0("rex-projections-", mptype, "-", scenario, ".png")),
-    width = 11, height = 12
+  ggsave(file.path(
+    fig_dir,
+    paste0("rex-projections-", mptype, "-", scenario, ".png")
+  ),
+  width = 11, height = height
   )
 }
 
@@ -130,15 +136,18 @@ make_kobe_plot <- function(scenario, MPs, mptype) {
     xlim = c(0, 3.5),
     ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
   )
-  ggsave(file.path(fig_dir,
-    paste0("rex-kobe-", mptype, "-", scenario, ".png")),
-    width = 8, height = 7.5
+  ggsave(file.path(
+    fig_dir,
+    paste0("rex-kobe-", mptype, "-", scenario, ".png")
+  ),
+  width = 8, height = 7.5
   )
 }
 
 make_spider <- function(scenario, MPs, mptype, save_plot = TRUE) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")
+    gfdlm::spider(pm_list = PM, palette = "Set2")# +
+    # scale_color_viridis_d()
   if (save_plot) {
     ggsave(file.path(
       fig_dir,
@@ -164,30 +173,45 @@ spider_plots <- purrr::map(scenarios, make_spider,
   mptype = "satisficed"
 )
 
+plot_grid_pbs <- function(plotlist, align = "hv",
+                          label_fontface = "bold", label_size = 12,
+                          hjust = 0, spider_margins = TRUE, ...) {
+  out <- cowplot::plot_grid(
+    plotlist = plotlist, align = align,
+    label_fontface = label_fontface, hjust = hjust, label_size = label_size, ...
+  )
+  if (spider_margins)
+    out <- out + theme(plot.margin = unit(c(0.2, 0.2, -0.7, 1.0), "lines"))
+  out
+}
+
 # Make multipanel plot of satisficed spider plots for all scenarios
-nscenarios <- length(scenarios)
-nrowpanel <- round(nscenarios / 2)
-spider_plots2 <- map(scenarios, make_spider,
-  MPs = rex_satisficed_ref,
+spider_plots <- map(scenarios, make_spider,
+  MPs = rex_satisficed,
   save_plot = FALSE
 )
-g <- cowplot::plot_grid(
-  plotlist = spider_plots2, align = "hv",
-  nrow = nrowpanel, ncol = 2
+g <- plot_grid_pbs(
+  plotlist = spider_plots,
+  labels = scenarios_human
 )
 ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
-  width = 11, height = 12
+  width = 9, height = 8
 )
 
 # Make multipanel plot of spider plots for all MPtypes - Base scenario only
-spider_plots3 <- split(mp, mp$type) %>%
-  map(~ make_spider(scenario = "base", MPs = .x$mp, save_plot = FALSE))
-g <- cowplot::plot_grid(plotlist = spider_plots3, align = "hv", nrow = 3, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base-panel.png")),
-  width = 11, height = 12
+type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
+spider_plots <- split(mp, type_order) %>%
+  map(~ {
+    make_spider(scenario = "base", MPs = .x$mp, save_plot = FALSE) +
+      scale_color_brewer(palette = "Set2")
+  })
+g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
+  ncol = 2) + theme(plot.margin = unit(c(0.2, 0.2, -0.5, 1.0), "lines"))
+ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
+  width = 9.5, height = 10
 )
 
 # Make not satisficed plot for base (these MPs not tested in other scenarios)
-make_projection_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+make_projection_plot("base", MPs = rex_not_satisficed,
+  mptype = "NOT-satisficed", height = 27)
 make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
-make_spider("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
