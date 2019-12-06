@@ -129,25 +129,14 @@ make_kobe_plot <- function(scenario, MPs, mptype) {
     width = 8, height = 7.5)
 }
 
-make_spider <- function(scenario, MPs, mptype) {
+make_spider <- function(scenario, MPs, mptype, save_plot = TRUE) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
     gfdlm::spider(pm_list = PM, palette = "Set2")
-  ggsave(file.path(fig_dir, paste0("rex-spider-", mptype,"-", scenario, ".png")),
-    width = 6, height = 6)
-  g
-}
-
-make_spider_no_save <- function(scenario, MPs) {
-  g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")
-  g
-}
-
-#Function for making multipanel plot for mp types. Base only. [Base is the only scenario with all MPs]
-make_spider_mptypes_no_save <- function(MPtypes) {
-  mp_type <- filter(mp, type == MPtypes) %>%   pull(mp)
-  g <- DLMtool::Sub(rex_mse[["base"]], MPs = mp_type) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")
+  if (save_plot) {
+    ggsave(file.path(fig_dir,
+      paste0("rex-spider-", mptype,"-", scenario, ".png")),
+      width = 6, height = 6)
+  }
   g
 }
 
@@ -159,14 +148,16 @@ spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, mpt
 #Make multipanel plot of satisficed spider plots for all scenarios
 nscenarios <- length(scenarios)
 nrowpanel <- round(nscenarios/2,0)
-spider_plots2  <- purrr::map(scenarios, make_spider_no_save, MPs = rex_satisficed_ref)
-g <- cowplot::plot_grid(spider_plots2[[1]], spider_plots2[[2]],align = "hv",nrow = nrowpanel, ncol = 2)
+spider_plots2  <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, save_plot = FALSE)
+g <- cowplot::plot_grid(plotlist = spider_plots2, align = "hv",nrow = nrowpanel, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
        width = 11, height = 12)
 
 #Make multipanel plot of spider plots for all MPtypes - Base scenario only
-spider_plots3  <- purrr::map(mp_types, make_spider_mptypes_no_save)
-g <- cowplot::plot_grid(spider_plots3[[1]], spider_plots3[[2]], spider_plots3[[3]], spider_plots3[[4]], spider_plots3[[5]],align = "hv",nrow = 3, ncol = 2)
+
+spider_plots3 <- split(mp, mp$type) %>%
+  purrr::map(~ make_spider(scenario = "base", MPs = .x$mp, save_plot = FALSE))
+g <- cowplot::plot_grid(plotlist = spider_plots3,align = "hv",nrow = 3, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base-panel.png")),
        width = 11, height = 12)
 
