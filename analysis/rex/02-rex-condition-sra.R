@@ -110,6 +110,13 @@ rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
   drop_nonconv = TRUE
 )
 
+rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.1,
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE
+)
+
 # plot(rex_sra33)
 # hist(rex_sra3@OM@cpars$D)
 # matplot(t(rex_sra3@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
@@ -120,3 +127,4 @@ rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
 
 saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
 saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
+saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))

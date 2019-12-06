@@ -11,7 +11,7 @@ cores <- floor(parallel::detectCores() / 2)
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
 
-scenarios <- c("base", "ceq50")
+scenarios <- c("base", "ceq50", "ceq10")
 assertthat::assert_that(scenarios[[1]] == "base")
 
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
