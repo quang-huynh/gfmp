@@ -5,16 +5,18 @@ library(purrr)
 library(ggplot2)
 library(gfdlm)
 library(here)
-cores <- floor(parallel::detectCores() / 2)
+
+# Settings: -------------------------------------------------------------------
+
+cores <- floor(parallel::detectCores() / 1)
+scenarios <- c("base", "ceq50", "ceq10")
+.nsim <- 100
+mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
+
+# Set up and checks: ----------------------------------------------------------
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-
-scenarios <- c("base", "ceq50", "ceq10")
-assertthat::assert_that(scenarios[[1]] == "base")
-
-mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
-mp_list <- split(mp, mp$type)
-mp_types <- unique(mp$type)
+stopifnot(scenarios[[1]] == "base")
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -31,7 +33,7 @@ omrex <- map(scenarios, ~ {
     "generated-data",
     paste0("rex-sra-", .x, ".rds")
   ))@OM
-  om@nsim <- 48
+  om@nsim <- .nsim
   om@interval <- 2
   om
 })
@@ -41,13 +43,13 @@ names(omrex) <- scenarios
 
 file_name <- here("generated-data", "rex-mse-base.rds")
 if (!file.exists(file_name)) {
-  message("Fitting base OM")
+  message("Running closed-loop-simulation for base OM")
   DLMtool::setup(cpus = cores)
   rex_mse_base <- runMSE(OM = omrex[["base"]], MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
   saveRDS(rex_mse_base, file = file_name)
 } else {
-  message("Loading base OM")
+  message("Loading closed-loop-simulation for base OM")
   rex_mse_base <- readRDS(file_name)
 }
 # DLMtool::Converge(rex_mse_base)
@@ -59,23 +61,25 @@ rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
   pull(MP)
 # remove the satisficed ref MPs because putting them all back in below:
 rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+stopifnot(length(rex_satisficed) > 1)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 # For illustration get MPs that are NOT satisficed:
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
+stopifnot(length(rex_not_satisficed) > 1)
 
 # Fit satisficed MPs to other OMs----------------------------------------------
 
 fit_scenario <- function(scenario) {
   file_name <- here("generated-data", paste0("rex-mse-", scenario, ".rds"))
   if (!file.exists(file_name)) {
-    message("Fitting ", scenario, " OM")
+    message("Running closed-loop-simulation for ", scenario, " OM")
     DLMtool::setup(cpus = cores)
     mse <- runMSE(OM = omrex[[scenario]], MPs = rex_satisficed_ref,
       parallel = TRUE)
     snowfall::sfStop()
     saveRDS(mse, file = file_name)
   } else {
-    message("Loading ", scenario, " OM")
+    message("Loading closed-loop-simulation for ", scenario, " OM")
     mse <- readRDS(file_name)
   }
   mse
@@ -183,7 +187,7 @@ ggsave(file.path(fig_dir, paste0("rex-spider-all-mptypes-base-panel.png")),
   width = 11, height = 12
 )
 
-# make not satisficed plot for base (these MPs not tested in other scenarios)
+# Make not satisficed plot for base (these MPs not tested in other scenarios)
 make_projection_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
 make_spider("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
