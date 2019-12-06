@@ -157,9 +157,10 @@ purrr::walk(scenarios, make_kobe_plot, MPs = rex_satisficed_ref, mptype = "satis
 spider_plots <- purrr::map(scenarios, make_spider, MPs = rex_satisficed_ref, mptype = "satisficed")
 
 #Make multipanel plot of satisficed spider plots for all scenarios
-# TO DO: make robust to number of scenarios
+nscenarios <- length(scenarios)
+nrowpanel <- round(nscenarios/2,0)
 spider_plots2  <- purrr::map(scenarios, make_spider_no_save, MPs = rex_satisficed_ref)
-g <- cowplot::plot_grid(spider_plots2[[1]], spider_plots2[[2]],align = "hv",nrow = 1, ncol = 2)
+g <- cowplot::plot_grid(spider_plots2[[1]], spider_plots2[[2]],align = "hv",nrow = nrowpanel, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
        width = 11, height = 12)
 
