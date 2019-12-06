@@ -105,14 +105,14 @@ rex_sra_base <- MSEtool::SRA_scope(rex_om,
 )
 rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5,
+  C_eq = 0.5*catch[1],
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
 
 rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.1,
+  C_eq = 0.1*catch[1],
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
