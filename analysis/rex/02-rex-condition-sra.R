@@ -117,14 +117,17 @@ rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
   drop_nonconv = TRUE
 )
 
-# plot(rex_sra33)
-# hist(rex_sra3@OM@cpars$D)
-# matplot(t(rex_sra3@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
-# hist(rex_sra3@OM@cpars$AC)
-# matplot(t(rex_sra3@SSB), type = "l", lty = 1, col = "#00000040")
-# matplot(t(rex_sra3@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
-# matplot(t(Data@Cat)[, 1], type = "l")
+# plot(rex_sra_base)
+# hist(rex_sra_base@OM@cpars$D)
+# matplot(t(rex_sra_base@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
+# hist(rex_sra_base@OM@cpars$AC)
+# matplot(t(rex_sra_base@SSB), type = "l", lty = 1, col = "#00000040")
+# matplot(t(rex_sra_base@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
 
 saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
 saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
 saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))
+
+# plot(rex_sra_base)
+# plot(rex_sra_ceq50)
+# plot(rex_sra_ceq10)
