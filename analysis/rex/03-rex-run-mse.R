@@ -11,7 +11,7 @@ cores <- floor(parallel::detectCores() / 2)
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
 
-scenarios <- c("base", "ceq50", "ceq10")
+scenarios <-c("base","ceq10","ceq50","ceq100")
 assertthat::assert_that(scenarios[[1]] == "base")
 
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
@@ -37,6 +37,9 @@ omrex <- map(scenarios, ~ {
   om
 })
 names(omrex) <- scenarios
+
+#slotNames(omrex$base)
+omrex$base@Dobs
 
 # Fit base MSE ----------------------------------------------------------------
 

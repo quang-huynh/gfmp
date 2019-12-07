@@ -2,11 +2,16 @@ library(dplyr)
 library(DLMtool)
 library(MSEtool)
 library(here)
+library(cowplot)
 
 species_name <- "Rex Sole"
 starting_year <- 1996
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
+nyear <- length(all_years)
+
+fig_dir <- here("report", "figure")
+if (!dir.exists(fig_dir)) dir.create(fig_dir)
 
 drex <- readRDS(here("generated-data", "rex-filter-data.rds"))
 
@@ -117,14 +122,78 @@ rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
   drop_nonconv = TRUE
 )
 
-# plot(rex_sra33)
-# hist(rex_sra3@OM@cpars$D)
-# matplot(t(rex_sra3@OM@cpars$Perr_y), type = "l", lty = 1, col = "#00000040")
-# hist(rex_sra3@OM@cpars$AC)
-# matplot(t(rex_sra3@SSB), type = "l", lty = 1, col = "#00000040")
-# matplot(t(rex_sra3@OM@cpars$Find), type = "l", lty = 1, col = "#00000040", ylim = c(0, 2))
-# matplot(t(Data@Cat)[, 1], type = "l")
+rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE
+)
+
+scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
+scenarionames <- c("base","ceq10","ceq50","ceq100")
+
+#Compare Initial depletion, depletion and biomass results from base (Ceq=0), ceq50 and ceq100
+make_initD <- function(scenario,scenario_name) {
+   g <- scenario@OM@cpars$D %>% as.data.frame() %>% rename(D =1)  %>%
+     ggplot(aes(D)) +
+     geom_histogram(binwidth=0.05)+
+     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
+   g
+ }
+
+ make_Depletion <- function(scenario,scenario_name) {
+   Depletion <- scenario@SSB/sapply(scenario@Misc, getElement, 'E0_SR')
+   probsDepletion <- t(apply(Depletion[,-nyear],2,FUN=quantile,probs=c(0.025,0.5,0.975))) %>%
+     as.data.frame() %>%
+     cbind(all_years) %>%
+     rename(Lower=1, Median=2, Upper=3, Year=all_years)
+
+   g <- ggplot(probsDepletion) +
+     geom_ribbon(data=probsDepletion, aes(x=Year, ymin=Lower, ymax=Upper),
+                 inherit.aes = FALSE, fill = "blue", alpha=0.2)+
+     geom_line(aes(Year,Median), colour="blue", lwd=2)+
+     scale_y_continuous(limits = c(0,1.2), breaks = seq(0,1.2,by = 0.2), name="Spawning depletion")+
+     scale_x_continuous(limits = c(starting_year,ending_year),breaks = seq(starting_year,ending_year,by = 4)) +
+     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
+   g
+ }
+
+ make_Biomass <- function(scenario,scenario_name) {
+   SSB <- scenario@SSB/1000
+   probsSSB <- t(apply(SSB[,-nyear],2,FUN=quantile,probs=c(0.025,0.5,0.975))) %>%
+     as.data.frame() %>%
+     cbind(all_years) %>%
+     rename(Lower=1, Median=2, Upper=3, Year=all_years)
+
+   g <- ggplot(probsSSB) +
+     geom_ribbon(data=probsSSB, aes(x=Year, ymin=Lower, ymax=Upper),
+                 inherit.aes = FALSE, fill = "purple", alpha=0.2)+
+     geom_line(aes(Year,Median), colour="purple", lwd=2)+
+     scale_y_continuous(limits = c(0,5000), breaks = seq(0,5000,by = 1000), name="Spawning biomass (x 1,000)")+
+     scale_x_continuous(limits = c(starting_year,ending_year),breaks = seq(starting_year,ending_year,by = 4)) +
+     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
+   g
+ }
+
+
+#Make multipanel plots using purrr and cowplot
+initDepletionPlots  <- purrr::map2(scenarios, scenarionames, make_initD)
+g <- cowplot::plot_grid(plotlist = initDepletionPlots, align = "hv",nrow = 2, ncol = 2)
+ggsave(file.path(fig_dir, paste0("rex-compare-SRA-init-depletion-panel.png")),
+        width = 11, height = 12)
+
+DepletionPlots  <- purrr::map2(scenarios, scenarionames, make_Depletion)
+g <- cowplot::plot_grid(plotlist = DepletionPlots, align = "hv",nrow = 2, ncol = 2)
+ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
+        width = 11, height = 12)
+
+SSBPlots  <- purrr::map2(scenarios, scenarionames, make_Biomass)
+g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv",nrow = 2, ncol = 2)
+ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
+       width = 11, height = 12)
+
 
 saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
+saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
+saveRDS(rex_sra_ceq90, file = here("generated-data", "rex-sra-ceq90.rds"))
 saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
-saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))
