@@ -9,8 +9,8 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("base", "ceq50", "ceq10")
-scenarios_human <- c("Base OM", "Catch eq. 50%", "Catch eq. 10%")
+scenarios <- c("base", "ceq10", "ceq50", "ceq100")
+scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
 .nsim <- 100
 
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
