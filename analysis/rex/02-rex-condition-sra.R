@@ -192,8 +192,8 @@ g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv",nrow = 2, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
        width = 11, height = 12)
 
-
 saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
 saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
-saveRDS(rex_sra_ceq90, file = here("generated-data", "rex-sra-ceq90.rds"))
 saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
+saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))
+

@@ -9,8 +9,8 @@ CC80, "Constant catch"
 CC70, "Constant catch"
 CC60, "Constant catch"
 
-.Iratio6, "Index slope"
-.Iratio8, "Index slope"
+.Iratio6, "Index ratio"
+.Iratio8, "Index ratio"
 
 .GB_slope6_0.66, "Index slope"
 .GB_slope6_1, "Index slope"
@@ -22,11 +22,11 @@ CC60, "Constant catch"
 .Islope0.4_80, "Index slope"
 .Islope0.4_100, "Index slope"
 
-.ICI, "Index slope"
-.ICI2, "Index slope"
+.ICI, "Index ratio"
+.ICI2, "Index ratio"
 
-.IDX, "Index slope"
-.IDX_smooth, "Index slope"
+.IDX, "Index ratio"
+.IDX_smooth, "Index ratio"
 
 .IT10_hist, "Index target"
 .IT5_hist, "Index target"
