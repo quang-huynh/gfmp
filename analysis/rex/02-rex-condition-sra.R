@@ -131,6 +131,7 @@ rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
 
 scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
 scenarionames <- c("base","ceq10","ceq50","ceq100")
+scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
 
 #Compare Initial depletion, depletion and biomass results from base (Ceq=0), ceq50 and ceq100
 make_initD <- function(scenario,scenario_name) {
@@ -177,17 +178,17 @@ make_initD <- function(scenario,scenario_name) {
 
 
 #Make multipanel plots using purrr and cowplot
-initDepletionPlots  <- purrr::map2(scenarios, scenarionames, make_initD)
+initDepletionPlots  <- purrr::map2(scenarios, scenarios_human, make_initD)
 g <- cowplot::plot_grid(plotlist = initDepletionPlots, align = "hv",nrow = 2, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-compare-SRA-init-depletion-panel.png")),
         width = 11, height = 12)
 
-DepletionPlots  <- purrr::map2(scenarios, scenarionames, make_Depletion)
+DepletionPlots  <- purrr::map2(scenarios, scenarios_human, make_Depletion)
 g <- cowplot::plot_grid(plotlist = DepletionPlots, align = "hv",nrow = 2, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
         width = 11, height = 12)
 
-SSBPlots  <- purrr::map2(scenarios, scenarionames, make_Biomass)
+SSBPlots  <- purrr::map2(scenarios, scenarios_human, make_Biomass)
 g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv",nrow = 2, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
        width = 11, height = 12)
