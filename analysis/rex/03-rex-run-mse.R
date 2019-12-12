@@ -145,8 +145,9 @@ make_kobe_plot <- function(scenario, MPs, mptype, ...) {
 
 make_spider <- function(scenario, MPs, mptype, save_plot = TRUE) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")# +
-    # scale_color_viridis_d()
+    gfdlm::spider(pm_list = PM, palette = "Set2")
+  if (length(MPs) > 8)
+    g <- g + scale_color_viridis_d()
   if (save_plot) {
     ggsave(file.path(
       fig_dir,
@@ -201,7 +202,7 @@ ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
 type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
 spider_plots <- split(mp, type_order) %>%
   map(~ {
-    make_spider(scenario = scenarios[base_i], MPs = .x$mp, save_plot = FALSE) +
+    make_spider(scenario = base_om, MPs = .x$mp, save_plot = FALSE) +
       scale_color_brewer(palette = "Set2")
   })
 g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
@@ -211,7 +212,7 @@ ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
 )
 
 # Make not satisficed plot for base (these MPs not tested in other scenarios)
-make_projection_plot("base", MPs = rex_not_satisficed,
+make_projection_plot(base_om, MPs = rex_not_satisficed,
   mptype = "NOT-satisficed", height = 27)
-make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed",
+make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
   show_contours = FALSE)
