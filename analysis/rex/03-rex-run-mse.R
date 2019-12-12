@@ -9,8 +9,10 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("ceq0", "ceq10", "ceq50", "ceq100")
-scenarios_human <- c("Catch eq. 0%", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
+scenarios <- c("ceq0", "ceq10", "ceq50",
+  "ceq100")
+scenarios_human <- c("Catch eq. 0%", "Catch eq. 10%", "Catch eq. 50%",
+  "Catch eq. 100%")
 .nsim <- 100
 base_om <- "ceq50"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
@@ -19,7 +21,6 @@ mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
 base_i <- which(base_om == scenarios)
-stopifnot(identical(scenarios[[1]], base_om))
 stopifnot(identical(length(scenarios_human), length(scenarios)))
 
 # Set up PMs ------------------------------------------------------------------
@@ -49,7 +50,7 @@ file_name <- here("generated-data", paste0("rex-mse-", base_om, ".rds"))
 if (!file.exists(file_name)) {
   message("Running closed-loop-simulation for base OM")
   DLMtool::setup(cpus = cores)
-  rex_mse_base <- runMSE(OM = omrex[[base_om]], MPs = mp$mp, parallel = TRUE)
+  rex_mse_base <- runMSE(OM = omrex[[base_i]], MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
   saveRDS(rex_mse_base, file = file_name)
 } else {
@@ -63,11 +64,9 @@ reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
-# remove the satisficed ref MPs because putting them all back in below:
 rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 stopifnot(length(rex_satisficed) > 1)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
-# For illustration get MPs that are NOT satisficed:
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
 stopifnot(length(rex_not_satisficed) > 1)
 
@@ -90,11 +89,9 @@ fit_scenario <- function(scenario) {
   }
   mse
 }
-
-# Fit the rest that are not base OM:
 rex_mse_scenarios <- map(scenarios[-base_i], fit_scenario)
 rex_mse <- c(rex_mse_base, rex_mse_scenarios)
-names(rex_mse) <- scenarios
+names(rex_mse) <- c(scenarios[base_i], scenarios[-base_i])
 
 # Plots ---------------------------------------------------------
 
@@ -204,7 +201,7 @@ ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
 type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
 spider_plots <- split(mp, type_order) %>%
   map(~ {
-    make_spider(scenario = "base", MPs = .x$mp, save_plot = FALSE) +
+    make_spider(scenario = scenarios[base_i], MPs = .x$mp, save_plot = FALSE) +
       scale_color_brewer(palette = "Set2")
   })
 g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
