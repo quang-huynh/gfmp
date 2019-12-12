@@ -214,10 +214,10 @@ rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
   drop_nonconv = TRUE
 )
 
-scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
-scenarionames <- c("base","ceq10","ceq50","ceq100")
+scenarios <- c(rex_sra_ceq0, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
+scenarionames <- c("ceq0","ceq10","ceq50","ceq100")
 
-#Compare Initial depletion, depletion and biomass results from base (Ceq=0), ceq50 and ceq100
+#Compare initial depletion, depletion and biomass results:
 make_initD <- function(scenario,scenario_name) {
    g <- scenario@OM@cpars$D %>% as.data.frame() %>% rename(D =1)  %>%
      ggplot(aes(D)) +
@@ -285,5 +285,5 @@ saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
 quantile(rex_sra_ceq0@OM@cpars$D)
 quantile(rex_sra_ceq10@OM@cpars$D)
 quantile(rex_sra_ceq50@OM@cpars$D)
-quantile(rex_sra_ceq200@OM@cpars$D)
+quantile(rex_sra_ceq100@OM@cpars$D)
 

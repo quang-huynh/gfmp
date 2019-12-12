@@ -9,15 +9,16 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("ceq100", "ceq50", "ceq0", "ceq10")
-scenarios_human <- c("Catch eq. 100%", "Catch eq. 50%", "Catch eq. 0%", "Catch eq. 10%")
-.nsim <- 48
-base_om <- "ceq100"
+scenarios <- c("ceq0", "ceq10", "ceq50", "ceq100")
+scenarios_human <- c("Catch eq. 0%", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
+.nsim <- 100
+base_om <- "ceq50"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 
 # Set up and checks: ----------------------------------------------------------
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
+base_i <- which(base_om == scenarios)
 stopifnot(identical(scenarios[[1]], base_om))
 stopifnot(identical(length(scenarios_human), length(scenarios)))
 
@@ -41,9 +42,6 @@ omrex <- map(scenarios, ~ {
   om
 })
 names(omrex) <- scenarios
-
-#slotNames(omrex$base)
-omrex$base@Dobs
 
 # Fit base MSE ----------------------------------------------------------------
 
@@ -93,8 +91,8 @@ fit_scenario <- function(scenario) {
   mse
 }
 
-# First is always "base", fit the rest:
-rex_mse_scenarios <- map(scenarios[-1], fit_scenario)
+# Fit the rest that are not base OM:
+rex_mse_scenarios <- map(scenarios[-base_i], fit_scenario)
 rex_mse <- c(rex_mse_base, rex_mse_scenarios)
 names(rex_mse) <- scenarios
 
