@@ -9,16 +9,16 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("base", "ceq10", "ceq50", "ceq100")
-scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
-.nsim <- 100
-
+scenarios <- c("ceq100", "ceq50", "ceq0", "ceq10")
+scenarios_human <- c("Catch eq. 100%", "Catch eq. 50%", "Catch eq. 0%", "Catch eq. 10%")
+.nsim <- 48
+base_om <- "ceq100"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 
 # Set up and checks: ----------------------------------------------------------
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-stopifnot(identical(scenarios[[1]], "base"))
+stopifnot(identical(scenarios[[1]], base_om))
 stopifnot(identical(length(scenarios_human), length(scenarios)))
 
 # Set up PMs ------------------------------------------------------------------
@@ -47,11 +47,11 @@ omrex$base@Dobs
 
 # Fit base MSE ----------------------------------------------------------------
 
-file_name <- here("generated-data", "rex-mse-base.rds")
+file_name <- here("generated-data", paste0("rex-mse-", base_om, ".rds"))
 if (!file.exists(file_name)) {
   message("Running closed-loop-simulation for base OM")
   DLMtool::setup(cpus = cores)
-  rex_mse_base <- runMSE(OM = omrex[["base"]], MPs = mp$mp, parallel = TRUE)
+  rex_mse_base <- runMSE(OM = omrex[[base_om]], MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
   saveRDS(rex_mse_base, file = file_name)
 } else {
@@ -134,11 +134,11 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 12) {
   )
 }
 
-make_kobe_plot <- function(scenario, MPs, mptype) {
+make_kobe_plot <- function(scenario, MPs, mptype, ...) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g <- gfdlm::plot_contours(x,
     xlim = c(0, 3.5),
-    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
+    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50), ...
   )
   ggsave(file.path(
     fig_dir,
@@ -218,4 +218,5 @@ ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
 # Make not satisficed plot for base (these MPs not tested in other scenarios)
 make_projection_plot("base", MPs = rex_not_satisficed,
   mptype = "NOT-satisficed", height = 27)
-make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed",
+  show_contours = FALSE)
