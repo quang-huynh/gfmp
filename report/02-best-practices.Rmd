@@ -198,7 +198,52 @@ DLMtool currently generates a single index of abundance for use in the data- or 
 
 * Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs].
 
-Important to include reference MPs to bound the range of expected performance under scenarios such as: no fishing, perfect information, and maintaining the status quo TAC.
+Important to include reference MPs to bound the range of expected performance under scenarios such as: no fishing, perfect information (F_MSY_ and 0.75 F_MSY), and maintaining the status quo TAC.
+
+### Broad types of MPs:
+
+- Make into a table?
+
+**Constant-catch MPs**
+
+- no feedback!
+- often fine for short-term projections
+- longterm biomass will go towards equilibrium, which may be far lower (e.g. 0) or higher than desired
+- mostly as a point of reference
+
+**Index-ratio MPs**
+
+- moving reference window
+- simple concept
+- has potential for pathological behaviour since it's not "anchored" to any fixed reference
+
+**Index-slope MPs**
+
+- moving reference window
+- similar to "index ratio" types, but fits a regression of some kind and makes recommendations based on the slope
+
+**Index-target MPs**
+
+- fixed reference window
+- likely to stabilize B and F and catch over time; at what level is the question
+- makes the assumption that the specified target index is where we want the stock to be (which is tested against objectives but conditional on the operating model)
+- target window may require judgement on a case-by-case basis
+
+**Model-based MPs**
+
+- here, SP models paired with HCRs
+- more complex than data-based rules
+- more theoretically sound; doesn't necessarily mean will perform well against objectives
+- likely requires "tuning" of priors and possibly HCRs
+
+Thoughts:
+
+- MP development a rich of research and it is probably just in its infancy
+- Beyond some minor adjustments to existing MPs, MP development is not the point of this report
+- More MPs may be developed as part of the application of this framework (and are likely to be developed elsewhere in the literature) and could be included in the future
+- No reason why an MP couldn't combine multiple aspects of the above, although there are advantages to simple and easy to understand MPs
+- The MPs described in this report are a provisional library to build from
+- MPs are meant to be followed until re-evaluated or the validity of the whole exercise is thrown off (obviously changes may need to be made given unanticipated surprises, but any major changes should also trigger an OM re-evaluation)
 
 ## STEP 5. SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES
 
