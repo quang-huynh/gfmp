@@ -321,7 +321,7 @@ This MP was used in the Cox et al. (In press) rebuilding plan for outside Yellow
 \end{cases}
 \end{equation}
 
-where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and \Delta I_y is the current index value divided by the last observed index value (every two years for a biennial survey). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
 This MP can be additionally smoothed:
 
@@ -329,7 +329,7 @@ This MP can be additionally smoothed:
 \textrm{TAC}_y = \lambda \cdot \textrm{TAC}_y + (1-\lambda) \textrm{TAC}_{y-1},
 \end{equation}
 
-where $\lambda$ controls the degree of smoothing and can range between 0 and 1. Cox et al. (In press) used $\lambda=0.5$. We define these MPs for DLMtool as "IDX" and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$, and $\textrm{TAC}_\textrm{Floor} = 0$) and "IDX_smooth" (same as IDX with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one implemented the previous year).
+where $\lambda$ controls the degree of smoothing and can range between 0 and 1. Cox et al. (In press) used $\lambda=0.5$. We define these MPs for DLMtool as "IDX" and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$, and $\textrm{TAC}_\textrm{Floor} = 0$) and "IDX_smooth" (same as IDX but with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one previously recommended).
 
 ```{r mp-idx-demo, fig.cap="Illustration of IDX."}
 f <- function(tac_prev, tac_floor, delta_min, delta_max, delta_ind) {
