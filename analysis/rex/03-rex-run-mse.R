@@ -9,16 +9,18 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("base", "ceq10", "ceq50", "ceq100")
-scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
+scenarios <- c("ceq0", "ceq10", "ceq50",
+  "ceq100")
+scenarios_human <- c("Catch eq. 0%", "Catch eq. 10%", "Catch eq. 50%",
+  "Catch eq. 100%")
 .nsim <- 100
-
+base_om <- "ceq50"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 
 # Set up and checks: ----------------------------------------------------------
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-stopifnot(identical(scenarios[[1]], "base"))
+base_i <- which(base_om == scenarios)
 stopifnot(identical(length(scenarios_human), length(scenarios)))
 
 # Set up PMs ------------------------------------------------------------------
@@ -42,16 +44,13 @@ omrex <- map(scenarios, ~ {
 })
 names(omrex) <- scenarios
 
-#slotNames(omrex$base)
-omrex$base@Dobs
-
 # Fit base MSE ----------------------------------------------------------------
 
-file_name <- here("generated-data", "rex-mse-base.rds")
+file_name <- here("generated-data", paste0("rex-mse-", base_om, ".rds"))
 if (!file.exists(file_name)) {
   message("Running closed-loop-simulation for base OM")
   DLMtool::setup(cpus = cores)
-  rex_mse_base <- runMSE(OM = omrex[["base"]], MPs = mp$mp, parallel = TRUE)
+  rex_mse_base <- runMSE(OM = omrex[[base_i]], MPs = mp$mp, parallel = TRUE)
   snowfall::sfStop()
   saveRDS(rex_mse_base, file = file_name)
 } else {
@@ -59,17 +58,16 @@ if (!file.exists(file_name)) {
   rex_mse_base <- readRDS(file_name)
 }
 # DLMtool::Converge(rex_mse_base)
+# rex_mse_base@Misc$Data[[1]]@Ind
 
 rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
-# remove the satisficed ref MPs because putting them all back in below:
 rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 stopifnot(length(rex_satisficed) > 1)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
-# For illustration get MPs that are NOT satisficed:
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
 stopifnot(length(rex_not_satisficed) > 1)
 
@@ -92,11 +90,9 @@ fit_scenario <- function(scenario) {
   }
   mse
 }
-
-# First is always "base", fit the rest:
-rex_mse_scenarios <- map(scenarios[-1], fit_scenario)
+rex_mse_scenarios <- map(scenarios[-base_i], fit_scenario)
 rex_mse <- c(rex_mse_base, rex_mse_scenarios)
-names(rex_mse) <- scenarios
+names(rex_mse) <- c(scenarios[base_i], scenarios[-base_i])
 
 # Plots ---------------------------------------------------------
 
@@ -134,11 +130,11 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 12) {
   )
 }
 
-make_kobe_plot <- function(scenario, MPs, mptype) {
+make_kobe_plot <- function(scenario, MPs, mptype, ...) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g <- gfdlm::plot_contours(x,
     xlim = c(0, 3.5),
-    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50)
+    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50), ...
   )
   ggsave(file.path(
     fig_dir,
@@ -150,8 +146,9 @@ make_kobe_plot <- function(scenario, MPs, mptype) {
 
 make_spider <- function(scenario, MPs, mptype, save_plot = TRUE) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")# +
-    # scale_color_viridis_d()
+    gfdlm::spider(pm_list = PM, palette = "Set2")
+  if (length(MPs) > 8)
+    g <- g + scale_color_viridis_d()
   if (save_plot) {
     ggsave(file.path(
       fig_dir,
@@ -206,7 +203,7 @@ ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
 type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
 spider_plots <- split(mp, type_order) %>%
   map(~ {
-    make_spider(scenario = "base", MPs = .x$mp, save_plot = FALSE) +
+    make_spider(scenario = base_om, MPs = .x$mp, save_plot = FALSE) +
       scale_color_brewer(palette = "Set2")
   })
 g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
@@ -216,6 +213,7 @@ ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
 )
 
 # Make not satisficed plot for base (these MPs not tested in other scenarios)
-make_projection_plot("base", MPs = rex_not_satisficed,
+make_projection_plot(base_om, MPs = rex_not_satisficed,
   mptype = "NOT-satisficed", height = 27)
-make_kobe_plot("base", MPs = rex_not_satisficed, mptype = "NOT-satisficed")
+make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
+  show_contours = FALSE)

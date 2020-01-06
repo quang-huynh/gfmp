@@ -35,6 +35,7 @@ rex_om@nyears
 rex_om@maxage
 rex_om@M
 rex_om@maxage
+rex_om@h
 rex_om@L5
 rex_om@LFS
 assertthat::assert_that(identical(rex_om@nyears, length(all_years)))
@@ -73,19 +74,24 @@ catch
 plot(all_years, catch, type = "o")
 
 # catch per unit effort from the trawl fleet only:
-# cpue <- read.csv(here::here("generated-data", "rex-cpue.csv"))
+# cpue <- readRDS("../../gfs/report/cpue-cache/rex-sole.rds")
+# readr::write_csv(cpue, path = here("generated-data", "rex-cpue.csv"))
+cpue <- read.csv(here("generated-data", "rex-cpue.csv")) %>%
+  filter(area == "3CD")
 
 indexes <- drex$survey_index %>%
   dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
   select(year, biomass, re) %>%
   right_join(tibble(year = all_years),by  = "year") %>%
-  # left_join(rename(select(cpue, year, est), trawl_cpue = est), by = "year") %>%
+  left_join(rename(select(cpue, year, est, se_link), trawl_cpue = est, trawl_sd = se_link), by = "year") %>%
   select(-year) %>%
   as.matrix()
 
 indexes
-plot(all_years, indexes[, 1L])
-plot(all_years, indexes[, 2L], type = "o")
+plot(all_years, indexes[, 1L], type = "o")
+# plot(all_years, indexes[, 2L], type = "o")
+
+plot(all_years, indexes[, 3L], type = "o")
 
 MSEtool::plot_composition(all_years,
   obs = cal_wcvi$cal,
@@ -95,32 +101,111 @@ MSEtool::plot_composition(all_years,
 I_sd <- indexes[, 2L]
 I_sd
 
-rex_om@nsim <- 100
-cores <- floor(parallel::detectCores() / 2)
+rex_om@nsim <- 50
+cores <- floor(parallel::detectCores() / 1)
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
 library(MSEtool)
-rex_sra_base <- MSEtool::SRA_scope(rex_om,
+rex_sra_ceq0 <- MSEtool::SRA_scope(rex_om,
   # CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
   C_eq = 0,
   I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE
+  drop_nonconv = TRUE, mean_fit = TRUE
 )
 rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
   C_eq = 0.5*catch[1],
   I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE
+  drop_nonconv = TRUE, mean_fit = TRUE
 )
 
 rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
   C_eq = 0.1*catch[1],
   I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE
+  drop_nonconv = TRUE, mean_fit = TRUE
 )
+
+rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq100@OM@cpars$D)
+
+rex_sra_ceq200 <- MSEtool::SRA_scope(rex_om,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 2*catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq200@OM@cpars$D)
+
+rex_om@M
+rex_om_high_m <- rex_om
+rex_om_high_m@M <- c(0.25, 0.25)
+rex_sra_high_m <- MSEtool::SRA_scope(rex_om_high_m,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.5*catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq50@OM@cpars$D)
+quantile(rex_sra_high_m@OM@cpars$D)
+
+rex_om@M
+rex_om_low_m <- rex_om
+rex_om_low_m@M <- c(0.10, 0.1)
+rex_sra_low_m <- MSEtool::SRA_scope(rex_om_low_m,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.5*catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq50@OM@cpars$D)
+quantile(rex_sra_low_m@OM@cpars$D)
+quantile(rex_sra_high_m@OM@cpars$D)
+
+rex_om_low_h <- rex_om
+rex_om@h
+rex_om_low_h@h <- c(0.4, 0.6)
+rex_sra_low_h <- MSEtool::SRA_scope(rex_om_low_h,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.5*catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq50@OM@cpars$D)
+quantile(rex_sra_low_h@OM@cpars$D)
+median(rex_sra_ceq50@OM@cpars$D)
+median(rex_sra_low_h@OM@cpars$D)
+
+rex_om_high_h <- rex_om
+rex_om@h
+rex_om_high_h@h <- c(0.9, 0.9)
+rex_sra_high_h <- MSEtool::SRA_scope(rex_om_high_h,
+  Chist = catch, Index = indexes[, 1], integrate = FALSE,
+  C_eq = 0.5*catch[1],
+  I_sd = I_sd, I_type = "B", cores = cores,
+  drop_nonconv = TRUE, mean_fit = TRUE
+)
+quantile(rex_sra_ceq50@OM@cpars$D)
+quantile(rex_sra_high_h@OM@cpars$D)
+
+# rex_sra_cpue <- MSEtool::SRA_scope(rex_om,
+#   data = list(
+#     Chist = catch,
+#     Index = indexes[, c("biomass", "trawl_cpue")],
+#     C_eq = 0.5*catch[1],
+#     I_sd = indexes[, c("re", "trawl_sd")], I_type = c("B", "B")),
+#   cores = cores,
+#   drop_nonconv = TRUE
+# )
+# quantile(rex_sra_ceq50@OM@cpars$D)
+# quantile(rex_sra_cpue@OM@cpars$D)
 
 rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
   Chist = catch, Index = indexes[, 1], integrate = FALSE,
@@ -133,7 +218,8 @@ scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
 scenarionames <- c("base","ceq10","ceq50","ceq100")
 scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
 
-#Compare Initial depletion, depletion and biomass results from base (Ceq=0), ceq50 and ceq100
+
+#Compare initial depletion, depletion and biomass results:
 make_initD <- function(scenario,scenario_name) {
    g <- scenario@OM@cpars$D %>% as.data.frame() %>% rename(D =1)  %>%
      ggplot(aes(D)) +
@@ -193,8 +279,13 @@ g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv",nrow = 2, ncol = 2)
 ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
        width = 11, height = 12)
 
-saveRDS(rex_sra_base, file = here("generated-data", "rex-sra-base.rds"))
-saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
-saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
+saveRDS(rex_sra_ceq0, file = here("generated-data", "rex-sra-ceq0.rds"))
 saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))
+saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
+saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
+
+quantile(rex_sra_ceq0@OM@cpars$D)
+quantile(rex_sra_ceq10@OM@cpars$D)
+quantile(rex_sra_ceq50@OM@cpars$D)
+quantile(rex_sra_ceq100@OM@cpars$D)
 

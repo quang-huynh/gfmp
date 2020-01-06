@@ -1,17 +1,17 @@
 book_filename: "resdoc"
 chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
-            "01-introduction.Rmd",
-            "02-best-practices.Rmd",
+            #"01-introduction.Rmd",
+            #"02-best-practices.Rmd",
             #"03-summary-rex.Rmd",
             #"04-summary-shortraker.Rmd",
             #"05-discussion.Rmd",
             "06-mp-descriptions.Rmd",
-            "07-dlmtool-om.Rmd",
+            #"07-dlmtool-om.Rmd",
             #"08-mp-screening.Rmd",
-            "09-default-slots.Rmd",
-            "10-om-rex.Rmd",
-            "11-mse-results-rex.Rmd",
+            #"09-default-slots.Rmd",
+           # "10-om-rex.Rmd",
+            #"11-mse-results-rex.Rmd",
             # "12-om-shortraker.Rmd",
             # "13-mse-results-shortraker.Rmd",
             "99-references.Rmd"]

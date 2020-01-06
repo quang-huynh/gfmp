@@ -94,7 +94,7 @@ where $x$ lies between 0 and 1. The TAC is constant for all future projections. 
 - CC70: $\alpha = 0.3$
 - CC60: $\alpha = 0.4$
 
-## INDEX-SLOPE MANAGEMENT PROCEDURES
+## INDEX-SLOPE AND INDEX-RATIO MANAGEMENT PROCEDURES
 
 Management procedures in this category make a TAC recommendation based on a change in a relative abundance index over time. The term "slope" is used since many MPs in this category fit a linear regression to the relative abundance index (usually in log space) and make a recommendation that generally decreases the TAC if the slope is negative and increases the TAC if the slope is positive. Some of the MPs are based on ratios of relative abundance in certain years.
 
@@ -109,21 +109,7 @@ This MP adjusts the TAC by a ratio, $\alpha$, with the numerator being the mean 
 \frac{I_{yr-3} + I_{yr-4} + I_{yr-5}} {3} \right. ,
 \end{align}
 
-where $C_{y-1}$ is the catch from the previous year and $\alpha$ is the ratio of the mean index in the most recent two years of the time series and the mean index in 3--5 years before current time. Due to the biennial nature of the synoptic role surveys for any one area, we propose an alternative version of this MP, "Iratio6", which calculates the ratio with an additional year in the numerator so that there are always the same number of years with data in the numerator as the denominator:
-
-\begin{equation}
-\alpha =
-\left. \frac{I_{yr-1} + I_{yr-2} + I_{yr-3}} {3} \middle/
-\frac{I_{yr-4} + I_{yr-5} + I_{yr-6}} {3} \right. .
-\end{equation}
-
-and a version, "Iratio8", which uses 4 years in the numerator and denominator:
-
-\begin{equation}
-\alpha =
-\left. \frac{I_{yr-1} + I_{yr-2} + I_{yr-3} + I_{yr-4}} {4} \middle/
-\frac{I_{yr-5} + I_{yr-6} + I_{yr-7} + I_{yr-8}} {4} \right. .
-\end{equation}
+where $C_{y-1}$ is the catch from the previous year and $\alpha$ is the ratio of the mean index in the most recent two years of the time series and the mean index in 3--5 years before current time. Due to the biennial nature of the synoptic role surveys for any one area, we propose an alternative version of this MP, "Iratio2", which calculates the ratio with the last 2 years of available survey observations in the numerator and the last 3 years of available survey observations in the denominator.
 
 <!-- TODO: make a consistent decision whether we use C_y-1 or TAC_y-1 -->
 
@@ -335,7 +321,7 @@ This MP was used in the Cox et al. (In press) rebuilding plan for outside Yellow
 \end{cases}
 \end{equation}
 
-where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and \Delta I_y is the current index value divided by the last observed index value (every two years for a biennial survey). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
 This MP can be additionally smoothed:
 
@@ -343,7 +329,7 @@ This MP can be additionally smoothed:
 \textrm{TAC}_y = \lambda \cdot \textrm{TAC}_y + (1-\lambda) \textrm{TAC}_{y-1},
 \end{equation}
 
-where $\lambda$ controls the degree of smoothing and can range between 0 and 1. Cox et al. (In press) used $\lambda=0.5$. We define these MPs for DLMtool as "IDX" and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$, and $\textrm{TAC}_\textrm{Floor} = 0$) and "IDX_smooth" (same as IDX with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one implemented the previous year).
+where $\lambda$ controls the degree of smoothing and can range between 0 and 1. Cox et al. (In press) used $\lambda=0.5$. We define these MPs for DLMtool as "IDX" and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$, and $\textrm{TAC}_\textrm{Floor} = 0$) and "IDX_smooth" (same as IDX but with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one previously recommended).
 
 ```{r mp-idx-demo, fig.cap="Illustration of IDX."}
 f <- function(tac_prev, tac_floor, delta_min, delta_max, delta_ind) {
@@ -424,7 +410,7 @@ otherwise:
 
 where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $(1-x)C$ where $x$ and $I_\textrm{multi}$ are arguments to the function and $C$ is the average catch over the last 5 years of the historical period.
 
-There are four index/CPUE target MPs proposed by @geromont2015:
+There are four index/CPUE target MPs proposed by @geromont2015 (Figure \@ref(fig:mp-itarget-demo)):
 
 - Itarget1: The least biologically precautionary, with $x = 0$ and $I_\textrm{multi} = 1.5$
 - Itarget2: Increasingly biological precautionary, with $x = 0$ and $I_\textrm{multi} = 2.0$
@@ -432,44 +418,6 @@ There are four index/CPUE target MPs proposed by @geromont2015:
 - Itarget4: Most biological precautionary, with $x = 0.3$ and $I_\textrm{multi} = 2.5$
 
 ```{r mp-itarget-demo, fig.cap="Illustration of the Itarget MP."}
-f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, I0_ratio = 0.8, TACstar_ratio = 0.5, ...) {
-  TACstar <- (1 - x) * avg_catch_hist
-  Itarget <- Iave * Imulti
-  I0 <- I0_ratio * Iave
-  if (Irecent >= I0) {
-    TAC <- TACstar_ratio * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
-  } else {
-    TAC <- TACstar_ratio * TACstar * (Irecent/I0)^2
-  }
-  if (TAC < 0) tac <- 0
-  if (TAC > 1.2 * avg_catch_hist) TAC <- 1.2 * avg_catch_hist
-  TAC
-}
-pars <- expand.grid(
-  avg_catch_hist = 100,
-  Irecent = seq(0.1, 3, length.out = 300),
-  Iave = c(1),
-  x = c(0, 0.3),
-  Imulti = c(1.5, 2.5),
-  I0_ratio = c(1),
-  TACstar_ratio = c(1),
-  stringsAsFactors = FALSE
-)
-pars$tac <- purrr::pmap_dbl(pars, f)
-pars %>%
-  mutate(x = paste("x =", x)) %>%
-  mutate(Imulti = paste("Imulti =", Imulti)) %>%
-  ggplot(aes(Irecent, tac)) +
-  geom_line() +
-  ggsidekick::theme_sleek() +
-  facet_grid(x~Imulti) +
-  geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
-  geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-  labs(
-    x = expression(I[recent]/I[target]),
-    y = "TAC (based on 100 t average\nin last 5 historical years)"
-  )
-
 pars1 <- expand.grid(
   avg_catch_hist = 100,
   Irecent = seq(0.1, 3, length.out = 300),
@@ -510,6 +458,63 @@ pars %>%
   scale_color_brewer(palette ="Set2") +
   theme(legend.position = "top")
 ```
+
+Given that the Itarget MPs proposed in @geromont2015 are fairly biologically conservative (they require an increase in the index value relative to the historical target before matching the recent TAC), we propose the following alternative (Itarget5):
+
+If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
+
+\begin{equation}
+\textrm{TAC}_y = \textrm{TAC}^* \left[1+\left(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0}\right)\right],
+\end{equation}
+
+otherwise:
+
+\begin{equation}
+\textrm{TAC}_y = \textrm{TAC}^*\left(\frac{I_\textrm{recent}}{I_0}\right)^2,
+\end{equation}
+
+where $I_0$ is $I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $C$ where $I_\textrm{multi}$ is an argument to the function and $C$ is the average catch over the last 5 years of the historical period (Figure \@ref(fig:mp-itarget-demo2)).
+
+```{r mp-itarget-demo2, fig.cap="Illustration of the modified Itarget MP, Itarget5."}
+f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, I0_ratio = 0.8, TACstar_ratio = 0.5, ...) {
+  TACstar <- (1 - x) * avg_catch_hist
+  Itarget <- Iave * Imulti
+  I0 <- I0_ratio * Iave
+  if (Irecent >= I0) {
+    TAC <- TACstar_ratio * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
+  } else {
+    TAC <- TACstar_ratio * TACstar * (Irecent/(I0))^2
+  }
+  if (TAC < 0) tac <- 0
+  if (TAC > 1.2 * avg_catch_hist) TAC <- 1.2 * avg_catch_hist
+  TAC
+}
+pars <- expand.grid(
+  avg_catch_hist = 100,
+  Irecent = seq(0.1, 3, length.out = 300),
+  Iave = c(1),
+  x = c(0),
+  Imulti = c(2, 4),
+  I0_ratio = c(1),
+  TACstar_ratio = c(1),
+  stringsAsFactors = FALSE
+)
+pars$tac <- purrr::pmap_dbl(pars, f)
+pars %>%
+  mutate(x = paste("x =", x)) %>%
+  mutate(Imulti = paste("Imulti =", Imulti)) %>%
+  ggplot(aes(Irecent, tac)) +
+  geom_line() +
+  ggsidekick::theme_sleek() +
+  facet_wrap(~Imulti) +
+  geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
+  geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
+  labs(
+    x = expression(I[recent]/I[target]),
+    y = "TAC (based on 100 t average\nin last 5 historical years)"
+  )
+```
+
 
 ### ITM: Index target based on natural mortality rate
 
@@ -572,55 +577,6 @@ g2 <- pars %>%
     y = "Years"
   )
 cowplot::plot_grid(g1, g2, labels = "auto")
-```
-
-### SBT1: "Southern bluefin tuna" relative biomass target management procedure
-
-SBT1 is an MP that makes incremental adjustments to TAC recommendations based on the trend in relative abundance index levels (Fig. \@ref(fig:mp-sbt1-demo)). It is based on an MP that was developed for Southern Bluefin Tuna (REF). The TAC is calculated as:
-
-<!-- TODO: ref?  Rich Hillary at CSIRO?-->
-
-\begin{equation}
-\textrm{TAC}_y =
-\begin{cases}
-C_{y-1} (1 - K_1 \lvert \lambda \rvert ^\gamma) & \textrm{if}\ \lambda \lt 0 \\
-C_{y-1} (1 + K_2 \lvert \lambda \rvert) & \textrm{if}\ \lambda \ge 0,
-\end{cases}
-\end{equation}
-
-where $\lambda$ is the slope of the log relative abundance index over the last $n$ years (default $n = 5$), and $K_1$, $K_2$, and $\gamma$ are arguments to the MP. We note that our implementation uses a regression with the log of the relative abundance index, whereas the implementation in DLMtool at the time of writing uses a regression in natural space. We estimate the slope in log space so that the slope represents a percent change in relative abundance and is therefore independent of the scale of the abundance index. By default, these parameters are set to $K_1 = 1.5$, $K_2 = 3$, and $\gamma = 1$. We propose including an alternative version with $\gamma = 0.66$ (decreases TAC more rapidly if the index is trending down) (Fig. \@ref(fig:mp-sbt1-demo)) and implementing an upper cap of 1.2 on the fraction that the TAC can be increased from one year to the next.
-
-```{r mp-sbt1-demo, fig.cap="Illustration of SBT1."}
-f <- function(c_y1, lambda, k1, k2, gamma) {
-  if (lambda < 0) tac <- c_y1 * (1 - k1 * abs(lambda)^gamma)
-  if (lambda >= 0) tac <- c_y1 * (1 + k2 * abs(lambda))
-  if (tac < 0) tac <- 0
-  if (tac / c_y1 > 1.2) tac <- c_y1 * 1.2
-  tac
-}
-pars <- expand.grid(
-  c_y1 = 100,
-  lambda = seq(-0.5, 0.5, length.out = 200),
-  k1 = c(1, 1.5, 3),
-  k2 = c(1.5, 3, 5),
-  gamma = c(0.66, 1, 1.5)
-)
-pars$tac <- purrr::pmap_dbl(pars, f)
-pars %>%
-  mutate(k1 = paste("K1 =", k1)) %>%
-  mutate(k2 = paste("K2 =", k2)) %>%
-  ggplot(aes(lambda, tac, colour = as.factor(gamma))) +
-  geom_line() +
-  facet_grid(k1 ~ k2) +
-  ggsidekick::theme_sleek() +
-  labs(
-    colour = expression(gamma),
-    x = expression(lambda ~ (Slope ~ "in" ~ ln(index))),
-    y = "TAC (based on 100 t last year)"
-  ) +
-  geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
-  scale_color_brewer(palette ="Set2")
-# TODO: why does SBT1 do lm(I_hist ~ ind)) not in log space! Units!?
 ```
 
 ## MODEL-BASED MANAGEMENT PROCEDURES

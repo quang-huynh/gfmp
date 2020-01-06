@@ -9,8 +9,7 @@ CC80, "Constant catch"
 CC70, "Constant catch"
 CC60, "Constant catch"
 
-.Iratio6, "Index ratio"
-.Iratio8, "Index ratio"
+.Iratio2, "Index ratio"
 
 .GB_slope6_0.66, "Index slope"
 .GB_slope6_1, "Index slope"
@@ -35,10 +34,9 @@ CC60, "Constant catch"
 .Itarget2, "Index target"
 .Itarget3, "Index target"
 .Itarget4, "Index target"
+.Itarget5, "Index target"
 
 .ITM_hist, "Index target"
-
-.SBT1_log, "Index target"
 
 .SP4010_prior, "Surplus production"
 .SP6040_prior, "Surplus production"
