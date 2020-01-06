@@ -6,7 +6,7 @@ author: |
   C.J. Grandin^1^,
   E.A. Keppel^1^,
   ...
-author_list: "Anderson, S.C., Forrest, R.E., Grandin, C.J., Keppel, E.A., Kronlund, A.R., ..."
+author_list: "Anderson, S.C., Forrest, R.E., Grandin, C.J., Keppel, E.A., ..."
 address: |
   ^1^Pacific Biological Station\
      Fisheries and Oceans Canada, 3190 Hammond Bay Road\

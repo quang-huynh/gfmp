@@ -1,6 +1,6 @@
 # BEST PRACTICES FOR IMPLEMENTING A MANAGEMENT PROCEDURE APPROACH
 
-A critical first step in any decision-making processes is defining the decision context [@gregory2012]. This is particularly important in complex decision-making environments such as MSE, where it is necessary to clarify the decision that needs to be made and, importantly, the planned approach for reaching a decision. Some key questions to be answered at this stage are provided under Step 1 below. @punt2016 reviewed best practices for MSE and identified five key steps in the process (described under Steps 2--6 below). In large part, DLMtool has been designed to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018].
+A critical first step in any decision-making processes is defining the decision context [@gregory2012]. This is particularly important in complex decision-making environments such as MSE, where it is necessary to clarify the decision that needs to be made and, importantly, the planned approach for reaching a decision (see Step 1 below). @punt2016 reviewed best practices for MSE and identified five key steps in the process (described under Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018].
 
 (ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018.
 
@@ -8,9 +8,10 @@ A critical first step in any decision-making processes is defining the decision 
 knitr::include_graphics(here::here("report/figure/mse-chart.pdf"))
 ```
 
-Importantly, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics and selection of MPs [e.g., @cox2008a].
+<!--Importantly, when an MSE approach is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selection of MPs [e.g., @cox2008a].-->
 
-<!-- TODO: figure out how to cite the landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region.) -->
+<!-- NOTE (RF): I commented the above paragraph out, it interrupts the flow and should be captured in the steps anyway. I think we need a "roles and responsibilities" heading. However, we  somewhere need to state that this report represents the elements of the framework as tested by Science but will require engagement when implemented in providing advice for specific stocks, as we haven't done a full engagement process. I think in the discussion.  -->
+
 
 ## STEP 1. DEFINE THE DECISION CONTEXT
 
@@ -22,13 +23,15 @@ Key questions to guide defining the decision context for MSE include:
 
 * What are the boundaries on the project and decision?
 
-* What are specific roles and responsibilities of those involved, who may include science, management, First Nations, industry, academia, and NGOs? 
+* What are specific roles and responsibilities of parties involved. Parties may include science, management, First Nations, industry, academia, or non-governmental organizations (NGOs).
 
-* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there is large conflict in performance against objectives.
+* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance against objectives.
+
+<!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
 
 ## STEP 2. SELECTION OF OBJECTIVES AND PERFORMANCE METRICS
 
-Before running any MSE analyses, clear objectives and the performance metrics that measure them must be identified. Ideally, these should be developed with the participation of decision-makers, stakeholders, and other interested parties. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., the probability that the stock size is below the LRP is less than 5% over 50 years). Since the underlying system represented by the OM is known exactly, a wide range of biological and economic metrics can be calculated [@carruthers2018]. However, having too many performance metrics can make the final decision process complex and performance metrics should be chosen so they can be understood by decision-makers and participants [@punt2016].
+Clear objectives and the performance metrics that measure them must be identified. Ideally, these should be developed with the participation of decision-makers, stakeholders, and other interested parties. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., the probability that the stock size is below the LRP is less than 5% over 50 years). Since the underlying system represented by the OM is known exactly, a wide range of biological and economic metrics can be calculated [@carruthers2018]. However, having too many performance metrics can make the final decision process complex and performance metrics should be chosen so they can be understood by decision-makers and participants [@punt2016].
 
 ## STEP 3. SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS
 
