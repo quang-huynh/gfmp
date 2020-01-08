@@ -238,8 +238,8 @@ Important to include reference MPs to bound the range of expected performance un
 
 - no feedback!
 - often fine for short-term projections
-- longterm biomass will go towards equilibrium, which may be far lower (e.g. 0) or higher than desired
-- mostly as a point of reference
+- longterm biomass will go towards equilibrium, which may be far lower (e.g. effectively 0) or higher than desired
+- mostly included as a point of reference
 
 **Index-ratio MPs**
 
@@ -268,7 +268,7 @@ Important to include reference MPs to bound the range of expected performance un
 
 Thoughts:
 
-- MP development a rich of research and it is probably just in its infancy
+- MP development a rich area of research and is probably just in its infancy
 - Beyond some minor adjustments to existing MPs, MP development is not the point of this report
 - More MPs may be developed as part of the application of this framework (and are likely to be developed elsewhere in the literature) and could be included in the future
 - No reason why an MP couldn't combine multiple aspects of the above, although there are advantages to simple and easy to understand MPs
