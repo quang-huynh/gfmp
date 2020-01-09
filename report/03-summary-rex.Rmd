@@ -1,8 +1,10 @@
 \clearpage
 
+
+
 # REX SOLE CASE STUDY
 
-# BACKGROUND
+## BACKGROUND
 Rex Sole (*Glyptocephalus zachirus*) occurs from southern California to the
 Bering Sea, and is generally distributed throughout coastal British Columbia.
 It has been caught in BC at depths between 20 m and greater than 1000 m, 
