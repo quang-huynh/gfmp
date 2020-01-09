@@ -2,14 +2,13 @@
 
 # REX SOLE CASE STUDY
 
-# BACKGROUND
-# Intro
+## BACKGROUND
 Rex Sole (*Glyptocephalus zachirus*) occurs from central Baja California to the
 western Bering Sea, and is generally distributed throughout coastal British 
 Columbia (BC). It has been caught in BC at depths between 20 m and greater than 
 1000 m, with most captured between 75 m and 450 m. 
 
-# Species Biology
+## Species Biology
 Rex sole have been caught in 
 BC waters as large as 58 cm and up to 1.44 kg. The only aged rex sole from BC are
 those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in
@@ -24,7 +23,7 @@ Maturity
 <!-- natural mortality used in GOA assessment 0.17-->
 
 
-# History of fishery
+## History of fishery
 Rex sole is a commonly caught
 flatfish species in BC groundfish bottom trawl surveys and although it is
 commonly caught in the commercial mixed-species bottom trawl fishery, there is
@@ -34,11 +33,11 @@ and 2003 but rex sole has never been formally assessed in BC. Commercial and
 fishery data (catch, lengths, weights, ages, maturity) are available in DFO 
 databases for analysis. 
 
-# History of assessment/analytical methods
+## History of assessment/analytical methods
 
 
 
-# Data sources
+## Data sources
 
 
 <!-- information from Hart, Mecklenburg and DFO databases-->
@@ -49,7 +48,7 @@ have also been capturing and collecting data on rex sole since 2003.
 The IVQ system initiated in 1997 referred to above applies to all species 
 caught in the trawl fishery, including rex sole.
 
-# US 
+## US 
 In the US, rex sole is considered as three separate stocks: the west
 coast stock from Washington to California, Gulf of Alaska stock (GOA) and the
 Bering Sea stock. It is caught in a directed fishery using bottom trawl gear, 

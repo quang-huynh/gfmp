@@ -2,13 +2,12 @@
 
 
 ## BACKGROUND
-## Intro
 Shortraker rockfish (*Sebastes borealis*) occurs throughout the North Pacific 
 from Japan, the Okhotsk Sea, and southeastern Kamchatka to the Bering Sea and
 Aleutian Islands and south to California [@love2002]. It is found has been caught in British Columbia
 (BC) at depths between 20 m and 1300 m, with most captured between 200 m and 600 m. 
 
-# Species Biology
+## Species Biology
 Shortraker can grow as large as 120 cm and up to 30 kg [@love2002], and has been measured in 
 BC waters as large as 108 cm and up to 21.7 kg. The oldest Shortraker aged in BC
 was a female caught in a trawl survey on the West Coast of Haida Gwaii in 1997
@@ -24,7 +23,7 @@ Size at maturity - 44.9 (mcdermott 1994, all US areas), 49.9 (Conrath 2017, GOA)
 
 <!-- maturity & natural mortality - see us assessments -->
 
-# History of fishery
+## History of fishery
 Shortraker rockfish is part of a group of slope rockfish (Pacific ocean perch,
 yellowmouth rockfish, redstripe rockfish, rougheye rockfish, shortspine/
 longspine thornyheads and shortraker rockfish) and represents a small portion 
@@ -39,7 +38,7 @@ individual vessel quotas (IVQs), where individual vessels were allocated a
 proportion of the total allowable catch based on vessel length and catch in 
 previous years [@schnute1999].
 
-# History of assessment/analytical methods
+## History of assessment/analytical methods
 Shortraker was last assessed as part of the slope rockfish assemblage in 
 1998 {@Schnute1999a} and updated in 1999 [@Schnute1999b]. 
 The seven slope rockfish species were managed within six major
@@ -76,7 +75,7 @@ and line sectors. These survey and observer data are available to provide
 important time-series and biological data for stock assessment of a broad range 
 of BC groundfish species.
 
-# Data sources
+## Data sources
 Commercial and research catch, effort, and biological data are archived by the Groundfish Data Unit (Fisheries and Oceans Canada, Science Branch, Pacific Region) and housed in a number of relational databases.  Historical commercial catch and effort data from 1954 – 2006/2007 are housed in GFCatch, PacHarvTrawl, PacHarvHL, and PacHarvSable depending on the fishery and time period.  Modern (2006/2007 to present) commercial catch data are housed in GFFOS, a groundfish-specific “view” of the Fishery Operations System (FOS) database (Fisheries and Oceans Canada, Fisheries and Aquaculture Management, Pacific Region).  
 
 In each commercial database there is an
@@ -100,7 +99,7 @@ are housed in GFBio, the Groundfish Biological Samples database.
 assessment done because (someone, industry? ) didn't think we had enough data 
 if CPUE couldn't be used?-->
 
-# US 
+## US 
 In the US, shortraker rockfish is important (or moderately important) to
 commercial trawl and longline fisheries with most of the species occurring in 
 Alaska and some occurring south of BC as far as Point Conception, California.
@@ -111,7 +110,7 @@ model.
 
 
 
-# Table of changes over time? 
+## Table of changes over time? 
 <!-- see Schnute 1999 for table of slope rf management changes up to 1999-->
 
 
