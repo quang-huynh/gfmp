@@ -1,0 +1,62 @@
+\clearpage
+
+# REX SOLE CASE STUDY
+
+# BACKGROUND
+# Intro
+Rex Sole (*Glyptocephalus zachirus*) occurs from central Baja California to the
+western Bering Sea, and is generally distributed throughout coastal British 
+Columbia (BC). It has been caught in BC at depths between 20 m and greater than 
+1000 m, with most captured between 75 m and 450 m. 
+
+# Species Biology
+Rex sole have been caught in 
+BC waters as large as 58 cm and up to 1.44 kg. The only aged rex sole from BC are
+those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in
+1998. The oldest rex sole aged from BC was a 34 cm female aged at 15 years,
+though individuals have been caught up to length 58 cm. RThis species has been
+aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Over
+Additional otoliths have been collected on BC surveys from 2000-present which 
+have yet to be aged. 
+
+Mortality
+Maturity
+<!-- natural mortality used in GOA assessment 0.17-->
+
+
+# History of fishery
+Rex sole is a commonly caught
+flatfish species in BC groundfish bottom trawl surveys and although it is
+commonly caught in the commercial mixed-species bottom trawl fishery, there is
+no directed fishery or currently assigned quota. Biomass of rex sole in Hecate 
+Strait was estimated in 2012 using research survey data collected between 1984 
+and 2003 but rex sole has never been formally assessed in BC. Commercial and
+fishery data (catch, lengths, weights, ages, maturity) are available in DFO 
+databases for analysis. 
+
+# History of assessment/analytical methods
+
+
+
+# Data sources
+
+
+<!-- information from Hart, Mecklenburg and DFO databases-->
+
+The fishery-independent trawl surveys mentioned above for shortraker rockfish
+have also been capturing and collecting data on rex sole since 2003.
+
+The IVQ system initiated in 1997 referred to above applies to all species 
+caught in the trawl fishery, including rex sole.
+
+# US 
+In the US, rex sole is considered as three separate stocks: the west
+coast stock from Washington to California, Gulf of Alaska stock (GOA) and the
+Bering Sea stock. It is caught in a directed fishery using bottom trawl gear, 
+and is assessed in the GOA every four years using an age-structured model (last fully 
+assessed in 2017 {@mcgilliard2017}, 
+
+
+GOA rex sole biology was examined in 2005, and west coast stock
+was examined in 1977 in Oregon. Spawning season was determined to run from
+January to June in Oregon, and October (possibly earlier) to May in the GOA.

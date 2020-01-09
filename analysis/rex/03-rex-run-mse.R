@@ -217,3 +217,40 @@ make_projection_plot(base_om, MPs = rex_not_satisficed,
   mptype = "NOT-satisficed", height = 27)
 make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
   show_contours = FALSE)
+
+# ----------------------------------------
+
+.d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
+.d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
+.d <- filter(.d2, real_year >= 2019)
+
+m <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "m") %>%
+  rename(b_m = B_BMSY, f_m = F_FMSY)
+l <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "l") %>%
+  rename(b_l = B_BMSY, f_l = F_FMSY)
+u <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "u") %>%
+  rename(b_u = B_BMSY, f_u = F_FMSY)
+dd <- left_join(m, l) %>% left_join(u)
+
+poly_df <- split(dd, paste(dd$mp_name, dd$real_year)) %>%
+  map_df(~ data.frame(
+    x = c(.$b_m, .$b_l, .$b_m, .$b_u, .$b_m),
+    y = c(.$f_l, .$f_m, .$f_u, .$f_m, .$f_l),
+    real_year = unique(.$real_year),
+    mp_name = unique(.$mp_name), stringsAsFactors = FALSE)
+  )
+
+dd %>%
+  mutate(b_rad = abs(b_u - b_l)/2) %>%
+  mutate(f_rad = abs(f_u - f_l)/2) %>%
+  ggplot(aes(b_m, f_m, colour = real_year)) +
+  geom_polygon(aes(x = x, y = y, fill = real_year, group = real_year),
+    data = poly_df, alpha = 0.08, inherit.aes = FALSE, colour = NA) +
+  geom_path(lwd = 1.5, lineend = "round", linejoin = "bevel") +
+  scale_color_viridis_c(option = "C") +
+  scale_fill_viridis_c(option = "C") +
+  gfplot::theme_pbs() + facet_wrap(~mp_name) +
+  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) +
+  geom_vline(xintercept = c(0.4, 0.8), lty = 2, alpha = 0.2, lwd = 0.5) +
+  geom_hline(yintercept = 1, lty = 2, alpha = 0.2, lwd = 0.5) +
+  labs(fill = "Year", colour = "Year", x = expression(B/B[MSY]), y = expression(F/F[MSY]))
