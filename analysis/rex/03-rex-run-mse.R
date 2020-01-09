@@ -221,7 +221,7 @@ make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
 # ----------------------------------------
 
 .d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
-.d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.5, 0.5))
+.d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
 .d <- filter(.d2, real_year >= 2019)
 
 m <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "m") %>%
