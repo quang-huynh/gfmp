@@ -40,7 +40,7 @@ previous years [@schnute1999].
 
 ## History of assessment/analytical methods
 Shortraker was last assessed as part of the slope rockfish assemblage in 
-1998 {@Schnute1999a} and updated in 1999 [@Schnute1999b]. 
+1998 {@schnute1999a} and updated in 1999 [@schnute1999b]. 
 The seven slope rockfish species were managed within six major
 areas (3C, 3D,AS, 5CD, 5EN, 5ES) for a total of 42 species-area combinations,
 called \emph{assessment units}. A detailed catch-at-age analysis was conducted
@@ -51,7 +51,7 @@ estimated from historical fisheries data, research surveys, and knowledge from
 expert fishermen. 
 
 Slope rockfish assessments suffered from the lack of reliable time 
-series on fishery catch [@Schnute1999a, @Richards1998]. The port monitoring 
+series on fishery catch [@schnute1999a, @richards1998]. The port monitoring 
 program initiated in 1994 and the at-sea observer program initiated in 0ct 1995 led to 
 major improvements in data quality. In the 1998 assessment report, it was noted
 that depth was an important factor influencing trawl catch per unit effort (CPUE), and therefore all analyses
