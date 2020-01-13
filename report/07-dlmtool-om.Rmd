@@ -1,4 +1,4 @@
-# THE DLMTOOL OPERATING MODEL {#sec:dlmtool-om}
+# DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
 <!-- *A summary of the important features of the DLMtool operating model* -->
 
@@ -8,7 +8,7 @@
 
 The full operating model with many parameters varying by year, multiple subareas, and additional possible parameterizations is described in the appendices of @carruthers2018. Here we summarize a simplified version that represents a model sufficiently complex to represent most base models in the framework. In particular, we don't express parameters as varying through time where we have recommended that they be treated as fixed through time as provisional starting points. Wherever possible, we follow the notation conventions used in @carruthers2018 for consistency.
 
-# POPULATION DYNAMICS MODEL
+## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Last historical year, the ``current'' year is denoted by $c$. -->
 
@@ -109,7 +109,7 @@ $$
 
 where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term.
 
-# FISHING DYNAMICS
+## FISHING DYNAMICS {#sec:dlmtool-fishing-dynamics}
 
 TODO: reword some of this!
 

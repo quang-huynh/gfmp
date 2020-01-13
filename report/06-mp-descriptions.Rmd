@@ -47,7 +47,7 @@ We note that the notation between MPs is not always consistent (e.g., different 
 
 We have modified many standard MPs to discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will likely be based. We did note these MPs with a `.` in front of them. For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data. We do not make this distinction in the descriptions below, but use the dot notation throughout the case studies.
 
-## CONSTANT-CATCH MANAGEMENT PROCEDURES
+## CONSTANT-CATCH MANAGEMENT PROCEDURES {#sec:mp-cc-overall}
 
 <!-- TODO: or just make it consistent! slope, tuning parameters, C or TAC, index symbol...-->
 
@@ -60,7 +60,7 @@ csasdown::csas_table(mps)
 
 MPs in this category set a constant catch, often based on some his average historical catch. This type of MP is static and therefore does not incorporate feedback between subsequent stock status and MP recommendations. Nonetheless, these MPs are simple, may represent only a minor modification to the status quo, and in some circumstances, depending on average historical catches, may prove to satisfy performance metrics.
 
-### CC_hist and CC_hist20: Average historical catch
+### CC_hist and CC_hist20: Average historical catch {#sec:mp-cc-hist}
 
 This is a simple management procedure in which the mean historical catch is calculated and used to set a constant TAC (with "CC" indicating constant catch). The TAC in year $y$ is calculated as:
 
@@ -78,7 +78,7 @@ For specific stocks, analysts might consider other starting years that are relev
 
 <!-- TODO: write AvC_1997 -->
 
-### CC: Constant catch
+### CC: Constant catch {#sec:mp-cc}
 
 In this MP, TAC is calculated as some fraction of the average historical catch over the last 5 years [@geromont2015]:
 
@@ -94,11 +94,11 @@ where $x$ lies between 0 and 1. The TAC is constant for all future projections. 
 - CC70: $\alpha = 0.3$
 - CC60: $\alpha = 0.4$
 
-## INDEX-SLOPE AND INDEX-RATIO MANAGEMENT PROCEDURES
+## INDEX-SLOPE AND INDEX-RATIO MANAGEMENT PROCEDURES {#sec:index-slope-ratio}
 
 Management procedures in this category make a TAC recommendation based on a change in a relative abundance index over time. The term "slope" is used since many MPs in this category fit a linear regression to the relative abundance index (usually in log space) and make a recommendation that generally decreases the TAC if the slope is negative and increases the TAC if the slope is positive. Some of the MPs are based on ratios of relative abundance in certain years.
 
-### Iratio: Mean index ratio
+### Iratio: Mean index ratio {#sec:mp-iratio}
 
 This MP adjusts the TAC by a ratio, $\alpha$, with the numerator being the mean index in the most recent two years of the time series and the denominator being the mean index in the three years prior to those in the numerator. This MP is based on Method 3.2 used by ICES for Data-Limited Stocks [@ices2012; @jardim2015]. The TAC is calculated as:
 
@@ -113,7 +113,7 @@ where $C_{y-1}$ is the catch from the previous year and $\alpha$ is the ratio of
 
 <!-- TODO: make a consistent decision whether we use C_y-1 or TAC_y-1 -->
 
-### GB_slope: Geromont and Butterworth index slope
+### GB_slope: Geromont and Butterworth index slope {#sec:mp-gb-slope}
 
 This MP adjusts TAC based on previous catch and the trend in a relative abundance index to aim for relatively stable catch rates [@geromont2015] (Fig. \@ref(fig:mp-gbslope-demo)). The TAC is calculated as:
 
@@ -159,7 +159,7 @@ pars %>%
   scale_color_brewer(palette ="Set2")
 ```
 
-### Islope: Index slope tracking
+### Islope: Index slope tracking {#sec:mp-islope}
 
 This management procedure incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)). The MP is similar to GB_slope with the addition of a parameter that determines the TAC in the first projection year and different choices of the gain/smoothing parameter. The TAC is calculated as:
 
@@ -216,7 +216,7 @@ pars %>%
   scale_x_continuous(breaks = seq(-0.75, 0.75, 0.25))
 ```
 
-### ICI: Index confidence interval
+### ICI: Index confidence interval {#sec:mp-ici}
 
 This MP adjusts the TAC based on the value of the relative abundance index in the current year divided by the relative abundance index mean and standard error  [@jardim2015] (Fig. \@ref(fig:mp-ici-demo)). The TAC is calculated as:
 
@@ -257,8 +257,6 @@ Then, for both:
 - If $I_y$ is between or equal to $\textrm{CI}_L$ and $\textrm{CI}_H$, maintain the same TAC as last year.
 
 The values of 1.96 and 0.44 are derived from the normal distribution in which approximately 95% of the probability density is between $\pm 1.96 \sigma$ of the mean and approximately 35% of the probability density is between $\pm 0.44 \sigma$ of the mean. ICI2 is less biologically precautionary than ICI: it lets the index value fall further from the mean before lowering the TAC and increases the TAC to a greater extent given an increase in the index value.
-
-<!-- TODO: make sure this and others work if the last survey index value was NA -->
 
 ```{r mp-ici-demo, fig.cap="Illustration of the ICI and ICI2 MPs across different values of the current relative abundance index value compared to the long-term mean and various standard errors on that long-term mean."}
 f_ici <- function(tac_prev, index_value, mu, sigma) {
@@ -308,7 +306,7 @@ pars %>%
   scale_color_brewer(palette ="Set2")
 ```
 
-### IDX: Index-based MP from Cox et al. (In press)
+### IDX: Index-based MP from Cox et al. (In press) {#sec:mp-idx}
 
 This MP was used in the Cox et al. (In press) rebuilding plan for outside Yelloweye Rockfish in BC (Fig. \@ref(fig:mp-idx-demo)). The MP assigns TAC based on:
 
@@ -367,11 +365,11 @@ pars %>%
   scale_color_brewer(palette ="Set2")
 ```
 
-## INDEX-TARGET MANAGEMENT PROCEDURES
+## INDEX-TARGET MANAGEMENT PROCEDURES {#sec:mp-index-target}
 
 MPs in this category aim to maintain reference relative abundance index. Typically this reference level is based on an assumption of what the index would be if the stock was operating at $B_\textrm{MSY}$. Since it will be challenging for us to apply this to real data in a manner consistent with the simulation, we instead propose modifying this MP to set the target index level to a historical index level likely chosen on a stock by stock basis. Provisionally, we set it to the mean index value from the 10 years prior to the projection period. Analysts may choose to adjust this reference period if needed on a stock-by-stock basis.
 
-### IT: Iterative index target
+### IT: Iterative index target {#sec:mp-it}
 
 These are index target MPs where the TAC is modified according to current index levels, which is calculated as the mean index over the last 5 years, relative to a target level. Traditionally this target level is set to the index value at MSY subject to observation error. As noted above, we have modified this to set the target level to the average index value from the 10 years prior to the projection period.
 
@@ -392,7 +390,7 @@ We denote our historical variants "IT5_hist" and "IT10_hist".
 
 <!-- TODO: implement this historical reference version -->
 
-### Itarget: Incremental index target
+### Itarget: Incremental index target {#sec:mp-itarget}
 
 A set of management procedures that incrementally adjust the TAC from a reference level that is a fraction of mean recent catches to a target relative abundance index.
 
@@ -528,7 +526,7 @@ pars %>%
 ```
 
 
-### ITM: Index target based on natural mortality rate
+### ITM: Index target based on natural mortality rate {#sec:mp-itm}
 
 An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over some number of years determined by natural mortality $M$ relative to a target level (Figs \@ref(fig:mp-itm-demo)).
 
@@ -591,9 +589,9 @@ g2 <- pars %>%
 cowplot::plot_grid(g1, g2, labels = "auto")
 ```
 
-## MODEL-BASED MANAGEMENT PROCEDURES
+## MODEL-BASED MANAGEMENT PROCEDURES {#sec:mp-model-based}
 
-### SURPLUS PRODUCTION MODEL
+### SURPLUS PRODUCTION MODEL {#sec:mp-sp}
 
 In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool (REF) and based on Fletcher (1978). Here we include a a modified version of the model description from the package vignette for completeness.
 
@@ -715,5 +713,3 @@ g3 <- make_hcr_fig(filter(pars, type == "HCR-6040"), expression(Estimated~B/B[MS
 
 cowplot::plot_grid(g1, g2, g3, nrow = 1)
 ```
-
-<!-- TODO: impliment SP HCR8040 -->
