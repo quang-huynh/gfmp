@@ -321,7 +321,7 @@ This MP was used in the Cox et al. (In press) rebuilding plan for outside Yellow
 \end{cases}
 \end{equation}
 
-where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and \Delta I_y is the current index value divided by the last observed index value (every two years for a biennial survey). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and $\Delta I_y$ is the current index value divided by the last observed index value (every two years for a biennial survey). We set $\delta_\textrm{min} = -0.50$ as in Cox et al. (In press), but this could be tuned for individual stocks. The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
 This MP can be additionally smoothed:
 
@@ -418,6 +418,18 @@ There are four index/CPUE target MPs proposed by @geromont2015 (Figure \@ref(fig
 - Itarget4: Most biological precautionary, with $x = 0.3$ and $I_\textrm{multi} = 2.5$
 
 ```{r mp-itarget-demo, fig.cap="Illustration of the Itarget MP."}
+f <- function(avg_catch_hist, Irecent, Iave, xx, Imulti, ...) {
+  TACstar <- (1 - xx) * avg_catch_hist
+  Itarget <- Iave * Imulti
+  I0 <- 0.8 * Iave
+  if (Irecent >= I0) {
+    TAC <- 0.5 * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
+  } else {
+    TAC <- 0.5 * TACstar * (Irecent/I0)^2
+  }
+  if (TAC < 0) tac <- 0
+  TAC
+}
 pars1 <- expand.grid(
   avg_catch_hist = 100,
   Irecent = seq(0.1, 3, length.out = 300),
