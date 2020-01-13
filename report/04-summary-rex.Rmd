@@ -53,7 +53,7 @@ In the US, rex sole is considered as three separate stocks: the west
 coast stock from Washington to California, Gulf of Alaska stock (GOA) and the
 Bering Sea stock. It is caught in a directed fishery using bottom trawl gear, 
 and is assessed in the GOA every four years using an age-structured model (last fully 
-assessed in 2017 {@mcgilliard2017}, 
+assessed in 2017 [@mcgilliard2017], 
 
 
 GOA rex sole biology was examined in 2005, and west coast stock
