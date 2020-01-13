@@ -13,7 +13,7 @@ The majority of fish stocks encountered by the integrated groundfish fishery are
 
 The Canadian Sustainable Fisheries Framework (SFF) lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP) (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the need to take into account risk and uncertainty when developing BRPs and determinining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
-(ref:fig-pa) Illustration of DFO's PA Framework [@dfo2009].
+(ref:fig-pa) Illustration of DFO's PA Framework. Based on @dfo2009.
 
 ```{r pa-illustration, fig.cap="(ref:fig-pa)", out.width="3.8in"}
 knitr::include_graphics(here::here("images/pa-framework.png"))
