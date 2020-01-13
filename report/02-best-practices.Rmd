@@ -2,9 +2,9 @@
 
 @punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018]. We also identify a critical first step (See Step 1 below), defining the decision context [@gregory2012 and Cox and Benson (unpublished)].
 
-(ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018.
+(ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
 
-```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="6.3in"}
+```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/mse-chart.pdf"))
 ```
 
