@@ -4,7 +4,7 @@ library(dplyr)
 library(gfplot)
 library(gfdata)
 library(gfutilities)
-library(pbs2dlm)
+library(gfdlm)
 library(readr)
 
 starting_year <- 1956
@@ -58,7 +58,7 @@ commcpuepc <- read_csv(here::here("sra", "Pcod_CPUE.csv"))
 
 #Survey catch at age - combined HS and QCS synoptic surveys
 caapc <- dplyr::filter(dpc$survey_samples) %>%
-  pbs2dlm::tidy_caa(yrs = all_years)
+  gfdlm::tidy_caa(yrs = all_years)
 caapc <- caapc[1, , ]
 colnames(caapc) <- 1:ncol(caapc)
 rownames(caapc) <- all_years
@@ -67,7 +67,7 @@ rownames(caapc) <- all_years
 #Survey CAL by survey
 #Hecate Strait Multspecies Assemblage
 calpc_hsmas <- dplyr::filter(dpc$survey_samples, survey_abbrev=="HS MSA") %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5)
 (length_bins <- get_cal_bins(calpc_hsmas, length_bin_interval = 5))
 (calpc_hsmas <- calpc_hsmas[1, , ])
 colnames(calpc_hsmas) <- length_bins
@@ -75,7 +75,7 @@ rownames(calpc_hsmas) <- all_years
 
 #Hecate Strait Synoptic
 calpc_hss <- dplyr::filter(dpc$survey_samples, survey_abbrev=="SYN HS") %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5)
 (length_bins <- get_cal_bins(calpc_hss, length_bin_interval = 5))
 (calpc_hss <- calpc_hss[1, , ])
 colnames(calpc_hss) <- length_bins
@@ -83,7 +83,7 @@ rownames(calpc_hss) <- all_years
 
 #Queen Charlotte Sound Synoptic
 calpc_qcss <- dplyr::filter(dpc$survey_samples, survey_abbrev=="SYN QCS") %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5)
 (length_bins <- get_cal_bins(calpc_qcss, length_bin_interval = 5))
 (calpc_qcss <- calpc_qcss[1, , ])
 colnames(calpc_qcss) <- length_bins
@@ -92,7 +92,7 @@ rownames(calpc_qcss) <- all_years
 #########################################################
 #Commercial catch at length
 comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
 (length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
 (comcalpc <- comcalpc[1, , ])
 colnames(comcalpc) <- length_bins
@@ -100,7 +100,7 @@ rownames(comcalpc) <- all_years
 
 #Mean length in commercial data
 mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_mean_length(unsorted_only=FALSE) %>%
+  gfdlm::tidy_mean_length(unsorted_only=FALSE) %>%
   dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year")
   as.matrix(mean_lengthpc)

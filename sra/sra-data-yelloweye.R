@@ -68,8 +68,8 @@ if (!file.exists(species_file) && !file.exists(species_file_privacy)) {
 #
 # make_raker_cal <- function(dat, survey, length_bin = 5) {
 #   dat <- filter(dat, survey_abbrev == survey)
-#   cal <- pbs2dlm::tidy_cal(dat, yrs = all_years, interval = length_bin)
-#   length_bins <- pbs2dlm::get_cal_bins(cal, length_bin_interval = length_bin)
+#   cal <- gfdlm::tidy_cal(dat, yrs = all_years, interval = length_bin)
+#   length_bins <- gfdlm::get_cal_bins(cal, length_bin_interval = length_bin)
 #   list(cal = cal[1, , ], length_bins = length_bins)
 # }
 #
@@ -78,15 +78,15 @@ if (!file.exists(species_file) && !file.exists(species_file_privacy)) {
 # cal_wcvi <- make_raker_cal(d_short$survey_samples, "SYN WCVI")
 #
 # caa_wchg <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
-#   pbs2dlm::tidy_caa(yrs = all_years)
+#   gfdlm::tidy_caa(yrs = all_years)
 # caa_wchg[1, , ]
 #
 # caa_qcs <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN QCS") %>%
-#   pbs2dlm::tidy_caa(yrs = all_years)
+#   gfdlm::tidy_caa(yrs = all_years)
 # caa_qcs[1, , ]
 #
 # mean_length <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
-#   pbs2dlm::tidy_mean_length() %>%
+#   gfdlm::tidy_mean_length() %>%
 #   dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
 #   right_join(tibble(year = all_years), by = "year") %>%
 #   pull(mean_length)

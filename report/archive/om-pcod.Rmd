@@ -234,8 +234,8 @@ round(stock_pc@LenCV, 2)
 
 ```{r fit-maturity-pc, echo = knitr_echo, out.width="4in", fig.width=6}
 m_mat <- gfplot::fit_mat_ogive(dpc$survey_samples, type = "length")
-mat_perc <- pbs2dlm:::extract_maturity_perc(coef(m_mat$model))
-se_l50 <- pbs2dlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
+mat_perc <- gfdlm:::extract_maturity_perc(coef(m_mat$model))
+se_l50 <- gfdlm:::delta_method(~ -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))
 gfplot::plot_mat_ogive(m_mat)
 ```
@@ -257,7 +257,7 @@ Similarly we will calculate the increment in length from 50% to 95% maturity.
 
 ```{r desc-stock-l50_95-pc, results = knitr_results, echo = knitr_echo}
 # TODO: Yikes! Need to check this delta method implementation.
-se_l50_95m <- pbs2dlm:::delta_method(
+se_l50_95m <- gfdlm:::delta_method(
   ~ -(log((1/0.95) - 1) + x1 + x3) / (x2 + x4) -
     -(log((1/0.5) - 1) + x1 + x3) / (x2 + x4),
     mean = coef(m_mat$model), cov = vcov(m_mat$model))

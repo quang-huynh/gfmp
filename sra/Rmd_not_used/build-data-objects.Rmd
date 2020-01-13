@@ -24,24 +24,24 @@ all_years <- seq(starting_year, ending_year)
 
 #First of all get generic survey samples ... don't break out by survey
 calpc <- dplyr::filter(dpc$survey_samples) %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5)
 (length_bins <- get_cal_bins(calpc, length_bin_interval = 5))
 (calpc <- calpc[1, , ])
 
 #Catch at age
 caapc <- dplyr::filter(dpc$survey_samples) %>%
-  pbs2dlm::tidy_caa(yrs = all_years)
+  gfdlm::tidy_caa(yrs = all_years)
 caapc[1, , ]
 
 #Commercial catch at length
 comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
+  gfdlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
 (length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
 (comcalpc <- comcalpc[1, , ])
 
 #Mean length in commercial data
 mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
-  pbs2dlm::tidy_mean_length(unsorted_only=FALSE) %>%
+  gfdlm::tidy_mean_length(unsorted_only=FALSE) %>%
   dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year")
 #as.data.frame(mean_lengthpc)
