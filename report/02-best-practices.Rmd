@@ -110,11 +110,9 @@ We propose the following provisional tactical conservation and fisheries objecti
 
 3. Avoid overfishing with some probability
 
-4. Given the conservation objectives are achieved, maximize short- and
-  long-term fisheries yield.
+4. Given the conservation objectives are achieved, maximize short- and long-term fisheries yield.
   
-5. Given the conservation objectives are achieved, minimize variability
-  in fisheries yield from year to year.
+5. Given the conservation objectives are achieved, minimize variability in fisheries yield from year to year.
   
 Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaing stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *SB*~MSY~ and USR = 0.8 *SB*~MSY~, suggested under the PA Framework [@dfo2009].
 
@@ -131,11 +129,11 @@ We propose the following provisional performance metrics, where MSY refers to ma
 5. LTY: Probability yield > 0.5 MSY (years 36--50)
 6. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
-LT P40 and LT P80 are conservation performance metrics measuring Objectives 1-2, respectively, measured over the long-term. PNOF ia a conservation performance metrics measuring Objective 3, measured over the whole projection period. LTY and STY  are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AAV is an economic metric, representing Objective 5, measured over the whole projection period.
+LT P40 and LT P80 are conservation performance metrics measuring Objectives 1 and 2, measured over the long term. PNOF is a conservation performance metric measuring Objective 3, measured over the whole projection period. LTY and STY are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AAVY is an economic metric, representing Objective 5, measured over the whole projection period.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 
-We used the DLMtool software (@carruthers2018) to develop OMs for Shortraker Rockfish and Rex Sole. Dlmtool OMs are organised into four main components representing a real fished system: 1. population dynamics of the fish stock (e.g., growth, recruitment, mortality); fishery dynamics (e.g., selectivity, spatial targeting); observation processes (e.g., bias and precision in survey indices); and management implementation (e.g., catch limit overages). Parameters representing processes under the four components are described in detail in Section \@ref(the-dlmtool-operating-model).
+We used the DLMtool software [@carruthers2018] to develop OMs for Shortraker Rockfish and Rex Sole. DLMtool OMs are organised into four main components representing a real fished system: 1. population dynamics of the fish stock (e.g., growth, recruitment, mortality); fishery dynamics (e.g., selectivity, spatial targeting); observation processes (e.g., bias and precision in survey indices); and management implementation (e.g., catch limit overages). Parameters representing processes under the four components are described in detail in Section \@ref(sec:dlmtool-om).
 
 * We recommend dividing operating models into reference and robustness sets [@rademeyer2007].
 

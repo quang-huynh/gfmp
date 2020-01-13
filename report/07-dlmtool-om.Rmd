@@ -1,4 +1,4 @@
-# THE DLMTOOL OPERATING MODEL
+# THE DLMTOOL OPERATING MODEL {#sec:dlmtool-om}
 
 <!-- *A summary of the important features of the DLMtool operating model* -->
 
