@@ -10,9 +10,9 @@ rmd_files: ["index.Rmd",
             "07-dlmtool-om.Rmd",
             #"08-mp-screening.Rmd",
             "09-default-slots.Rmd",
-            # "10-om-rex.Rmd",
+             "10-om-rex.Rmd",
             #"11-mse-results-rex.Rmd",
-            # "12-om-shortraker.Rmd",
+             "12-om-shortraker.Rmd",
             # "13-mse-results-shortraker.Rmd",
             "99-references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]

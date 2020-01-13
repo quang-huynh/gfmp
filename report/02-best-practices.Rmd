@@ -129,19 +129,15 @@ LT P40 and LT P80 are conservation performance metrics measuring Objectives 1 an
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 
-We used the DLMtool software [@carruthers2018] to develop OMs for Shortraker Rockfish and Rex Sole. DLMtool OMs are organised into four main components representing a real fished system: 1. population dynamics of the fish stock (e.g., growth, recruitment, mortality); fishery dynamics (e.g., selectivity, spatial targeting); observation processes (e.g., bias and precision in survey indices); and management implementation (e.g., catch limit overages). Parameters representing processes under the four components are described in detail in Section \@ref(sec:dlmtool-om).
+We used the DLMtool software [@carruthers2018] to develop OMs for Shortraker Rockfish and Rex Sole. DLMtool OMs are organised into four main components representing a real fished system: 1. population dynamics of the fish stock (e.g., growth, recruitment, mortality); 2. fishery dynamics (e.g., selectivity, spatial targeting); 3. observation processes (e.g., bias and precision in survey indices); and 4. management implementation (e.g., percentage overages of catch limits). Parameters ("slots") representing processes under the four components are described in detail in Section \@ref(sec:dlmtool-om).
 
-* We recommend dividing operating models into reference and robustness sets [@rademeyer2007].
+DLMtool allows for incorporation of uncertainty in most OM parameters by specifying a distribution, typically a uniform distribution between two bounds. There can also be value in dividing the uncertainty into specific OMs to understand the applications of different scenarios.
 
-* DLMtool allows for incorporation of uncertainty in most OM parameters by specifying a distribution, typically a uniform distribution between two bounds.
+We developed **XX** OMs for each stock (Shortraker Rockfish and Rex Sole), dividing OMs into a reference set, representing key model uncertainties, and a robustness set, representing other structural uncertainties [@rademeyer2007].
 
-* There can also be value in dividing the uncertainty into specific OMs to understand the applications of different scenarios.
+Reference set uncertainties were selected based on key uncertainties identified in typical groundfish stock assessments, namely prior probability distributions used for natural mortality (*M*), steepness of the stock-recruit relationship (*h*) and initial depletion (i.e., depletion from unfished at the beginning of the projection period). The reference set of OMs are described in detail in Appendices \@ref(app:desc-om-sr) and \@ref(app:desc-om-rex) for Shortraker Rockfish and Rex Sole, respectively.
 
-The most important axes of uncertainty in reference sets that are likely across most stocks this framework will apply to include:
-
-* Natural mortality (M)
-* Steepness
-* Depletion
+DLMtool includes a very large number of parameters in the OM that can vary through time or be biased from one stochastic iteration to the next. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we fixed a number of parameters to be unbiased and fixed through time (Appendix \@ref(app:default-slots)). We suggest following this protocol for other stocks unless one or more of these slots represent axes of uncertainty that should be investigated for specific stocks.
 
 Candidates for robustness sets may include:
 
@@ -150,7 +146,6 @@ Candidates for robustness sets may include:
 * The effectiveness of or changes to closed areas such as Rockfish Conservation Areas (RCAs)
 * Implementation error (actual catches are above or below the TAC)
 
-DLMtool includes a very large number of parameters in the OM that can vary through time or be biased from one stochastic iteration to the next. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we propose fixing a number of parameters to be unbiased and fixed through time unless this is an axis of uncertainty that makes sense to explore for specific stock (Appendix \@ref(app:default-slots)).
 
 In the spirit of reproducible research and transparency, we suggest that the full specification of all parameters in the operating model be clearly documented in an implementation of the MP Framework. We demonstrate this in our case studies within this document (Appendix TODO and Appendix TODO).
 

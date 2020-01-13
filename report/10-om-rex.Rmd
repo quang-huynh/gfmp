@@ -1,4 +1,6 @@
-\clearpage
+\newpage
+
+# REX SOLE: OPERATING MODEL SPECIFICATION {#app:desc-om-rex}
 
 ```{r, echo=FALSE}
 library(here)
