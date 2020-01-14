@@ -209,9 +209,11 @@ For example, in the "Iratio" MP [@ices2012; @jardim2015], the mean survey index 
 This ratio is then multiplied by the previous year's catch to generate a catch recommendation.
 If the survey index has been trending up, then the catch recommendation will increase and vice versa. Model-based MPs, on the other hand, fit some statistical population model and apply a harvest control rule to turn the parameter estimates into a catch recommendation.
 
+In choosing from the available data- and model-based MPs, we excluded MPs based on the number of requirements that would rarely be met for our stocks. We excluded MPs that required knowledge of absolute abundance since there are unlikely to be cases where we have such knowledge in a data-limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age competition data are not available. We excluded MPs that required knowledge of depletion and steepness since these are likely to be major axes of uncertainty stocks for stocks this to which this framework will be applied. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
+
 ### Data-based MPs
 
-Data-based MPs can make use a variety of data types including catch, population indexes, fish lengths, and fish ages.
+Data-based MPs can make use of a variety of data types including catch, population indexes, fish lengths, and fish ages.
 Catches are available for all BC groundfish stocks with relative certainty since 1997 for BC trawl fisheries and 2008 for BC hook and line fisheries and so are a viable data type.
 Fisheries independent trawl and longline surveys have been conducted systematically since the early 2000s for BC groundfish and the population indexes derived from these data likely represent some of the most informative data for many data-limited groundfish stocks in BC.
 Fish lengths are collected on both surveys and commercial fishing trips for many species.
@@ -228,18 +230,18 @@ Importantly, these constant-catch do not incorporate feedback from the populatio
 These differ subtly but importantly from the index-ratio and index-slope MPs:
 index-ratio and index-slope MPs compare recent index values to a moving window of index values whereas index-target MPs try to maintain the population index at some fixed historical value.
 
-We tailored many of the available data-based MPs to suit the strengths and weaknesses of the BC groundfish data and the typical historical knowledge (Appendix \@ref(app:MPs)).
-For example, most of the available survey data for BC groundfish are collected biennially in any one location.
-Therefore, we modified many of the index-based MPs to more appropriately handle biennial data. 
+We tailored many of the available data-based MPs to suit BC groundfish stocks (Appendix \@ref(app:MPs)).
+For example, most of the available survey data for BC groundfish are collected biennially in any one spatial region.
+Therefore, we modified many of the index-based MPs to reflect this reality. 
 Typically, this involved adding variants of MPs that considered longer time windows when calculating averages or slopes to account for half the available data as one would have with an annual survey.
 In other cases, we added alternative versions of MPs that encompassed a wider range of control variables.
 For example, the Islope MPs [@geromont2015] as originally described and implement it in DLMtool implicitly set the catch recommendation in the first year to 60--80% of the mean catch from the recent five years (assuming a neutral survey index). Since we do not a priori expect BC groundfish stocks to be overfished, we adjusted this control parameter in our provisional MPs to range between 80--100% of recent catch.
 
 ### Model-based MPs
 
-In addition to the data-based MPs, we suggest a surplus production (SP) model-based MP be considered amongst candidate MPs.
-We provisionally include the SP model coded in the MSEtool R package (REF) and based on Fletcher (1978)(REF) (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest inclusion of both a Schaefer (REF) and Fox (REF) production curve since it is not clear until simulation tested which will generate better performance statistics for a given operating model.
-We suggest a weakly informative prior be set on TODO based on TODO and alternative priors may be represented as alternative MPs.
+In addition to the data-based MPs, we suggest a surplus production model be considered amongst candidate MPs.
+We provisionally include the surplus production model coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest inclusion of both a @schaefer1954 and @fox1970 production curve since it is not clear, until simulation tested, which will generate better performance statistics for a given stock.
+We suggest a weakly informative prior be set on the intrinsic greater population increase $r$ based on TODO. Alternative priors may be considered in alternative OMs.
 
 The SP model estimates must be paired with an HCR to form a complete management procedure.
 We provisionally suggest the following HCRs:
@@ -250,36 +252,34 @@ We provisionally suggest the following HCRs:
 
 * HCR-8040: Above 80% of estimated B/B~MSY~, fish at the calculated MSY; at 40% of estimated B/B~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on B~MSY~ whereas HCR-4010 is based on B~0~. This HCR creates operational control points (OCRs) that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework. We note, however, that an MP's HCR OCPs does not necessarily need to match the biological reference points (BRPs) to be consistent with the BRPs in the Sustainable Fisheries Framework. For example, a model may generate biased estimates of B/B~MSY~ and be better paired with OCRs that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
 
-* HCR-6040: A slightly less conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until B/B~MSY~ < 0.6.
-
-In choosing from the available data- and model-based MPs, we excluded MPs based on the number of requirements that would rarely be met for our stocks. We excluded MPs that required knowledge of absolute abundance since they are unlikely to be cases where we have such knowledge in a data-limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age competition data are not available. We excluded MPs that required knowledge of depletion and steepness since these are likely to be major axes of uncertainty stocks that the framework will be applied to. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data would require choosing a value of depletion and steepness, which we argue would be a hard choice to justify and would be challenging to incorporate our true levels of uncertainty about and levels of bias in these parameters.
+* HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until B/B~MSY~ < 0.6.
 
 ### Dealing with multiple survey indices within MPs
 
 DLMtool currently generates a single index of abundance for use in the data- or model-based MPs and the vast majority of published data-limited MPs are based on single indices of abundance. This presents a conundrum for groundfish stocks in the Pacific Region since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis alternating amongst areas. We suggest the following two possible solutions:
 
-1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas perhaps via a minimax-style solution (REF) choosing the MP that performs the least bad across all areas. If MP performance across areas differ substantially then different MPs may need to be considered for different areas.
+1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas. This could be accomplished, for example, via a minimax-style solution choosing an MP that performs the least poorly across all areas. If MP performance across areas differ substantially, then different MPs may needed for different areas.
 
-2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research (e.g., REFs) and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way simple way combine multiple survey indices (e.g., yelloweye outside REF), geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple protocols or spatial areas information.
+2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research [e.g., @shelton2014; @thorson2015b; @anderson2019synopsis] and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way simple way combine multiple survey indices (e.g., yelloweye outside REF), geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple survey protocols or spatial areas.
 
 ### Reference MPs
 
-In addition to the candidate MPs, it is important to include *reference* MPs. Provisionally, we suggest the following reference MPs:
+In addition to the candidate MPs, it is important to include reference MPs. Provisionally, we suggest the following reference MPs:
 
 * No fishing
 * Fishing at F/F~MSY~
 * Fishing at 0.75 F/F~MSY~
-* Maintaining the status quo TAC
+* Maintaining the current TAC
 
-The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance (Punt REF). For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 F/F~MSY~" MP illustrates performance under an omniscient manager with perfect information. The status quo MP is included not because we think it is necessarily a good management strategy but illustrates what is likely the default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
+The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 F/F~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included not because we think it is necessarily a good management strategy but illustrates what is likely the default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
 
 ### Including new MPs
 
 The candidate MPs proposed here are a provisional library from which to build.
-Data-limited MP development is a rich area of research and is probably just in its infancy.
-Beyond some adjustments to existing MPs, MP development is not the focus of this report
+Data-limited MP development is a rich area of research and is probably in its infancy.
+Beyond minor adjustments to existing MPs, MP development is not the focus of this report.
 More MPs may be developed as part of the application of this framework and are likely to be developed elsewhere in the literature and could be included in future applications of the framework.
-And, while, we cannot predict what those MPs will be, provided they are easy to communicate and can be easily apply to both simulated and real data, we can rest assured that MPs will be rigorously tested through the closed-loop simulation process that is inherent to this MP Framework.
+While we cannot predict what those new MPs will be, provided they are easy to communicate and can be easily applied to both simulated and real data, we can rest assured that new MPs will be rigorously tested through the closed-loop simulation process that is inherent to this MP Framework before they are adopted.
 
 <!-- In summary, we excluded all MPs that required knowledge of: -->
 
