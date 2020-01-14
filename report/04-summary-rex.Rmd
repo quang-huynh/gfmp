@@ -16,7 +16,7 @@ The IVQ system initiated in 1997 referred to for shortraker applies to all speci
 
 ## Data sources
 
-Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for rex sole in DFO databases for analysis as described above for shortraker rockfish. There is currently no method for estimating historic catches for rex sole as has been done for rockfish species. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on rex sole and other flatfish since 2003. 
+Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for rex sole in DFO databases for analysis as described above for shortraker rockfish. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on rex sole and other flatfish since 2003. There is currently no method for estimating historic catches for rex sole as has been done for rockfish species. 
 
 ## US
 
