@@ -36,7 +36,7 @@ Definition of the decision context is the role of managers, stakeholders, First 
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
 
-Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability of maintaining the stock above the LRP is greater than 95%, throughout a 50 year period). 
+Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability of maintaining the stock above the LRP is greater than 95%, throughout a 50 year period).
 
 Since the properties of underlying system represented by the OM are known exactly, a wide range of biological and economic metrics can be calculated from the OM [@carruthers2018]. However, having too many performance metrics can make the final decision process complex. Performance metrics should be chosen so they can be understood by decision-makers and participants, and to facilitate a tractable decision-making environment [@punt2016].
 
@@ -44,7 +44,7 @@ Objectives should be developed with the participation of managers, stakeholders,
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:best3}
 
-Uncertainties inherent in the underlying system are represented in the OM. Uncertainty in the OMs may be related to: the biology of the stock (e.g., growth, natural mortality, recruitment, migration); the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear); the observation process (e.g., bias or imprecision in survey data or age/length composition data); and/or the implementation process (e.g., exceeding catch limits) [@carruthers2018]. 
+Uncertainties inherent in the underlying system are represented in the OM. Uncertainty in the OMs may be related to: the biology of the stock (e.g., growth, natural mortality, recruitment, migration); the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear); the observation process (e.g., bias or imprecision in survey data or age/length composition data); and/or the implementation process (e.g., exceeding catch limits) [@carruthers2018].
 
 Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured within a single OM by expressing distributions for these parameters. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in a single OM. Therefore, best practice recommends dividing MSE trials into a "reference set", utilizing a core set of of OMs that include the most important uncertainties (e.g., depletion of the stock or range of natural mortality values), and a "robustness set", representing other plausible OM formulations that represent alternative structural hypotheses (e.g., time-varying natural mortality or climate-driven recruitment [@rademeyer2007]). @punt2016 provide a list of factors which commonly have a large impact on MSE performance due to uncertainty (their Table 3). They also note that, in some cases, where the data used to parameterize the OM are in conflict (e.g., two indices of abundance are in conflict), the best practice may be to develop alternative OMs based on the different data sources.
 
@@ -54,19 +54,19 @@ Development of OMs is principally the responsibility of science, although input 
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES {#sec:best4}
 
-Management procedures for fisheries managed by catch limits are generally either model-based, where data are integrated into a stock assessment model and outputs are used to calculate catch limits, or empirically-based, where data are used in an algorithm to directly determine the catch limit (e.g., adjustment of catch based on change in index of abundance) [@punt2016]. Data-limited MPs generally fall into the latter category, although simple stock assessment models such as surplus production models may sometimes be used. 
+Management procedures for fisheries managed by catch limits are generally either model-based, where data are integrated into a stock assessment model and outputs are used to calculate catch limits, or empirically-based, where data are used in an algorithm to directly determine the catch limit (e.g., adjustment of catch based on change in index of abundance) [@punt2016]. Data-limited MPs generally fall into the latter category, although simple stock assessment models such as surplus production models may sometimes be used.
 
-The scientific literature now reports many MPs for data-limited fisheries, more than 80 of which have been integrated into the DLMtool software [@carruthers2016; @carruthers2018]. Given the large number of MP options available, a screening step is desirable. For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit. After that, trial simulations may be used to screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP). Using trial simulations to screen out poorly-performing MPs is an example of "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted. Satisficing criteria may be used at the screening stage and at the final MP selection stage. 
+The scientific literature now reports many MPs for data-limited fisheries, more than 80 of which have been integrated into the DLMtool software [@carruthers2016; @carruthers2018]. Given the large number of MP options available, a screening step is desirable. For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit. After that, trial simulations may be used to screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP). Using trial simulations to screen out poorly-performing MPs is an example of "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted. Satisficing criteria may be used at the screening stage and at the final MP selection stage.
 
 It is important to test only MPs for which information or data are available [@punt2016]. For example, data-limited MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many BC groundfish stocks. While it is important to work with a managable set of MPs, it is also important not to screen too aggresively, to make sure good candidate MPs are not screened out early on.
 
-In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable satisficing criteria, and may also provide input on feasibility of implementing some MPs. 
+In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable satisficing criteria, and may also provide input on feasibility of implementing some MPs.
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES {#sec:best5}
 
-Once the OM and MPs are fully specified, the MSE simulation trials can be run, following the process illustrated in Figure \@ref(fig:mse-chart). Essentially, all of the MPs are tested in in the simulation framework, using data generated by each OM. Critically, the simulations include feedback between the OM and the MP, where the OM generates data at each time step, which is used to apply the MP, which generates a catch recommendation, which is removed from the OM, which generates the next time step of data, and so forth until the projection period is complete. 
+Once the OM and MPs are fully specified, the MSE simulation trials can be run, following the process illustrated in Figure \@ref(fig:mse-chart). Essentially, all of the MPs are tested in in the simulation framework, using data generated by each OM. Critically, the simulations include feedback between the OM and the MP, where the OM generates data at each time step, which is used to apply the MP, which generates a catch recommendation, which is removed from the OM, which generates the next time step of data, and so forth until the projection period is complete.
 
-Typically a large number of replicate simulations are run for each OM-MP combination. Replicates may differ in terms of OM process error, observation errors and random draws from ranges of OM parameters, meaning that each replicate provides a different set of simulated data to the MPs. The number of replicates should be selected to ensure that performance metrics can be calculated with adequate precision [@punt2016], which may be indicated by MPs being consistently ranked in the same order throughout the simulated projection period [@carruthers2018]. The MSE should output enough information to calculate performance metrics for the MPs, and also to evaluate the behaviour and performance of the MSE itself (e.g., whether all trials converged, ranges of OM parameter values, and trajectories of key OM variables such as biomass and catch).
+Typically, a large number of replicate simulations are run for each OM-MP combination. Replicates may differ in terms of OM process error, observation errors and random draws from ranges of OM parameters, meaning that each replicate provides a different set of simulated data to the MPs. The number of replicates should be selected to ensure that performance metrics can be calculated with adequate precision [@punt2016], which may be indicated by MPs being consistently ranked in the same order throughout the simulated projection period [@carruthers2018]. The MSE should output enough information to calculate performance metrics for the MPs, and also to evaluate the behaviour and performance of the MSE itself (e.g., whether all trials converged, ranges of OM parameter values, and trajectories of key OM variables such as biomass and catch).
 
 Running the simulations is the role of Science. Feedback from managers, stakeholders and First Nations should be sought throughout the process, to enable iterative refinment of the models and outputs [e.g., @cox2008a].
 
@@ -82,7 +82,7 @@ A satisficing step may be used to screen out MPs that did not meet a minimum sta
 
 We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated for two case-study fish stocks: Rex Sole (*Glyptocephalus zachirus*) and Shortraker Rockfish (*Sebastes borealis*) in Area 3CD (West Coast Vancouver Island). These stocks were selected because they are both considered data-limited and lack current assessment advice, and have contrasting life histories and data-availability. See Sections \@ref(shortraker-rockfish-case-study) and \@ref(rex-sole-case-study) for more details on each stock. The two case-studies are presented to illustrate the framework and its outputs. They are not intended for the provision of catch advice for these stocks at this time.
 
-Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organised according to the six best-practice steps described in Section \@ref(best-practices-for-implementing-a-management-procedure-approach). 
+Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organised according to the six best-practice steps described in Section \@ref(best-practices-for-implementing-a-management-procedure-approach).
 
 <!-- TO DO: Need a map ... maybe later in the species summary sections -->
 
@@ -90,11 +90,11 @@ Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of th
 
 For quota-managed species, the decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision should be stated in the request for science advice.
 
-The boundaries on the project should be decided by a technical committee, convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required. Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered. These will be discussed in more detail in the following sections.  
+The boundaries on the project should be decided by a technical committee, convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required. Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered. These will be discussed in more detail in the following sections.
 
 The final decision on which MP to use to determine catch limits should be made based on a consensus by the Regional Peer Review (RPR) committee, after review of the scientific content of the advice (including the structure and content of the OMs), and consideration of the relative performance of the MPs with respect to meeting stated objectives and trade-offs among performance metrics. The RPR committee will typically be comprised of the technical committee plus a much broader range of interested parties representing DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties.
 
-The simulation framework tests the performance of specific MPs and will recommend a single catch limit from the final selected MP. The framework does not test posthoc adjustments to the catch limit recommended by an MP. This is in contrast to the decision tables presented in most Pacific Region groundfish stock assessments, where a range of possible catch limits with forecast of future stock status under each catch limit is provided for decision-making. Regardless of the framework used for advice, we note that it remains the purview of the Fisheries Minister to make posthoc adjustments to catch limits, based on cultural, social or economic considerations, in accordance with the *Fisheries Act* (Sections 6.1 (2) and 6.2(2)) 
+The simulation framework tests the performance of specific MPs and will recommend a single catch limit from the final selected MP. The framework does not test posthoc adjustments to the catch limit recommended by an MP. This is in contrast to the decision tables presented in most Pacific Region groundfish stock assessments, where a range of possible catch limits with forecast of future stock status under each catch limit is provided for decision-making. Regardless of the framework used for advice, we note that it remains the purview of the Fisheries Minister to make posthoc adjustments to catch limits, based on cultural, social or economic considerations, in accordance with the *Fisheries Act* (Sections 6.1 (2) and 6.2(2))
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:approach2}
 
@@ -109,7 +109,7 @@ We propose the following provisional tactical conservation and fisheries objecti
 3. Avoid overfishing with some probability
 4. Given the conservation objectives are achieved, maximize short- and long-term fisheries yield.
 5. Given the conservation objectives are achieved, minimize variability in fisheries yield from year to year.
-  
+
 Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaing stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *SB*~MSY~ and USR = 0.8 *SB*~MSY~, suggested under the PA Framework [@dfo2009].
 
 The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis. For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone) can be lower at around 50% [@mcilgorm2013].
@@ -189,30 +189,110 @@ Details on the SRA model are available in Appendix TODO.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
-We screened all MPs available in DLMtool as of November 2019 to consider their appropriateness for the MP Framework (Appendix \@ref(app:MPs)).
+We screened all MPs available in DLMtool as of November 2019 along with recent MPs used in BC groundfish reports to consider their appropriateness for the framework.
+This represents a fairly comprehensive set of data-limited MPs available in the primary literature or agency reports to date.
+Here, we describe the types of MPs available, describe the process by which we identified a provisional set of MPs, and explain how some MPs were tailored to the BC groundfish needs.
+We describe provisional candidate MPs in detail in Appendix \@ref(app:MPs).
 
-In summary, we excluded all MPs that required knowledge of:
+DLMtool includes MPs that make different types of management recommendations.
+These recommendations include adjustments to total allowable catch (TAC), effort, or spatial allocation of catch or effort.
+For the framework, we focus on MPs that make TAC recommendations based on how groundfish are managed in BC.
+Therefore, all MPs considered here take some subset of the data generated by an operating model and provide a recommended catch for the subsequent year.
 
-* absolute abundance
-* recent age composition data
-* depletion
-* steepness.
+We focus on two main types of MPs: data-based and model-based MPs.
+Data-based MPs take data generated by an operating model, such as a simulated survey index, apply an algorithm, and make a catch recommendation.
+For example, one implementation of the "Iratio" MP [@ices2012; @jardim2015], the mean survey index value from the last two years is divided by the mean survey index value from the years three to five years before present.
+This ratio is then multiplied by the previous year's catch to generate a catch recommendation.
+If the survey index has been trending up, then the catch recommendation will increase and vice versa. Model-based MPs, on the other hand, fit some statistical population model and apply some harvest control rule to turn the parameter estimates into a catch recommendation.
 
-We excluded MPs that required knowledge of absolute abundance since they are unlikely to be cases where we have such knowledge in a data limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age competition data are not available. We excluded MPs that required knowledge of depletion and steepness since these are likely to be major axes of uncertainty stocks that the framework will be applied to. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data would require choosing a value of depletion and steepness, which we argue would be a hard choice to justify and would be challenging to incorporate our true levels of uncertainty about and levels of bias in these parameters. 
+### Data-based MPs
 
-DLMtool contains a number of MPs that make catch recommendations based on trends in mean fish length. These may be appropriate for some stocks, but ...
+Data-based MPs can make use a variety of data types including catch, fish lengths, fish ages, and population indexes.
+Catches are available for all BC groundfish stocks with relative certainty since 1997 for BC trawl fisheries and 2008 for BC hook and line fisheries and so are a viable data type.
+Fisheries independent trawl and longline surveys have been conducted systematically since the early 2000s for BC groundfish and likely represent some of the most informative data for many data-limited groundfish stocks in BC.
+Fish lengths are collected on both surveys and commercial fishing trips for many species.
+However, length-based MPs often require strong assumptions (e.g., steepness... REF) and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data---a tricky assumption to meet (REF) and one we have not sufficiently investigated yet.
+Reliable and abundance fish ages are generally not available for the species for which this framework is designed.
+For the above reasons, we propose that the MPs that make use of catch and population index data are best suited.
 
-We suggest the empirical index-based MPs are likely to be most suitable for most data-limited groundfish stocks in the Pacific Region. This family of MPs generally try to maintain an index (usually a relative biomass or abundance index from a fisheries-independent survey) at some level by adjusting catch recommendations up or down as the index moves up or down. Different MPs include various levels of smoothing or thresholds and various methods of deriving a target index level. Such MPs have been considered as part of ... in the Pacific Region (REFs).
+We can divide MPs that make use of population index data into four categories: constant catch, index ratio, index slope, and index target.
+(1) Constant-catch MPs set the recommended catch to some fixed level typically based on recent or historical catches.
+Importantly, these constant-catch do not incorporate feedback from the population---they make the same catch recommendation regardless of what happens to the stock.
+(2) Index-ratio MPs base their catch recommendation on a ratio of a population index in some time period compared to another time period.
+(3) Index-slope MPs fit some sort of a regression to population index data and make a catch recommendation based on the slope of that regression.
+They are closely related to index-ratio MPs.
+(4) Index-target MPs compare recent levels of a population index to a population index at some fixed historical time period to make a catch recommendation.
+They differ subtly but importantly from the index-ratio and index-slope MPs as categorized above:
+index-ratio and index-slope MPs compare recent index values to a moving window of index values whereas index-target MPs try to maintain the population index at some fixed historical value.
 
-In addition to the empirical index-based MPs DLMtool and MSEtool include simple surplus production models, which may be considered for some stocks. We emphasize that these model-based MPs are simpler than the implementations often used in previous Pacific Region stock assessments. The point of using these models is to test their success at achieving the performance metrics and not the specific assumptions made within the implementations of the model.
+We tailored many of the available data-based MPs to suit the strengths and weaknesses of the BC groundfish data and the typical historical knowledge (Appendix \@ref(app:MPs)).
+For example, most of the available survey data for BC groundfish is collected biennially in any one location.
+Therefore, we modified many of the index-based MPs to more appropriately handle biennial data. 
+Typically, this involved adding variants of MPs that considered longer time windows when calculating averages or slopes to account for half the available data as one would have with an annual survey.
+In other cases, we added alternative versions of MPs that encompassed a wider range of control variables.
+For example, the Islope MPs [@geromont2015] as originally described and implement it in DLMtool implicitly set the catch recommendation in the first year to 60--80% of the mean catch from the recent five years (assuming a neutral survey index). Since we do not a priori expect BC groundfish stocks to be overfished, we adjusted this control parameter in our provisional MPs to range between 80--100% of recent catch.
 
-DLMtool currently generates a single index of abundance for use in the data- or model-based MPs. In the future the software may include multiple indices of abundance; however, the vast majority of published data-limited MPs are based on single indices of abundance. This presents a conundrum for groundfish stocks in the Pacific Region since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis alternating amongst areas. We suggest the following solutions at the present time:
+### Model-based MPs
 
-* Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas.
+In addition to the data-based MPs, we suggest a surplus production (SP) model-based MP be considered amongst candidate MPs.
+We provisionally include the SP model coded in the MSEtool R package (REF) and based on Fletcher (1978)(REF) (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest inclusion of both a Schaefer (REF) and Fox (REF) production curve since it is not clear until simulation tested which will generate better performance statistics for a given operating model.
+We suggest a weakly informative prior be set on TODO based on TODO and alternative priors may be represented as alternative MPs.
 
-* Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling [REFs].
+The SP model estimates must be paired with an HCR to form a complete management procedure.
+We provisionally suggest the following HCRs:
 
-Important to include reference MPs to bound the range of expected performance under scenarios such as: no fishing, perfect information (F_MSY_ and 0.75 F_MSY), and maintaining the status quo TAC.
+* HCR-MSY: Fish at the calculated MSY.
+
+* HCR-4010: Above 40% of estimated B/B~0~ (biomass divided by biomass at carrying capacity), fish at the calculated MSY; at 10% of estimated B/B~0~, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast (e.g., REF).
+
+* HCR-8040: Above 80% of estimated B/B~MSY~, fish at the calculated MSY; at 40% of estimated B/B~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on B~MSY~ whereas HCR-4010 is based on B~0~. This HCR creates operational control points (OCRs) that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework. We note, however, that an MP's HCR OCPs does not necessarily need to match the biological reference points (BRPs) to be consistent with the BRPs in the Sustainable Fisheries Framework. For example, a model may generate biased estimates of B/B~MSY~ and be better paired with OCRs that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
+
+* HCR-6040: A slightly less conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until B/B~MSY~ < 0.6.
+
+In choosing from the available data- and model-based MPs, we excluded MPs based on the number of requirements that would rarely be met for our stocks. We excluded MPs that required knowledge of absolute abundance since they are unlikely to be cases where we have such knowledge in a data-limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age competition data are not available. We excluded MPs that required knowledge of depletion and steepness since these are likely to be major axes of uncertainty stocks that the framework will be applied to. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data would require choosing a value of depletion and steepness, which we argue would be a hard choice to justify and would be challenging to incorporate our true levels of uncertainty about and levels of bias in these parameters.
+
+### Dealing with multiple survey indices within MPs
+
+DLMtool currently generates a single index of abundance for use in the data- or model-based MPs and the vast majority of published data-limited MPs are based on single indices of abundance. This presents a conundrum for groundfish stocks in the Pacific Region since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis alternating amongst areas. We suggest the following two possible solutions:
+
+1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas perhaps via a minimax-style solution (REF) choosing the MP that performs the least bad across all areas. If MP performance across areas differ substantially then different MPs may need to be considered for different areas.
+
+2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research (e.g., REFs) and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way simple way combine multiple survey indices (e.g., yelloweye outside REF), geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple protocols or spatial areas information.
+
+### Reference MPs
+
+In addition to the candidate MPs, it is important to include *reference* MPs. Provisionally, we suggest the following reference MPs:
+
+* No fishing
+* Fishing at F/F~MSY~
+* Fishing at 0.75 F/F~MSY~
+* Maintaining the status quo TAC
+
+The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance (Punt REF). For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 F/F~MSY~" MP illustrates performance under an omniscient manager with perfect information. The status quo MP is included not because we think it is necessarily a good management strategy but illustrates what is likely the default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
+
+### Including new MPs
+
+The candidate MPs proposed here are a provisional library from which to build.
+Data-limited MP development is a rich area of research and is probably just in its infancy.
+Beyond some adjustments to existing MPs, MP development is not the focus of this report
+More MPs may be developed as part of the application of this framework and are likely to be developed elsewhere in the literature and could be included in future applications of the framework.
+And, while, we cannot predict what those MPs will be, provided they are easy to communicate and can be easily apply to both simulated and real data, we can rest assured that MPs will be rigorously tested through the closed-loop simulation process that is inherent to this MP Framework.
+
+<!-- In summary, we excluded all MPs that required knowledge of: -->
+
+<!-- * absolute abundance -->
+<!-- * recent age composition data -->
+<!-- * depletion -->
+<!-- * steepness. -->
+
+<!-- DLMtool contains a number of MPs that make catch recommendations based on trends in mean fish length. These may be appropriate for some stocks, but ... -->
+
+<!-- We suggest the empirical index-based MPs are likely to be most suitable for most data-limited groundfish stocks in the Pacific Region. This family of MPs generally try to maintain an index (usually a relative biomass or abundance index from a fisheries-independent survey) at some level by adjusting catch recommendations up or down as the index moves up or down. Different MPs include various levels of smoothing or thresholds and various methods of deriving a target index level. Such MPs have been considered as part of ... in the Pacific Region (REFs). -->
+
+<!-- In addition to the empirical index-based MPs DLMtool and MSEtool include simple surplus production models, which may be considered for some stocks. We emphasize that these model-based MPs are simpler than the implementations often used in previous Pacific Region stock assessments. The point of using these models is to test their success at achieving the performance metrics and not the specific assumptions made within the implementations of the model. -->
+
+<!--
+TODO: For discussion?
 
 ### Broad types of MPs:
 
@@ -249,15 +329,7 @@ Important to include reference MPs to bound the range of expected performance un
 - more complex than data-based rules
 - more theoretically sound; doesn't necessarily mean will perform well against objectives
 - likely requires "tuning" of priors and possibly HCRs
-
-Thoughts:
-
-- MP development a rich area of research and is probably just in its infancy
-- Beyond some minor adjustments to existing MPs, MP development is not the point of this report
-- More MPs may be developed as part of the application of this framework (and are likely to be developed elsewhere in the literature) and could be included in the future
-- No reason why an MP couldn't combine multiple aspects of the above, although there are advantages to simple and easy to understand MPs
-- The MPs described in this report are a provisional library to build from
-- MPs are meant to be followed until re-evaluated or the validity of the whole exercise is thrown off (obviously changes may need to be made given unanticipated surprises, but any major changes should also trigger an OM re-evaluation)
+-->
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:approach5}
 
