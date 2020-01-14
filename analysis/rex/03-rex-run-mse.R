@@ -218,7 +218,7 @@ make_projection_plot(base_om, MPs = rex_not_satisficed,
 make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
   show_contours = FALSE)
 
-# ----------------------------------------
+# Psychedelic pyramid worms ---------------------------------------------------
 
 .d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
 .d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
@@ -230,7 +230,8 @@ l <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "l") %>%
   rename(b_l = B_BMSY, f_l = F_FMSY)
 u <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "u") %>%
   rename(b_u = B_BMSY, f_u = F_FMSY)
-dd <- left_join(m, l) %>% left_join(u)
+dd <- left_join(m, l, by = c("mp_name", "real_year")) %>%
+  left_join(u, by = c("mp_name", "real_year"))
 
 poly_df <- split(dd, paste(dd$mp_name, dd$real_year)) %>%
   map_df(~ data.frame(
@@ -247,10 +248,20 @@ dd %>%
   geom_polygon(aes(x = x, y = y, fill = real_year, group = real_year),
     data = poly_df, alpha = 0.08, inherit.aes = FALSE, colour = NA) +
   geom_path(lwd = 1.5, lineend = "round", linejoin = "bevel") +
-  scale_color_viridis_c(option = "C") +
-  scale_fill_viridis_c(option = "C") +
+  scale_color_viridis_c(option = "C", direction = -1) +
+  scale_fill_viridis_c(option = "C", direction = -1) +
   gfplot::theme_pbs() + facet_wrap(~mp_name) +
   coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) +
   geom_vline(xintercept = c(0.4, 0.8), lty = 2, alpha = 0.2, lwd = 0.5) +
   geom_hline(yintercept = 1, lty = 2, alpha = 0.2, lwd = 0.5) +
   labs(fill = "Year", colour = "Year", x = expression(B/B[MSY]), y = expression(F/F[MSY]))
+
+# Sensitivity plots -----------------------------------------------------------
+
+DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+  gfdlm::plot_sensitivity(rex_mse, `LT P40`,
+  slots = c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd"),
+  ylab = expression(B/B[MSY]~"in"~years~36-50))
+ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
+  width = 9.5, height = 10
+)
