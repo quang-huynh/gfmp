@@ -4,32 +4,32 @@
 
 ## BACKGROUND
 
-Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m.
+Rex sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m.
 
-## Species Biology
-
-Rex Sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged Rex Sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest Rex Sole aged from BC was a 34 cm female aged at 15 years, though individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Additional otoliths have been collected on BC surveys from 2000-present although they have yet to be aged.
-
-Mortality
-Maturity
-<!-- natural mortality used in GOA assessment 0.17-->
+Rex sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged rex sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest rex sole aged from BC was a 34 cm female aged at 15 years, though larger, unaged individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Additional otoliths have been collected on BC surveys from 2000-present although they have yet to be aged.
 
 ## History of fishery
 
-Rex Sole are a commonly caught flatfish species in BC groundfish bottom trawl surveys and although they are commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or currently assigned quota for them. Biomass of Rex Sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 (REF) but Rex Sole have never been formally assessed in BC. Commercial and fishery data (catch, lengths, weights, ages, maturity) are available in DFO databases for analysis.
+Rex sole is a commonly caught flatfish species in BC groundfish bottom trawl surveys and although it is commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or assigned quota for it. Rex sole have never been formally assessed in BC; however, biomass of rex sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012]. 
 
-## History of assessment/analytical methods
+The IVQ system initiated in 1997 referred to for shortraker applies to all species caught in the trawl fishery, including rex sole.
 
 ## Data sources
 
-<!-- information from Hart, Mecklenburg and DFO databases-->
-
-The fishery-independent trawl surveys mentioned above for Shortraker Rockfish have also been capturing and collecting data on Rex Sole since 2003.
-
-The IVQ system initiated in 1997 referred to above applies to all species caught in the trawl fishery, including rex sole.
+Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for rex sole in DFO databases for analysis as described above for shortraker rockfish. There is currently no method for estimating historic catches for rex sole as has been done for rockfish species. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on rex sole and other flatfish since 2003. 
 
 ## US
 
-In the US, Rex Sole are considered to form three separate stocks: the west coast stock from Washington to California, the Gulf of Alaska stock (GOA), and the Bering Sea stock. They are caught in a directed fishery using bottom trawl gear and are assessed in the GOA every four years using an age-structured model [last fully assessed in 2017 @mcgilliard2017].
+In the US, rex sole is caught in the bottom trawl fishery and is considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which rex sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed with a random effects model in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
 
-GOA Rex Sole biology was examined in 2005, and west coast stock was examined in 1977 in Oregon. Spawning season was determined to run from January to June in Oregon, and October (possibly earlier) to May in the GOA.
+<!-- Maturity
+Abookire 2006 - GOA ML50 females = 352 mm, ML100 = 420 mm) significantly larger size than in Oregon 
+MA50 = 5.1 years, all mature at age 9 except for two still immature at 9 and 10 years (n=557)
+Hosie and Horton 1977 - Oregon female ML50 24 cm, ML100 = 30 cm
+MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
+
+Mortality
+natural mortality used in GOA assessment 0.17-->
+
+
+
