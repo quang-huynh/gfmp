@@ -258,10 +258,37 @@ dd %>%
 
 # Sensitivity plots -----------------------------------------------------------
 
-DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
-  gfdlm::plot_sensitivity(rex_mse, `LT P40`,
-  slots = c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd"),
+slots <- c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd")
+
+g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+  gfdlm::plot_sensitivity(`LT P40`, slots = slots,
   ylab = expression(B/B[MSY]~"in"~years~36-50))
-ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
-  width = 9.5, height = 10
-)
+ggsave(file.path(fig_dir, "rex-sensitivity-bbmsy-base.png"), width = 9.5, height = 10)
+
+g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+  gfdlm::plot_sensitivity(`STY`, slots = slots,
+    ylab = "Catch/Reference catch in years 6-20")
+ggsave(file.path(fig_dir, "rex-sensitivity-yield-base.png"), width = 9.5, height = 10)
+
+g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+  gfdlm::plot_sensitivity_trajectory("B_BMSY", slots = slots) +
+  coord_cartesian(ylim = c(0, 4))
+ggsave(file.path(fig_dir, "rex-sensitivity-traj-bbmsy-base.png"), width = 12, height = 10.5)
+
+g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+  gfdlm::plot_sensitivity_trajectory("F_FMSY", slots = slots) +
+  coord_cartesian(ylim = c(0, 4))
+ggsave(file.path(fig_dir, "rex-sensitivity-traj-ffmsy-base.png"), width = 12, height = 10.5)
+
+# Optimize PNG files on Unix --------------------------------------------------
+
+cores <- round(parallel::detectCores() / 2L)
+files_per_core <- 3
+setwd(fig_dir)
+if (!gfplot:::is_windows()) {
+  system(paste0(
+    "find -X . -name '*.png' -print0 | xargs -0 -n ",
+    files_per_core, " -P ", cores, " optipng -strip all"
+  ))
+}
+setwd(here::here())
