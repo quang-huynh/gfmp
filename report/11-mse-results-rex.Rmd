@@ -147,7 +147,7 @@ file_name <- here::here("generated-data", "rex-mse2.rds")
 # rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.95, STY > 0.75) %>%
 #   arrange(-`LT P40`) %>%
 #   pull(MP)
-# rex_satisficed <- union(rex_satisficed[!rex_satisficed %in% reference_mp], ".IDX")
+But th# rex_satisficed <- union(rex_satisficed[!rex_satisficed %in% reference_mp], ".IDX")
 # rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 ```
 
