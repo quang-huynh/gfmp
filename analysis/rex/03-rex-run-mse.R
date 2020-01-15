@@ -262,13 +262,13 @@ slots <- c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd")
 
 g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity(`LT P40`, slots = slots,
-  ylab = expression(B/B[MSY]~"in"~years~36-50))
-ggsave(file.path(fig_dir, "rex-sensitivity-bbmsy-base.png"), width = 9.5, height = 10)
+  ylab = expression(Mean~B/B[MSY]~"in"~years~36-50))
+ggsave(file.path(fig_dir, "rex-sensitivity-bbmsy-base.png"), width = 12, height = 10.5)
 
 g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity(`STY`, slots = slots,
-    ylab = "Catch/Reference catch in years 6-20")
-ggsave(file.path(fig_dir, "rex-sensitivity-yield-base.png"), width = 9.5, height = 10)
+    ylab = "Mean catch/reference catch in years 6-20")
+ggsave(file.path(fig_dir, "rex-sensitivity-yield-base.png"), width = 12, height = 10.5)
 
 g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity_trajectory("B_BMSY", slots = slots) +
