@@ -86,7 +86,7 @@ In this MP, TAC is calculated as some fraction of the average historical catch o
 \textrm{TAC}_y = (1-\alpha)\frac{\sum_{i=n-5+1}^{n}C_i}{5},
 \end{equation}
 
-where $x$ lies between 0 and 1. The TAC is constant for all future projections. There are five variants of this procedure, which are the same besides the value of $x$:
+where $\alpha$ lies between 0 and 1. The TAC is constant for all future projections. There are five variants of this procedure, which are the same besides the value of $\alpha$:
 
 - CC100: $\alpha = 0$
 - CC90: $\alpha = 0.1$
@@ -308,7 +308,7 @@ pars %>%
 
 ### IDX: Index-based MP from Cox et al. (In press) {#sec:mp-idx}
 
-This MP was used in the Cox et al. (In press) rebuilding plan for outside Yelloweye Rockfish in BC (Fig. \@ref(fig:mp-idx-demo)). The MP assigns TAC based on:
+This MP was used in the rebuilding plan for outside Yelloweye Rockfish in BC [@cox2020] (Fig. \@ref(fig:mp-idx-demo)). The MP assigns TAC based on:
 
 \begin{equation}
 \textrm{TAC}_y =
