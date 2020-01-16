@@ -344,21 +344,22 @@ TODO: For discussion?
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:approach5}
 
-Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:fig-mse-chart-basic) and \@ref(fig:fig-mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
+Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:mse-chart-basic) and \@ref(fig:mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
 
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010]. For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75). This resulted in 11 final MPs (out of an initial 30 MPs), plus the four reference MPs. We recommend an iterative approach to selecting the satisficing criteria on a stock by stock basis. Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs. Similarly, criteria should be strict enough to filter out consistently under-performing MPs. We recommend selection of satisficing criteria be done iteratively with the technical committee.
 
-DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:fig-mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete. Performance is then evaluated through calculation of performance statistics in the OM. DLMtool makes use of the C++ programming language and parallel processing, making the simulations very computationally efficient [@carruthers2018].
+DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete. Performance is then evaluated through calculation of performance statistics in the OM. DLMtool makes use of the C++ programming language and parallel processing, making the simulations very computationally efficient [@carruthers2018].
 
-For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019]. This can be checked in DLMtool using the Converge function, which plots the performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:convergence_example)). *TODO: add a nicer convergence plot*
+For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019]. This can be checked in DLMtool using the Converge function, which plots the performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:mse-chart-basic2)). *TODO: add a nicer convergence plot*
 
-```{r convergence_example, fig.cap="(ref:convergence_ex)", out.width="6.3in"}
-knitr::include_graphics(here::here("report/figure/Rex_Convergence.png.png"))
+
+(ref:fig-mse-chart-basic2) Illustration of the output of DLMtool's Converge function, showing the values of three performance metrics for all the tested MPs for Rex Sole. In this example, 100 replicates appears sufficient for the rank order of MPs to have stabilized.
+
+```{r mse-chart-basic2, fig.cap="(ref:fig-mse-chart-basic2)", out.width="6.3in"}
+knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ```
 
-* We suggest only including replicates with MPs that converged (only applicable to the model-based MPs).
-
-For model-based MPs
+For model-based MPs, we suggest only including replicates when the estimation algorithm converged.
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
 
@@ -446,7 +447,7 @@ Therefore, lines closer to the outside of the web correspond to measure procedur
 Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-cc-base.png"))
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq100.png"))
 ```
 
 \clearpage
