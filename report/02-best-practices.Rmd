@@ -414,6 +414,19 @@ Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend thems
 
 In many cases it will also make sense to look at timeseries trajectories across multiple operating models (Figure \@ref(fig:methods-proj)).
 
+\clearpage
+
+(ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation has reached convergence in the rank order of MP performance.
+The y-axis represents the proportion of cumulative iterations that have achieved the performance metric.
+The cumulative iterations are shown along the x-axis.
+Each panel represents a different performance metric and the colors illustrate the various MPs.
+A wiggly line indicates that a given MP is still varying in its performance metric value as more iterations are run.
+Lines that are crossing indicate changes to the rank order of MP performance as more iterations are run.
+A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
+
+```{r methods-converge, fig.cap="(ref:fig-methods-converge)", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-converge.png"))
+```
 
 \clearpage
 
@@ -450,7 +463,7 @@ Therefore, lines closer to the outside of the web correspond to measure procedur
 Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq100.png"))
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
 ```
 
 \clearpage

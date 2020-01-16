@@ -58,11 +58,6 @@ if (!file.exists(file_name)) {
   rex_mse_base <- readRDS(file_name)
 }
 
-#png(paste0(fig_dir, "/rex_converge.png"), width = 12, height = 10.5)
-  DLMtool::Converge(rex_mse_base)
-#dev.off()
-# rex_mse_base@Misc$Data[[1]]@Ind
-
 rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
@@ -73,6 +68,14 @@ stopifnot(length(rex_satisficed) > 1)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
 stopifnot(length(rex_not_satisficed) > 1)
+
+top_mps <- dplyr::filter(rex_probs, !MP %in% reference_mp) %>%
+  top_n(8, wt = `LT P80`) %>% dplyr::pull(MP)
+g <- DLMtool::Sub(rex_mse_base, MPs = top_mps) %>%
+  gfdlm::plot_convergence(PM, ylim = c(0.82, 1)) +
+  scale_color_brewer(palette = "Set2") +
+  facet_wrap(vars(pm_name), ncol = 2)
+ggsave(file.path(fig_dir, "rex-converge.png"), width = 6.5, height = 6.5)
 
 # Fit satisficed MPs to other OMs----------------------------------------------
 
