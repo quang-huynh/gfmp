@@ -358,7 +358,7 @@ For model-based MPs
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
 
-<<!-- This text copied from @rademeyer2007 ... paraphrase here and in best practices 
+<!-- This text copied from @rademeyer2007 ... paraphrase here and in best practices 
 
 If uncertainties in the resource assessment are large, the construction
 of a reference set of OMs is preferable to the use of
@@ -400,44 +400,98 @@ We developed projection plots that show the range of projected values in B/B[MSY
 
 We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
 
+We demonstrate the provisional visualizations for a single operating model. 
+
+Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend themselves well to comparing across operating models.
+
+In many cases it will also make sense to look at timeseries trajectories across multiple operating models (Figure \@ref(fig:methods-proj)).
+
+
 \clearpage
 
-```{r methods-proj, fig.cap="Caption here.", out.width="6.5in"}
+(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~, F/F~MSY~, and catch across various management procedures (rows) for a single operating model.
+The historical period is the same in every row.
+The dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
+Thin gray lines represent illustrative simulation iterations.
+The vertical dashed line indicates the last year of the historical period.
+The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
+Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
+
+```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="6.5in"}
 knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
 ```
 
 \clearpage
 
-```{r methods-tigure, fig.cap="Caption here.", out.width="3.5in"}
+(ref:fig-methods-tigure) This figure-table illustrates performance metric values for a number of MPs.
+See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
+The MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
+The color shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
+
+```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
 knitr::include_graphics(here::here("report/figure/rex-pm-table-ceq50.png"))
 ```
 
 \clearpage
 
-```{r methods-spider, fig.cap="Caption here.", out.width="4in"}
+(ref:fig-methods-spider) This spider (or radar) plot illustrates performance metric trade-offs amongst a set of MPs.
+Each spoke of the web represents a performance metric (Section \@ref(sec:approach2)).
+Each line represents a management procedure.
+The position of each line on each spoke represents the probability of that management procedure achieving that performance metric.
+Therefore, lines closer to the outside of the web correspond to measure procedures that are determined to have a higher probability of achieving that performance metric.
+Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
+
+```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4in"}
 knitr::include_graphics(here::here("report/figure/rex-spider-cc-base.png"))
 ```
 
 \clearpage
 
-```{r methods-kobe, fig.cap="Caption here.", out.width="\\textwidth"}
+(ref:fig-methods-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations.
+The dots represent individual iterations.
+The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
+For example, the 0.50 (outermost) contour lines encompass approximately 50% of the iterations.
+
+```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq50.png"))
 ```
 
 \clearpage
 
-```{r methods-worm, fig.cap="Caption here.", out.width="\\textwidth"}
+(ref:fig-methods-worm) This visualization illustrates the time trajectory of B/B~MSY~ and F/F~MSY~ values summarized across iterations.
+The solid line corresponds to the median value.
+Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
+There is one diamond per year of the historical and projection period.
+The lines and diamonds change color over time and specific points in time are illustrated with symbols (first year, last historical year, and last projected year).
+
+```{r methods-worm, fig.cap="(ref:fig-methods-worm)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ```
 
 \clearpage
 
-```{r methods-sens, fig.cap="Caption here.", out.width="\\textwidth"}
+(ref:fig-methods-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
+A variety of MPs are illustrated across rows.
+Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data).
+For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year).
+For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel).
+Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50.
+Note that none of these panels show strong patterns of sensitivity.
+Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value.
+
+```{r methods-sens, fig.cap="(ref:fig-methods-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
 ```
 
 \clearpage
 
-```{r methods-proj-sens, fig.cap="Caption here.", out.width="\\textwidth"}
+(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY) to high and low values (colors) of various OM parameters (columns) over time.
+A variety of MPs are illustrated across rows.
+The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations.
+For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained in the middle third has been discarded.
+Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
+For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY.
+
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
 ```
