@@ -400,3 +400,44 @@ We developed projection plots that show the range of projected values in B/B[MSY
 
 We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
 
+\clearpage
+
+```{r methods-proj, fig.cap="Caption here.", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
+```
+
+\clearpage
+
+```{r methods-tigure, fig.cap="Caption here.", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/rex-pm-table-ceq50.png"))
+```
+
+\clearpage
+
+```{r methods-spider, fig.cap="Caption here.", out.width="4in"}
+knitr::include_graphics(here::here("report/figure/rex-spider-cc-base.png"))
+```
+
+\clearpage
+
+```{r methods-kobe, fig.cap="Caption here.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq50.png"))
+```
+
+\clearpage
+
+```{r methods-worm, fig.cap="Caption here.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
+```
+
+\clearpage
+
+```{r methods-sens, fig.cap="Caption here.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
+```
+
+\clearpage
+
+```{r methods-proj-sens, fig.cap="Caption here.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
+```
