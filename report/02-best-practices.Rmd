@@ -350,7 +350,11 @@ We recommend beginning with a satisficing step, where trial simulations are run 
 
 DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:fig-mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete. Performance is then evaluated through calculation of performance statistics in the OM. DLMtool makes use of the C++ programming language and parallel processing, making the simulations very computationally efficient [@carruthers2018].
 
-For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019].
+For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019]. This can be checked in DLMtool using the Converge function, which plots the performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:convergence_example)). *TODO: add a nicer convergence plot*
+
+```{r convergence_example, fig.cap="(ref:convergence_ex)", out.width="6.3in"}
+knitr::include_graphics(here::here("report/figure/Rex_Convergence.png.png"))
+```
 
 * We suggest only including replicates with MPs that converged (only applicable to the model-based MPs).
 

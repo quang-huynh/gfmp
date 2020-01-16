@@ -57,7 +57,7 @@ if (!file.exists(file_name)) {
   message("Loading closed-loop-simulation for base OM")
   rex_mse_base <- readRDS(file_name)
 }
-# DLMtool::Converge(rex_mse_base)
+DLMtool::Converge(rex_mse_base)
 # rex_mse_base@Misc$Data[[1]]@Ind
 
 rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
