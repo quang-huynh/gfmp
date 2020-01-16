@@ -474,11 +474,11 @@ knitr::include_graphics(here::here("report/figure/rex-pm-table-ceq50.png"))
 
 \clearpage
 
-(ref:fig-methods-spider) This spider (or radar) plot illustrates performance metric trade-offs amongst a set of MPs.
+(ref:fig-methods-spider) This spider (or radar) [@punt2016] plot illustrates performance metric trade-offs amongst a set of MPs.
 Each spoke of the web represents a performance metric (Section \@ref(sec:approach2)).
 Each line represents a management procedure.
-The position of each line on each spoke represents the probability of that management procedure achieving that performance metric.
-Therefore, lines closer to the outside of the web correspond to measure procedures that are determined to have a higher probability of achieving that performance metric.
+The position of each line on each spoke represents the probability of that MP achieving that performance metric.
+Therefore, lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4in"}
@@ -525,12 +525,12 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png
 
 \clearpage
 
-(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY) to high and low values (colors) of various OM parameters (columns) over time.
+(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
 A variety of MPs are illustrated across rows.
 The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations.
-For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained in the middle third has been discarded.
+For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded.
 Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
-For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY.
+For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
 
 ```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
