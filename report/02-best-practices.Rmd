@@ -54,10 +54,10 @@ Development of OMs is principally the responsibility of science, although input 
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES {#sec:best4}
 
-The scientific literature now reports many MPs for data-limited fisheries, more than 80 of which have been integrated into the DLMtool software [@carruthers2016; @carruthers2018]. Management procedures for fisheries managed by catch limits are generally either model-based, where data are integrated into a stock assessment model and outputs are used to calculate catch limits, or data-based, where data are used in an algorithm to directly determine the catch limit (e.g., adjustment of catch based on change in index of abundance) [@punt2016]. Data-based MPs can make use of a variety of data types including catch, population indices, fish lengths, and fish ages. 
+The scientific literature now reports many MPs for data-limited fisheries, more than 80 of which have been integrated into the DLMtool software [@carruthers2016; @carruthers2018]. Management procedures for fisheries managed by catch limits are generally either model-based, where data are integrated into a stock assessment model and outputs are used to calculate catch limits, or data-based, where data are used in an algorithm to directly determine the catch limit (e.g., adjustment of catch based on change in index of abundance) [@punt2016]. Data-based MPs can make use of a variety of data types including catch, population indices, fish lengths, and fish ages.
 
 Data-based MPs take data sampled from the system, such as a survey index, apply an algorithm, and make a catch recommendation. An example is the "Iratio" MP [@ices2012; @jardim2015], where the mean survey index value from the last two years is divided by the mean survey index value from the years three to five years before present. This provides a ratio indicating whether the survey has increased or decreased, which is then multiplied by the previous year's catch to generate a new catch recommendation.
-If the survey index has been trending up, then the catch recommendation will increase, and vice versa. 
+If the survey index has been trending up, then the catch recommendation will increase, and vice versa.
 
 Model-based MPs fit a statistical population model (e.g., surplus production model) to observed data to estimate biological reference points and stock biomass. These are then incorporated into a harvest control rule (e.g., Figure \@ref(fig:pa-illustration)) to determine the catch limit for the following year.
 
@@ -67,17 +67,26 @@ In general, identification of available MPs is the role of Science. Managers, st
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES {#sec:best5}
 
-Once the OM and MPs are fully specified, the MSE simulation trials can be run, following the process illustrated in Figure \@ref(fig:mse-chart). 
+Once the OM and MPs are fully specified, the MSE simulation trials can be run, following the process illustrated in Figure \@ref(fig:mse-chart).
 
 <!-- TODO: Give an example of a satisficing criteria -->
 
-After screening out MPs that are not consistent with management needs or that do not meet data requirements, there may still be a need to reduce the number of candidate MPs down to manageable set. Before embarking on final simulation runs, trial simulations may be used to screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP). Using trial simulations to screen out poorly-performing MPs has been termed "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted. Satisficing criteria may be used at the screening stage and can also be used at the final MP selection stage to help streamline the decision-making process. Satisficing criteria may be less strict at the preliminary screening stage, to ensure that potentially successful MPs are not screened out of the process too early.
+After screening out MPs that are not consistent with management needs or that do not meet data requirements, there may still be a need to reduce the number of candidate MPs to a manageable set.
+Before embarking on final simulation runs, trial simulations may be used to screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP).
+Using trial simulations to screen out poorly-performing MPs has been termed "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted.
+Satisficing criteria may be used at the screening stage and can also be used at the final MP selection stage to help streamline the decision-making process.
+Satisficing criteria may be less strict at the preliminary screening stage, to ensure that potentially successful MPs are not screened out of the process too early.
 
 The full set of satisficed MPs should then be tested in the simulation framework, using data generated by each OM. Critically, the simulations include feedback between the OM and the MP, where the OM generates data at each time step, which is used to apply the MP, which generates a catch recommendation, which is removed from the OM, which generates the next time step of data, and so forth until the projection period is complete.
 
-Typically, a large number of replicate simulations are run for each OM-MP combination. Replicates may differ in terms of OM process error, observation errors and random draws from ranges of OM parameters, meaning that each replicate provides a different set of simulated data to the MPs. The number of replicates should be selected to ensure that performance metrics can be calculated with adequate precision [@punt2016], which can be indicated by MPs being consistently ranked in the same order throughout the simulated projection period [@carruthers2018]. The MSE should output enough information to calculate performance metrics for the MPs, and also to evaluate the behaviour and performance of the MSE itself (e.g., whether all trials converged, ranges of OM parameter values, and trajectories of key OM variables such as biomass and catch). It is important to note that there will be feedback between the MPs and the data generated by the OM, as different MPs will be expected to impact the underlying system differently.
+Typically, a large number of replicate simulations are run for each OM-MP combination.
+Replicates may differ in terms of OM process error, observation errors and random draws from ranges of OM parameters, meaning that each replicate provides a different set of simulated data to the MPs.
+The number of replicates should be selected to ensure that performance metrics can be calculated with adequate precision [@punt2016], which can be indicated by MPs being consistently ranked in the same order throughout the simulated projection period [@carruthers2018].
+The MSE should output enough information to calculate performance metrics for the MPs, and also to evaluate the behaviour and performance of the MSE itself (e.g., whether all trials converged, ranges of OM parameter values, and trajectories of key OM variables such as biomass and catch).
+It is important to note that there will be feedback between the MPs and the data generated by the OM, as different MPs will be expected to impact the underlying system differently.
 
-Running the simulations is the role of Science. Feedback from managers, stakeholders and First Nations should be sought throughout the process, to enable iterative refinment of the models and outputs [e.g., @cox2008a].
+Running the simulations is the role of Science.
+Feedback from managers, stakeholders and First Nations should be sought throughout the process, to enable iterative refinment of the models and outputs [e.g., @cox2008a].
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE {#sec:best6}
 
@@ -142,9 +151,9 @@ DLMtool OMs are organised into four main components representing a real fished s
 
 DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution, typically a uniform distribution between two bounds. See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified. However, to isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one parameter or data source of interest.
 
-We recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].  
+We recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
 
-For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely prior probability distributions used for natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from unfished at the beginning of the projection period). 
+For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely prior probability distributions used for natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from unfished at the beginning of the projection period).
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
@@ -155,7 +164,7 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 * Alternative catch histories (e.g., for species such as rockfishes, which were historically reported under generic species names)
 * Implementation error (actual catches are above or below the TAC)
 
-To ensure transparency and reproducibility, we recommend that the full specification of all OM parameters be clearly documented in appendices attached to the working paper. 
+To ensure transparency and reproducibility, we recommend that the full specification of all OM parameters be clearly documented in appendices attached to the working paper.
 
 We note that DLMtool OMs includes a very large number of parameters that can vary through time, or which can be set to be deliberately biased. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time-invariant and unbiased (Appendix \@ref(app:default-slots)). Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already a accepted components of the stock assessment.
 
@@ -171,9 +180,9 @@ The SRA model is used to condition the following OM parameters:
 * annual recruitment deviations
 * selectivity parameters (if age or length composition data are included as inputs to the SRA)
 
-Further details on the SRA OM-calibration model are available in Appendix **TODO**. 
+Further details on the SRA OM-calibration model are available in Appendix **TODO**.
 
-For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognising that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level. 
+For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognising that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
 
 *TODO: improve this. What do we recommend?*
 Where there is no index of abundance, we recommend developing a wide range of uncalibrated OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
@@ -199,7 +208,7 @@ The SRA implementation in MSEtool includes stochastic sampling of the specified 
 
 -->
 
-We used DLMtool and MSEtool [@carruthers2018] to develop and calibrate OMs for two BC groundfish species, Rex Sole and Shortraker Rockfish to illustrate application of the framework. The reference and robustness sets of OMs are described in detail in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr) for Rex Sole and Shortraker Rockfish, respectively. 
+We used DLMtool and MSEtool [@carruthers2018] to develop and calibrate OMs for two BC groundfish species, Rex Sole and Shortraker Rockfish to illustrate application of the framework. The reference and robustness sets of OMs are described in detail in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr) for Rex Sole and Shortraker Rockfish, respectively.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
@@ -236,12 +245,12 @@ Importantly, constant-catch MPs do not incorporate feedback from the population-
 (3) Index-slope MPs [e.g., @geromont2015; @jardim2015] fit a regression to population index data and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
 
 (4) Index-target MPs [e.g., @geromont2015] compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
-In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs, 
+In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs,
 which compare recent index values to a moving window of index values as time progresses.
 
 We tailored many of the available data-based MPs to suit BC groundfish stocks (Appendix \@ref(app:MPs)).
 For example, most of the available survey data for BC groundfish are collected biennially in any one spatial region.
-Therefore, we modified many of the index-based MPs to reflect this reality. 
+Therefore, we modified many of the index-based MPs to reflect this reality.
 Typically, this involved adding variants of MPs that considered longer time windows when calculating averages or slopes to account for the fact that there was only half the available data compared to an annual survey.
 In other cases, we added alternative versions of MPs that encompassed a wider range of control variables.
 For example, the Islope MPs [@geromont2015] as originally described and implement it in DLMtool implicitly set the catch recommendation in the first year to 60--80% of the mean catch from the recent five years (assuming a neutral survey index). Since we do not a priori expect BC groundfish stocks to be overfished, we adjusted this control parameter in our provisional MPs to range between 80--100% of recent catch.
@@ -346,27 +355,37 @@ TODO: For discussion?
 
 Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:mse-chart-basic) and \@ref(fig:mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
 
-We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010]. For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75). This resulted in 11 final MPs (out of an initial 30 MPs), plus the four reference MPs. We recommend an iterative approach to selecting the satisficing criteria on a stock by stock basis. Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs. Similarly, criteria should be strict enough to filter out consistently under-performing MPs. We recommend selection of satisficing criteria be done iteratively with the technical committee.
+We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
+For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75).
+This resulted in 11 final MPs (out of an initial 30 MPs), plus the four reference MPs.
+We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
+Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs.
+Similarly, criteria should be strict enough to filter out consistently under-performing MPs.
+We recommend selection of satisficing criteria be done iteratively with the technical committee.
 
-DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete. Performance is then evaluated through calculation of performance statistics in the OM. DLMtool makes use of the C++ programming language and parallel processing, making the simulations very computationally efficient [@carruthers2018].
+DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete.
+Performance is then evaluated through calculation of performance statistics in the OM.
+DLMtool makes use of the C++ programming language and parallel processing, making the simulations computationally efficient [@carruthers2018].
 
-For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019]. This can be checked in DLMtool using the Converge function, which plots the performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:mse-chart-basic2)). *TODO: add a nicer convergence plot if we decide to keep it*
-
-(ref:fig-mse-chart-basic2) Illustration of the output of DLMtool's Converge function, showing the values of three performance metrics for all the tested MPs for Rex Sole. In this example, 100 replicates appears sufficient for the rank order of MPs to have stabilized.
-
-```{r mse-chart-basic2, fig.cap="(ref:fig-mse-chart-basic2)", out.width="6.3in"}
-knitr::include_graphics(here::here("report/figure/rex-converge.png"))
-```
+For each OM-MP combination, multiple replicate projections are run to account for observation and process errors in the data streams.
+This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination.
+We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019].
+This can be checked by plotting the cumulative performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:methods-converge)).
 
 *TODO: Other MSE diagnostics?*
 
-Performance statistics for each OM/MP combination are calculated and summarized across replicates. Care needs to be taken to clearly report how summary statistics are calculated. For example, whether averages are calculated across replicates, across time or across time and replicates. Similarly, it is important to report how probabilities are calculated. *TODO: should probably report how probabilities are calculated in DLMtool/our framework*
+Performance statistics for each OM/MP combination are calculated and summarized across replicates.
+Care needs to be taken to clearly report how summary statistics are calculated.
+For example, whether probabilities are calculated across replicates, across time, or across time and replicates.
+Similarly, it is important to report how probabilities are calculated.
+<!--*TODO: should probably report how probabilities are calculated in DLMtool/our framework*-->
+Provisionally, we calculate performance statistics across replicates and the entire time window as defined for the performance metric. For example, we calculate the LTY P40 performance metric across all iterations and years 36--50 simultaneously.
 
 *TODO: What is missing in this section?*
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
 
-<!-- This text copied from @rademeyer2007 ... paraphrase here and in best practices 
+<!-- This text copied from @rademeyer2007 ... paraphrase here and in best practices
 
 If uncertainties in the resource assessment are large, the construction
 of a reference set of OMs is preferable to the use of
@@ -408,7 +427,7 @@ We developed projection plots that show the range of projected values in B/B[MSY
 
 We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
 
-We demonstrate the provisional visualizations for a single operating model. 
+We demonstrate the provisional visualizations for a single operating model.
 
 Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend themselves well to comparing across operating models.
 
