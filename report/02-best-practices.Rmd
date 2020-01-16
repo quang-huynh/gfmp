@@ -227,12 +227,16 @@ Reliable and abundant age-composition data are generally not available for the d
 For the above reasons, we propose MPs that make use of only catch and population index data as provisional candidate MPs.
 
 We can divide MPs that make use of catch and/or population index data into four categories: constant catch, index ratio, index slope, and index target.
+
 (1) Constant-catch MPs [e.g., @geromont2015] set the recommended catch to some fixed level typically based on recent or historical catches.
 Importantly, constant-catch MPs do not incorporate feedback from the population---they make the same catch recommendation regardless of trends in the population index.
+
 (2) Index-ratio MPs [e.g., @ices2012; @jardim2015] base their catch recommendation on a ratio of a population index in one time period compared to another time period, generally an immediately recent period compared to a short period before it.
+
 (3) Index-slope MPs [e.g., @geromont2015; @jardim2015] fit a regression to population index data and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
+
 (4) Index-target MPs [e.g., @geromont2015] compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
-Im this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs, 
+In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs, 
 which compare recent index values to a moving window of index values as time progresses.
 
 We tailored many of the available data-based MPs to suit BC groundfish stocks (Appendix \@ref(app:MPs)).
@@ -244,11 +248,11 @@ For example, the Islope MPs [@geromont2015] as originally described and implemen
 
 ### Model-based MPs
 
-In addition to the data-based MPs, we suggest a surplus production model be considered amongst candidate MPs.
-We provisionally include the surplus production model (SPM) coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest inclusion of both a @schaefer1954 and @fox1970 production curve since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
-We suggest a weakly informative prior be set on the intrinsic greater population increase $r$ based on TODO. Alternative priors may be considered in alternative OMs.
+In addition to the data-based MPs, we suggest a surplus production model (SPM) be considered amongst candidate MPs.
+We provisionally include the SPM coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest inclusion of both a @schaefer1954 and @fox1970 production model since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
+We suggest a weakly informative prior probability distribution be set on the intrinsic greater population increase $r$ following the procedure in @mcallister2001. Alternative prior probability distributions could be considered in alternative OMs.
 
-The SP model estimates must be paired with an HCR to form a complete management procedure.
+The SPM estimates must be paired with an HCR to form a complete management procedure.
 We provisionally suggest the following HCRs:
 
 * HCR-MSY: Fish at the value of MSY estimated by the SPM at each time step.
@@ -340,15 +344,47 @@ TODO: For discussion?
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:approach5}
 
-* Once the OM and MPs are fully specified, DLMtool can be used to repeatedly simulate from the operating model and apply the management procedures.
+Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:fig-mse-chart-basic) and \@ref(fig:fig-mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
 
-* Replicates from run to run differ in  ...
+We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010]. For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75). This resulted in 11 final MPs (out of an initial 30 MPs), plus the four reference MPs. We recommend an iterative approach to selecting the satisficing criteria on a stock by stock basis. Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs. Similarly, criteria should be strict enough to filter out consistently under-performing MPs. We recommend selection of satisficing criteria be done iteratively with the technical committee.
 
-* We suggest that sufficient replicates be run until the rank order of the various MPs across the various performance metrics within any given operating model remains consistent.
+DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:fig-mse-chart)), where the OM is used to simulate the various data streams required by the MP at each time step, then the biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete. Performance is then evaluated through calculation of performance statistics in the OM. DLMtool makes use of the C++ programming language and parallel processing, making the simulations very computationally efficient [@carruthers2018].
+
+For each OM/MP combination, multiple replicate projections are run to account for observation and process errors in the data streams. This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP. Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007]. Typically, at least 100 replicate simulations are run for each OM/MP combination. We suggest selecting sufficient replicates so that a stable rank order of MPs across the performance metrics remains consistent among replicates [@carruthers_user_2019]. *TODO: improve explanation of selection of number of reps*
 
 * We suggest only including replicates with MPs that converged (only applicable to the model-based MPs).
 
+For model-based MPs
+
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
+
+<<!-- This text copied from @rademeyer2007 ... paraphrase here and in best practices 
+
+If uncertainties in the resource assessment are large, the construction
+of a reference set of OMs is preferable to the use of
+a single reference case OM. CMPs are then tuned to secure the desired trade-offs. Work should focus first on developing CMPs that perform satisfactorily for the reference set.
+
+Initial evaluations of CMPs should focus on robustness tests
+against OMs, demonstrating the widest difference in resource
+behaviour from the reference set.
+
+The basis for selecting the final MP among CMPs has to be clear
+to all stakeholders and should be made as simple as can be justified.
+A useful approach is to focus on a few key performance
+statistics whose results are combined over all OMs included in
+a reference set, after appropriate weighting by their relative
+plausibilities.
+
+It is always useful to compare performances for both empirical
+and model-based MPs, but the latter, when based on an age-aggregated population model, often prove a prudent choice.
+
+The performance statistics chosen to aid a selection among
+CMPs need to be meaningful to all stakeholders, and careful
+thought needs to be given on how best to present these to
+permit easy comparison.
+
+-->
+
 
 For this step we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
 

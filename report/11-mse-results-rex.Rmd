@@ -13,7 +13,7 @@ library(gfdlm)
 library(MSEtool)
 ```
 
-# REX SOLE CASE STUDY: RESULTS
+# REX SOLE CASE STUDY: RESULTS {#app:mse-rex}
 
 ```{r}
 mp <- readr::read_csv(here::here("report", "mp.txt"), comment = "#")
