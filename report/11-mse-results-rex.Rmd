@@ -16,7 +16,7 @@ library(MSEtool)
 # REX SOLE CASE STUDY: RESULTS {#app:mse-rex}
 
 ```{r}
-mp <- readr::read_csv(here::here("report", "mp.txt"), comment = "#")
+mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
 csasdown::csas_table(mp, caption = "MPs")
 ```
