@@ -204,9 +204,9 @@ fleet_default@qcv <- c(0, 0)
 <!-- slot-chunk-begin -->
 ### SelYears {#app:desc-fleet-selyears-default}
 
+*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Years representing join-points (vertices) at which historical selectivity pattern changes. Vector. Positive real numbers.*
 
 ```{r desc-fleet-selyears-default, results = knitr_results, echo = knitr_echo}
 fleet_default@SelYears
@@ -215,9 +215,9 @@ fleet_default@SelYears
 <!-- slot-chunk-begin -->
 ### AbsSelYears {#app:desc-fleet-absselyears-default}
 
+*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Calendar years corresponding with SelYears (eg 1951, rather than 1), used for plotting only. Vector (of same length as SelYears). Positive real numbers.*
 
 ```{r desc-fleet-absselyears-default, results = knitr_results, echo = knitr_echo}
 fleet_default@AbsSelYears
@@ -226,9 +226,9 @@ fleet_default@AbsSelYears
 <!-- slot-chunk-begin -->
 ### L5Lower {#app:desc-fleet-l5lower-default}
 
+*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 ```{r desc-fleet-l5lower-default, results = knitr_results, echo = knitr_echo}
 fleet_default@L5Lower
@@ -237,9 +237,9 @@ fleet_default@L5Lower
 <!-- slot-chunk-begin -->
 ### L5Upper {#app:desc-fleet-l5upper-default}
 
+*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 ```{r desc-fleet-l5upper-default, results = knitr_results, echo = knitr_echo}
 fleet_default@L5Upper
@@ -248,9 +248,9 @@ fleet_default@L5Upper
 <!-- slot-chunk-begin -->
 ### LFSLower {#app:desc-fleet-lfslower-default}
 
+*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 ```{r desc-fleet-lfslower-default, results = knitr_results, echo = knitr_echo}
 fleet_default@LFSLower
@@ -259,9 +259,9 @@ fleet_default@LFSLower
 <!-- slot-chunk-begin -->
 ### LFSUpper {#app:desc-fleet-lfsupper-default}
 
+*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
 
 ```{r desc-fleet-lfsupper-default, results = knitr_results, echo = knitr_echo}
 fleet_default@LFSUpper
@@ -270,9 +270,9 @@ fleet_default@LFSUpper
 <!-- slot-chunk-begin -->
 ### VmaxLower {#app:desc-fleet-vmaxlower-default}
 
+*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
 We will not use this functionality by default.
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
 ```{r desc-fleet-vmaxlower-default, results = knitr_results, echo = knitr_echo}
 fleet_default@VmaxLower
@@ -281,9 +281,9 @@ fleet_default@VmaxLower
 <!-- slot-chunk-begin -->
 ### VmaxUpper {#app:desc-fleet-vmaxupper-default}
 
+*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
 We will not use this functionality by default.
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
 
 ```{r desc-fleet-vmaxupper-default, results = knitr_results, echo = knitr_echo}
 fleet_default@VmaxUpper
@@ -298,6 +298,24 @@ We will not use this functionality by default.
 
 ```{r desc-fleet-mpa-default, results = knitr_results, echo = knitr_echo}
 fleet_default@MPA
+```
+<!-- slot-chunk-end -->
+
+## DEFAULT OBSERVATION SLOTS {#app:desc-obs-default}
+
+```{r warnings = FALSE}
+obs_default <- methods::new('Obs')
+```
+
+<!-- slot-chunk-begin -->
+### Crefbiascv {#app:desc-obs-crefbiascv-rex}
+
+*Log-normal CV for sampling persistent bias in MSY. Uniform distribution lower and upper bounds.*
+
+The provisional MPs do not make use of this slot.
+
+```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
+obs_default@Crefbiascv
 ```
 <!-- slot-chunk-end -->
 

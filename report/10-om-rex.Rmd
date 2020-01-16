@@ -184,9 +184,9 @@ stock_rex@AC <- c(0.2, 0.7)
 
 We do not have ages in our database to fit a von Bertalanffy model, but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
 
-```{r rex-length1, echo=FALSE}
+```{r rex-length1, echo=TRUE}
 rex_lengths <- dplyr::filter(drex$survey_samples, !is.na(length))
-hist(rex_lengths$length)
+hist(rex_lengths$length, breaks = 50)
 ```
 
 We can look at the 95%, 99%, and 100% quantiles for males and then for females:
@@ -411,12 +411,12 @@ if (!file.exists(fi)) {
 quantile(rex_commercial$length,
   probs = c(0.000, 0.005, 0.01, 0.025, 0.050, 0.500), na.rm = TRUE
 )
-hist(rex_commercial$length)
+hist(rex_commercial$length, breaks = 50)
 ```
 
-We can look at the number of fish sample below various thresholds for length:
+We can look at the number of fish sampled below various thresholds for length:
 
-```{r min-caught-rex3}
+```{r min-caught-rex3, echo=TRUE}
 dplyr::filter(rex_commercial, length <= 14) %>% nrow()
 dplyr::filter(rex_commercial, length <= 15) %>% nrow()
 dplyr::filter(rex_commercial, length <= 16) %>% nrow()
@@ -425,7 +425,7 @@ dplyr::filter(rex_commercial, length <= 17) %>% nrow()
 
 Let's pick a range based on those values:
 
-```{r min-caught-rex4}
+```{r min-caught-rex4, echo=TRUE}
 l5 <- c(16, 18)
 ```
 
@@ -433,7 +433,7 @@ Based on the slot `isRel` below, this slot needs to be converted into a proporti
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@L5 <- c(l5[1] / stock_rex@L50[[2]], l5[2] / stock_rex@L50[[1]])
-fleet_rex@L5
+round(fleet_rex@L5, 2)
 ```
 <!-- slot-chunk-end -->
 
@@ -442,7 +442,7 @@ fleet_rex@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds.*
 
-We can look at a comparison of the commercial (from the entire coast) and survey samples (from WCVI) with the commercial samples shown is a histogram in the survey samples shown as line density. We will indicated the lower and upper bounds of the `L50` (length at 50% maturity) slot with red lines.
+We can look at a comparison of the commercial (from the entire coast) and survey samples (from WCVI) with the commercial samples shown is a histogram in the survey samples shown as line density. We will indicate the lower and upper bounds of the `L50` (length at 50% maturity) slot with red lines.
 
 ```{r}
 hist(rex_commercial$length, xlim = c(5, 60), breaks = 50)
@@ -493,7 +493,7 @@ fleet_rex@isRel <- TRUE
 
 *Shortest length corresponding ot 5% retention. Uniform distribution lower and upper bounds.*
 
-We will assume this is 1/4 of `Linf` for now. TODO: Ask industry.
+We will assume this is 1/4 of `Linf`. This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
 
 ```{r desc-fleet-lr5-rex, results = knitr_results, echo = knitr_echo}
 quarter_linf <- stock_rex@Linf / 4
@@ -506,10 +506,9 @@ fleet_rex@LR5 <- c(quarter_linf, quarter_linf)
 
 *Shortest length that is fully retained. Uniform distribution lower and upper bounds.*
 
-We will assume this is 1/2 of `Linf` for now. TODO: Ask industry.
+We will assume this is 1/2 of `Linf`. This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
 
 ```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
-
 half_linf <- stock_rex@Linf / 2
 fleet_rex@LFR <- c(half_linf, half_linf)
 ```
@@ -520,7 +519,7 @@ fleet_rex@LFR <- c(half_linf, half_linf)
 
 *The retention of fish at `Linf`. Uniform distribution lower and upper bounds.*
 
-We do not have any length data on discards but assume that they will be retained if they are large (at `Linf`).
+We do not have any length data on discards but assume that they will be retained if they are large (at `Linf`). This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
 
 ```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@Rmaxlen <- c(1, 1)
@@ -551,6 +550,8 @@ fleet_rex@CurrentYr <- 2018
 <!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
+
+We will start with a built-in observation object and substitute values as we go:
 
 ```{r warnings = FALSE}
 obs_rex <- DLMtool::Precise_Unbiased
@@ -626,6 +627,8 @@ obs_rex@CAA_ESS <- c(50, 100)
 
 The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000.
 
+This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+
 ```{r desc-obs-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@CAL_nsamp <- c(3000, 4000)
 obs_rex@CAL_nsamp
@@ -639,6 +642,8 @@ obs_rex@CAL_nsamp
 
 Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 100 to 400, depending on the year.
 
+This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+
 ```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@CAL_ESS <- c(100, 400)
 ```
@@ -649,17 +654,17 @@ obs_rex@CAL_ESS <- c(100, 400)
 
 *Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
-This will get replaced by the SRA conditioning model with the actual annual values. For now, we will fill this with the range of CV for the survey.
+This will get replaced by the SRA conditioning model with the actual annual values.
 
 ```{r}
 rex_cv_range <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
   dplyr::pull(re) %>%
   range() %>%
   round(2)
+obs_rex@Iobs <- rex_cv_range
 ```
 
 ```{r desc-obs-iobs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Iobs <- rex_cv_range
 obs_rex@Iobs
 ```
 <!-- slot-chunk-end -->
@@ -669,20 +674,10 @@ obs_rex@Iobs
 
 *A parameter controlling hyperstability/hyperdepletion where values below 1 lead to hyperstability (an index that decreases more slowly than true abundance) and values above 1 lead to hyperdepletion (an index that decreases more rapidly than true abundance). Uniform distribution lower and upper bounds.*
 
-We will set this to 1 to imply no hyperstability or hyperdepletion. This may be an important slot to explore as part of the robustness set since many candidate MPs in this framework rely on the survey index.
+We will set this to 1 to imply no hyperstability or hyperdepletion of the synoptic trawl survey population index.
 
 ```{r desc-obs-beta-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@beta <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Crefbiascv {#app:desc-obs-crefbiascv-rex}
-
-*Log-normal CV for sampling persistent bias in MSY. Uniform distribution lower and upper bounds.*
-
-```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Crefbiascv
 ```
 <!-- slot-chunk-end -->
 
