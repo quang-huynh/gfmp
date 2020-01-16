@@ -223,6 +223,9 @@ make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
 .d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
 .d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
 .d <- filter(.d2, real_year >= 2019)
+.d <- filter(.d2)
+
+now <- filter(.d2, real_year == 2018)
 
 m <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "m") %>%
   rename(b_m = B_BMSY, f_m = F_FMSY)
@@ -233,6 +236,8 @@ u <- reshape2::dcast(.d, mp_name + real_year ~ Type, value.var = "u") %>%
 dd <- left_join(m, l, by = c("mp_name", "real_year")) %>%
   left_join(u, by = c("mp_name", "real_year"))
 
+
+
 poly_df <- split(dd, paste(dd$mp_name, dd$real_year)) %>%
   map_df(~ data.frame(
     x = c(.$b_m, .$b_l, .$b_m, .$b_u, .$b_m),
@@ -241,20 +246,39 @@ poly_df <- split(dd, paste(dd$mp_name, dd$real_year)) %>%
     mp_name = unique(.$mp_name), stringsAsFactors = FALSE)
   )
 
-dd %>%
+
+now <- filter(.d2, real_year == 2018)
+now_m <- reshape2::dcast(now, mp_name + real_year ~ Type, value.var = "m") %>%
+  rename(b_m = B_BMSY, f_m = F_FMSY)
+end <- filter(.d2, real_year == max(.d2$real_year))
+end_m <- reshape2::dcast(end, mp_name + real_year ~ Type, value.var = "m") %>%
+  rename(b_m = B_BMSY, f_m = F_FMSY)
+start <- filter(.d2, real_year == min(.d2$real_year))
+start_m <- reshape2::dcast(start, mp_name + real_year ~ Type, value.var = "m") %>%
+  rename(b_m = B_BMSY, f_m = F_FMSY)
+other <- bind_rows(now_m, end_m) %>%
+  bind_rows(start_m)
+
+g <- dd %>%
   mutate(b_rad = abs(b_u - b_l)/2) %>%
   mutate(f_rad = abs(f_u - f_l)/2) %>%
   ggplot(aes(b_m, f_m, colour = real_year)) +
   geom_polygon(aes(x = x, y = y, fill = real_year, group = real_year),
-    data = poly_df, alpha = 0.08, inherit.aes = FALSE, colour = NA) +
-  geom_path(lwd = 1.5, lineend = "round", linejoin = "bevel") +
+    data = poly_df, alpha = 0.2, inherit.aes = FALSE, colour = NA) +
+  geom_path(lwd = 1.6, lineend = "round", linejoin = "bevel", colour = "white") +
+  geom_path(lwd = 1.0, lineend = "round", linejoin = "bevel") +
   scale_color_viridis_c(option = "C", direction = -1) +
   scale_fill_viridis_c(option = "C", direction = -1) +
   gfplot::theme_pbs() + facet_wrap(~mp_name) +
-  coord_cartesian(xlim = c(0, 4), ylim = c(0, 4)) +
+  coord_fixed(xlim = c(0, 3), ylim = c(0, 3)) +
   geom_vline(xintercept = c(0.4, 0.8), lty = 2, alpha = 0.2, lwd = 0.5) +
   geom_hline(yintercept = 1, lty = 2, alpha = 0.2, lwd = 0.5) +
-  labs(fill = "Year", colour = "Year", x = expression(B/B[MSY]), y = expression(F/F[MSY]))
+  labs(fill = "Year", colour = "Year", x = expression(B/B[MSY]), y = expression(F/F[MSY]), pch = "Year") +
+  geom_point(data = other, mapping = aes(x = b_m, y = f_m, pch = as.factor(real_year)), inherit.aes = FALSE, col = "white", stroke = 1.6) +
+  geom_point(data = other, mapping = aes(x = b_m, y = f_m, pch = as.factor(real_year)), inherit.aes = FALSE, col = "black", stroke = 1) +
+  scale_shape_manual(values = c(2, 4, 21))
+
+ggsave(file.path(fig_dir, "rex-neon-worms-base.png"), width = 8, height = 6.6)
 
 # Sensitivity plots -----------------------------------------------------------
 
