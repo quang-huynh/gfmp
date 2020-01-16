@@ -11,7 +11,7 @@ address: |
   ^1^Pacific Biological Station\
      Fisheries and Oceans Canada, 3190 Hammond Bay Road\
      Nanaimo, British Columbia, V9T 6N7, Canada\
-year: 2019
+year: 2020
 report_number: nnn
 region: Pacific Region
 abstract: |
