@@ -143,11 +143,11 @@ In the equilibrium yield curve,  $F^{\textrm{eq}}_f$ would be the fishing mortal
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated as:
 
 \begin{equation}
-R^{\textrm{eq}} = \dfrac{\alpha^{\textrm{BH}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{BH}}\phi^{\textrm{eq}}} & \textrm{if Beverton-Holt stock-recruit relationship},
+R^{\textrm{eq}} = \dfrac{\alpha^{\textrm{BH}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{BH}}\phi^{\textrm{eq}}},
 \end{equation}
 
 where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^{\textrm{eq}}_a$.
-From steepness $h$, $\alpha^{\textrm{BH}} = \frac{4h}{(1-h)\phi_0}$, $\beta^{\textrm{BH}} = \frac{5h-1}{(1-h)B^S_0}$, $\alpha^{\textrm{Ricker}} = \frac{(5h)^{1.25}}{\phi_0}$, $\beta^{\textrm{Ricker}} = \frac{\log(5h)}{B^S_0}$, where $\phi_0$ and $B^S_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
+From steepness $h$, $\alpha^{\textrm{BH}} = \frac{4h}{(1-h)\phi_0}$, $\beta^{\textrm{BH}} = \frac{5h-1}{(1-h)B^S_0}$, where $\phi_0$ and $B^S_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
 
 ### Dynamics equations
 
@@ -167,11 +167,7 @@ where $R_y$ is the recruitment and $A$ is the maximum-age as the plus-group.
 Recruitment is modelled as
 
 \begin{equation}
-R_y =
-\begin{cases}
-      \dfrac{\alpha^{\textrm{BH}} B^S_{y-1}}{1 + \beta^{\textrm{BH}}B^S_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{if Beverton-Holt stock-recruit relationship}\\
-      \alpha^{\textrm{Ricker}} B^S_{y-1} \exp(-\beta^{\textrm{Ricker}} B^S_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{if Ricker stock-recruit relationship}
-\end{cases},
+R_y = \dfrac{\alpha^{\textrm{BH}} B^S_{y-1}}{1 + \beta^{\textrm{BH}}B^S_{y-1}} \exp(\delta_y - 0.5 \tau^2),
 \end{equation}
 
 where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates.
