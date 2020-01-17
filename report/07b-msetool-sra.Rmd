@@ -87,9 +87,7 @@ Historical OM parameters that are updated by the SRA scoping function include:
 
 If initial depletion is estimated, then the recruitment deviations `OM@cpars$Perr_y` for the operating model are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model.
 
-The SRA model will estimate and return R0 when conditioned on catch. When conditioning on effort, the model is generally scale-independent; there can be information to inform depletion but not the stock size.
-
-The exception occurs when the SRA is conditioned on effort from multiple-fleets, in which case, catch data from all fleets (incomplete series are acceptable) are needed to inform the relative F's among fleets. In this scenario, R0 is estimated.
+The SRA model will estimate and return R0 when conditioned on catch (as we do here).
 
 Additionally, if multiple fleets are used for conditioning, then the annual selectivity can change based on the relative F among fleets. In this case, the annual selectivity is passed from the OM output in the `OM@cpars$V` slot. The default assumption in the projection period of the closed-loop simulation is that the selectivity and relative F among fleets are identical to those in the last historical year. Fleet allocation in management procedures can be explored in `multiMSE`, see `vignette("multiMSE")`.
 
@@ -233,7 +231,7 @@ The proportion of the catch-at-length is
 p_{y,\ell,f} = \dfrac{C^N_{y,\ell,f}}{\sum_{\ell}C^N_{y,\ell,f}}.
 \end{equation}
 
-## Likelihoods
+### Likelihoods
 
 The log-likelihood component $\Lambda_1$ of the catch is
 
