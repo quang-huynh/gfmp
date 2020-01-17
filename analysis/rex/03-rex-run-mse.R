@@ -9,10 +9,10 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("ceq0", "ceq10", "ceq50",
-  "ceq100")
-scenarios_human <- c("Catch eq. 0%", "Catch eq. 10%", "Catch eq. 50%",
-  "Catch eq. 100%")
+scenarios <- c("ceq50", "ceq0","ceq10","ceq100", "ceq200", "high-m", "low-h", "high-h")
+scenarios_human <- c("Catch eq. 50%","Catch eq. 0%", "Catch eq. 10%",  "Catch eq. 100%", "Catch eq. 200%", "M = 0.25", "h = 0.4-0.6", "h = 0.95")
+
+
 .nsim <- 100
 base_om <- "ceq50"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
