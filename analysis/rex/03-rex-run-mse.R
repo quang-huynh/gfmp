@@ -192,6 +192,20 @@ plot_grid_pbs <- function(plotlist, align = "hv",
   out
 }
 
+mp_groups <- dplyr::filter(mp, mp %in% rex_satisficed_ref) %>%
+  mutate(type_temp = ifelse(type %in% c("Constant catch", "Index ratio"),
+    "Constant catch/Index ratio", type))
+spider_plots <- mp_groups %>%
+  split(.$type_temp) %>%
+  map(~ make_spider(scenario = base_om, MPs = .$mp, save_plot = FALSE))
+g <- plot_grid_pbs(
+  plotlist = spider_plots,
+  labels = unique(mp_groups$type_temp)
+)
+ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-groups.png")),
+  width = 9, height = 7.5
+)
+
 # Make multipanel plot of satisficed spider plots for all scenarios
 spider_plots <- map(scenarios, make_spider,
   MPs = rex_satisficed,

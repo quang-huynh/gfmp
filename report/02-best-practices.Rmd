@@ -481,8 +481,8 @@ The position of each line on each spoke represents the probability of that MP ac
 Therefore, lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
 
-```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
+```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-groups.png"))
 ```
 
 \clearpage
