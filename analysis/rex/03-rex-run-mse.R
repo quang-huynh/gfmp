@@ -8,12 +8,20 @@ library(here)
 
 # Settings: -------------------------------------------------------------------
 
-cores <- floor(parallel::detectCores() / 1)
-scenarios <- c("ceq50", "ceq0","ceq10","ceq100", "ceq200", "high-m", "low-h", "high-h")
-scenarios_human <- c("Catch eq. 50%","Catch eq. 0%", "Catch eq. 10%",  "Catch eq. 100%", "Catch eq. 200%", "M = 0.25", "h = 0.4-0.6", "h = 0.95")
+cores <- floor(parallel::detectCores() / 2)
+scenarios <- c(
+  "ceq50", "ceq0", "ceq10",
+  "ceq100", "ceq200", "high-m",
+  "low-h", "high-h", "inc-m"
+)
+scenarios_human <- c(
+  "Catch eq. 50%","Catch eq. 0%", "Catch eq. 10%",
+  "Catch eq. 100%", "Catch eq. 200%", "M = 0.25",
+  "h = 0.4-0.6", "h = 0.95", "M increasing"
+)
+tibble(scenarios, scenarios_human) # look good?
 
-
-.nsim <- 100
+nsim <- 200
 base_om <- "ceq50"
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 
@@ -38,7 +46,9 @@ omrex <- map(scenarios, ~ {
     "generated-data",
     paste0("rex-sra-", .x, ".rds")
   ))@OM
-  om@nsim <- .nsim
+  if (om@nsim > nsim)
+    stop("nsim set larger than in conditioned OM.", call. = FALSE)
+  om@nsim <- nsim
   om@interval <- 2
   om
 })
@@ -60,19 +70,21 @@ if (!file.exists(file_name)) {
 
 rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.75) %>%
+rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.9, STY > 0.7) %>%
   arrange(-`LT P40`) %>%
   pull(MP)
 rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+rex_satisficed
 stopifnot(length(rex_satisficed) > 1)
 rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
 stopifnot(length(rex_not_satisficed) > 1)
 
 top_mps <- dplyr::filter(rex_probs, !MP %in% reference_mp) %>%
-  top_n(8, wt = `LT P80`) %>% dplyr::pull(MP)
+  dplyr::filter(`LT P40` > 0.9, STY > 0.7) %>%
+  top_n(9, wt = `LT P40`) %>% dplyr::pull(MP)
 g <- DLMtool::Sub(rex_mse_base, MPs = top_mps) %>%
-  gfdlm::plot_convergence(PM, ylim = c(0.82, 1)) +
+  gfdlm::plot_convergence(PM, ylim = c(0.75, 1)) +
   scale_color_brewer(palette = "Set2") +
   facet_wrap(vars(pm_name), ncol = 2)
 ggsave(file.path(fig_dir, "rex-converge.png"), width = 6.5, height = 6.5)
@@ -201,9 +213,7 @@ g <- plot_grid_pbs(
   plotlist = spider_plots,
   labels = scenarios_human
 )
-ggsave(file.path(fig_dir, paste0("rex-spider-satisficed-panel.png")),
-  width = 9, height = 8
-)
+ggsave(file.path(fig_dir, "rex-spider-satisficed-panel.png"), width = 9, height = 8)
 
 # Make multipanel plot of spider plots for all MPtypes - Base scenario only
 type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
