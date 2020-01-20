@@ -469,7 +469,7 @@ The MPs are ordered by decreasing performance metric values from top to bottom s
 The color shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-ceq50.png"))
+knitr::include_graphics(here::here("report/figure/rex-pm-table-base.png"))
 ```
 
 \clearpage

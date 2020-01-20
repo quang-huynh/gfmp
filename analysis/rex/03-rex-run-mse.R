@@ -9,16 +9,10 @@ library(here)
 # Settings: -------------------------------------------------------------------
 
 cores <- floor(parallel::detectCores() / 2)
-scenarios <- c(
-  "ceq50", "ceq0",
-  "ceq100", "ceq200", "high-m",
-  "low-h", "high-h", "inc-m", "dec-m"
-)
-scenarios_human <- c(
-  "Catch eq. 50%","Catch eq. 0%",
-  "Catch eq. 100%", "Catch eq. 200%", "M = 0.25",
-  "h = 0.5-0.7", "h = 0.95", "M increasing", "M decreasing"
-)
+sc <- readRDS("generated-data/rex-scenarios.rds")
+sc <- filter(sc, scenario != "ceq200")
+scenarios <- sc$scenario
+scenarios_human <- sc$scenarios_human
 tibble(scenarios, scenarios_human) # look good?
 
 nsim <- 200
@@ -50,7 +44,7 @@ omrex <- map(scenarios, ~ {
     "generated-data",
     paste0("rex-sra-", .x, ".rds")
   ))@OM
-  if (om@nsim > nsim)
+  if (om@nsim < nsim)
     stop("nsim set larger than in conditioned OM.", call. = FALSE)
   om@nsim <- nsim
   om@interval <- 2
@@ -114,7 +108,7 @@ fit_scenario <- function(scenario) {
 }
 rex_mse_scenarios <- map(scenarios[-base_i], fit_scenario)
 rex_mse <- c(rex_mse_base, rex_mse_scenarios)
-names(rex_mse) <- c(scenarios[base_i], scenarios[-base_i])
+names(rex_mse) <- c(as.character(scenarios[base_i]), as.character(scenarios[-base_i]))
 
 # Plots ---------------------------------------------------------
 
@@ -152,7 +146,7 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5,
   #     axis.title.y = element_blank()
   #   )
 
-  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.18), align = "hv")
+  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.18), align = "h")
   ggsave(file.path(
     fig_dir,
     paste0("rex-projections-", mptype, "-", scenario, ".png")
@@ -181,7 +175,8 @@ make_kobe_plot <- function(scenario, MPs, mptype, ...) {
   )
 }
 
-make_spider <- function(scenario, MPs, mptype, save_plot = TRUE, custom_pal = NULL, legend = TRUE) {
+make_spider <- function(scenario, MPs, mptype, save_plot = TRUE,
+                        custom_pal = NULL, legend = TRUE) {
   g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
     gfdlm::spider(pm_list = PM, palette = "Set2")
   if (length(MPs) > 8)
@@ -216,7 +211,8 @@ plot_grid_pbs <- function(plotlist, align = "hv",
   out
 }
 
-p <- gfdlm::get_probs(rex_mse[[base_i]], PM)
+# 1 is always base:
+p <- gfdlm::get_probs(rex_mse[[1L]], PM)
 g <- gfdlm::plot_probs(p)
 ggsave(file.path(fig_dir, paste0("rex-pm-table-", "base", ".png")),
   width = 4.25, height = 6.5
@@ -236,7 +232,8 @@ walk(scenarios, make_kobe_plot,
   mptype = "satisficed"
 )
 
-custom_pal <- c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"), "grey60", "grey20", "grey85")
+custom_pal <- c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"),
+  "grey60", "grey20", "grey85")
 names(custom_pal) <- rex_satisficed_ref
 custom_pal
 spider_plots <- purrr::map(scenarios, make_spider,
@@ -273,6 +270,37 @@ make_projection_plot(base_om, MPs = rex_not_satisficed,
   mptype = "NOT-satisficed", height = 27)
 make_kobe_plot(base_om, MPs = rex_not_satisficed, mptype = "NOT-satisficed",
   show_contours = FALSE)
+# Example not satisficed ones:
+toplot <- c(
+  "CC_hist",
+  # "CC_hist20",
+  # "CC100",
+  "CC90",
+  # "CC80",
+  # "CC70",
+  # "CC60",
+  # ".GB_slope6_0.66",
+  ".GB_slope8_0.66",
+  # ".GB_slope8_1",
+  ".Islope0.2_80",
+  # ".Islope0.2_100",
+  # ".Islope0.4_80",
+  # ".Islope0.4_100",
+  ".ICI2",
+  # ".IDX",
+  ".IDX_smooth",
+  # ".IT10_hist",
+  ".IT5_hist",
+  # ".Itarget5",
+  ".ITM_hist",
+  # ".SP4010_prior",
+  ".SP6040_prior"
+  # ".SP8040_prior"
+)
+make_projection_plot(base_om, MPs = toplot[toplot %in% rex_not_satisficed],
+  mptype = "eg-NOT-satisficed", height = 9,
+  catch_breaks = c(0, 100000, 200000),
+  catch_labels = c("0", "100", "200"))
 
 # Psychedelic pyramid worms ---------------------------------------------------
 

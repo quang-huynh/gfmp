@@ -1,21 +1,8 @@
 \clearpage
 
-FIXME: the following code chunks have been mostly commented out and current development is happening in `analysis/rex/`.
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
-if (!file.exists(here::here("generated-data", "rex-om-sra.rds"))) {
-  source(here::here("sra/sra-data-rex.R"))
-}
-library(DLMtool)
-library(dplyr)
-library(ggplot2)
-library(gfdlm)
-library(MSEtool)
-```
-
 # REX SOLE CASE STUDY: RESULTS {#app:mse-rex}
 
-```{r}
+```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
 csasdown::csas_table(mp, caption = "MPs")
@@ -33,20 +20,21 @@ The performance metrics are defined as:
 1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
 where SB is spawning biomass.
-  
-```{r}
-omrex_sra <- readRDS(here::here("generated-data", "rex-sra.rds"))
-omrex <- omrex_sra@OM
-omrex@interval <- 2
-omrex@nsim <- 48
-```
+
+Reference set:
+
+```{r rex-scen, results='asis'}
+sc <- readRDS(here::here("generated-data/rex-scenarios.rds"))
+sc %>% 
+  select(-scenario_robot, -order) %>%
+csasdown::csas_table(caption = "Rex Sole scenarios")
+``` 
+
+
+## Conditioning
 
 ```{r}
-# rex_historical <- runMSE(omrex, Hist = TRUE, parallel = FALSE)
-```
 
-```{r, fig.cap="Historical trajectories from the Rex Sole WCVI operating model. Light shaded region represents the upper and lower bounds of the historical simulation. Thin grey lines represent 50 draws from the simulation. The numbers are relative to the chosen scale of the simulation.", fig.width=9.5, out.width="5in"}
-# catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
 # g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
 #   xlab("")
 # g2 <- gfdlm::plot_historical_ts(rex_historical, type = "SSB") +
@@ -61,166 +49,145 @@ omrex@nsim <- 48
 # cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
 ```
 
-```{r}
-file_name <- here::here("generated-data", "rex-mse2.rds")
-# omrex@cpars$Data <- NULL # bug
-# 
-# # sp_debug <- function (x, Data, reps = 1) {
-# #   dependencies <- "Data@Cat, Data@Ind"
-# #   do_Assessment <- SP(x = x, Data = Data)
-# #   Rec <- HCR_MSY(Assessment = do_Assessment, reps = reps)
-# #   if (x == 2 && max(Data@Year) > 28) {
-# #     print(max(Data@Year))
-# #     print(Rec)
-# #     plot(do_Assessment)
-# #     browser()
-# #   }
-# #   Rec@Misc <- MSEtool:::Assess_diagnostic(x, Data, do_Assessment, include_assessment = FALSE)
-# #   return(Rec)
-# # }
-# # class(sp_debug) <- "MP"
-# # 
-# # SP_prior <- MSEtool::SP
-# # formals(SP_prior)$use_r_prior <- TRUE
-# # class(SP_prior) <- "Assess"
-# # SP4010_prior <- MSEtool::make_MP("SP_prior", "HCR_ramp", LRP = 0.1, TRP = 0.4, RP_type = "SSB_SSB0")
-# 
-# # ---------------------------------------------------------
-# 
-# # omrex@TACSD <- c(0, 0)
-# # omrex@nsim <- 48
-# # omrex@seed <- 1
-# # omrex@interval <- 2
-# # omrex@DR <- 0
-# # rex_mse <- runMSE(OM = omrex, MPs = c("FMSYref75"))
-# # Data <- rex_mse@Misc$Data[[1]]
-# # r_priors <- purrr::map_dbl(1:omrex@nsim, ~mean(MSEtool:::r_prior_fn(.x, Data)))
-# # mean(r_priors)
-# # sd(r_priors)
-# 
-# if (!file.exists(file_name)) {
-#   DLMtool::setup(cpus = floor(parallel::detectCores()/2))
-#   snowfall::sfExport('.SP4010_prior', '.SP6040_prior', '.SP8040_prior')
-#   omrex@TACSD <- c(0, 0)
-#   omrex@nsim <- 20
-#   omrex@seed <- 1
-#   omrex@interval <- 2
-#   omrex@DR <- 0
-#   
-#   rex_mse <- runMSE(OM = omrex, MPs = mp$mp[1:2], parallel = FALSE)
-#   
-#   # gfdlm::plot_projection_ts(rex_mse, type = c("F_FMSY", "B_BMSY"))
-#   # gfdlm::plot_projection_ts(rex_mse, type = c("TAC")) + ylim(0, NA)
-#   # Data <- rex_mse@Misc$Data[[1]]
-#   # matplot(t(Data@Ind), type = "l")
-#   # matplot(t(Data@Cat), type = "l")
-#   
-#   # gfdlm::plot_projection_ts(rex_mse, type = c("TAC"), clip_ylim = 1.5)
-#   # gfdlm::plot_projection_ts(rex_mse, type = c("F_FMSY", "B_BMSY"))
-#   
-# #   sp_debug <- make_MP(SP, HCR_MSY, diagnostic = 'full')
-# # MSE <- runMSE(omrex, MPs = "sp_debug", PPD = TRUE)
-# # diagnostic_AM(MSE) # convergence diagnostics
-# # retrospective_AM(MSE, 1) # Assessment estimates of biomass, F, etc over time
-# 
-# #   
-#   snowfall::sfStop()
-#   saveRDS(rex_mse, file = file_name)
-# } else {
-#   rex_mse <- readRDS(file_name)
-# }
-# # DLMtool::Converge(rex_mse)
+
+\clearpage
+
+(ref:fig-rex-depletion-om)
+SSB depeltion trajectories from reference and robustness set OMs.
+Some OMs ("M decreasing" and "M increasing") have identical historical trajectories as "Catch eq. 50%", but with a fixed value of M in the historical period (i.e., the change in M only occurs in the projection period).
+
+```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-panel.png"))
 ```
 
-```{r, fig.asp=1.2, out.width="3.6in", fig.width=5.8, fig.cap="Performance metric probability table across all MPs that were run for the Rex Sole WCVI closed-loop simulation. The MP rows are ordered by performance metric in the order they appear from left to right and the shading corresponds to the probability value indicated in each cell. In future plots we retain only ``satisficed'' MPs that have LT P40 > 0.8 and STY > 0.5."}
-# `LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
-# `LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
-# STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
-# LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
-# PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
-# rex_probs <- gfdlm::get_probs(rex_mse, PM)
-# gfdlm::plot_probs(rex_probs)
+\clearpage
+
+(ref:fig-rex-converge)
+Assessing convergence of the Rex Sole closed-loop simulation under the base OM.
+Broad differences between MPs have converged (lines no longer cross each other).
+Some MPs with very similar performance may still be exchanging rank order within specific performance metrics as of 200 iterations.
+Final inference should probably be drawn on somewhat greater than the 200 iterations shown here.
+
+```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ```
 
-```{r}
-# reference_mp <- c("NFref", "FMSYref")
-# rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > 0.95, STY > 0.75) %>%
-#   arrange(-`LT P40`) %>%
-#   pull(MP)
-# rex_satisficed <- union(rex_satisficed[!rex_satisficed %in% reference_mp], ".IDX")
-# rex_satisficed_ref <- union(rex_satisficed, reference_mp)
+\clearpage
+
+(ref:fig-rex-tigure) Performance of all candidate MPs for the base OM.
+MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
+The color shading reflects the underlying numbers.
+
+```{r rex-tigure, fig.cap="(ref:fig-rex-tigure)", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/rex-pm-table-base.png"))
 ```
 
-```{r}
-# rex_mse_sub <- DLMtool::Sub(rex_mse, MPs = rex_satisficed)
-# rex_mse_sub_ref <- DLMtool::Sub(rex_mse, MPs = rex_satisficed_ref)
-# rex_satisficed_df <- left_join(tibble(mp = rex_satisficed), mp, by = "mp")
+\clearpage
+
+(ref:fig-rex-proj) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the base OM.
+Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
+Thin gray lines represent illustrative simulation iterations.
+The vertical dashed line indicates the last year of the historical period.
+The horizontal dashed lines indicate SSB/SSB~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
+
+```{r rex-proj, fig.cap="(ref:fig-rex-proj)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
 ```
 
-```{r, fig.asp=1.6, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Solid blue line indicates median; darker and lighter shaded blue indicate 50\\% and 90\\% quantiles. Thin grey lines illustrate 3 sample iterations from the simulation. Horizontal light grey lines represent values of 1.0 for F/F~MSY~ and 0.8, and 0.4 for B/B~MSY~.", out.width="5in", fig.width=7.1}
-# g1 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("SSB", "FM"), n_samples = 3) +
-#   ggplot2::coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
-#   ggplot2::scale_y_continuous(breaks = c(1, 2, 3, 4)) +
-#   ggplot2::theme(strip.text.y = element_blank())
+\clearpage
+
+(ref:fig-rex-proj-failed) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch for the base OM across example MPs that did **not** pass the satisficing criteria. In cases where similar MPs existed but had similar performance, only one is shown as an example (e.g., for .IDX and .IDX_smooth, only .IDX_smooth is shown).
+Caption is otherwise the same as Figure \@ref(fig:rex-proj).
+
+```{r rex-proj-failed, fig.cap="(ref:fig-rex-proj-failed)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
 ```
 
-```{r, fig.asp=1.4, fig.cap="Timeseries projections for the Rex Sole WCVI closed-loop simulation. Same as previous figure but for total allowable catch (TAC) and catch (C). Y-axis values are not shown because the values are relative to the chosen scale of the simulation.", out.width="5in", fig.width=7.1}
-# g2 <- gfdlm::plot_projection_ts(rex_mse_sub_ref, type = c("C"), clip_ylim = 1.5, n_samples = 3) +
-#   theme(axis.text.y = ggplot2::element_blank(), axis.ticks.y = ggplot2::element_blank()) +
-#   ggplot2::theme(axis.title.y = element_blank()) +
-#   ggplot2::geom_hline(yintercept = mean(catch[23:23]), lty = 2)
-# 
-# cowplot::plot_grid(g1, g2, rel_widths = c(2, 1))
+\clearpage
+
+(ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference and robustness set OMs.
+MPs are ordered by decreasing performance metric values for the base OM "Catch eq. 50%".
+
+```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-pm-tigures.png"))
 ```
 
-```{r, fig.cap="Kobe plots for the Rex Sole WCVI closed-loop simulation. Dots represent individual simulation iterations. B~BMSY~ light grey lines indicate 0.4 and 0.8 values. Contour lines indicate 0.10, 0.25 and 0.50 quantile kernel density estimates. Axes are cut off at maximum values of 3.5 although some simulation iterations extend beyond these boundaries.", fig.asp=0.8, fig.width=8, out.width="5.75in"}
-# gfdlm::plot_contours(rex_mse_sub_ref, xlim = c(0, 3.5), ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.50))
+\clearpage
+
+```{r rex-spider-all-mps, fig.cap="Spider plots of performance metric trade-offs amongst all MPs for the base OM. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-base-panel.png"))
 ```
 
-```{r}
-# rex_probs_sat <- rex_probs %>% filter(MP %in% rex_satisficed) %>% 
-#     arrange(`LT P40`, `LT P80`, `STY`)
-# dups_df <- rex_probs_sat %>%
-#   select(-MP) %>% 
-#   mutate(Duplicated = duplicated(.)) %>% 
-#   mutate(MP = rex_probs_sat$MP) %>% 
-#   `[`(1:nrow(rex_probs_sat),c(8, 1:7))
-# 
-# mp_unique <- rex_probs_sat[!dups_df$Duplicated,,drop=FALSE] %>% pull(MP)
+\clearpage
+
+```{r rex-spider-base-om, fig.cap="Spider plots of performance metric trade-offs amongst satisficed MPs for the base OM.", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
 ```
 
-```{r}
-# dups_df %>%
-#   csasdown::csas_table(caption = "Duplicates in terms of PMs.")
+\clearpage
+
+(ref:fig-rex-kobe) SSB/SSB~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations. 
+Dots represent individual iterations.
+Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
+
+```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq50.png"))
 ```
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each ``spoke'' (constant-catch MPs). Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
-# 
-# cols <- viridisLite::viridis(5)
-# names(cols) <- paste0("CC", seq(60, 100, 10))
-# filter(mp, type == "Constant catch") %>%
-#   filter(grepl("^CC[0-9]+", mp)) %>% 
-#   pull(mp) %>% 
-#   DLMtool::Sub(rex_mse, .) %>% 
-#   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-#   scale_color_manual(values = cols) +
-#   labs(colour = "MP")
+\clearpage
+
+(ref:fig-rex-worm) Trajectory of SSB/SSB~MSY~ and F/F~MSY~ values summarized across iterations.
+The solid line corresponds to the median value.
+Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
+
+```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ```
 
-<!-- TODO: allow passing factor levels to fix order of MPs -->
+\clearpage
 
-```{r, fig.cap="Radar plots for the Rex Sole WCVI closed-loop simulation. Performance metrics are indicated at the end of each ``spoke''. Coloured lines represent the various management procedures. Only showing MPs with unique PMs.", out.width="4.5in", fig.width=10}
+(ref:fig-rex-spider-all-oms)
+Spider plots of performance metric trade-offs amongst satisficed MPs for all OMs. Colours are the same as in Figure \@ref(fig:rex-spider-base-om).
 
-# # rex_satisficed_df %>%
-# #   pull(mp) %>%
-# # mp_unique %>%
-#   # union(c("NFref", "FMSYref")) %>%
-#   
-# c(".Itarget1", ".Itarget2", ".Itarget3", ".GB_slope6_1") %>% 
-#   DLMtool::Sub(rex_mse, .) %>%
-#   gfdlm::spider(pm_list = PM, palette = "Set2", lwd = 1.0) +
-#   scale_color_viridis_d() +
-#   # scale_color_manual(values =
-#   #     c(RColorBrewer::brewer.pal(length(mp_unique), "Set2"), "grey30", "grey65")) +
-#   labs(colour = "MP")
+```{r rex-spider-all-oms, fig.cap="(ref:fig-rex-spider-all-oms)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
 ```
+
+\clearpage
+
+<!-- rex-spider-satisficed-panel.png -->
+<!-- rex-sensitivity-yield-base.png -->
+<!-- rex-sensitivity-traj-bbmsy-base.png-->
+
+<!--
+
+
+
+\clearpage
+
+(ref:fig-methods-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
+A variety of MPs are illustrated across rows.
+Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data).
+For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year).
+For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel).
+Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50.
+Note that none of these panels show strong patterns of sensitivity.
+Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value.
+
+```{r methods-sens, fig.cap="(ref:fig-methods-sens)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
+```
+
+\clearpage
+
+(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
+A variety of MPs are illustrated across rows.
+The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations.
+For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded.
+Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
+For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
+
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
+```
+-->
