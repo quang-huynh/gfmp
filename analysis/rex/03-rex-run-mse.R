@@ -138,14 +138,15 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
   g2 <- gfdlm::plot_projection_ts(x,
     type = "C", clip_ylim = 1.3,
     catch_reference = 1
-  )# +
+  ) + ylab("")
+  # +
   #   theme(
   #     axis.text.y = element_blank(),
   #     axis.ticks.y = element_blank(),
   #     axis.title.y = element_blank()
   #   )
 
-  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1), align = "h")
+  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.2), align = "h")
   ggsave(file.path(
     fig_dir,
     paste0("rex-projections-", mptype, "-", scenario, ".png")
@@ -153,7 +154,7 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
   width = 8, height = height
   )
 }
-walk(scenarios[1], make_projection_plot,
+walk(scenarios, make_projection_plot,
   MPs = rex_satisficed_ref,
   mptype = "satisficed"
 )
