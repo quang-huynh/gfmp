@@ -128,7 +128,8 @@ make_table_plot <- function(scenario, ...) {
   invisible(g)
 }
 
-make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
+make_projection_plot <- function(scenario, MPs, mptype, height = 9.5,
+                                 catch_breaks = NULL, catch_labels = NULL) {
   x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
   g1 <- gfdlm::plot_projection_ts(x, type = c("SSB", "FM")) +
     coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
@@ -138,7 +139,12 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
   g2 <- gfdlm::plot_projection_ts(x,
     type = "C", clip_ylim = 1.3,
     catch_reference = 1
-  ) + ylab("")
+  ) + theme(axis.title.y = element_blank())
+
+  if (!is.null(catch_breaks) && !is.null(catch_labels)) {
+    g2 <- g2 +
+      scale_y_continuous(breaks = catch_breaks, labels = catch_labels)
+  }
   # +
   #   theme(
   #     axis.text.y = element_blank(),
@@ -146,7 +152,7 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
   #     axis.title.y = element_blank()
   #   )
 
-  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.2), align = "h")
+  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.18), align = "hv")
   ggsave(file.path(
     fig_dir,
     paste0("rex-projections-", mptype, "-", scenario, ".png")
@@ -156,7 +162,9 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5) {
 }
 walk(scenarios, make_projection_plot,
   MPs = rex_satisficed_ref,
-  mptype = "satisficed"
+  mptype = "satisficed",
+  catch_breaks = c(0, 100000, 200000),
+  catch_labels = c("0", "100", "200")
 )
 
 make_kobe_plot <- function(scenario, MPs, mptype, ...) {
