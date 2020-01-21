@@ -11,8 +11,8 @@ library(here)
 cores <- floor(parallel::detectCores() / 2)
 sc <- readRDS("generated-data/rex-scenarios.rds")
 sc <- filter(sc, scenario != "ceq200")
-scenarios <- sc$scenario
-scenarios_human <- sc$scenarios_human
+scenarios <- as.character(sc$scenario)
+scenarios_human <- as.character(sc$scenarios_human)
 tibble(scenarios, scenarios_human) # look good?
 
 nsim <- 200

@@ -5,7 +5,7 @@
 (ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
 
 ```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/mse-chart.pdf"))
+knitr::include_graphics(here::here("images/mse-chart.pdf"))
 ```
 
 <!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
@@ -95,6 +95,8 @@ Selection of the "best" MP involves addressing trade-offs (e.g., between conserv
 A satisficing step may be used to screen out MPs that did not meet a minimum standard [@miller2010]. After this, MP selection may be an iterative process, where MPs and/or OMs are refined following examination of results [e.g., @cox2008a]. In cases where there is a reference and robustness set of OMs, it may be necessary to weight OMs on the basis of plausibility, although this may require a qualitative, expert-driven approach and may not be straightforward [@punt2016].
 
 @carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not apply the MPs to real data, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
+
+<!-- TODO: implementation section Dowling et al. 2015 -->
 
 # METHODS: HOW THIS FRAMEWORK IMPLEMENTS BEST PRACTICES {#sec:approach}
 
@@ -535,3 +537,6 @@ For example, the first column illustrates that all the MPs are somewhat sensitiv
 ```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
 ```
+
+
+<!-- how do we recommend a catch limit -->

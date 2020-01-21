@@ -26,7 +26,7 @@ Reference set:
 ```{r rex-scen, results='asis'}
 sc <- readRDS(here::here("generated-data/rex-scenarios.rds"))
 sc %>% 
-  select(-scenario_robot, -order) %>%
+  select(-scenario, -order) %>%
 csasdown::csas_table(caption = "Rex Sole scenarios")
 ``` 
 
@@ -47,6 +47,15 @@ csasdown::csas_table(caption = "Rex Sole scenarios")
 #   ylab("Historical F\n(fishing mortality)") +
 #   xlab("")
 # cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
+```
+
+
+```{r rex-survey-fits, fig.cap="Survey fits.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
+```
+
+```{r rex-selectivity, fig.cap="Survey fits.", out.width="4in"}
+knitr::include_graphics(here::here("report/figure/rex-selectivity.png"))
 ```
 
 
@@ -84,23 +93,31 @@ knitr::include_graphics(here::here("report/figure/rex-pm-table-base.png"))
 
 \clearpage
 
-(ref:fig-rex-proj) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the base OM.
+(ref:fig-rex-proj-ceq50) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the base OM.
 Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation iterations.
 The vertical dashed line indicates the last year of the historical period.
 The horizontal dashed lines indicate SSB/SSB~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
 
-```{r rex-proj, fig.cap="(ref:fig-rex-proj)", out.width="6.5in"}
+```{r rex-proj-ceq50, fig.cap="(ref:fig-rex-proj-ceq50)", out.width="6.5in"}
 knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
 ```
 
 \clearpage
 
 (ref:fig-rex-proj-failed) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch for the base OM across example MPs that did **not** pass the satisficing criteria. In cases where similar MPs existed but had similar performance, only one is shown as an example (e.g., for .IDX and .IDX_smooth, only .IDX_smooth is shown).
-Caption is otherwise the same as Figure \@ref(fig:rex-proj).
+Caption is otherwise the same as Figure \@ref(fig:rex-proj-ceq50).
 
 ```{r rex-proj-failed, fig.cap="(ref:fig-rex-proj-failed)", out.width="6.5in"}
 knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-proj-cpue) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the OM with catch equilibrium in 1996 set to 200% of catch in that year and commercial CPUE included as an index. Caption is the same otherwise as Figure \@ref(fig:rex-proj-ceq50).
+
+```{r rex-proj-cpue, fig.cap="(ref:fig-rex-proj-cpue)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq200-cpue.png"))
 ```
 
 \clearpage
@@ -116,12 +133,6 @@ knitr::include_graphics(here::here("report/figure/rex-pm-tigures.png"))
 
 ```{r rex-spider-all-mps, fig.cap="Spider plots of performance metric trade-offs amongst all MPs for the base OM. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-base-panel.png"))
-```
-
-\clearpage
-
-```{r rex-spider-base-om, fig.cap="Spider plots of performance metric trade-offs amongst satisficed MPs for the base OM.", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
 ```
 
 \clearpage
@@ -146,6 +157,12 @@ knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 
 \clearpage
 
+```{r rex-spider-base-om, fig.cap="Spider plots of performance metric trade-offs amongst satisficed MPs for the base OM.", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
+```
+
+\clearpage
+
 (ref:fig-rex-spider-all-oms)
 Spider plots of performance metric trade-offs amongst satisficed MPs for all OMs. Colours are the same as in Figure \@ref(fig:rex-spider-base-om).
 
@@ -155,39 +172,43 @@ knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.pn
 
 \clearpage
 
-<!-- rex-spider-satisficed-panel.png -->
-<!-- rex-sensitivity-yield-base.png -->
-<!-- rex-sensitivity-traj-bbmsy-base.png-->
+(ref:fig-rex-sens-bbmsy) 
+This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
+<!-- A variety of MPs are illustrated across rows. -->
+<!-- Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data). -->
+<!-- For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year). -->
+<!-- For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel). -->
+<!-- Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50. -->
+<!-- Note that none of these panels show strong patterns of sensitivity. -->
+<!-- Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value. -->
 
-<!--
-
-
-
-\clearpage
-
-(ref:fig-methods-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
-A variety of MPs are illustrated across rows.
-Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data).
-For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year).
-For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel).
-Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50.
-Note that none of these panels show strong patterns of sensitivity.
-Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value.
-
-```{r methods-sens, fig.cap="(ref:fig-methods-sens)", out.width="\\textwidth"}
+```{r rex-sens-bbmsy, fig.cap="(ref:fig-rex-sens-bbmsy)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
 ```
 
+(ref:fig-rex-sens-yield) 
+This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean yield in years 6-20 of the projection) to OM parameter values (x-axis).
+
+```{r rex-sens-yield, fig.cap="(ref:fig-rex-sens-yield)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png"))
+```
+
 \clearpage
 
-(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
-A variety of MPs are illustrated across rows.
-The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations.
-For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded.
-Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
-For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
+(ref:fig-rex-proj-sens) 
+This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
+<!-- A variety of MPs are illustrated across rows. -->
+<!-- The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations. -->
+<!-- For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded. -->
+<!-- Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter. -->
+<!-- For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~. -->
 
-```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
 ```
--->
+
+\clearpage
+
+```{r rex-proj-sens-ffmsy, fig.cap="FFmsy", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-ffmsy-base.png"))
+```

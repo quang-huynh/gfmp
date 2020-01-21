@@ -43,13 +43,13 @@ saveRDS(drex, here::here("generated-data", "rex-filter-data.rds"))
 
 (ref:fig-rex-synopsis1) PLACEHOLDER: The first page for Rex Sole from @anderson2019synopsis.
 
-```{r rex-synopsis1, fig.cap="(ref:fig-rex-synopsis1)", out.width="5.8in", fig.pos="h"}
+```{r rex-synopsis1, fig.cap="(ref:fig-rex-synopsis1)", out.width="5.8in", fig.pos="h", eval=FALSE}
 knitr::include_graphics(here::here("report/figure/rex-sole-1.pdf"))
 ```
 
 (ref:fig-rex-synopsis2) PLACEHOLDER: The second page for Rex Sole from @anderson2019synopsis.
 
-```{r rex-synopsis2, fig.cap="(ref:fig-rex-synopsis2)", out.width="5.8in", fig.pos="p"}
+```{r rex-synopsis2, fig.cap="(ref:fig-rex-synopsis2)", out.width="5.8in", fig.pos="p", eval=FALSE}
 knitr::include_graphics(here::here("report/figure/rex-sole-2.pdf"))
 ```
 
