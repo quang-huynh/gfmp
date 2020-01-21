@@ -3,6 +3,7 @@ library(DLMtool)
 library(MSEtool)
 library(here)
 library(cowplot)
+library(ggplot2)
 
 species_name <- "Rex Sole"
 starting_year <- 1996
@@ -40,9 +41,9 @@ rex_om@L5
 rex_om@LFS
 assertthat::assert_that(identical(rex_om@nyears, length(all_years)))
 
-make_cal <- function(dat, survey, yrs, length_bin = 5) {
+make_cal <- function(dat, survey, yrs, length_bin = 2) {
   cal <- dat %>%
-    dplyr::filter(survey_abbrev == survey) %>%
+    dplyr::filter(survey_abbrev == survey, sex == 2) %>%
     gfdlm::tidy_cal(yrs = yrs, interval = length_bin)
 
   length_bins <- gfdlm:::get_cal_bins(cal, length_bin_interval = length_bin)
@@ -50,14 +51,6 @@ make_cal <- function(dat, survey, yrs, length_bin = 5) {
 }
 
 cal_wcvi <- make_cal(drex$survey_samples, "SYN WCVI", yrs = all_years)
-
-mean_length <- dplyr::filter(drex$survey_samples, survey_abbrev == "SYN WCVI") %>%
-  gfdlm::tidy_mean_length() %>%
-  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
-  right_join(tibble(year = all_years), by = "year") %>%
-  pull(mean_length)
-
-mean_length
 
 if ("catch" %in% names(drex)) {
   catch <- drex$catch %>%
@@ -83,101 +76,139 @@ indexes <- drex$survey_index %>%
   dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
   select(year, biomass, re) %>%
   right_join(tibble(year = all_years),by  = "year") %>%
-  left_join(rename(select(cpue, year, est, se_link), trawl_cpue = est, trawl_sd = se_link), by = "year") %>%
-  select(-year) %>%
-  as.matrix()
+  left_join(rename(select(cpue, year, est, se_link), trawl_cpue = est, trawl_sd = se_link), by = "year") #%>%
+  # select(-year) %>%
+  # as.matrix()
 
 indexes
-plot(all_years, indexes[, 1L], type = "o")
-# plot(all_years, indexes[, 2L], type = "o")
-
-plot(all_years, indexes[, 3L], type = "o")
+plot(all_years, indexes$biomass, type = "p")
+plot(all_years, indexes$trawl_cpue, type = "p")
 
 MSEtool::plot_composition(all_years,
   obs = cal_wcvi$cal,
   CAL_bins = cal_wcvi$length_bins
 )
 
-I_sd <- indexes[, 2L]
-I_sd
+# I_sd <- indexes[, 2L]
+# I_sd
 
-rex_om@nsim <- 50
-cores <- floor(parallel::detectCores() / 1)
+rex_om@nsim <- 210 # 10 extras in case some don't converge
+cores <- floor(parallel::detectCores() / 2)
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
-library(MSEtool)
-rex_sra_ceq0 <- MSEtool::SRA_scope(rex_om,
-  # CAL = cal_wcvi$cal, length_bin = cal_wcvi$length_bins,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0,
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
-rex_sra_ceq50 <- MSEtool::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
 
-rex_sra_ceq10 <- MSEtool::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.1*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
+# Set up alternative OMs for reference set and robustness set below -----------
 
-rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
+# Alternative Reference Set OMs: Ceq, the fraction of 1996 catch in 1995
+# Impacts depletion and stock size
+
+#ceq0 is the "unfished in 1995" scenario
+
+saveRDS(indexes, file = "generated-data/rex-indexes.rds")
+fit_sra_rex <- function(om, c_eq = 0.5, ...) {
+  MSEtool::SRA_scope(rex_om,
+    Chist = catch, Index = indexes$biomass, integrate = FALSE,
+    C_eq = c_eq * catch[1],
+    I_sd = indexes$re, I_type = "B", cores = cores,
+    drop_nonconv = TRUE, mean_fit = TRUE, ...
+  )
+}
+rex_sra_ceq0 <- fit_sra_rex(rex_om, c_eq = 0)
+rex_sra_ceq50 <- fit_sra_rex(rex_om, c_eq = 0.5)
+rex_sra_ceq100 <- fit_sra_rex(rex_om, c_eq = 1)
+rex_sra_ceq200 <- fit_sra_rex(rex_om, c_eq = 2)
+
+saveRDS(rex_sra_ceq0, file = here("generated-data", "rex-sra-ceq0.rds"))
+saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
+saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
+saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
+
+quantile(rex_sra_ceq0@OM@cpars$D)
+quantile(rex_sra_ceq10@OM@cpars$D)
+quantile(rex_sra_ceq50@OM@cpars$D)
 quantile(rex_sra_ceq100@OM@cpars$D)
-
-rex_sra_ceq200 <- MSEtool::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 2*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
 quantile(rex_sra_ceq200@OM@cpars$D)
+
+# Add commercial CPUE:
+
+reshape2::melt(indexes[,c(1, 2, 4)], id.vars = "year") %>%
+  group_by(variable) %>% mutate(value = value/max(value, na.rm=TRUE)) %>%
+  ggplot(aes(year, value, colour = variable)) + geom_point() + geom_path()
+
+# rex_sra_ceq50_cpue <- MSEtool::SRA_scope(rex_om,
+#   Chist = catch, Index = cbind(indexes$biomass, indexes$trawl_cpue), integrate = FALSE,
+#   C_eq = 0.5 * catch[1],
+#   I_sd = cbind(indexes$re, indexes$trawl_sd * 2),
+#   I_type = c("B", "1"), cores = cores,
+#   drop_nonconv = TRUE, mean_fit = TRUE
+# )
+# saveRDS(rex_sra_ceq50_cpue, file = here("generated-data", "rex-sra-ceq50-cpue.rds"))
+
+# rex_sra_ceq0_cpue <- MSEtool::SRA_scope(rex_om,
+#   Chist = catch, Index = cbind(indexes$biomass, indexes$trawl_cpue), integrate = FALSE,
+#   C_eq = 0 * catch[1],
+#   I_sd = cbind(indexes$re, indexes$trawl_sd), I_type = c("B", "B"), cores = cores,
+#   drop_nonconv = TRUE, mean_fit = TRUE
+# )
+# saveRDS(rex_sra_ceq0_cpue, file = here("generated-data", "rex-sra-ceq0-cpue.rds"))
+
+# rex_om@nsim <- 48
+# rex_sra_ceq20_cpue <- MSEtool::SRA_scope(rex_om,
+#   data = list(
+#     Chist = catch,
+#     Index = cbind(indexes$biomass, indexes$trawl_cpue * 2),
+#     I_sd = cbind(indexes$re, indexes$trawl_sd),
+#     I_type = c("B", "1")),
+#     cores = cores,
+#   C_eq = 0.2 * catch[1],
+#   drop_nonconv = TRUE
+# )
+# # plot(rex_sra_ceq20_cpue)
+# saveRDS(rex_sra_ceq20_cpue, file = here("generated-data", "rex-sra-ceq20-cpue.rds"))
+
+rex_om@nsim <- 48
+s_CAL <- array(NA, c(rex_om@nyears, length(cal_wcvi$length_bins), 2L))
+s_CAL[,,1] <- cal_wcvi$cal
+rex_sra_ceq200_cpue <- MSEtool::SRA_scope(rex_om,
+  data = list(
+    Chist = catch,
+    s_CAL = s_CAL,
+    ESS = c(50, 50),
+    length_bin = cal_wcvi$length_bins,
+    CAL = array(0, c(rex_om@nyears, length(cal_wcvi$length_bins), 1L)),
+    Index = cbind(indexes$biomass, indexes$trawl_cpue),
+    I_sd = cbind(indexes$re, indexes$trawl_sd * 1.5),
+    I_type = c("est", "1"),
+    C_eq = 2 * catch[1]
+    ),
+  cores = cores,
+  drop_nonconv = TRUE
+)
+plot(rex_sra_ceq200_cpue)
+saveRDS(rex_sra_ceq200_cpue, file = here("generated-data", "rex-sra-ceq200-cpue.rds"))
+
+# Alternative Reference Set OMs: M --------------------------------------------
+# Only look at higher M and time-varying M. M in BC unlikely to be lower than GOA.
 
 rex_om@M
 rex_om_high_m <- rex_om
 rex_om_high_m@M <- c(0.25, 0.25)
-rex_sra_high_m <- MSEtool::SRA_scope(rex_om_high_m,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
+rex_sra_high_m <- fit_sra_rex(rex_om_high_m)
+
+saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
+
 quantile(rex_sra_ceq50@OM@cpars$D)
 quantile(rex_sra_high_m@OM@cpars$D)
 
-rex_om@M
-rex_om_low_m <- rex_om
-rex_om_low_m@M <- c(0.10, 0.1)
-rex_sra_low_m <- MSEtool::SRA_scope(rex_om_low_m,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
-quantile(rex_sra_ceq50@OM@cpars$D)
-quantile(rex_sra_low_m@OM@cpars$D)
-quantile(rex_sra_high_m@OM@cpars$D)
+# Alternative Reference Set OMs: Steepness (h) --------------------------------
 
 rex_om_low_h <- rex_om
 rex_om@h
-rex_om_low_h@h <- c(0.4, 0.6)
-rex_sra_low_h <- MSEtool::SRA_scope(rex_om_low_h,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
+rex_om_low_h@h <- c(0.5, 0.7)
+rex_sra_low_h <- fit_sra_rex(rex_om_low_h)
+saveRDS(rex_sra_low_h, file = here("generated-data", "rex-sra-low-h.rds"))
+
 quantile(rex_sra_ceq50@OM@cpars$D)
 quantile(rex_sra_low_h@OM@cpars$D)
 median(rex_sra_ceq50@OM@cpars$D)
@@ -185,107 +216,206 @@ median(rex_sra_low_h@OM@cpars$D)
 
 rex_om_high_h <- rex_om
 rex_om@h
-rex_om_high_h@h <- c(0.9, 0.9)
-rex_sra_high_h <- MSEtool::SRA_scope(rex_om_high_h,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = 0.5*catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE, mean_fit = TRUE
-)
+rex_om_high_h@h <- c(0.95, 0.95)
+rex_sra_high_h <- fit_sra_rex(rex_om_high_h)
+saveRDS(rex_sra_high_h, file = here("generated-data", "rex-sra-high-h.rds"))
+
 quantile(rex_sra_ceq50@OM@cpars$D)
 quantile(rex_sra_high_h@OM@cpars$D)
 
-# rex_sra_cpue <- MSEtool::SRA_scope(rex_om,
-#   data = list(
-#     Chist = catch,
-#     Index = indexes[, c("biomass", "trawl_cpue")],
-#     C_eq = 0.5*catch[1],
-#     I_sd = indexes[, c("re", "trawl_sd")], I_type = c("B", "B")),
-#   cores = cores,
-#   drop_nonconv = TRUE
-# )
-# quantile(rex_sra_ceq50@OM@cpars$D)
-# quantile(rex_sra_cpue@OM@cpars$D)
+# Robustness Set OMs: M increasing/decreasing over time -----------------------
 
-rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
-  Chist = catch, Index = indexes[, 1], integrate = FALSE,
-  C_eq = catch[1],
-  I_sd = I_sd, I_type = "B", cores = cores,
-  drop_nonconv = TRUE
+rex_om_inc_m <- rex_om
+rex_om_inc_m@nyears
+rex_om_inc_m@proyears
+M_age <- array(0.2,
+  c(rex_om_inc_m@nsim, rex_om_inc_m@maxage, rex_om_inc_m@nyears + rex_om_inc_m@proyears))
+m <- seq(0.2, 0.4, length.out = rex_om_inc_m@proyears)
+for (i in seq_along(m)) M_age[, , rex_om_inc_m@nyears + i] <- m[i]
+plot(M_age[1,1,]) # one sim; one age
+rex_om_inc_m@cpars$M_ageArray <- M_age
+rex_sra_inc_m <- fit_sra_rex(rex_om_inc_m)
+saveRDS(rex_sra_inc_m, file = here("generated-data", "rex-sra-inc-m.rds"))
+
+rex_om_dec_m <- rex_om
+M_age <- array(0.20,
+  c(rex_om_dec_m@nsim, rex_om_dec_m@maxage, rex_om_dec_m@nyears + rex_om_dec_m@proyears))
+m <- seq(0.20, 0.10, length.out = rex_om_dec_m@proyears)
+for (i in seq_along(m)) M_age[, , rex_om_dec_m@nyears + i] <- m[i]
+plot(M_age[1,1,]) # one sim; one age
+rex_om_dec_m@cpars$M_ageArray <- M_age
+rex_sra_dec_m <- fit_sra_rex(rex_om_dec_m)
+saveRDS(rex_sra_dec_m, file = here("generated-data", "rex-sra-dec-m.rds"))
+
+# Some plots ------------------------------------------------------------------
+
+scenario <- c(
+  "ceq0", "ceq50",
+  "ceq100", "high-m",
+  "low-h", "high-h", "inc-m", "dec-m",
+  "ceq200-cpue")
+scenarios_human <- c(
+  "Catch eq. 0%", "Catch eq. 50%",
+  "Catch eq. 100%", "M = 0.25",
+  "h = 0.5-0.7", "h = 0.95", "M increasing", "M decreasing",
+  "Catch eq. 200% + CPUE")
+scenario_type <- c(
+  "Reference", "Reference",
+  "Reference", "Reference",
+  "Reference", "Reference", "Robustness", "Robustness",
+  "Reference"
+)
+sc <- tibble(scenario, scenarios_human, scenario_type) # look good?
+sc
+# sc$order <- c(2, 1, 3, rep(NA, nrow(sc) - 3))
+sc <- sc %>%
+  arrange(scenario_type, scenarios_human) %>%
+  mutate(order = seq_len(n()))
+sc$order <- seq_len(nrow(sc))
+sc$scenarios_human <- factor(sc$scenarios_human,  levels = sc$scenarios_human)
+sc$scenario <- factor(sc$scenario,  levels = sc$scenario)
+saveRDS(sc, file = "generated-data/rex-scenarios.rds")
+
+sra_rex <- purrr::map(scenario, ~ {
+  readRDS(here("generated-data", paste0("rex-sra-", .x, ".rds")))
+})
+names(sra_rex) <- scenario
+
+# plot index through data:
+# plot(sra_rex[["ceq50"]])
+# plot(sra_rex[["ceq0-cpue"]])
+
+get_depletion <- function(x, scenario) {
+  depletion <- x@SSB / sapply(x@Misc, getElement, "E0_SR")
+  d1 <- t(apply(depletion[, -nyear], 2,
+    FUN = quantile,
+    probs = c(0.025, 0.5, 0.975)
+  )) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    mutate(scenario = scenario) %>%
+    rename(lwr = 1, med = 2, upr = 3, year = all_years)
+  d2 <- t(apply(depletion[, -nyear], 2, FUN = quantile, probs = c(0.25, 0.75))) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    rename(lwr50 = 1, upr50 = 2, year = all_years)
+
+  left_join(d1, d2, by = "year")
+}
+
+g <- purrr::map2_df(sra_rex, scenarios_human, get_depletion) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenarios_human)) %>%
+  ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
+  geom_ribbon(fill = "grey90") +
+  geom_ribbon(fill = "grey70", mapping = aes(ymin = lwr50, ymax = upr50)) +
+  geom_line() +
+  facet_wrap(vars(scenario)) +
+  gfplot::theme_pbs() +
+  labs(x = "Year", y = "Depletion")
+ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
+  width = 8, height = 6
 )
 
-scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
-scenarionames <- c("base","ceq10","ceq50","ceq100")
-scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
+# # Make multipanel plots using purrr and cowplot
+# initDepletionPlots <- purrr::map2(scenarios, scenarios_human, make_initD)
+# g <- cowplot::plot_grid(plotlist = initDepletionPlots, align = "hv", nrow = 4, ncol = 2)
+# ggsave(file.path(fig_dir, paste0("rex-compare-SRA-init-depletion-panel.png")),
+#   width = 11, height = 12
+# )
+#
+# DepletionPlots <- purrr::map2(scenarios, scenarios_human, make_Depletion)
+# g <- cowplot::plot_grid(plotlist = DepletionPlots, align = "hv", nrow = 4, ncol = 2)
+# ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
+#   width = 11, height = 12
+# )
+#
+# SSBPlots <- purrr::map2(scenarios, scenarios_human, make_Biomass)
+# g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv", nrow = 4, ncol = 2)
+# ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
+#   width = 11, height = 12
+# )
+#
 
+# more plots: -----------------------------------------------------------------
 
-#Compare initial depletion, depletion and biomass results:
-make_initD <- function(scenario,scenario_name) {
-   g <- scenario@OM@cpars$D %>% as.data.frame() %>% rename(D =1)  %>%
-     ggplot(aes(D)) +
-     geom_histogram(binwidth=0.05)+
-     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
-   g
- }
+library(dplyr)
+library(ggplot2)
+library(purrr)
 
- make_Depletion <- function(scenario,scenario_name) {
-   Depletion <- scenario@SSB/sapply(scenario@Misc, getElement, 'E0_SR')
-   probsDepletion <- t(apply(Depletion[,-nyear],2,FUN=quantile,probs=c(0.025,0.5,0.975))) %>%
-     as.data.frame() %>%
-     cbind(all_years) %>%
-     rename(Lower=1, Median=2, Upper=3, Year=all_years)
+sc <- readRDS(here::here("generated-data/rex-scenarios.rds"))
 
-   g <- ggplot(probsDepletion) +
-     geom_ribbon(data=probsDepletion, aes(x=Year, ymin=Lower, ymax=Upper),
-                 inherit.aes = FALSE, fill = "blue", alpha=0.2)+
-     geom_line(aes(Year,Median), colour="blue", lwd=2)+
-     scale_y_continuous(limits = c(0,1.2), breaks = seq(0,1.2,by = 0.2), name="Spawning depletion")+
-     scale_x_continuous(limits = c(starting_year,ending_year),breaks = seq(starting_year,ending_year,by = 4)) +
-     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
-   g
- }
+sra_rex <- map(sc$scenario, ~ {
+  readRDS(here("generated-data", paste0("rex-sra-", .x, ".rds")))
+})
+names(sra_rex) <- scenario
 
- make_Biomass <- function(scenario,scenario_name) {
-   SSB <- scenario@SSB/1000
-   probsSSB <- t(apply(SSB[,-nyear],2,FUN=quantile,probs=c(0.025,0.5,0.975))) %>%
-     as.data.frame() %>%
-     cbind(all_years) %>%
-     rename(Lower=1, Median=2, Upper=3, Year=all_years)
+get_sra_survey <- function(sra, sc_name, survey_names = c("SYN WCVI", "CPUE")) {
+  n_surv <- dim(sra@Misc[[1]]$Ipred)[2]
+  out2 <- purrr::map(seq_len(n_surv), function(i) {
+    surveys <- do.call(cbind, purrr::map(sra@Misc, ~ .$Ipred[,i,drop=FALSE]))
+    out <- reshape2::melt(surveys) %>%
+      rename(year = Var1, iter = Var2)
+    out$scenario <- sc_name
+    out$survey <- survey_names[i]
+    out
+  })
+  bind_rows(out2)
+}
+surv <- purrr::map2_dfr(sra_rex, as.character(sc$scenario), get_sra_survey)
+surv <- left_join(surv, sc, by = "scenario")
+surv$scenarios_human <- factor(surv$scenarios_human, levels = levels(sc$scenarios_human))
 
-   g <- ggplot(probsSSB) +
-     geom_ribbon(data=probsSSB, aes(x=Year, ymin=Lower, ymax=Upper),
-                 inherit.aes = FALSE, fill = "purple", alpha=0.2)+
-     geom_line(aes(Year,Median), colour="purple", lwd=2)+
-     scale_y_continuous(limits = c(0,5000), breaks = seq(0,5000,by = 1000), name="Spawning biomass (x 1,000)")+
-     scale_x_continuous(limits = c(starting_year,ending_year),breaks = seq(starting_year,ending_year,by = 4)) +
-     ggtitle(scenario_name) + theme(plot.title = element_text(hjust = 0.5))
-   g
- }
+surv$year <- surv$year + min(indexes$year) - 1
 
+surv_plot <- surv %>%
+  group_by(scenarios_human, survey) %>%
+  mutate(geo_mean = exp(mean(log(value)))) %>%
+  mutate(value = value/geo_mean)
 
-#Make multipanel plots using purrr and cowplot
-initDepletionPlots  <- purrr::map2(scenarios, scenarios_human, make_initD)
-g <- cowplot::plot_grid(plotlist = initDepletionPlots, align = "hv",nrow = 2, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-compare-SRA-init-depletion-panel.png")),
-        width = 11, height = 12)
+surv_plot_distinct <- surv_plot %>% select(scenarios_human, survey, geo_mean) %>%
+  distinct()
 
-DepletionPlots  <- purrr::map2(scenarios, scenarios_human, make_Depletion)
-g <- cowplot::plot_grid(plotlist = DepletionPlots, align = "hv",nrow = 2, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
-        width = 11, height = 12)
+indexes <- readRDS(here::here("generated-data/rex-indexes.rds"))
+indexes1 <- bind_rows(data.frame(
+  year = indexes$year,
+  biomass = indexes$trawl_cpue,
+  lwr = exp(log(indexes$trawl_cpue) - 2 * indexes$trawl_sd * 1.5),
+  upr = exp(log(indexes$trawl_cpue) + 2 * indexes$trawl_sd * 1.5),
+  survey = "CPUE"),
+  data.frame(
+    year = indexes$year,
+    biomass = indexes$biomass,
+    lwr = exp(log(indexes$biomass) - 2 * indexes$re),
+    upr = exp(log(indexes$biomass) + 2 * indexes$re),
+    survey = "SYN WCVI")) %>%
+  left_join(surv_plot_distinct) %>%
+  mutate(biomass = biomass / geo_mean, lwr = lwr / geo_mean, upr = upr / geo_mean)
 
-SSBPlots  <- purrr::map2(scenarios, scenarios_human, make_Biomass)
-g <- cowplot::plot_grid(plotlist = SSBPlots, align = "hv",nrow = 2, ncol = 2)
-ggsave(file.path(fig_dir, paste0("rex-compare-SRA-SSB-panel.png")),
-       width = 11, height = 12)
+g <- ggplot(surv_plot, aes(year, value,
+  group = paste(iter, survey), colour = as.character(survey))) +
+  geom_line(alpha = 0.05) +
+  geom_pointrange(data = indexes1, mapping = aes(x = year, y = biomass, ymin = lwr, ymax = upr,
+    fill = as.character(survey)), inherit.aes = FALSE, pch = 21, colour = "grey40") +
+  facet_wrap(vars(scenarios_human)) +
+  gfplot::theme_pbs() +
+  scale_color_brewer(palette = "Set2", direction = -1) +
+  scale_fill_brewer(palette = "Set2", direction = -1) +
+  ylab("Scaled index value") + xlab("Year") + labs(colour = "Survey", fill = "Survey")
+ggsave(here::here("report/figure/rex-index-fits.png"), width = 9, height = 7)
 
-saveRDS(rex_sra_ceq0, file = here("generated-data", "rex-sra-ceq0.rds"))
-saveRDS(rex_sra_ceq10, file = here("generated-data", "rex-sra-ceq10.rds"))
-saveRDS(rex_sra_ceq50, file = here("generated-data", "rex-sra-ceq50.rds"))
-saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
-
-quantile(rex_sra_ceq0@OM@cpars$D)
-quantile(rex_sra_ceq10@OM@cpars$D)
-quantile(rex_sra_ceq50@OM@cpars$D)
-quantile(rex_sra_ceq100@OM@cpars$D)
-
+get_sra_selectivity <- function(sc_name) {
+  sra <- sra_rex[[sc_name]]
+  x <- do.call(cbind, purrr::map(sra@Misc, ~ .$vul_len))
+  out <- reshape2::melt(x) %>%
+    rename(Length = Var1, iter = Var2)
+  out$scenario <- sc_name
+  out
+}
+sel <- map_dfr(as.character(sc$scenario[1]), get_sra_selectivity) # pick one
+sel %>%
+  ggplot(aes(Length, value, group = paste(iter))) +
+  geom_line(alpha = 0.15) +
+  gfplot::theme_pbs() +
+  ylab("Selectivity") + xlab("Length") +
+  coord_cartesian(expand = FALSE, ylim = c(-0.01, 1.01))
+ggsave(here::here("report/figure/rex-selectivity.png"), width = 5, height = 3)
