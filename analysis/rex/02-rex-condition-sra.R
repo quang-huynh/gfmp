@@ -213,7 +213,7 @@ rex_sra_ceq100 <- MSEtool::SRA_scope(rex_om,
   I_sd = I_sd, I_type = "B", cores = cores,
   drop_nonconv = TRUE
 )
-
+rex_sra_base <- rex_sra_ceq0
 scenarios <- c(rex_sra_base, rex_sra_ceq10, rex_sra_ceq50,rex_sra_ceq100)
 scenarionames <- c("base","ceq10","ceq50","ceq100")
 scenarios_human <- c("Base OM", "Catch eq. 10%", "Catch eq. 50%", "Catch eq. 100%")
