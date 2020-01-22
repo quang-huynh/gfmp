@@ -191,6 +191,20 @@ We set a prior on the intrinsic rate of population increase $r$ in the surplus p
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
+```{r}
+pm_all <- readRDS(here::here("generated-data/rex-pm-all.rds"))
+pm_avg <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+pm_min <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, min, na.rm = TRUE)
+rex_satisficed <- dplyr::filter(pm_min, `LT P40` > 0.8, STY > 0.7) %>% pull(MP)
+reference_mp <- c("FMSYref75", "NFref", "FMSYref")
+rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+
+pm_avg_sat <- pm_avg %>% filter(MP %in% rex_satisficed)
+```
+
+
 Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010]. We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
 To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT P40 $\geq$ 0.8 and STY $\geq$ 0.7.
 This left us with `r length(rex_satisficed)` MPs (`r gfutilities::commify(rex_satisficed)`).
@@ -212,19 +226,6 @@ knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:results-rex6}
 
 ### Reference Set Results
-
-```{r}
-pm_all <- readRDS(here::here("generated-data/rex-pm-all.rds"))
-pm_avg <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)
-pm_min <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, min, na.rm = TRUE)
-rex_satisficed <- dplyr::filter(pm_min, `LT P40` > 0.8, STY > 0.7) %>% pull(MP)
-reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
-
-pm_avg_sat <- pm_avg %>% filter(MP %in% rex_satisficed)
-```
 
 Average performance within the reference set of OMs varied across MPs and performance metrics (Figure \@ref(fig:rex-tigure-avg)).
 We can also see some variability in performance within the individual reference set scenarios (Figure \@ref(fig:rex-tigure-panel)).
