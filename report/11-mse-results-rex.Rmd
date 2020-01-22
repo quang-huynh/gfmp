@@ -54,13 +54,25 @@ We consider the major axes of uncertainty for Rex Sole to be:
 
 1. The magnitude of the commercial catch prior to 1996;
 
-2. The value of the steepness parameter (*h*) of the stock-recruit relationship; and
+2. The importance of the commercial CPUE index;
 
-3. The value of natural mortality (*M*).
+3. The value of the steepness parameter (*h*) of the stock-recruit relationship; and
+
+4. The value of natural mortality (*M*).
 
 We defined nine OM scenarios that differed from each other only in these respects (Table \@ref(tab:rex-scen)), with all other parameters held at the same values as described in Appendix \@ref(app:desc-om-rex). 
 
-Prior to 1996, reported catches 
+Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure TODO). Assumptions about pre-1996 catch levels affect the estimated depletion level in 1996 from the SRA model, which is used to calibrate the OMs to historical observations (Appendix \@ref(app:sra)). The SRA model parameter $\tilde{C}^{\textrm{eq}}_f$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}_f$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}_a$ needed to calculate recruits and numbers in the first year of the model (Equation C.3 *TODO, make dynamic*).
+
+We considered four scenarios that varied in the assumed value of $\tilde{C}^{\textrm{eq}}_f$ (Table \@ref(tab:rex-scen)). 
+
+The scenario "Catch eq. 100%" assumes that equilibrium catch prior to 1996 was the same as that in 1996. 
+
+"Catch eq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996, possibly because it was not mandatory to report all landings and discards prior to 1996. 
+
+"Catch eq. 200% + CPUE" also assumes that equilibrium catch prior to 1996 was twice that in 1996, plus the SRA model is fit to the commercial CPUE index, which is available from 1996, therefore providing a longer index of abundance than the synoptic bottom trawl survey (Figure \@ref())
+
+
 
 Reference and Robustness scenarios:
 
