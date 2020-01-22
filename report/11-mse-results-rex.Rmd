@@ -138,7 +138,10 @@ knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-avg.png"
 
 \clearpage
 
-```{r rex-spider-satisficed-mps-reference, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the reference set.", out.width="\\textwidth"}
+(ref:fig-rex-spider-satisficed-mps-reference)
+Performance metrics for satisficed MPs for the individual OMs in the reference set. Colours are the same as for Figure \@ref(fig:rex-spider-satisficed-mps-avg).
+
+```{r rex-spider-satisficed-mps-reference, fig.cap="(ref:fig-rex-spider-satisficed-mps-reference)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
 ```
 
@@ -195,11 +198,22 @@ Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (
 knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ```
 
+\clearpage
+
 ### Robustness Set Results
 
 ```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set.", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-robust.png"))
 ```
+
+\clearpage
+
+(ref:fig-rex-tigure-panel-rob) Performance of satisficed MPs for the robustness set OMs.
+
+```{r rex-tigure-panel-rob, fig.cap="(ref:fig-rex-tigure-panel-rob)", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-pm-tigures-rob-set.png"))
+```
+
 
 \clearpage
 
@@ -225,7 +239,7 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png
 \clearpage
 
 (ref:fig-rex-proj-sens-bbmsy) 
-The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colors) of various OM parameters (columns) over time.
+The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colours) of various OM parameters (columns) over time.
 This example uses the "Catch eq. 100%" OM.
 
 ```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens-bbmsy)", out.width="\\textwidth"}
@@ -235,7 +249,7 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-bas
 \clearpage
 
 (ref:fig-rex-proj-sens-ffmsy) 
-The sensitivity of F/F~MSY~ (y-axis) to high and low values (colors) of various OM parameters (columns) over time.
+The sensitivity of F/F~MSY~ (y-axis) to high and low values (colours) of various OM parameters (columns) over time.
 This example uses the "Catch eq. 100%" OM.
 
 ```{r rex-proj-sens-ffmsy, fig.cap="(ref:fig-rex-proj-sens-ffmsy)", out.width="\\textwidth"}
