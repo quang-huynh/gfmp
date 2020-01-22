@@ -1,6 +1,6 @@
 # BEST PRACTICES FOR IMPLEMENTING A MANAGEMENT PROCEDURE APPROACH
 
-@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps, illustrated in Figure \@ref(fig:mse-chart) [@carruthers2018]. We also identify a critical first step (See Step 1 below), defining the decision context [@gregory2012 and Cox and Benson (unpublished)].
+@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012 and Cox and Benson (unpublished)].
 
 (ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
 
@@ -92,17 +92,16 @@ Feedback from managers, stakeholders and First Nations should be sought througho
 
 Selection of the "best" MP involves addressing trade-offs (e.g., between conservation and economic performance metrics), and therefore is the purview of managers, stakeholders, First Nations and interested parties [@punt2016]. Ultimately, selection of the best MP may be a subjective process, depending on the magnitude of trade-offs. It may be necessary to rank performance metrics in order of priority before the process starts. The role of science in this step is to ensure that results are clearly presented to decision-makers. Ideally this should include presentation of graphical outputs that enable clear comparison of MPs with respect to performance metrics and trade-offs [@punt2017].
 
-Two basic approaches may be used in selecting the final MP: satisficing and trading-off, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trading-off involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly-performing MPs.  
+Two basic approaches may be used in selecting the final MP: satisficing and trading-off, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trading-off involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly-performing MPs.
 A second satisficing step may be used towards the end of the process, to further screen out MPs that do not meet a minimum standard and to simplify the decision-making environment [@miller2010]. After this, MP selection may move to a trading-off stage with a final reduced set of MPs. An iterative process may also be required, where MPs and/or OMs are refined following examination of results [e.g., @cox2008a]. In cases where there is a reference and robustness set of OMs, it may be necessary to weight OMs on the basis of plausibility, although this may require a qualitative, expert-driven approach and may not be straightforward [@punt2016].
 
 @carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not apply the MPs to real data, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
 
 <!-- TODO: implementation section Dowling et al. 2015 -->
 
-# METHODS: HOW THIS FRAMEWORK IMPLEMENTS BEST PRACTICES {#sec:approach}
+# METHODS: THE PROPOSED FRAMEWORK {#sec:approach}
 
-We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated for two case-study fish stocks: Rex Sole (*Glyptocephalus zachirus*) and Shortraker Rockfish (*Sebastes borealis*) in Area 3CD (West Coast Vancouver Island). These stocks were selected because they are both considered data-limited and lack current assessment advice, and have contrasting life histories and data-availability. See Sections \@ref(shortraker-rockfish-case-study) and \@ref(rex-sole-case-study) for more details on each stock. The two case-studies are presented to illustrate the framework and its outputs. They are not intended for the provision of catch advice for these stocks at this time.
-
+We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated for two case-study fish stocks: Rex Sole (*Glyptocephalus zachirus*) and Shortraker Rockfish (*Sebastes borealis*) in Area 3CD (West Coast Vancouver Island). These stocks were selected because they are both considered data-limited and lack current assessment advice, and have contrasting life histories and data-availability. See Appendices \@ref(app:desc-mp-rex) and TODO for more details on each stock. The two case-studies are presented to illustrate the framework and its outputs. *They are not intended for the provision of catch advice for these stocks at this time.*
 Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organised according to the six best-practice steps described in Section \@ref(best-practices-for-implementing-a-management-procedure-approach).
 
 <!-- TO DO: Need a map ... maybe later in the species summary sections -->
@@ -150,7 +149,14 @@ LT P40 and LT P80 are conservation performance metrics measuring Objectives 1 an
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 
-DLMtool OMs are organised into four main components representing a real fished system: 1. population dynamics of the fish stock (e.g., growth, recruitment, mortality); 2. fishery dynamics (e.g., selectivity, spatial targeting); 3. observation processes (e.g., bias and precision in survey indices); and 4. management implementation (e.g., percentage overages of catch limits). Parameters under the four components are entered into "slots", described in detail in Section \@ref(app:dlmtool-om) and in Appendix B of @carruthers2018.
+DLMtool OMs are organized into four main components representing a real fished system:
+
+1. population dynamics of the fish stock (e.g., growth, recruitment, mortality);
+2. fishery dynamics (e.g., selectivity, spatial targeting);
+3. observation processes (e.g., bias and precision in survey indices); and
+4. management implementation (e.g., percentage overages of catch limits).
+
+Parameters under the four components are entered into "slots" [terminology referring to a feature of the S4 object-oriented system in R; @r2019], described in detail in Appendix \@ref(app:dlmtool-om) and in Appendix B of @carruthers2018.
 
 DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution, typically a uniform distribution between two bounds. See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified. However, to isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one parameter or data source of interest.
 
@@ -183,14 +189,15 @@ The SRA model is used to condition the following OM parameters:
 * annual recruitment deviations
 * selectivity parameters (if age or length composition data are included as inputs to the SRA)
 
-Further details on the SRA OM-calibration model are available in Appendix **TODO**.
+Further details on the SRA OM-calibration model are available in Appendix \@ref(app:sra).
 
-For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognising that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
+For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
 
-*TODO: improve this. What do we recommend?*
+<!--*TODO: improve this. What do we recommend?*-->
+
 Where there is no index of abundance, we recommend developing a wide range of uncalibrated OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
-*TODO: Move commented-out text below (in Rmd file) to an appendix completely describing the SRA*
+<!--*TODO: Move commented-out text below (in Rmd file) to an appendix completely describing the SRA*-->
 
 <!-- MOVE THIS TO APPENDIX
 The SRA function can take as input:
@@ -234,20 +241,20 @@ All MPs included in this framework are fully described in Appendix \@ref(app:MPs
 Commercial catch data are available for all BC groundfish stocks with relative certainty since 1997 for BC trawl fisheries and 2008 for BC hook and line fisheries.
 Fisheries-independent trawl and longline surveys have been conducted systematically since the early 2000s for BC groundfish and the population indices derived from these data likely represent some of the most informative data for many data-limited groundfish stocks in BC.
 Fish lengths are collected on both surveys and commercial fishing trips for many species.
-However, length-based MPs often require strong assumptions (e.g., **steepness... REF**) and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data, which often have large and inconsistent variances among years and length bins. Simulating realistic length-composition data is challenging and we have not sufficiently investigated best practices for simulating length-compositions within the DLMtool software.
+However, length-based MPs often require strong assumptions (e.g., steepness... REF) and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data, which often have large and inconsistent variances among years and length bins. Simulating realistic length-composition data is challenging and we have not sufficiently investigated best practices for simulating length-compositions within the DLMtool software.
 Reliable and abundant age-composition data are generally not available for the data-limited species for which this framework is designed.
 For the above reasons, we propose MPs that make use of only catch and population index data as provisional candidate MPs.
 
 We can divide MPs that make use of catch and/or population index data into four categories: constant catch, index ratio, index slope, and index target.
 
-(1) Constant-catch MPs [e.g., @geromont2015] set the recommended catch to some fixed level typically based on recent or historical catches.
+1. Constant-catch MPs [e.g., @geromont2015] set the recommended catch to some fixed level typically based on recent or historical catches.
 Importantly, constant-catch MPs do not incorporate feedback from the population---they make the same catch recommendation regardless of trends in the population index.
 
-(2) Index-ratio MPs [e.g., @ices2012; @jardim2015] base their catch recommendation on a ratio of a population index in one time period compared to another time period, generally an immediately recent period compared to a short period before it.
+2. Index-ratio MPs [e.g., @ices2012; @jardim2015] base their catch recommendation on a ratio of a population index in one time period compared to another time period, generally an immediately recent period compared to a short period before it.
 
-(3) Index-slope MPs [e.g., @geromont2015; @jardim2015] fit a regression to population index data and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
+3. Index-slope MPs [e.g., @geromont2015; @jardim2015] fit a regression to population index data and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
 
-(4) Index-target MPs [e.g., @geromont2015] compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
+4. Index-target MPs [e.g., @geromont2015] compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
 In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs,
 which compare recent index values to a moving window of index values as time progresses.
 
@@ -375,7 +382,7 @@ This is achieved by adding stochastic noise to the data (e.g, indices of abundan
 We suggest selecting sufficient replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional iterations [@carruthers_user_2019].
 This can be checked by plotting the cumulative performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:methods-converge)).
 
-*TODO: Other MSE diagnostics?*
+<!--*TODO: Other MSE diagnostics?*-->
 
 Performance statistics for each OM/MP combination are calculated and summarized across replicates.
 Care needs to be taken to clearly report how summary statistics are calculated.
@@ -384,7 +391,7 @@ Similarly, it is important to report how probabilities are calculated.
 <!--*TODO: should probably report how probabilities are calculated in DLMtool/our framework*-->
 Provisionally, we calculate performance statistics across replicates and the entire time window as defined for the performance metric. For example, we calculate the LTY P40 performance metric across all iterations and years 36--50 simultaneously.
 
-*TODO: What is missing in this section?*
+<!--*TODO: What is missing in this section?*-->
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
 
@@ -416,21 +423,19 @@ permit easy comparison.
 -->
 
 
+**Early draft text (see figures that follow):**
+
 For this step we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
 
-Spider plots [REF]. These illustrate performance trade-offs amongst the various MPs in a condensed visual fashion that lends itself to small multiples [REF] to explore a variety of OMs and MPs in a small amount of space.
-
-Visualizations highlight the reference MPs for ease of comparison.
+Spider/kite plots [@punt2017]. These illustrate performance trade-offs amongst the various MPs in a condensed visual fashion that lends itself to small multiples [REF] to explore a variety of OMs and MPs in a small amount of space.
 
 A performance metric Table/Figure. Shaded by probability of achieving that performance metric with rows ordered by performance metric starting with the leftmost performance metric and working across the columns to break ties. We think the shading helps to draw the eye to differences and similarities in performance.
 
 Important to show historical trajectories of parameters such as: historical catch, historical recruitment, historical SSB, historical F, ... and any others that make particular sense for a given stock.
 
-We developed projection plots that show the range of projected values in B/B[MSY], F/F[MSY], catch, and TAC recommendations along with example replicates for the various MPs.
+We developed projection plots that show the range of projected values in B/B~MSY~, F/F~MSY~, catch, and catch along with example replicates for the various MPs.
 
 We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
-
-We demonstrate the provisional visualizations for a single operating model.
 
 Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend themselves well to comparing across operating models.
 
@@ -441,7 +446,7 @@ In many cases it will also make sense to look at timeseries trajectories across 
 (ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation has reached convergence in the rank order of MP performance.
 The y-axis represents the proportion of cumulative iterations that have achieved the performance metric.
 The cumulative iterations are shown along the x-axis.
-Each panel represents a different performance metric and the colors illustrate the various MPs.
+Each panel represents a different performance metric and the colours illustrate the various MPs.
 A wiggly line indicates that a given MP is still varying in its performance metric value as more iterations are run.
 Lines that are crossing indicate changes to the rank order of MP performance as more iterations are run.
 A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
@@ -469,7 +474,8 @@ knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq
 (ref:fig-methods-tigure) This figure-table illustrates performance metric values for a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
 The MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
-The color shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
+The colour shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
+TODO: will add an indication of satisficing thresholds with shading or bold MPs names.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
 knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
@@ -483,7 +489,7 @@ Each line represents a management procedure.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
 Therefore, lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 
-```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="\\textwidth"}
+```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4.5in"}
 knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))
 ```
 

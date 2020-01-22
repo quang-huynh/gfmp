@@ -8,7 +8,7 @@ Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the w
 
 Rex Sole are a commonly caught flatfish species in BC groundfish bottom trawl surveys and although it is commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or assigned quota for it. Rex Sole have never been formally assessed in BC; however, biomass of Rex Sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012].
 
-Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for Rex Sole in DFO databases for analysis as described above for shortraker rockfish. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on Rex Sole and other flatfish since 2003. There is currently no established method for reconstructing historical catches for Rex Sole as has been done for several rockfish species in BC.
+Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for Rex Sole in DFO databases for analysis as described above for Shortraker Rockfish. The fishery-independent trawl surveys mentioned above for Shortraker have also been capturing and collecting data on Rex Sole and other flatfish since 2003. There is currently no established method for reconstructing historical catches for Rex Sole as has been done for several rockfish species in BC.
 
 In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
 
@@ -168,6 +168,7 @@ knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
 
 (ref:fig-rex-depletion-om)
 SSB depletion trajectories from reference and robustness set OMs.
+Depletion is represented as a fraction of B0 (biomass at unfished equilibrium).
 Some OMs ("M decreasing" and "M increasing") have identical historical trajectories as "Catch eq. 50%", but with a fixed value of M in the historical period (i.e., the change in M only occurs in the projection period).
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
@@ -187,6 +188,7 @@ csasdown::csas_table(mp, caption = "Candidate MPs.", col_names = c("Management p
 ```
 
 We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.
+Due to the biennial nature of the trawl survey, we set the MPs to be applied every second year.
 
 We set a prior on the intrinsic rate of population increase $r$ in the surplus production models based on...
 
@@ -206,8 +208,9 @@ pm_avg_sat <- pm_avg %>% filter(MP %in% rex_satisficed)
 ```
 
 
-Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010]. We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
-To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT P40 $\geq$ 0.8 and STY $\geq$ 0.7.
+Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010].
+We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
+To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT P40 $>$ 0.8 and STY $>$ 0.7.
 This left us with `r length(rex_satisficed)` MPs (`r gfutilities::commify(rex_satisficed)`).
 
 We ran the closed-loop simulations across 200 stochastic iterations using DLMtool version XX with the OMs and MPs described above.
@@ -244,7 +247,7 @@ These satisficed MPs achieve STY and LTY with close to the same probability as f
 Within the reference set OMs, the "Catch eq. 200%" OM had the most noticeable effect on the yield performance metrics with slightly lower values than in the other scenarios (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
 However, making the same assumption about catch at equilibrium the year before the initial year of the historical period but including commercial CPUE resulted in consistently high conservation performance metric values and slightly higher yield performance metric values than the scenario that did not include commercial CPUE (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
 
-We can look at timeseries trajectories of SSB/SSB~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--fig-rex-proj-low-h; other trajectories not shown yet).
+We can look at timeseries trajectories of SSB/SSB~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--\@ref(fig:rex-proj-low-h); other trajectories not shown yet).
 Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).
 
 We can also look at "Kobe" plots that demonstrate either the final SSB/SSB~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
@@ -354,7 +357,7 @@ knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ### Robustness Set Results
 
 With the exception of the GB_slope MPs, the satisficed MPs were relatively robust to linear increases in natural mortality in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
-All satisficed MPs had a lower probability of achieving yield performance metrics if natural mortality ended up linearly decreasing in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
+However, all satisficed MPs had a lower probability of achieving yield performance metrics if natural mortality linearly decreasing in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
 The Iratio2 MP achieved the highest AAVY, LTY, and STY performance metrics in the M increasing scenario, while maintaining virtually identical conservation performance metrics as the other MPs (Figure \@ref(fig:rex-spider-satisficed-mps-robust), dark green line).
 
 ```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
