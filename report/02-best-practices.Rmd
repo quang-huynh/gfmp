@@ -360,7 +360,7 @@ Once the objectives, performance metrics, calibrated OMs and MPs are fully speci
 
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
 For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75).
-This resulted in 11 final MPs (out of an initial 30 MPs), plus the four reference MPs.
+This resulted in 5 final MPs (out of an initial 30 MPs), plus the four reference MPs.
 We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
 Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs.
 Similarly, criteria should be strict enough to filter out consistently under-performing MPs.
