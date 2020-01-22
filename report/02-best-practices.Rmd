@@ -460,7 +460,7 @@ The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; a
 Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
 
 ```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
 ```
 
 \clearpage
@@ -471,7 +471,7 @@ The MPs are ordered by decreasing performance metric values from top to bottom s
 The color shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-base.png"))
+knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
 ```
 
 \clearpage
@@ -481,10 +481,9 @@ Each spoke of the web represents a performance metric (Section \@ref(sec:approac
 Each line represents a management procedure.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
 Therefore, lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.
-Here, the illustrated MPs correspond to constant catch set at various percentages of mean catch from the last five historical years. C90, for example, corresponds to 90%.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-groups.png"))
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))
 ```
 
 \clearpage
@@ -495,7 +494,7 @@ The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 
 For example, the 0.50 (outermost) contour lines encompass approximately 50% of the iterations.
 
 ```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq50.png"))
+knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
 ```
 
 \clearpage
