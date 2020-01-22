@@ -326,7 +326,6 @@ make_projection_plot(base_om, MPs = toplot[toplot %in% rex_not_satisficed],
 
 .d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
 .d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
-.d <- filter(.d2, real_year >= 2019)
 .d <- filter(.d2)
 
 now <- filter(.d2, real_year == 2018)
