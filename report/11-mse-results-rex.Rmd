@@ -1,6 +1,6 @@
 \clearpage
 
-# REX SOLE CASE STUDY: RESULTS {#app:mse-rex}
+# REX SOLE CASE STUDY {#app:mse-rex}
 
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
@@ -21,6 +21,46 @@ The performance metrics are defined as:
 
 where SB is spawning biomass.
 
+## BACKGROUND
+
+Rex sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m.
+
+Rex sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged rex sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest rex sole aged from BC was a 34 cm female aged at 15 years, though larger, unaged individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Additional otoliths have been collected on BC surveys from 2000-present although they have yet to be aged.
+
+### History of fishery
+
+Rex sole is a commonly caught flatfish species in BC groundfish bottom trawl surveys and although it is commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or assigned quota for it. Rex sole have never been formally assessed in BC; however, biomass of rex sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012]. 
+
+The IVQ system initiated in 1997 referred to for shortraker applies to all species caught in the trawl fishery, including rex sole.
+
+### Data sources
+
+Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for rex sole in DFO databases for analysis as described above for shortraker rockfish. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on rex sole and other flatfish since 2003. There is currently no method for estimating historic catches for rex sole as has been done for rockfish species. 
+
+### US
+
+In the US, rex sole is caught in the bottom trawl fishery and is considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which rex sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed with a random effects model in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
+
+<!-- Maturity
+Abookire 2006 - GOA ML50 females = 352 mm, ML100 = 420 mm) significantly larger size than in Oregon 
+MA50 = 5.1 years, all mature at age 9 except for two still immature at 9 and 10 years (n=557)
+Hosie and Horton 1977 - Oregon female ML50 24 cm, ML100 = 30 cm
+MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
+
+Mortality
+natural mortality used in GOA assessment 0.17-->
+
+## STEP 1: DEFINE THE DECISION CONTEXT {#sec:results-rex1}
+
+
+## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:results-rex2}
+
+
+
+## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
+
+*TODO: RF to write this up*
+
 Reference set:
 
 ```{r rex-scen, results='asis'}
@@ -29,6 +69,7 @@ sc %>%
   select(-scenario, -order) %>%
 csasdown::csas_table(caption = "Rex Sole scenarios")
 ``` 
+
 
 
 ## Conditioning
@@ -58,7 +99,6 @@ knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
 knitr::include_graphics(here::here("report/figure/rex-selectivity.png"))
 ```
 
-
 \clearpage
 
 (ref:fig-rex-depletion-om)
@@ -69,7 +109,12 @@ Some OMs ("M decreasing" and "M increasing") have identical historical trajector
 knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-panel.png"))
 ```
 
-\clearpage
+
+## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
+
+
+
+## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
 (ref:fig-rex-converge)
 Assessing convergence of the Rex Sole closed-loop simulation under the base OM.
@@ -80,6 +125,26 @@ Final inference should probably be drawn on somewhat greater than the 200 iterat
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="5in"}
 knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ```
+
+
+## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:results-rex6}
+
+
+### Reference Set Results
+
+*TODO: Average results over all reference set OMs**
+
+
+### Robustness Set Results
+
+*TODO: Individual sets of results for robustness set OMs*
+
+
+
+
+
+
+
 
 \clearpage
 

@@ -31,5 +31,3 @@ MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
 Mortality
 natural mortality used in GOA assessment 0.17-->
 
-
-

@@ -44,6 +44,7 @@ omrex <- map(scenarios, ~ {
     "generated-data",
     paste0("rex-sra-", .x, ".rds")
   ))@OM
+  print(om@nsim)
   if (om@nsim < nsim)
     stop("nsim set larger than in conditioned OM.", call. = FALSE)
   om@nsim <- nsim

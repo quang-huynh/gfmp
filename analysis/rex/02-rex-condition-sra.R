@@ -125,7 +125,6 @@ saveRDS(rex_sra_ceq100, file = here("generated-data", "rex-sra-ceq100.rds"))
 saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
 
 quantile(rex_sra_ceq0@OM@cpars$D)
-quantile(rex_sra_ceq10@OM@cpars$D)
 quantile(rex_sra_ceq50@OM@cpars$D)
 quantile(rex_sra_ceq100@OM@cpars$D)
 quantile(rex_sra_ceq200@OM@cpars$D)
@@ -167,25 +166,24 @@ reshape2::melt(indexes[,c(1, 2, 4)], id.vars = "year") %>%
 # # plot(rex_sra_ceq20_cpue)
 # saveRDS(rex_sra_ceq20_cpue, file = here("generated-data", "rex-sra-ceq20-cpue.rds"))
 
-rex_om@nsim <- 48
-s_CAL <- array(NA, c(rex_om@nyears, length(cal_wcvi$length_bins), 2L))
-s_CAL[,,1] <- cal_wcvi$cal
+#s_CAL <- array(NA, c(rex_om@nyears, length(cal_wcvi$length_bins), 2L))
+#s_CAL[,,1] <- cal_wcvi$cal
 rex_sra_ceq200_cpue <- MSEtool::SRA_scope(rex_om,
   data = list(
     Chist = catch,
-    s_CAL = s_CAL,
-    ESS = c(50, 50),
-    length_bin = cal_wcvi$length_bins,
-    CAL = array(0, c(rex_om@nyears, length(cal_wcvi$length_bins), 1L)),
+    #s_CAL = s_CAL,
+    #ESS = c(50, 50),
+    #length_bin = cal_wcvi$length_bins,
+    #CAL = array(0, c(rex_om@nyears, length(cal_wcvi$length_bins), 1L)),
     Index = cbind(indexes$biomass, indexes$trawl_cpue),
     I_sd = cbind(indexes$re, indexes$trawl_sd * 1.5),
-    I_type = c("est", "1"),
+    I_type = c("1", "1"),
     C_eq = 2 * catch[1]
     ),
-  cores = cores,
+  cores = 1,
   drop_nonconv = TRUE
 )
-plot(rex_sra_ceq200_cpue)
+#plot(rex_sra_ceq200_cpue)
 saveRDS(rex_sra_ceq200_cpue, file = here("generated-data", "rex-sra-ceq200-cpue.rds"))
 
 # Alternative Reference Set OMs: M --------------------------------------------
