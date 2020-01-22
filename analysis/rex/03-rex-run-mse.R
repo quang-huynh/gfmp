@@ -116,6 +116,7 @@ rex_satisficed_ref <- union(rex_satisficed, reference_mp)
 rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
 stopifnot(length(rex_not_satisficed) > 1)
 
+saveRDS(pm_all, file = here::here("generated-data/rex-pm-all.rds"))
 # Convergence -----------------------------------------------------------------
 
 g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
