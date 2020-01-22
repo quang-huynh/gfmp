@@ -1,5 +1,3 @@
-\clearpage
-
 ```{r, echo=FALSE}
 library(here)
 filter_data_rex <- function(d,
@@ -53,7 +51,7 @@ knitr::include_graphics(here::here("report/figure/rex-sole-1.pdf"))
 knitr::include_graphics(here::here("report/figure/rex-sole-2.pdf"))
 ```
 
-\clearpage
+<!-- \clearpage -->
 
 ```{r message = FALSE}
 library(DLMtool)
