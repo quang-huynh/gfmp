@@ -1,34 +1,45 @@
-library(DLMtool)
-library(MSEtool)
-library(dplyr)
-library(purrr)
-library(ggplot2)
-library(gfdlm)
-library(here)
+library("DLMtool")
+library("MSEtool")
+library("dplyr")
+library("purrr")
+library("ggplot2")
+library("gfdlm")
+library("here")
+source(here("analysis/rex/plot-functions.R"))
 
-# Settings: -------------------------------------------------------------------
+# Settings --------------------------------------------------------------------
 
-cores <- floor(parallel::detectCores() / 2L)
+cores <- floor(parallel::detectCores() / 1L)
 sc <- readRDS("generated-data/rex-scenarios.rds")
+sc # look good?
 nsim <- 200L
 base_om <- "ceq100" # affects some default plots
-mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
+mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#",
+  col_types = readr::cols(
+    mp = readr::col_character(),
+    type = readr::col_character())
+)
+as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 
 # Set up and checks -----------------------------------------------------------
 
+stopifnot(all(reference_mp %in% mp$mp))
+
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-base_i <- which(base_om == scenarios)
-stopifnot(all(reference_mp %in% mp$mp))
 
 scenarios <- as.character(sc$scenario)
 scenarios_human <- as.character(sc$scenarios_human)
-tibble(scenarios, scenarios_human) # look good?
+base_i <- which(base_om == scenarios)
 scenarios_ref <- filter(sc, scenario_type == "Reference") %>%
   pull(scenario) %>% as.character()
+scenarios_ref_human <- filter(sc, scenario_type == "Reference") %>%
+  pull(scenarios_human) %>% as.character()
 scenarios_rob <- filter(sc, scenario_type == "Robustness") %>%
   pull(scenario) %>% as.character()
+scenarios_rob_human <- filter(sc, scenario_type == "Robustness") %>%
+  pull(scenarios_human) %>% as.character()
 scenarios_ref_i <- which(scenarios %in% scenarios_ref)
 scenarios_rob_i <- which(scenarios %in% scenarios_rob)
 
@@ -51,7 +62,6 @@ omrex <- map(scenarios, ~ {
     "generated-data",
     paste0("rex-sra-", .x, ".rds")
   ))@OM
-  print(om@nsim)
   if (om@nsim < nsim)
     stop("nsim set larger than in conditioned OM.", call. = FALSE)
   om@nsim <- nsim
@@ -97,8 +107,7 @@ g <- gfdlm::plot_probs(pm_min)
 ggsave(file.path(fig_dir, "rex-pm-table-min.png"), width = 4.25, height = 6.25)
 
 rex_satisficed <- dplyr::filter(pm_min, `LT P40` > LT_P40_thresh, STY > STY_thresh) %>%
-  arrange(-`LT P40`) %>%
-  pull(MP)
+  arrange(-`LT P40`) %>% pull(MP)
 rex_satisficed
 rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
 rex_satisficed
@@ -117,38 +126,6 @@ ggsave(file.path(fig_dir, "rex-converge.png"), width = 6.5, height = 6.5)
 
 # Plots -----------------------------------------------------------------------
 
-make_table_plot <- function(scenario, ...) {
-  p <- DLMtool::Sub(rex_mse[[scenario]], MPs = rex_satisficed_ref) %>%
-    gfdlm::get_probs(PM)
-  gfdlm::plot_probs(p, ...)
-}
-
-make_projection_plot <- function(scenario, MPs, mptype, height = 9.5,
-                                 catch_breaks = NULL, catch_labels = NULL) {
-  x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
-  g1 <- gfdlm::plot_projection_ts(x, type = c("SSB", "FM")) +
-    coord_cartesian(expand = FALSE, ylim = c(0, 4.5)) +
-    scale_y_continuous(breaks = c(1, 2, 3, 4)) +
-    theme(strip.text.y = element_blank())
-
-  g2 <- gfdlm::plot_projection_ts(x,
-    type = "C", clip_ylim = 1.3,
-    catch_reference = 1
-  ) + theme(axis.title.y = element_blank())
-
-  if (!is.null(catch_breaks) && !is.null(catch_labels)) {
-    g2 <- g2 +
-      scale_y_continuous(breaks = catch_breaks, labels = catch_labels)
-  }
-
-  g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.18), align = "h")
-  ggsave(file.path(
-    fig_dir,
-    paste0("rex-projections-", mptype, "-", scenario, ".png")
-  ),
-  width = 8, height = height
-  )
-}
 walk(scenarios, make_projection_plot,
   MPs = rex_satisficed_ref,
   mptype = "satisficed",
@@ -156,68 +133,26 @@ walk(scenarios, make_projection_plot,
   catch_labels = c("0", "100", "200")
 )
 
-make_kobe_plot <- function(scenario, MPs, mptype, ...) {
-  x <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs)
-  g <- gfdlm::plot_contours(x,
-    xlim = c(0, 3.5),
-    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.5, 0.75), ...
-  )
-  ggsave(file.path(
-    fig_dir,
-    paste0("rex-kobe-", mptype, "-", scenario, ".png")
-  ),
-  width = 8, height = 7.5
-  )
-}
-
-make_spider <- function(scenario, MPs, mptype, save_plot = TRUE,
-                        custom_pal = NULL, legend = TRUE) {
-  g <- DLMtool::Sub(rex_mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")
-  if (length(MPs) > 8)
-    g <- g + scale_color_viridis_d()
-
-  if (!is.null(custom_pal)) {
-    g <- g + scale_color_manual(values = custom_pal)
-  }
-  if (save_plot) {
-    ggsave(file.path(
-      fig_dir,
-      paste0("rex-spider-", mptype, "-", scenario, ".png")
-    ),
-    width = 6, height = 6
-    )
-  }
-  if (!legend) {
-    g <- g + guides(colour = FALSE)
-  }
-  g
-}
-
-plot_grid_pbs <- function(plotlist, align = "hv",
-  label_fontface = "bold", label_size = 12,
-  hjust = 0, spider_margins = FALSE, ...) {
-  out <- cowplot::plot_grid(
-    plotlist = plotlist, align = align,
-    label_fontface = label_fontface, hjust = hjust, label_size = label_size, ...
-  )
-  if (spider_margins)
-    out <- out + theme(plot.margin = unit(c(0.2, 0.2, -0.7, 1.0), "lines"))
-  out
-}
 # 1 is always base:
-p <- gfdlm::get_probs(rex_mse[[1L]], PM)
-g <- gfdlm::plot_probs(p)
-ggsave(file.path(fig_dir, paste0("rex-pm-table-", "base", ".png")),
-  width = 4.25, height = 6.5
-)
+# p <- gfdlm::get_probs(rex_mse[[1L]], PM)
+# g <- gfdlm::plot_probs(p)
+# ggsave(file.path(fig_dir, paste0("rex-pm-table-", "base", ".png")),
+#   width = 4.25, height = 6.5
+# )
 
-mp_order <- arrange(p, `LT P40`, `LT P80`, `STY`, `LTY`, AAVY) %>%
+mp_order <- arrange(pm_avg, `LT P40`, `LT P80`, `STY`, `LTY`, AAVY) %>%
   filter(MP %in% rex_satisficed_ref) %>%
+  # left_join(rename(mp, MP = mp)) %>%
+  # arrange()
   pull(MP)
-tigures <- map(scenarios, make_table_plot, mp_order = mp_order)
-g <- plot_grid_pbs(tigures, labels = scenarios_human)
-ggsave(file.path(fig_dir, paste0("rex-pm-tigures", ".png")),
+tigures <- map(scenarios_ref, make_table_plot, mp_order = mp_order)
+g <- plot_grid_pbs(tigures, labels = scenarios_ref_human)
+ggsave(file.path(fig_dir, paste0("rex-pm-tigures-ref-set", ".png")),
+  width = 12, height = 7.5
+)
+tigures <- map(scenarios_rob, make_table_plot, mp_order = mp_order)
+g <- plot_grid_pbs(tigures, labels = scenarios_rob_human)
+ggsave(file.path(fig_dir, paste0("rex-pm-tigures-ref-set", ".png")),
   width = 12, height = 7.5
 )
 
@@ -226,32 +161,36 @@ walk(scenarios, make_kobe_plot,
   mptype = "satisficed"
 )
 
+# Make multipanel plot of satisficed spider plots for all scenarios
 custom_pal <- c(RColorBrewer::brewer.pal(length(rex_satisficed), "Set2"),
   "grey60", "grey20", "grey85")
 names(custom_pal) <- rex_satisficed_ref
 custom_pal
-spider_plots <- purrr::map(scenarios, make_spider,
+spider_plots <- walk(scenarios_ref, make_spider,
   MPs = rex_satisficed_ref,
   mptype = "satisficed", custom_pal = custom_pal
 )
-
-# Make multipanel plot of satisficed spider plots for all scenarios
-spider_plots <- map(scenarios, make_spider,
+spider_plots <- map(scenarios_ref, make_spider,
   MPs = rex_satisficed,
   save_plot = FALSE, custom_pal = custom_pal, legend = FALSE
 )
 g <- plot_grid_pbs(
-  plotlist = spider_plots, labels = scenarios_human, spider_margins = TRUE
+  plotlist = spider_plots, labels = scenarios_ref_human, spider_margins = TRUE
 )
 ggsave(file.path(fig_dir, "rex-spider-satisficed-panel.png"), width = 11, height = 10)
+spider_plots_rob <- map(scenarios_rob, make_spider,
+  MPs = rex_satisficed,
+  save_plot = FALSE, custom_pal = custom_pal, legend = FALSE
+)
+g <- plot_grid_pbs(
+  plotlist = spider_plots_rob, labels = scenarios_rob_human, spider_margins = TRUE
+)
+ggsave(file.path(fig_dir, "rex-spider-satisficed-panel-robust.png"), width = 8, height = 4)
 
-# Make multipanel plot of spider plots for all MPtypes - Base scenario only
+# Make multipanel plot of spider plots for satisficed MPs; averaged only
 type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
 spider_plots <- split(mp, type_order) %>%
-  map(~ {
-    make_spider(scenario = base_om, MPs = .x$mp, save_plot = FALSE) +
-      scale_color_brewer(palette = "Set2")
-  })
+  map(~ spider_base(filter(pm_avg, MP %in% .x$mp)))
 g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
   spider_margins = TRUE, ncol = 2) +
   theme(plot.margin = unit(c(0.2, 0.2, -0.5, 1.0), "lines"))
@@ -298,7 +237,7 @@ make_projection_plot(base_om, MPs = toplot[toplot %in% rex_not_satisficed],
 
 # Psychedelic pyramid worms ---------------------------------------------------
 
-.d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
+.d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed))
 .d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
 .d <- filter(.d2)
 
@@ -358,22 +297,22 @@ ggsave(file.path(fig_dir, "rex-neon-worms-base.png"), width = 7, height = 6.6)
 
 slots <- c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd")
 
-g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity(`LT P40`, slots = slots,
   ylab = expression(Mean~SSB/SSB[MSY]~"in"~years~36-50))
 ggsave(file.path(fig_dir, "rex-sensitivity-bbmsy-base.png"), width = 12.5, height = 8)
 
-g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity(`STY`, slots = slots,
     ylab = "Mean catch/reference catch in years 6-20")
 ggsave(file.path(fig_dir, "rex-sensitivity-yield-base.png"), width = 12.5, height = 8)
 
-g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity_trajectory("B_BMSY", slots = slots) +
   coord_cartesian(ylim = c(0, 4))
 ggsave(file.path(fig_dir, "rex-sensitivity-traj-bbmsy-base.png"), width = 12.5, height = 7)
 
-g <- DLMtool::Sub(rex_mse_base, MPs = rex_satisficed) %>%
+g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
   gfdlm::plot_sensitivity_trajectory("F_FMSY", slots = slots) +
   coord_cartesian(ylim = c(0, 4))
 ggsave(file.path(fig_dir, "rex-sensitivity-traj-ffmsy-base.png"), width = 12.5, height = 7)
