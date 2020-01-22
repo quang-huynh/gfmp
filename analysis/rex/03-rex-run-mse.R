@@ -211,6 +211,17 @@ plot_grid_pbs <- function(plotlist, align = "hv",
   out
 }
 
+pm_all <- purrr::map2_dfr(rex_mse, names(rex_mse),
+  ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
+  as_tibble() %>%
+  rename(`LT P40` = LT.P40, `LT P80` = LT.P80)
+
+pm_avg <- group_by(p, MP) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+
+pm_min <- group_by(p, MP) %>%
+  summarise_if(is.numeric, min, na.rm = TRUE)
+
 # 1 is always base:
 p <- gfdlm::get_probs(rex_mse[[1L]], PM)
 g <- gfdlm::plot_probs(p)
