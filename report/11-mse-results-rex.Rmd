@@ -121,7 +121,7 @@ knitr::include_graphics(here::here("report/figure/rex-pm-table-min.png"))
 MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-min).
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-pm-tigures.png"))
+knitr::include_graphics(here::here("report/figure/rex-pm-tigures-ref-set.png"))
 ```
 
 \clearpage
@@ -168,6 +168,15 @@ knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-low
 
 \clearpage
 
+(ref:fig-rex-proj-failed) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch for the base OM across example MPs that did **not** pass the satisficing criteria. In cases where similar MPs existed but had similar performance, only one is shown as an example (e.g., for .IDX and .IDX_smooth, only .IDX_smooth is shown).
+Caption is otherwise the same as Figure \@ref(fig:rex-proj-ceq100).
+
+```{r rex-proj-failed, fig.cap="(ref:fig-rex-proj-failed)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
+```
+
+\clearpage
+
 (ref:fig-rex-kobe) SSB/SSB~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations for the "Catch eq. 100%" OM. 
 Dots represent individual iterations.
 Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
@@ -194,16 +203,7 @@ knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-ro
 
 \clearpage
 
-(ref:fig-rex-proj-failed) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch for the base OM across example MPs that did **not** pass the satisficing criteria. In cases where similar MPs existed but had similar performance, only one is shown as an example (e.g., for .IDX and .IDX_smooth, only .IDX_smooth is shown).
-Caption is otherwise the same as Figure \@ref(fig:rex-proj-ceq50).
-
-```{r rex-proj-failed, fig.cap="(ref:fig-rex-proj-failed)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
-```
-
 ### Sensitivity Tests
-
-\clearpage
 
 (ref:fig-rex-sens-bbmsy) 
 The sensitivity of SSB/SSB~MSY~ in years 36--50 of the projection (y-axis) to OM parameter values (x-axis).
@@ -228,7 +228,7 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png
 The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colors) of various OM parameters (columns) over time.
 This example uses the "Catch eq. 100%" OM.
 
-```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens)", out.width="\\textwidth"}
+```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens-bbmsy)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
 ```
 
