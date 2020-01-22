@@ -101,7 +101,7 @@ fit_sra_rex <- function(om, c_eq = 1, ...) {
   MSEtool::SRA_scope(rex_om,
     Chist = catch, Index = indexes$biomass, integrate = FALSE,
     C_eq = c_eq * catch[1],
-    I_sd = indexes$re, I_type = "1", cores = cores,
+    I_sd = indexes$re, I_type = "B", cores = cores,
     drop_nonconv = TRUE, mean_fit = TRUE, ...
   )
 }
@@ -221,10 +221,10 @@ sc <- tibble::tribble(
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = "generated-data/rex-scenarios.rds")
 
-sra_rex <- purrr::map(scenario, ~ {
+sra_rex <- purrr::map(sc$scenario, ~ {
   readRDS(here("generated-data", paste0("rex-sra-", .x, ".rds")))
 })
-names(sra_rex) <- scenario
+names(sra_rex) <- sc$scenario
 
 # Some plots ------------------------------------------------------------------
 
@@ -247,7 +247,7 @@ get_depletion <- function(x, scenario) {
   left_join(d1, d2, by = "year")
 }
 
-g <- purrr::map2_df(sra_rex, scenarios_human, get_depletion) %>%
+g <- purrr::map2_df(sra_rex, sc$scenarios_human, get_depletion) %>%
   mutate(scenario = factor(scenario, levels = sc$scenarios_human)) %>%
   ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
   geom_ribbon(fill = "grey90") +
@@ -273,9 +273,9 @@ get_sra_survey <- function(sra, sc_name, survey_names = c("SYN WCVI", "CPUE")) {
   })
   bind_rows(out2)
 }
-surv <- purrr::map2_dfr(sra_rex, as.character(sc$scenario), get_sra_survey)
+surv <- purrr::map2_dfr(sra_rex, sc$scenario, get_sra_survey)
 surv <- left_join(surv, sc, by = "scenario")
-surv$scenarios_human <- factor(surv$scenarios_human, levels = levels(sc$scenarios_human))
+surv$scenarios_human <- factor(surv$scenarios_human, levels = sc$scenarios_human)
 surv$year <- surv$year + min(indexes$year) - 1
 
 surv_plot <- surv %>%
@@ -300,7 +300,7 @@ indexes1 <- bind_rows(data.frame(
     lwr = exp(log(indexes$biomass) - 2 * indexes$re),
     upr = exp(log(indexes$biomass) + 2 * indexes$re),
     survey = "SYN WCVI")) %>%
-  left_join(surv_plot_distinct) %>%
+  left_join(surv_plot_distinct, by = "survey") %>%
   mutate(biomass = biomass / geo_mean, lwr = lwr / geo_mean, upr = upr / geo_mean)
 
 g <- ggplot(surv_plot, aes(year, value,
@@ -324,7 +324,7 @@ get_sra_selectivity <- function(sc_name) {
   out$scenario <- sc_name
   out
 }
-sel <- map_dfr(as.character(sc$scenario[1]), get_sra_selectivity) # pick one
+sel <- map_dfr(sc$scenario[1], get_sra_selectivity) # pick one
 sel %>%
   ggplot(aes(Length, value, group = paste(iter))) +
   geom_line(alpha = 0.15) +
