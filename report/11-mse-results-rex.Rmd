@@ -12,6 +12,26 @@ Commercial and fishery data (catch, lengths, weights, ages, maturity) are availa
 
 In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
 
+\clearpage
+
+(ref:fig-rex-syn1)
+First Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
+
+```{r rex-syn1, fig.cap="(ref:fig-rex-syn1)", out.width="6in"}
+knitr::include_graphics(here::here("images/rex-sole-1.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-syn2)
+Second Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
+
+```{r rex-syn2, fig.cap="(ref:fig-rex-syn2)", out.width="6in"}
+knitr::include_graphics(here::here("images/rex-sole-2.png"))
+```
+
+\clearpage
+
 *TODO: Complete data information and add figures of catch history and indices of abundance*
 
 <!-- Maturity
