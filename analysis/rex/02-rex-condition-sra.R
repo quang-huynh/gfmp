@@ -89,22 +89,24 @@ plot(all_years, indexes$trawl_cpue, type = "p")
 # )
 
 rex_om@nsim <- 210 # 10 extras in case some don't converge
-cores <- floor(parallel::detectCores() / 1)
+cores <- floor(parallel::detectCores() / 2)
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
 
 # Set up alternative OMs for reference set and robustness set -----------------
 
+# rex_om@nsim <- 48
 saveRDS(indexes, file = "generated-data/rex-indexes.rds")
 fit_sra_rex <- function(om, c_eq = 1, ...) {
   MSEtool::SRA_scope(rex_om,
     Chist = catch, Index = indexes$biomass, integrate = FALSE,
     C_eq = c_eq * catch[1],
-    I_sd = indexes$re, I_type = "B", cores = cores,
-    drop_nonconv = TRUE, mean_fit = TRUE, ...
+    I_sd = indexes$re, I_type = "SSB", cores = cores,
+    drop_nonconv = TRUE, mean_fit = FALSE, ...
   )
 }
+
 rex_sra_ceq0 <- fit_sra_rex(rex_om, c_eq = 0)
 rex_sra_ceq50 <- fit_sra_rex(rex_om, c_eq = 0.5)
 rex_sra_ceq100 <- fit_sra_rex(rex_om, c_eq = 1)
@@ -231,6 +233,11 @@ names(sra_rex) <- sc$scenario
 # FIXME: get this into gfdlm:
 get_depletion <- function(x, scenario) {
   depletion <- x@SSB / sapply(x@Misc, getElement, "E0_SR")
+
+  # FIXME: BAD TEMPORARY HACK!!! SA: 2020-01-21
+  if (scenario != "Catch eq. 200% + CPUE" & scenario != "Catch eq. 200%")
+    depletion <- depletion[depletion[,1] > 0.05,]
+
   d1 <- t(apply(depletion[, -nyear], 2,
     FUN = quantile,
     probs = c(0.025, 0.5, 0.975)
@@ -303,7 +310,13 @@ indexes1 <- bind_rows(data.frame(
   left_join(surv_plot_distinct, by = "survey") %>%
   mutate(biomass = biomass / geo_mean, lwr = lwr / geo_mean, upr = upr / geo_mean)
 
-g <- ggplot(surv_plot, aes(year, value,
+# FIXME: BAD TEMPORARY HACK!!! SA: 2020-01-21
+surv_plot2 <- surv_plot %>%
+  group_by(iter, survey, scenarios_human) %>%
+  group_split() %>%
+  map_dfr(~{if(.$value[1] > 0.5 || .$scenario == "ceq200-cpue") .})
+
+g <- ggplot(surv_plot2, aes(year, value,
   group = paste(iter, survey), colour = as.character(survey))) +
   geom_line(alpha = 0.05) +
   geom_pointrange(data = indexes1, mapping = aes(x = year, y = biomass, ymin = lwr, ymax = upr,
