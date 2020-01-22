@@ -250,20 +250,23 @@ saveRDS(rex_sra_dec_m, file = here("generated-data", "rex-sra-dec-m.rds"))
 # Some plots ------------------------------------------------------------------
 
 scenario <- c(
-  "ceq0", "ceq50",
-  "ceq100", "high-m",
-  "low-h", "high-h", "inc-m", "dec-m",
-  "ceq200-cpue")
+  "ceq50", "ceq100", "ceq200", "high-m",
+  "low-h", "high-h",
+  "ceq200-cpue",
+  "inc-m", "dec-m"
+)
 scenarios_human <- c(
-  "Catch eq. 0%", "Catch eq. 50%",
-  "Catch eq. 100%", "M = 0.25",
-  "h = 0.5-0.7", "h = 0.95", "M increasing", "M decreasing",
-  "Catch eq. 200% + CPUE")
+  "Catch eq. 50%", "Catch eq. 100%", "Catch eq. 200%", "M = 0.25",
+  "h = 0.5-0.7", "h = 0.95",
+  "Catch eq. 200% + CPUE",
+  "M increasing", "M decreasing"
+)
 scenario_type <- c(
   "Reference", "Reference",
   "Reference", "Reference",
-  "Reference", "Reference", "Robustness", "Robustness",
-  "Reference"
+  "Reference", "Reference",
+  "Reference",
+  "Robustness", "Robustness"
 )
 sc <- tibble(scenario, scenarios_human, scenario_type) # look good?
 sc
