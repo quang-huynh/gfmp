@@ -212,6 +212,26 @@ plot_grid_pbs <- function(plotlist, align = "hv",
   out
 }
 
+pm_all <- purrr::map2_dfr(rex_mse, names(rex_mse),
+  ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
+  as_tibble() %>%
+  filter(MP %in% rex_satisficed_ref)
+names(pm_all) <- gsub("\\.", " ", names(pm_all))
+
+pm_avg <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+g <- gfdlm::plot_probs(pm_avg)
+ggsave(file.path(fig_dir, paste0("rex-pm-table-", "avg", ".png")),
+  width = 4.25, height = 3.5
+)
+
+pm_min <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, min, na.rm = TRUE)
+g <- gfdlm::plot_probs(pm_min)
+ggsave(file.path(fig_dir, paste0("rex-pm-table-", "min", ".png")),
+  width = 4.25, height = 3.5
+)
+
 # 1 is always base:
 p <- gfdlm::get_probs(rex_mse[[1L]], PM)
 g <- gfdlm::plot_probs(p)
@@ -307,7 +327,6 @@ make_projection_plot(base_om, MPs = toplot[toplot %in% rex_not_satisficed],
 
 .d3 <- gfdlm:::get_ts(DLMtool::Sub(rex_mse_base, MPs = rex_satisficed))
 .d2 <- gfdlm:::get_ts_quantiles(.d3, probs = c(0.2, 0.2))
-.d <- filter(.d2, real_year >= 2019)
 .d <- filter(.d2)
 
 now <- filter(.d2, real_year == 2018)
