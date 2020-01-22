@@ -1,45 +1,16 @@
 \clearpage
 
-# REX SOLE CASE STUDY {#app:mse-rex}
-
-```{r rex-mps, results='asis'}
-mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
-mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "MPs")
-```
-
-West Coast Vancouver Island Rex Sole
-  
-The performance metrics are defined as:
-
-1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
-1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
-1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
-1. LTY: Probability yield > 0.5 MSY (years 36--50)
-1. STY: Probability yield > 0.5 MSY (years 6--20)
-1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
-
-where SB is spawning biomass.
+# WEST COAST VANCOUVER ISLAND REX SOLE CASE STUDY {#app:mse-rex}
 
 ## BACKGROUND
 
-Rex sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m.
+Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged Rex Sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest Rex Sole aged from BC was a 34 cm female aged at 15 years, though larger, unaged individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Additional otoliths have been collected on BC surveys from 2000-present although they have yet to be aged.
 
-Rex sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged rex sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest rex sole aged from BC was a 34 cm female aged at 15 years, though larger, unaged individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Additional otoliths have been collected on BC surveys from 2000-present although they have yet to be aged.
+Rex Sole are a commonly caught flatfish species in BC groundfish bottom trawl surveys and although it is commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or assigned quota for it. Rex Sole have never been formally assessed in BC; however, biomass of Rex Sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012]. 
 
-### History of fishery
+Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for Rex Sole in DFO databases for analysis as described above for shortraker rockfish. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on Rex Sole and other flatfish since 2003. There is currently no established method for reconstructing historical catches for Rex Sole as has been done for several rockfish species in BC. 
 
-Rex sole is a commonly caught flatfish species in BC groundfish bottom trawl surveys and although it is commonly caught in the commercial mixed-species bottom trawl fishery, there is no directed fishery or assigned quota for it. Rex sole have never been formally assessed in BC; however, biomass of rex sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012]. 
-
-The IVQ system initiated in 1997 referred to for shortraker applies to all species caught in the trawl fishery, including rex sole.
-
-### Data sources
-
-Commercial and fishery data (catch, lengths, weights, ages, maturity) are available for rex sole in DFO databases for analysis as described above for shortraker rockfish. The fishery-independent trawl surveys mentioned above for shortraker have also been capturing and collecting data on rex sole and other flatfish since 2003. There is currently no method for estimating historic catches for rex sole as has been done for rockfish species. 
-
-### US
-
-In the US, rex sole is caught in the bottom trawl fishery and is considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which rex sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed with a random effects model in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
+In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
 
 <!-- Maturity
 Abookire 2006 - GOA ML50 females = 352 mm, ML100 = 420 mm) significantly larger size than in Oregon 
@@ -55,7 +26,14 @@ natural mortality used in GOA assessment 0.17-->
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:results-rex2}
 
+We define the performance metrics as:
 
+1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
+1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
+1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
+1. LTY: Probability yield > 0.5 MSY (years 36--50)
+1. STY: Probability yield > 0.5 MSY (years 6--20)
+1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
 
@@ -69,26 +47,6 @@ sc %>%
   select(-scenario, -order) %>%
 csasdown::csas_table(caption = "Rex Sole scenarios")
 ``` 
-
-
-
-## Conditioning
-
-```{r}
-
-# g1 <- gfdlm::plot_historical_ts(rex_historical, observed_ts = catch) +
-#   xlab("")
-# g2 <- gfdlm::plot_historical_ts(rex_historical, type = "SSB") +
-#   ylab("Historical SSB\n(spawning stock biomass)") +
-#   xlab("")
-# g3 <- gfdlm::plot_historical_ts(rex_historical, type = "Rec") +
-#   ylab("Historical recruitment\n(relative numbers)") +
-#   xlab("")
-# g4 <- gfdlm::plot_historical_ts(rex_historical, type = "Find") +
-#   ylab("Historical F\n(fishing mortality)") +
-#   xlab("")
-# cowplot::plot_grid(g1, g2, g3, g4, ncol = 2, align = "hv")
-```
 
 
 ```{r rex-survey-fits, fig.cap="Survey fits.", out.width="\\textwidth"}
@@ -112,12 +70,22 @@ knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-pane
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
 
+We start with the full set of candidate MPs described in Appendix \@ref(app:MPs):
 
+```{r rex-mps, results='asis'}
+mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
+mp_list <- split(mp, mp$type)
+csasdown::csas_table(mp, caption = "Candidate MPs...")
+```
+
+We use the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.
+
+We set a prior on the intrinsic rate of population increase $r$ in the surplus production models based on...
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
 (ref:fig-rex-converge)
-Assessing convergence of the Rex Sole closed-loop simulation under the base OM.
+Assessing convergence of the Rex Sole closed-loop simulation under an example OM from the reference set.
 Broad differences between MPs have converged (lines no longer cross each other).
 Some MPs with very similar performance may still be exchanging rank order within specific performance metrics as of 200 iterations.
 Final inference should probably be drawn on somewhat greater than the 200 iterations shown here.
@@ -126,9 +94,7 @@ Final inference should probably be drawn on somewhat greater than the 200 iterat
 knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ```
 
-
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:results-rex6}
-
 
 ### Reference Set Results
 
@@ -138,12 +104,6 @@ knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ### Robustness Set Results
 
 *TODO: Individual sets of results for robustness set OMs*
-
-
-
-
-
-
 
 
 \clearpage
