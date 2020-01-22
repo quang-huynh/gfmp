@@ -12,7 +12,28 @@ Commercial and fishery data (catch, lengths, weights, ages, maturity) are availa
 
 In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
 
-Data are shown in Figures \@ref(fig:rex-data-1) and \@ref(fig:rex-data-2).
+Data are shown in Figures \@ref(fig:rex-syn1) and \@ref(fig:rex-syn1).
+
+\clearpage
+
+(ref:fig-rex-syn1)
+First Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
+
+```{r rex-syn1, fig.cap="(ref:fig-rex-syn1)", out.width="6in"}
+knitr::include_graphics(here::here("images/rex-sole-1.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-syn2)
+Second Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
+
+```{r rex-syn2, fig.cap="(ref:fig-rex-syn2)", out.width="6in"}
+knitr::include_graphics(here::here("images/rex-sole-2.png"))
+```
+
+\clearpage
+
 
 *TODO: Complete data information and add figures of catch history and indices of abundance*
 
@@ -65,7 +86,7 @@ We consider the major axes of uncertainty for Rex Sole to be:
 
 We defined nine OM scenarios that differed from each other only in these respects (Table \@ref(tab:rex-scen)), with all other parameters held at the same values as described in Appendix \@ref(app:desc-om-rex). 
 
-Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure TODO). Assumptions about pre-1996 catch levels affect the estimated depletion level in 1996 from the SRA model, which is used to calibrate the OMs to historical observations (Appendix \@ref(app:sra)). The SRA model parameter $\tilde{C}^{\textrm{eq}}_f$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}_f$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}_a$ needed to calculate recruits and numbers in the first year of the model (Equation C.3). We note that the use of $F^{\textrm{eq}}_f$ and $\tilde{C}^{\textrm{eq}}_f$ make the assumption that the population biomass and fishery were in equilibrium at that catch level. While this is likely an unrealistic assumption, it is a convenient means of initializing a population model in the presence of fishing. For this reason, we treated the value of $\tilde{C}^{\textrm{eq}}_f$ as a major axis of uncertainty.
+Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure \@ref(fig:rex-syn1)). Assumptions about pre-1996 catch levels affect the estimated depletion level in 1996 from the SRA model, which is used to calibrate the OMs to historical observations (Appendix \@ref(app:sra)). The SRA model parameter $\tilde{C}^{\textrm{eq}}_f$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}_f$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}_a$ needed to calculate recruits and numbers in the first year of the model (Equation C.3). We note that the use of $F^{\textrm{eq}}_f$ and $\tilde{C}^{\textrm{eq}}_f$ make the assumption that the population biomass and fishery were in equilibrium at that catch level. While this is likely an unrealistic assumption, it is a convenient means of initializing a population model in the presence of fishing. For this reason, we treated the value of $\tilde{C}^{\textrm{eq}}_f$ as a major axis of uncertainty.
 
 <!-- *TODO, make equation C.3 a dynamic ref* RF -->
 
@@ -75,7 +96,7 @@ The scenario "Catch eq. 100%" assumes that equilibrium catch prior to 1996 was t
 
 "Catch eq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996, possibly because it was not mandatory to report all landings and discards prior to 1996. 
 
-"Catch eq. 200% + CPUE" also assumes that equilibrium catch prior to 1996 was twice that in 1996, plus the SRA model is fit to the commercial CPUE index, which is available from 1996, therefore providing a longer index of abundance than the synoptic bottom trawl survey (Figure \@ref(fig:rex-data-1)).
+"Catch eq. 200% + CPUE" also assumes that equilibrium catch prior to 1996 was twice that in 1996, plus the SRA model is fit to the commercial CPUE index, which is available from 1996, therefore providing a longer index of abundance than the synoptic bottom trawl survey (Figure \@ref(fig:rex-syn1)).
 
 "Catch eq. 50%" assumes that equilibrium catch prior to 1996 was the same as that in 1996, approximating the reported 1995 catch. 
 
