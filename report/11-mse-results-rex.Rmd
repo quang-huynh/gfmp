@@ -68,7 +68,6 @@ The performance metrics measuring the objectives are:
 1. STY: Probability yield > 0.5 MSY (years 6--20)
 1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
-
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
 
 We consider the major axes of uncertainty for Rex Sole to be:
@@ -175,6 +174,8 @@ Some OMs ("M decreasing" and "M increasing") have identical historical trajector
 knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-panel.png"))
 ```
 
+\clearpage
+
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
 
 We started with the full set of candidate MPs described in Appendix \@ref(app:MPs):
@@ -182,7 +183,7 @@ We started with the full set of candidate MPs described in Appendix \@ref(app:MP
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs...")
+csasdown::csas_table(mp, caption = "Candidate MPs.", col_names = c("Management procedure", "MP type"))
 ```
 
 We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.
@@ -241,10 +242,10 @@ These MPs achieve very similar performance metric values likely because they are
 These satisficed MPs achieve STY and LTY with close to the same probability as fishing perfectly at F/F~MSY~ or 75% of F/F~MSY~ (Figures \@ref(fig:rex-tigure-panel), \@ref(fig:rex-spider-satisficed-mps-avg), \@ref(fig:rex-spider-satisficed-mps-reference)).
 
 Within the reference set OMs, the "Catch eq. 200%" OM had the most noticeable effect on the yield performance metrics with slightly lower values than in the other scenarios (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
-However, making the same assumption about catch at equilibrium the year before the initial year of the historical period but including commercial CPUE resulted in consistently high conservation performance metric values and slightly higher yield performance metric values then the scenario that did not include commercial CPUE (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
+However, making the same assumption about catch at equilibrium the year before the initial year of the historical period but including commercial CPUE resulted in consistently high conservation performance metric values and slightly higher yield performance metric values than the scenario that did not include commercial CPUE (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
 
 We can look at timeseries trajectories of SSB/SSB~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--fig-rex-proj-low-h; other trajectories not shown yet).
-Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).
+Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).
 
 We can also look at "Kobe" plots that demonstrate either the final SSB/SSB~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
 
@@ -353,7 +354,8 @@ knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ### Robustness Set Results
 
 With the exception of the GB_slope MPs, the satisficed MPs were relatively robust to linear increases in natural mortality in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
-All satisficed MPs had a lower probability of achieving yield performance metrics if natural mortality ended up linearly decreasing in the projection period  (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
+All satisficed MPs had a lower probability of achieving yield performance metrics if natural mortality ended up linearly decreasing in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
+The Iratio2 MP achieved the highest AAVY, LTY, and STY performance metrics in the M increasing scenario, while maintaining virtually identical conservation performance metrics as the other MPs (Figure \@ref(fig:rex-spider-satisficed-mps-robust), dark green line).
 
 ```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-robust.png"))
