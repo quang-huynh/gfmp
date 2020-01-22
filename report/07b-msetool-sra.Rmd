@@ -1,5 +1,9 @@
 # MSETOOL STOCK REDUCTION ANALYSIS {#app:sra}
 
+**The following is preliminary and largely reproduced from an MSEtool vignette (written by Quang Huynh) for completeness with some modifications.**
+
+**The text before the equations will be rewritten for the purposes of this document.**
+
 ## A BACKGROUND ON STOCK REDUCTION ANALYSIS {#sec:sra-background}
 
 For conditioning an operating model, it is desirable that some objective method be available (as opposed to intuition or a simple guess) to inform key historical parameters.

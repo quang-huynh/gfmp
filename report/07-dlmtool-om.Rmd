@@ -8,6 +8,8 @@
 
 The full operating model with many parameters varying by year, multiple subareas, and additional possible parameterizations is described in the appendices of @carruthers2018. Here we summarize a simplified version that represents a model sufficiently complex to represent most base models in the framework. In particular, we don't express parameters as varying through time where we have recommended that they be treated as fixed through time as provisional starting points. Wherever possible, we follow the notation conventions used in @carruthers2018 for consistency.
 
+**The following is preliminary and largely reproduced from the DLMtool paper [@carruthers2018] appendix for completeness with some modifications. Equation numbers will be added.**
+
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Last historical year, the ``current'' year is denoted by $c$. -->
@@ -17,7 +19,7 @@ calculated from those from the previous year and age class $a$,
 subject to the instantaneous mortality rate $Z$:
 
 $$
-N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} . 
+N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} .
 $$
 
 Numbers-at-age are initialized in the first historical year using unfinished recruitment \({{R}}_{0}\) as:
