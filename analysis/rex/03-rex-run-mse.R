@@ -95,14 +95,14 @@ pm_all <- purrr::map2_dfr(rex_mse[scenarios_ref_i], scenarios_ref,
   ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
   as_tibble()
 names(pm_all) <- gsub("\\.", " ", names(pm_all))
-
 pm_avg <- group_by(pm_all, MP) %>%
   summarise_if(is.numeric, mean, na.rm = TRUE)
+pm_min <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, min, na.rm = TRUE)
+
 g <- gfdlm::plot_probs(pm_avg)
 ggsave(file.path(fig_dir, "rex-pm-table-avg.png"), width = 4.25, height = 6.25)
 
-pm_min <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, min, na.rm = TRUE)
 g <- gfdlm::plot_probs(pm_min)
 ggsave(file.path(fig_dir, "rex-pm-table-min.png"), width = 4.25, height = 6.25)
 
@@ -152,8 +152,8 @@ ggsave(file.path(fig_dir, paste0("rex-pm-tigures-ref-set", ".png")),
 )
 tigures <- map(scenarios_rob, make_table_plot, mp_order = mp_order)
 g <- plot_grid_pbs(tigures, labels = scenarios_rob_human)
-ggsave(file.path(fig_dir, paste0("rex-pm-tigures-ref-set", ".png")),
-  width = 12, height = 7.5
+ggsave(file.path(fig_dir, paste0("rex-pm-tigures-rob-set", ".png")),
+  width = 8.5, height = 3.3
 )
 
 walk(scenarios, make_kobe_plot,
@@ -194,9 +194,13 @@ spider_plots <- split(mp, type_order) %>%
 g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
   spider_margins = TRUE, ncol = 2) +
   theme(plot.margin = unit(c(0.2, 0.2, -0.5, 1.0), "lines"))
-ggsave(file.path(fig_dir, "rex-spider-all-mptypes-base-panel.png"),
+ggsave(file.path(fig_dir, "rex-spider-all-mptypes-avg-panel.png"),
   width = 9.5, height = 10
 )
+# just average:
+g <- spider_base(filter(pm_avg, MP %in% rex_satisficed_ref)) +
+  scale_colour_manual(values = custom_pal)
+ggsave(file.path(fig_dir, "rex-spider-satisficed-avg.png"), width = 6, height = 6)
 
 # Make not satisficed plot for base (these MPs not tested in other scenarios)
 make_projection_plot(base_om, MPs = rex_not_satisficed,
@@ -320,7 +324,7 @@ ggsave(file.path(fig_dir, "rex-sensitivity-traj-ffmsy-base.png"), width = 12.5, 
 # Optimize PNG files on Unix --------------------------------------------------
 
 cores <- round(parallel::detectCores() / 2L)
-files_per_core <- 3
+files_per_core <- 5
 setwd(fig_dir)
 if (!gfplot:::is_windows()) {
   system(paste0(

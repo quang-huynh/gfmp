@@ -53,7 +53,7 @@ csasdown::csas_table(caption = "Rex Sole scenarios")
 knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
 ```
 
-```{r rex-selectivity, fig.cap="Survey fits.", out.width="4in"}
+```{r rex-selectivity, fig.cap="Selectivity from the OM.", out.width="4in"}
 knitr::include_graphics(here::here("report/figure/rex-selectivity.png"))
 ```
 
@@ -85,10 +85,11 @@ We set a prior on the intrinsic rate of population increase $r$ in the surplus p
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
 (ref:fig-rex-converge)
-Assessing convergence of the Rex Sole closed-loop simulation under an example OM from the reference set.
+Assessing convergence of the Rex Sole closed-loop simulation under an example OM from the reference set with MPs that are later determined to be part of the satisficed set.
 Broad differences between MPs have converged (lines no longer cross each other).
 Some MPs with very similar performance may still be exchanging rank order within specific performance metrics as of 200 iterations.
 Final inference should probably be drawn on somewhat greater than the 200 iterations shown here.
+Other OMs were checked and showed similar patterns.
 
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="5in"}
 knitr::include_graphics(here::here("report/figure/rex-converge.png"))
@@ -98,34 +99,97 @@ knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 
 ### Reference Set Results
 
-*TODO: Average results over all reference set OMs**
-
-
-### Robustness Set Results
-
-*TODO: Individual sets of results for robustness set OMs*
-
-
-\clearpage
-
-(ref:fig-rex-tigure) Performance of all candidate MPs for the base OM.
+(ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
 MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
 The color shading reflects the underlying numbers.
 
-```{r rex-tigure, fig.cap="(ref:fig-rex-tigure)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-base.png"))
+```{r rex-tigure-avg, fig.cap="(ref:fig-rex-tigure-avg)", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
+```
+
+(ref:fig-rex-tigure-min) Minimum performance of all candidate MPs across the reference set of OMs.
+This figure is the same as Figure \@ref(fig:rex-tigure-avg) but shows the **minimum** performance metric across the OMs in the reference set for the purposes of applying satisficing rules.
+In other words, this figure illustrates the worst performance of each MP across the reference set of OMs.
+
+```{r rex-tigure-min, fig.cap="(ref:fig-rex-tigure-min)", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/rex-pm-table-min.png"))
 ```
 
 \clearpage
 
-(ref:fig-rex-proj-ceq50) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the base OM.
+(ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
+MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-min).
+
+```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-pm-tigures.png"))
+```
+
+\clearpage
+
+```{r rex-spider-all-mps, fig.cap="Spider plots of performance metric trade-offs amongst all MPs for the averaged reference set of OMs. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-avg-panel.png"))
+```
+
+\clearpage
+
+```{r rex-spider-satisficed-mps-avg, fig.cap="Average performance metrics for satisficed MPs for the reference set of OMs.", out.width="5in"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-avg.png"))
+```
+
+\clearpage
+
+```{r rex-spider-satisficed-mps-reference, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the reference set.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-proj-ceq100) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs and the "Catch eq. 100%" OM.
 Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation iterations.
 The vertical dashed line indicates the last year of the historical period.
 The horizontal dashed lines indicate SSB/SSB~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
 
-```{r rex-proj-ceq50, fig.cap="(ref:fig-rex-proj-ceq50)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq50.png"))
+```{r rex-proj-ceq100, fig.cap="(ref:fig-rex-proj-ceq100)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
+```
+
+(ref:fig-rex-proj-ceq200-cpue) Same as Figure \@ref(fig:rex-proj-ceq100) but for the OM "Catch 200% + CPUE".
+
+```{r rex-proj-ceq200-cpue, fig.cap="(ref:fig-rex-proj-ceq200-cpue)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq200-cpue.png"))
+```
+
+(ref:fig-rex-proj-low-h) Same as Figure \@ref(fig:rex-proj-ceq100) but for the OM "h = 0.5--0.7". (Other similar projection plots would be included but are not included in this draft.)
+
+```{r rex-proj-low-h, fig.cap="(ref:fig-rex-proj-low-h)", out.width="6.5in"}
+knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-low-h.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-kobe) SSB/SSB~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations for the "Catch eq. 100%" OM. 
+Dots represent individual iterations.
+Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
+
+```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-worm) Trajectory of SSB/SSB~MSY~ and F/F~MSY~ values summarized across iterations for the "Catch eq. 100%" OM.
+The solid line corresponds to the median value.
+Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
+
+```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
+```
+
+### Robustness Set Results
+
+```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set.", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-robust.png"))
 ```
 
 \clearpage
@@ -137,82 +201,22 @@ Caption is otherwise the same as Figure \@ref(fig:rex-proj-ceq50).
 knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
 ```
 
-\clearpage
-
-(ref:fig-rex-proj-cpue) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs for the OM with catch equilibrium in 1996 set to 200% of catch in that year and commercial CPUE included as an index. Caption is the same otherwise as Figure \@ref(fig:rex-proj-ceq50).
-
-```{r rex-proj-cpue, fig.cap="(ref:fig-rex-proj-cpue)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq200-cpue.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference and robustness set OMs.
-MPs are ordered by decreasing performance metric values for the base OM "Catch eq. 50%".
-
-```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-pm-tigures.png"))
-```
-
-\clearpage
-
-```{r rex-spider-all-mps, fig.cap="Spider plots of performance metric trade-offs amongst all MPs for the base OM. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-base-panel.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-kobe) SSB/SSB~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations. 
-Dots represent individual iterations.
-Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
-
-```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq50.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-worm) Trajectory of SSB/SSB~MSY~ and F/F~MSY~ values summarized across iterations.
-The solid line corresponds to the median value.
-Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
-
-```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
-```
-
-\clearpage
-
-```{r rex-spider-base-om, fig.cap="Spider plots of performance metric trade-offs amongst satisficed MPs for the base OM.", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq50.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-spider-all-oms)
-Spider plots of performance metric trade-offs amongst satisficed MPs for all OMs. Colours are the same as in Figure \@ref(fig:rex-spider-base-om).
-
-```{r rex-spider-all-oms, fig.cap="(ref:fig-rex-spider-all-oms)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
-```
+### Sensitivity Tests
 
 \clearpage
 
 (ref:fig-rex-sens-bbmsy) 
-This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
-<!-- A variety of MPs are illustrated across rows. -->
-<!-- Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data). -->
-<!-- For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year). -->
-<!-- For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel). -->
-<!-- Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50. -->
-<!-- Note that none of these panels show strong patterns of sensitivity. -->
-<!-- Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value. -->
+The sensitivity of SSB/SSB~MSY~ in years 36--50 of the projection (y-axis) to OM parameter values (x-axis).
+This example uses the "Catch eq. 100%" OM.
+A variety of MPs are illustrated across rows.
+Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother.
 
 ```{r rex-sens-bbmsy, fig.cap="(ref:fig-rex-sens-bbmsy)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
 ```
 
-(ref:fig-rex-sens-yield) 
-This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean yield in years 6-20 of the projection) to OM parameter values (x-axis).
+(ref:fig-rex-sens-yield)
+Same as Figure \@ref(fig:rex-sens-bbmsy) but for mean yield in years 6--20 of the projection.
 
 ```{r rex-sens-yield, fig.cap="(ref:fig-rex-sens-yield)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png"))
@@ -220,13 +224,9 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png
 
 \clearpage
 
-(ref:fig-rex-proj-sens) 
-This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
-<!-- A variety of MPs are illustrated across rows. -->
-<!-- The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations. -->
-<!-- For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded. -->
-<!-- Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter. -->
-<!-- For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~. -->
+(ref:fig-rex-proj-sens-bbmsy) 
+The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colors) of various OM parameters (columns) over time.
+This example uses the "Catch eq. 100%" OM.
 
 ```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
@@ -234,6 +234,10 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-bas
 
 \clearpage
 
-```{r rex-proj-sens-ffmsy, fig.cap="FFmsy", out.width="\\textwidth"}
+(ref:fig-rex-proj-sens-ffmsy) 
+The sensitivity of F/F~MSY~ (y-axis) to high and low values (colors) of various OM parameters (columns) over time.
+This example uses the "Catch eq. 100%" OM.
+
+```{r rex-proj-sens-ffmsy, fig.cap="(ref:fig-rex-proj-sens-ffmsy)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-ffmsy-base.png"))
 ```
