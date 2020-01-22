@@ -8,22 +8,29 @@ library(here)
 
 # Settings: -------------------------------------------------------------------
 
-cores <- floor(parallel::detectCores() / 2)
+cores <- floor(parallel::detectCores() / 2L)
 sc <- readRDS("generated-data/rex-scenarios.rds")
-sc <- filter(sc, scenario != "ceq200")
-scenarios <- as.character(sc$scenario)
-scenarios_human <- as.character(sc$scenarios_human)
-tibble(scenarios, scenarios_human) # look good?
-
-nsim <- 200
-base_om <- "ceq50"
+nsim <- 200L
+base_om <- "ceq100" # affects some default plots
 mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
+reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 
-# Set up ----------------------------------------------------------------------
+# Set up and checks -----------------------------------------------------------
 
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
 base_i <- which(base_om == scenarios)
+stopifnot(all(reference_mp %in% mp$mp))
+
+scenarios <- as.character(sc$scenario)
+scenarios_human <- as.character(sc$scenarios_human)
+tibble(scenarios, scenarios_human) # look good?
+scenarios_ref <- filter(sc, scenario_type == "Reference") %>%
+  pull(scenario) %>% as.character()
+scenarios_rob <- filter(sc, scenario_type == "Robustness") %>%
+  pull(scenario) %>% as.character()
+scenarios_ref_i <- which(scenarios %in% scenarios_ref)
+scenarios_rob_i <- which(scenarios %in% scenarios_rob)
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -33,8 +40,8 @@ STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
 LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
 PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
 
-# satisficing
-LT_P40_thresh <- 0.9
+# Satisficing rules:
+LT_P40_thresh <- 0.8
 STY_thresh <- 0.7
 
 # Read OMs --------------------------------------------------------------------
@@ -53,52 +60,14 @@ omrex <- map(scenarios, ~ {
 })
 names(omrex) <- scenarios
 
-# Fit base MSE ----------------------------------------------------------------
-
-file_name <- here("generated-data", paste0("rex-mse-", base_om, ".rds"))
-if (!file.exists(file_name)) {
-  message("Running closed-loop-simulation for base OM")
-  DLMtool::setup(cpus = cores)
-  rex_mse_base <- runMSE(OM = omrex[[base_i]], MPs = mp$mp, parallel = TRUE)
-  snowfall::sfStop()
-  saveRDS(rex_mse_base, file = file_name)
-} else {
-  message("Loading closed-loop-simulation for base OM")
-  rex_mse_base <- readRDS(file_name)
-}
-
-rex_probs <- gfdlm::get_probs(rex_mse_base, PM)
-reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-rex_satisficed <- dplyr::filter(rex_probs, `LT P40` > LT_P40_thresh, STY > STY_thresh) %>%
-  arrange(-`LT P40`) %>%
-  pull(MP)
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
-rex_satisficed
-stopifnot(length(rex_satisficed) > 1)
-rex_satisficed_ref <- union(rex_satisficed, reference_mp)
-rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
-stopifnot(length(rex_not_satisficed) > 1)
-
-top_mps <- dplyr::filter(rex_probs, !MP %in% reference_mp) %>%
-  dplyr::filter(MP %in% rex_satisficed) %>%
-  top_n(9, wt = `LT P40`) %>% pull(MP)
-g <- DLMtool::Sub(rex_mse_base, MPs = top_mps) %>%
-  gfdlm::plot_convergence(PM, ylim = c(0.75, 1)) +
-  scale_color_brewer(palette = "Set2") +
-  facet_wrap(vars(pm_name), ncol = 2)
-ggsave(file.path(fig_dir, "rex-converge.png"), width = 6.5, height = 6.5)
-
-# Fit satisficed MPs to other OMs----------------------------------------------
+# Fit MPs to all OMs ----------------------------------------------------------
 
 fit_scenario <- function(scenario) {
   file_name <- here("generated-data", paste0("rex-mse-", scenario, ".rds"))
   if (!file.exists(file_name)) {
     message("Running closed-loop-simulation for ", scenario, " OM")
     DLMtool::setup(cpus = cores)
-    mse <- runMSE(
-      OM = omrex[[scenario]], MPs = rex_satisficed_ref,
-      parallel = TRUE
-    )
+    mse <- runMSE(OM = omrex[[scenario]], MPs = mp$mp, parallel = TRUE)
     snowfall::sfStop()
     saveRDS(mse, file = file_name)
   } else {
@@ -107,20 +76,51 @@ fit_scenario <- function(scenario) {
   }
   mse
 }
-rex_mse_scenarios <- map(scenarios[-base_i], fit_scenario)
-rex_mse <- c(rex_mse_base, rex_mse_scenarios)
-names(rex_mse) <- c(as.character(scenarios[base_i]), as.character(scenarios[-base_i]))
+rex_mse <- map(scenarios, fit_scenario)
+names(rex_mse) <- scenarios
 
-# Plots ---------------------------------------------------------
+# Satisficing -----------------------------------------------------------------
+
+pm_all <- purrr::map2_dfr(rex_mse[scenarios_ref_i], scenarios_ref,
+  ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
+  as_tibble()
+names(pm_all) <- gsub("\\.", " ", names(pm_all))
+
+pm_avg <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+g <- gfdlm::plot_probs(pm_avg)
+ggsave(file.path(fig_dir, "rex-pm-table-avg.png"), width = 4.25, height = 6.25)
+
+pm_min <- group_by(pm_all, MP) %>%
+  summarise_if(is.numeric, min, na.rm = TRUE)
+g <- gfdlm::plot_probs(pm_min)
+ggsave(file.path(fig_dir, "rex-pm-table-min.png"), width = 4.25, height = 6.25)
+
+rex_satisficed <- dplyr::filter(pm_min, `LT P40` > LT_P40_thresh, STY > STY_thresh) %>%
+  arrange(-`LT P40`) %>%
+  pull(MP)
+rex_satisficed
+rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+rex_satisficed
+stopifnot(length(rex_satisficed) > 1)
+rex_satisficed_ref <- union(rex_satisficed, reference_mp)
+rex_not_satisficed <- mp$mp[!mp$mp %in% rex_satisficed_ref]
+stopifnot(length(rex_not_satisficed) > 1)
+
+# Convergence -----------------------------------------------------------------
+
+g <- DLMtool::Sub(rex_mse[[base_i]], MPs = rex_satisficed) %>%
+  gfdlm::plot_convergence(PM, ylim = c(0.68, 1)) +
+  scale_color_brewer(palette = "Set2") +
+  facet_wrap(vars(pm_name), ncol = 2)
+ggsave(file.path(fig_dir, "rex-converge.png"), width = 6.5, height = 6.5)
+
+# Plots -----------------------------------------------------------------------
 
 make_table_plot <- function(scenario, ...) {
   p <- DLMtool::Sub(rex_mse[[scenario]], MPs = rex_satisficed_ref) %>%
     gfdlm::get_probs(PM)
-  g <- gfdlm::plot_probs(p, ...)
-  # ggsave(file.path(fig_dir, paste0("rex-pm-table-", scenario, ".png")),
-  #   width = 4.25, height = 0.205 * nrow(p) + 0.6
-  # )
-  invisible(g)
+  gfdlm::plot_probs(p, ...)
 }
 
 make_projection_plot <- function(scenario, MPs, mptype, height = 9.5,
@@ -140,12 +140,6 @@ make_projection_plot <- function(scenario, MPs, mptype, height = 9.5,
     g2 <- g2 +
       scale_y_continuous(breaks = catch_breaks, labels = catch_labels)
   }
-  # +
-  #   theme(
-  #     axis.text.y = element_blank(),
-  #     axis.ticks.y = element_blank(),
-  #     axis.title.y = element_blank()
-  #   )
 
   g <- cowplot::plot_grid(g1, g2, rel_widths = c(2, 1.18), align = "h")
   ggsave(file.path(
@@ -211,27 +205,6 @@ plot_grid_pbs <- function(plotlist, align = "hv",
     out <- out + theme(plot.margin = unit(c(0.2, 0.2, -0.7, 1.0), "lines"))
   out
 }
-
-pm_all <- purrr::map2_dfr(rex_mse, names(rex_mse),
-  ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
-  as_tibble() %>%
-  filter(MP %in% rex_satisficed_ref)
-names(pm_all) <- gsub("\\.", " ", names(pm_all))
-
-pm_avg <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)
-g <- gfdlm::plot_probs(pm_avg)
-ggsave(file.path(fig_dir, paste0("rex-pm-table-", "avg", ".png")),
-  width = 4.25, height = 3.5
-)
-
-pm_min <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, min, na.rm = TRUE)
-g <- gfdlm::plot_probs(pm_min)
-ggsave(file.path(fig_dir, paste0("rex-pm-table-", "min", ".png")),
-  width = 4.25, height = 3.5
-)
-
 # 1 is always base:
 p <- gfdlm::get_probs(rex_mse[[1L]], PM)
 g <- gfdlm::plot_probs(p)
