@@ -93,16 +93,16 @@ cores <- floor(parallel::detectCores() / 2)
 
 rex_om@Cobs <- c(0, 0)
 rex_om@Cbiascv <- c(0, 0)
+rex_om@D <- c(0.3, 0.8) # gets replaced
 
 # Set up alternative OMs for reference set and robustness set -----------------
 
-# rex_om@nsim <- 48
 saveRDS(indexes, file = "generated-data/rex-indexes.rds")
 fit_sra_rex <- function(om, c_eq = 1, ...) {
   MSEtool::SRA_scope(rex_om,
-    Chist = catch, Index = indexes$biomass, integrate = FALSE,
+    Chist = catch, Index = indexes$biomass,
     C_eq = c_eq * catch[1],
-    I_sd = indexes$re, I_type = "SSB", cores = cores,
+    I_sd = indexes$re, I_type = "1", cores = cores,
     drop_nonconv = TRUE, mean_fit = FALSE, ...
   )
 }
