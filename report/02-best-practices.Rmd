@@ -20,7 +20,7 @@ knitr::include_graphics(here::here("images/mse-chart.pdf"))
 
 Key questions to guide defining the decision context for MSE include:
 
-* What is the the exact decision to be made?
+* What is the exact decision to be made?
 
 * What is the timeframe for making the decision?
 
@@ -61,9 +61,13 @@ If the survey index has been trending up, then the catch recommendation will inc
 
 Model-based MPs fit a statistical population model (e.g., surplus production model) to observed data to estimate biological reference points and stock biomass. These are then incorporated into a harvest control rule (e.g., Figure \@ref(fig:pa-illustration)) to determine the catch limit for the following year.
 
-Given the large number of MP options available, a screening step is desirable. For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit. It is also important to test only MPs for which information or data are available [@punt2016]. For example, data-limited MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many BC groundfish stocks. While it is important to work with a managable set of MPs, it is also important not to screen too aggresively, to make sure good candidate MPs are not screened out early on.
+Given the large number of MP options available, a screening step is desirable.
+For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit.
+Also, unless the decision context involves considering the value of collecting new information, it is important to test MPs for which information or data are available [@punt2016].
+For example, data-limited MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many BC groundfish stocks.
+While it is important to work with a manageable set of MPs, it is also important not to screen too aggressively, to make sure good candidate MPs are not screened out early on.
 
-In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable satisficing criteria, and may also provide input on feasibility of implementing some MPs.
+In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable performance metrics, and may also provide input on feasibility of implementing some MPs.
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES {#sec:best5}
 
@@ -72,8 +76,8 @@ Once the OM and MPs are fully specified, the MSE simulation trials can be run, f
 <!-- TODO: Give an example of a satisficing criteria -->
 
 After screening out MPs that are not consistent with management needs or that do not meet data requirements, there may still be a need to reduce the number of candidate MPs to a manageable set.
-Before embarking on final simulation runs, trial simulations may be used to screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP).
-Using trial simulations to screen out poorly-performing MPs has been termed "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted.
+Analysts can screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP).
+Such a procedure of screening out poorly performing MPs has been termed "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted.
 Satisficing criteria may be used at the screening stage and can also be used at the final MP selection stage to help streamline the decision-making process.
 Satisficing criteria may be less strict at the preliminary screening stage, to ensure that potentially successful MPs are not screened out of the process too early.
 
@@ -95,7 +99,7 @@ Selection of the "best" MP involves addressing trade-offs (e.g., between conserv
 Two basic approaches may be used in selecting the final MP: satisficing and trading-off, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trading-off involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly-performing MPs.
 A second satisficing step may be used towards the end of the process, to further screen out MPs that do not meet a minimum standard and to simplify the decision-making environment [@miller2010]. After this, MP selection may move to a trading-off stage with a final reduced set of MPs. An iterative process may also be required, where MPs and/or OMs are refined following examination of results [e.g., @cox2008a]. In cases where there is a reference and robustness set of OMs, it may be necessary to weight OMs on the basis of plausibility, although this may require a qualitative, expert-driven approach and may not be straightforward [@punt2016].
 
-@carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not apply the MPs to real data, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
+@carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not demonstrate this formal review, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
 
 <!-- TODO: implementation section Dowling et al. 2015 -->
 
@@ -130,7 +134,7 @@ We propose the following provisional tactical conservation and fisheries objecti
 4. Given the conservation objectives are achieved, maximize short- and long-term fisheries yield.
 5. Given the conservation objectives are achieved, minimize variability in fisheries yield from year to year.
 
-Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaing stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *SB*~MSY~ and USR = 0.8 *SB*~MSY~, suggested under the PA Framework [@dfo2009].
+Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *SB*~MSY~ and USR = 0.8 *SB*~MSY~, suggested under the PA Framework [@dfo2009].
 
 The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis. For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone) can be lower at around 50% [@mcilgorm2013].
 
@@ -177,7 +181,7 @@ To ensure transparency and reproducibility, we recommend that the full specifica
 
 We note that DLMtool OMs includes a very large number of parameters that can vary through time, or which can be set to be deliberately biased. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time-invariant and unbiased (Appendix \@ref(app:default-slots)). Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already a accepted components of the stock assessment.
 
-Best practice recommends calibrating OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data). While this is a critical step to improve plausibility of OMs, we emphasise that there are multiple ways to achieve goodness of fit, and a close fit to observations does not necessarily mean that an OM is correctly characterizing the mechanisms underlying the dynamics of the fish stock. This is one of the main reasons for constructing multiple OMs, to explore the impacts of alternative model assumptions and structures on performance of MPs.
+Best practice recommends calibrating OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data). While this is a critical step to improve plausibility of OMs, we emphasize that there are multiple ways to achieve goodness of fit, and a close fit to observations does not necessarily mean that an OM is correctly characterizing the mechanisms underlying the dynamics of the fish stock. This is one of the main reasons for constructing multiple OMs, to explore the impacts of alternative model assumptions and structures on performance of MPs.
 
 DLMtool's companion software package, MSEtool [@huynh_msetool_2019], includes an extremely efficient implementation of a stock reduction analysis (SRA) [@kimura1982; @walters2006], which is effectively a catch-at-age model that estimates the combinations of historical fishing mortality and recruitment that would be consistent with the observed data. The SRA implementation in MSEtool can be conditioned on catch or effort time series. For most applications for BC groundfish stocks, we suggest conditioning on catch, as historical trajectories of catch tend to be more reliable than time series of effort, especially given uncertainties in how to best represent and interpret effort in multispecies fisheries. An advantage of using MSEtool's SRA for calibrating OMs is it allows fitting to multiple indices of abundance, and can accommodate multiple fishing fleets if needed.
 
@@ -233,6 +237,8 @@ For the framework, we focus on MPs that make TAC recommendations because BC grou
 Therefore, all MPs considered here take some subset of the data generated by an operating model and provide a recommended catch for the subsequent year.
 
 We focus on two main types of MPs: data-based and model-based MPs. In choosing from the available data- and model-based MPs, we excluded MPs based on the number of requirements that would rarely be met for our stocks. We excluded MPs that required knowledge of absolute abundance since there are unlikely to be cases where we have such knowledge in a data-limited case. We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age-composition data are not available. We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty stocks to which this framework will be applied. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
+
+<!-- TODO: Quang: also desirable if MPs are easy to understand -->
 
 All MPs included in this framework are fully described in Appendix \@ref(app:MPs).
 
@@ -295,18 +301,20 @@ DLMtool currently generates a single index of abundance for use in the data- or 
 In addition to the candidate MPs, it is important to include reference MPs. Provisionally, we suggest the following reference MPs:
 
 * No fishing
-* Fishing at F/F~MSY~
-* Fishing at 0.75 F/F~MSY~
+* Fishing at F~MSY~
+* Fishing at 0.75 F~MSY~
 * Maintaining the current TAC
 
-The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 F/F~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included not because we think it is necessarily a good management strategy but illustrates what is likely the default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
+The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 F~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included not because we think it is necessarily a good management strategy but illustrates what is likely the default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
 
 ### Including new MPs
 
 The candidate MPs proposed here are a provisional library from which to build.
-Data-limited MP development is a rich area of research, likely still in its infancy.
-Beyond minor adjustments to existing MPs, MP development is not the focus of this report.
-More MPs may be developed as part of the application of this framework and will certainly be developed elsewhere in the literature. The framework presented here has been designed to accommodate new MPs relatively easily and we expect the library of candidate MPs to grow over time, with the framework providing a means to rigourously test new MPs through the closed-loop simulation process.
+Data-limited MP development is a rich area of research, likely still in its infancy, and beyond minor adjustments to existing MPs, MP development is not the focus of this report.
+More MPs may be developed as part of the application of this framework and will certainly be developed elsewhere in the literature.
+The framework presented here has been designed to accommodate new MPs relatively easily and we expect the library of candidate MPs to grow over time, with the framework providing a means to rigorously test new MPs through the closed-loop simulation process.
+
+<!-- TODO: Quang: Text should highlight the fact that anyone can propose an MP so long as it is tested in closed-loop simulation. It should also be noted that MPs over time should be tuned to be more specific to stock/region (e.g. as pointed out in teleconference, build in a minimum TAC to the MPs for non-target stocks). -->
 
 <!-- In summary, we excluded all MPs that required knowledge of: -->
 
@@ -435,7 +443,7 @@ Important to show historical trajectories of parameters such as: historical catc
 
 We developed projection plots that show the range of projected values in B/B~MSY~, F/F~MSY~, catch, and catch along with example replicates for the various MPs.
 
-We developed Kobe plots [REF] that illustrate the trade-off between F/F[MSY] and B/B[MSY] across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
+We developed Kobe plots [REF] that illustrate the trade-off between F/F~MSY~ and B/B~MSY~ across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
 
 Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend themselves well to comparing across operating models.
 
