@@ -593,9 +593,9 @@ cowplot::plot_grid(g1, g2, labels = "auto")
 
 ### SURPLUS PRODUCTION MODEL {#sec:mp-sp}
 
-In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool (REF) and based on Fletcher (1978). Here we include a a modified version of the model description from the package vignette for completeness.
+In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool (REF) and based on Fletcher (TODO). Here we include a a modified version of the model description from the package vignette for completeness.
 
-Biomass $B_t$ in year $y$ is calculated as
+Biomass $B$ in year $y$ is calculated as
 
 <!-- TODO: add Fletcher 1978 -->
 
@@ -603,7 +603,7 @@ Biomass $B_t$ in year $y$ is calculated as
 B_y = B_{y-1} + P_{y-1} - C_{y-1},
 \end{equation}
 
-where $C_t$ is the observed catch and $P_y$ is the surplus production given by
+where $C_y$ is the observed catch and $P_y$ is the surplus production given by
 
 \begin{equation}
 P_y = \gamma \times \textrm{MSY} \times \left(\dfrac{B_y}{K}-\left[\dfrac{B_y}{K}\right]^n\right),
@@ -615,7 +615,21 @@ where $K$ is the carrying capacity, $\textrm{MSY}$ is the estimated maximum sust
 \gamma = \dfrac{1}{n-1}n^{n/(n-1)}.
 \end{equation}
 
-We fix $n = 2$ to represent a symmetrical Schaefer (REF) production curve or $n = 1$ to represent a Fox (REF) production curve.
+The production parameter $n$ is typically fixed and the Schaefer model with a symmetric productive curve ($B_{\textrm{MSY}}/K = 0.5$) is produced when $n = 2$. The Fox model is the limiting case of the Fletcher parameterization as $n \rightarrow 1$, where
+
+\begin{equation}
+K = e \times B_{MSY},
+\end{equation}
+
+\begin{equation}
+r = F_{\textrm{MSY}},
+\end{equation}
+
+and
+
+\begin{equation}
+P_y = -e \times \textrm{MSY} \times \dfrac{B_y}{K} \times \log\left(\dfrac{B_y}{K}\right).
+\end{equation}
 
 By conditioning the model on observed catch, the predicted index $\hat{I}_y$ is
 
