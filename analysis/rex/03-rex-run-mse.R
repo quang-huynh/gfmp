@@ -24,17 +24,18 @@ reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 sp <- "rex"
 
 # Satisficing rules:
-LT_P40_thresh <- 0.8
-STY_thresh <- 0.7
+LT_LRP_thresh <- 0.8
+ST_Catch_thresh <- 0.7
 
 # Set up PMs ------------------------------------------------------------------
 
 `LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
-`LT FMSY` <- DLMtool::PNOF
-`ST Catch` <- gfdlm::pm_factory("LTY", 0.5, c(1, 10))
-`LT Catch` <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
-PM <- c("LT LRP", "LT USR", "ST Catch", "LT Catch", "AAVY", "PNOF")
+`FMSY` <- DLMtool::PNOF
+`AAVC` <- DLMtool::AAVY
+`STC` <- gfdlm::pm_factory("LTY", 0.5, c(1, 10))
+`LTC` <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("LT LRP", "LT USR", "FMSY", "STC", "LTC", "AAVC")
 
 # Set up and checks -----------------------------------------------------------
 
@@ -97,6 +98,8 @@ names(mse) <- scenarios
 
 # Satisficing -----------------------------------------------------------------
 
+pm_list <- map(mse[scenarios_ref_i], ~ gfdlm::get_probs(.x, PM))
+
 pm_all <- purrr::map2_dfr(mse[scenarios_ref_i], scenarios_ref,
   ~data.frame(gfdlm::get_probs(.x, PM), scenario = .y, stringsAsFactors = FALSE)) %>%
   as_tibble()
@@ -110,11 +113,11 @@ g <- gfdlm::plot_prob_tigure(pm_avg)
 .ggsave("pm-table-avg", 4.25, 6.25)
 
 g <- gfdlm::plot_prob_tigure(pm_min,
-  satisficed = c("LT P40" = LT_P40_thresh, "STY" = STY_thresh))
+  satisficed = c("LT LRP" = LT_LRP_thresh, "ST Catch" = ST_Catch_thresh))
 .ggsave("pm-table-min", 4.25, 6.25)
 
-mp_sat <- dplyr::filter(pm_min, `LT P40` > LT_P40_thresh, STY > STY_thresh) %>%
-  arrange(-`LT P40`) %>% pull(MP)
+mp_sat <- dplyr::filter(pm_min, `LT LRP` > LT_LRP_thresh, `ST Catch` > ST_Catch_thresh) %>%
+  arrange(-`LT LRP`) %>% pull(MP)
 mp_sat
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
@@ -151,7 +154,7 @@ walk(mp_sat_ref,
     catch_labels = c("0", "100", "200"))
 )
 
-mp_order <- arrange(pm_avg, `LT P40`, `LT P80`, `STY`, `LTY`, AAVY) %>%
+mp_order <- arrange(pm_avg, `LT LRP`, `LT P80`, `STY`, `LTY`, AAVY) %>%
   filter(MP %in% mp_sat_ref) %>%
   pull(MP)
 tigures <- map(mse_sat_ref, make_table_plot, mp_order = mp_order)
@@ -162,7 +165,7 @@ g <- plot_grid_pbs(tigures, labels = scenarios_rob_human)
 .ggsave("pm-tigures-rob-set", 8.5, 3.3)
 
 walk(mp_sat_ref, ~{
-  g <- gfdlm::plot_contours(
+  g <- gfdlm::plot_kobe(
     mse_sat_ref[[.x]],
     xlim = c(0, 3.5),
     ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.5, 0.75))
@@ -245,7 +248,7 @@ walk(names(mse_sat_ref), ~{
 slots <- c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd")
 
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
-  gfdlm::plot_sensitivity(`LT P40`, slots = slots,
+  gfdlm::plot_sensitivity(`LT LRP`, slots = slots,
     ylab = expression(Mean~SSB/SSB[MSY]~"in"~years~36-50))
 .ggsave("sensitivity-bbmsy-base", 12.5, 8)
 

@@ -59,10 +59,7 @@ make_projection_plot2 <- function(x, scenario, mptype, height = 9.5,
 
 make_kobe_plot <- function(scenario, MPs, mptype, ...) {
   x <- DLMtool::Sub(mse[[scenario]], MPs = MPs)
-  g <- gfdlm::plot_contours(x,
-    xlim = c(0, 3.5),
-    ylim = c(0, 3.5), alpha = c(0.1, 0.25, 0.5, 0.75), ...
-  )
+  g <- gfdlm::plot_kobe(x, ...)
   ggsave(file.path(
     fig_dir,
     paste0("rex-kobe-", mptype, "-", scenario, ".png")
@@ -71,10 +68,11 @@ make_kobe_plot <- function(scenario, MPs, mptype, ...) {
   )
 }
 
+# FIXME: update for new function:
 make_spider <- function(scenario, MPs, mptype, save_plot = TRUE,
                         custom_pal = NULL, legend = TRUE) {
   g <- DLMtool::Sub(mse[[scenario]], MPs = MPs) %>%
-    gfdlm::spider(pm_list = PM, palette = "Set2")
+    gfdlm::plot_spider(pm_list = PM, palette = "Set2")
   if (length(MPs) > 8) {
     g <- g + scale_color_viridis_d()
   }
