@@ -29,14 +29,12 @@ STY_thresh <- 0.7
 
 # Set up PMs ------------------------------------------------------------------
 
-# `LT 0.4BMSY` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
-`LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
-`LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
+`LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
+`LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
 `LT FMSY` <- DLMtool::PNOF
-STY <- gfdlm::pm_factory("LTY", 0.5, c(1, 10))
-MTY <- gfdlm::pm_factory("LTY", 0.5, c(11, 35))
-LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
-PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
+`ST Catch` <- gfdlm::pm_factory("LTY", 0.5, c(1, 10))
+`LT Catch` <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("LT LRP", "LT USR", "ST Catch", "LT Catch", "AAVY", "PNOF")
 
 # Set up and checks -----------------------------------------------------------
 
