@@ -156,10 +156,10 @@ mp_order <- arrange(pm_avg, `LT P40`, `LT P80`, `STY`, `LTY`, AAVY) %>%
   pull(MP)
 tigures <- map(mse_sat_ref, make_table_plot, mp_order = mp_order)
 g <- plot_grid_pbs(tigures, labels = scenarios_ref_human)
-.ggsave("pm-tigures-ref-set", "", 12, 7.5)
+.ggsave("pm-tigures-ref-set", 12, 7.5)
 tigures <- map(scenarios_rob, make_table_plot, mp_order = mp_order)
 g <- plot_grid_pbs(tigures, labels = scenarios_rob_human)
-.ggsave("pm-tigures-rob-set", "", 8.5, 3.3)
+.ggsave("pm-tigures-rob-set", 8.5, 3.3)
 
 walk(mp_sat_ref, ~{
   g <- gfdlm::plot_contours(
