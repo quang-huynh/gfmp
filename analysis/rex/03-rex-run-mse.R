@@ -26,9 +26,13 @@ as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 sp <- "rex"
 
+catch_breaks <- c(0, 100000, 200000)
+catch_labels <- c("0", "100", "200")
+
 # Satisficing rules:
 LT_LRP_thresh <- 0.8
 STC_thresh <- 0.7
+this_year <- 2018
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -110,17 +114,16 @@ mp_sat <- dplyr::filter(pm_min, `LT LRP` > LT_LRP_thresh, `STC` > STC_thresh) %>
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 stopifnot(length(mp_sat) > 1)
+stopifnot(length(mp_sat) > 8) # for RColorBrewer::brewer.pal() "Set2"
 mp_sat_with_ref <- union(mp_sat, reference_mp)
 mp_not_sat <- mp$mp[!mp$mp %in% mp_sat_with_ref]
 stopifnot(length(mp_not_sat) > 1)
 
 mse_sat <- purrr::map(scenarios, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat))
 mse_sat_with_ref <- purrr::map(scenarios_ref, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref))
-mse_not_sat <- purrr::map(scenarios, ~ DLMtool::Sub(mse[[.x]], MPs = mp_not_sat))
 
 pm_df_list_sat <- map(pm_df_list, ~filter(.x, MP %in% mp_sat))
 pm_df_list_sat_with_ref <- map(pm_df_list, ~filter(.x, MP %in% mp_sat_with_ref))
-pm_df_not_sad <- map(pm_df_list, ~filter(.x, MP %in% mp_not_sat))
 
 # Tigure plots ----------------------------------------------------------------
 
@@ -156,64 +159,19 @@ walk(names(mse_sat_with_ref), ~ {
 
 walk(names(mse_sat_with_ref), ~ {
   g <- plot_main_projections(mse_sat_with_ref[[.x]],
-    catch_breaks = c(0, 100000, 200000),
-    catch_labels = c("0", "100", "200"))
+    catch_breaks = catch_breaks,
+    catch_labels = catch_labels)
   .ggsave(paste0("projections-satisficed-", .x), 6.5, 6.5)
-}
-)
-
-walk(names(mse_sat_with_ref), ~ {
-  g <- gfdlm::plot_kobe(mse_sat_with_ref[[.x]])
-  .ggsave(paste0("kobe-", .x), 8, 7.5)
 })
 
-# Radar plots -----------------------------------------------------------------
-
-custom_pal <- c(RColorBrewer::brewer.pal(length(mp_sat), "Set2"),
-  "grey60", "grey20", "grey85") %>% set_names(mp_sat_with_ref)
-custom_pal
-# spider_plots <- walk(scenarios_ref, plot_radar),
-#   MPs = mp_sat_ref,
-#   mptype = "satisficed", custom_pal = custom_pal
-# )
-# spider_plots <- map(scenarios_ref, make_spider,
-#   MPs = mp_sat,
-#   save_plot = FALSE, custom_pal = custom_pal, legend = FALSE
-# )
-# g <- plot_grid_pbs(
-#   plotlist = spider_plots, labels = scenarios_ref_human, spider_margins = TRUE
-# )
-# .ggsave("spider-satisficed-panel", 11, 10)
-# spider_plots_rob <- map(scenarios_rob, make_spider,
-#   MPs = mp_sat,
-#   save_plot = FALSE, custom_pal = custom_pal, legend = FALSE
-# )
-# g <- plot_grid_pbs(
-#   plotlist = spider_plots_rob, labels = scenarios_rob_human, spider_margins = TRUE
-# )
-# .ggsave("spider-satisficed-panel-robust", 8, 4)
-
-# Make multipanel plot of spider plots for satisficed MPs; averaged only
-# type_order <- forcats::fct_relevel(mp$type, "Reference", after = 0L)
-# spider_plots <- split(mp, type_order) %>%
-#   map(~ spider_base(filter(pm_avg, MP %in% .x$mp)))
-# g <- plot_grid_pbs(plotlist = spider_plots, labels = names(spider_plots),
-#   spider_margins = TRUE, ncol = 2) +
-#   theme(plot.margin = unit(c(0.2, 0.2, -0.5, 1.0), "lines"))
-# .ggsave("all-mptypes-avg-panel", 9.5, 10)
-# # just average:
-# g <- spider_base(filter(pm_avg, MP %in% mp_sat_ref)) +
-#   scale_colour_manual(values = custom_pal)
-# .ggsave("satisficed-avg", width = 6, height = 6)
-
-# Make not satisficed plot for base (these MPs not tested in other scenarios)
+# All not satisficed ones for "base":
 DLMtool::Sub(mse[[base_om]], MPs = mp_not_sat) %>%
-  make_projection_plot(scenario = base_om, mptype = "not-satisficed", height = 27)
+  plot_main_projections(catch_breaks = catch_breaks,
+    catch_labels = catch_labels)
+.ggsave(paste0("projections-all-not-satisficed"), 6.5, 27)
 
-make_kobe_plot(base_om, MPs = mp_not_sat, mptype = "not-satisficed",
-  show_contours = FALSE)
-# Example not satisficed ones:
-toplot <- c(
+# Example not satisficed ones for "base":
+mp_eg_not_sat <- c(
   "CC_hist",
   "CC90",
   ".GB_slope8_0.66",
@@ -224,17 +182,61 @@ toplot <- c(
   ".ITM_hist",
   ".SP6040_prior"
 )
+mp_eg_not_sat <- mp_eg_not_sat[mp_eg_not_sat %in% mp_not_sat]
+g <- DLMtool::Sub(mse[[base_om]], MPs = mp_eg_not_sat) %>%
+  plot_main_projections(catch_breaks = catch_breaks,
+    catch_labels = catch_labels)
+.ggsave(paste0("projections-eg-not-satisficed"), 6.5, 6.5)
 
-DLMtool::Sub(mse[[base_om]], MPs = mp_not_sat) %>%
-  make_projection_plot(MPs = toplot[toplot %in% mp_not_sat],
-  mptype = "eg-not-satisficed", scenario = base_om, height = 9,
-  catch_breaks = c(0, 100000, 200000),
-  catch_labels = c("0", "100", "200"))
+# Kobe ------------------------------------------------------------------------
+
+walk(names(mse_sat_with_ref), ~ {
+  g <- gfdlm::plot_kobe(mse_sat_with_ref[[.x]])
+  .ggsave(paste0("kobe-", .x), 8, 7.5)
+})
+
+# Radar plots -----------------------------------------------------------------
+
+custom_pal <- c(RColorBrewer::brewer.pal(length(mp_sat), "Set2"),
+  "grey60", "grey20", "grey85") %>% set_names(mp_sat_with_ref)
+
+g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+  set_names(scenarios_ref_human) %>%
+  plot_radar_facet(custom_pal = custom_pal)
+.ggsave("spider-satisficed-panel-reference", 12, 11)
+
+g <- pm_df_list_rob %>% map(filter, MP %in% mp_sat_with_ref) %>%
+  set_names(scenarios_rob_human) %>%
+  plot_radar_facet(custom_pal = custom_pal)
+.ggsave("spider-satisficed-panel-robustness", 10, 5)
+
+g <- pm_avg %>% filter(MP %in% mp_sat_with_ref) %>%
+  plot_radar(custom_pal = custom_pal)
+.ggsave("spider-satisficed-avg-reference", 6, 6)
+
+g <- pm_min %>% filter(MP %in% mp_sat_with_ref) %>%
+  plot_radar(custom_pal = custom_pal)
+.ggsave("spider-satisficed-min-reference", 6, 6)
+
+g <- pm_min %>% filter(MP %in% mp_sat_with_ref) %>%
+  plot_radar(custom_pal = custom_pal)
+.ggsave("spider-satisficed-min-reference", 6, 6)
+
+# Parallel coordinate plots ---------------------------------------------------
+
+g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+  set_names(scenarios_ref_human) %>%
+  gfdlm::plot_parallel_coords(type = "facet", custom_pal = custom_pal)
+.ggsave("parallel-coordinates", 8, 6.6)
+
+g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+  gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
+.ggsave("parallel-coordinates-avg", 5, 3)
 
 # Psychedelic pyramid worms ---------------------------------------------------
 
-walk(names(mse_sat_ref), ~{
-  plot_worm(mse_sat_ref[[.x]], this_year = this_year, prob = prob)
+walk(names(mse_sat_with_ref), ~{
+  g <- plot_worms(mse_sat_with_ref[[.x]], this_year = this_year)
   .ggsave(paste0("neon-worms-", .x), 8, 6.6)
 })
 
