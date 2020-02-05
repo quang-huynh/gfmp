@@ -5,7 +5,6 @@ library("purrr")
 library("ggplot2")
 library("gfdlm")
 library("here")
-# source(here("analysis/rex/plot-functions.R"))
 
 # Settings --------------------------------------------------------------------
 
@@ -115,7 +114,7 @@ mp_sat <- dplyr::filter(pm_min, `LT LRP` > LT_LRP_thresh, `STC` > STC_thresh) %>
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 stopifnot(length(mp_sat) > 1)
-stopifnot(length(mp_sat) > 8) # for RColorBrewer::brewer.pal() "Set2"
+stopifnot(length(mp_sat) <= 8) # for RColorBrewer::brewer.pal() "Set2"
 mp_sat_with_ref <- union(mp_sat, reference_mp)
 mp_not_sat <- mp$mp[!mp$mp %in% mp_sat_with_ref]
 stopifnot(length(mp_not_sat) > 1)
