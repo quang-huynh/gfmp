@@ -2,41 +2,35 @@ library(dplyr)
 library(ggplot2)
 library(DLMtool)
 library(here)
+library(gfdlm)
+library(gfutilities)
 
-dir.create(here("report/mp-screening/om"), showWarnings = FALSE)
-dir.create(here("report/mp-screening/mse-generated"), showWarnings = FALSE)
+om_dir <- here("report/mp-screening/om")
+dir.create(om_dir, showWarnings = FALSE)
+mse_gen_dir <- here("report/mp-screening/mse-generated")
+dir.create(mse_gen_dir, showWarnings = FALSE)
 
-download_om <- function(species,
-                        web_file,
-                        base_url = "http://www.datalimitedtoolkit.org/Case_Studies_Table/",
-                        method = "wget",
-                        overwrite = FALSE){
-  fn <- paste0(species, ".rds")
-  if(overwrite | !file.exists(here("report/mp-screening/om", fn))){
-    download.file(paste0(base_url, web_file),
-                  here("report/mp-screening/om", fn),
-                  method = method)
-  }
-}
+ovr <- FALSE
+gfdlm::download_om(file.path(om_dir, "pop"), "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "redbanded"), "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "rougheye"), "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "shortspine"), "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "yelloweye"), "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = ovr)
+gfdlm::download_om(file.path(om_dir, "arrowtooth"), "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = ovr)
 
-overwrite <- FALSE
-download_om("pop", "Pacific_Ocean_Perch_QC_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("redbanded", "Redbanded_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("rougheye", "Rougheye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("shortspine", "Shortspine_Thornyhead_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("yelloweye", "Yelloweye_Rockfish_BC_DFO/OM.rdata", overwrite = overwrite)
-download_om("arrowtooth", "Arrowtooth_Flounder_BC_DFO/OM.rdata", overwrite = overwrite)
+pop_om <- readRDS(file.path(om_dir, "pop.rds"))
+rdb_om <- readRDS(file.path(om_dir, "redbanded.rds"))
+rgh_om <- readRDS(file.path(om_dir, "rougheye.rds"))
+srt_om <- readRDS(file.path(om_dir, "shortspine.rds"))
+yel_om <- readRDS(file.path(om_dir, "yelloweye.rds"))
+arr_om <- readRDS(file.path(om_dir, "arrowtooth.rds"))
 
-pop_om <- readRDS(here("report/mp-screening/om/pop.rds"))
-rdb_om <- readRDS(here("report/mp-screening/om/redbanded.rds"))
-rgh_om <- readRDS(here("report/mp-screening/om/rougheye.rds"))
-srt_om <- readRDS(here("report/mp-screening/om/shortspine.rds"))
-yel_om <- readRDS(here("report/mp-screening/om/yelloweye.rds"))
-arr_om <- readRDS(here("report/mp-screening/om/arrowtooth.rds"))
-
-folder <- here("report/mp-screening/mse-generated")
-oms <- list(pop = pop_om, rdb = rdb_om, rgh = rgh_om,
-  srt = srt_om, yel = yel_om, arr = arr_om)
+oms <- list(pop = pop_om,
+            rdb = rdb_om,
+            rgh = rgh_om,
+            srt = srt_om,
+            # yel = yel_om,
+            arr = arr_om)
 mse <- list()
 
 lapply(oms, function(x) x@beta) # hyper stability/hyper depletion
@@ -44,6 +38,8 @@ lapply(oms, function(x) x@Ibiascv)
 lapply(oms, function(x) x@Cobs)
 lapply(oms, function(x) x@Cbiascv)
 lapply(oms, function(x) x@interval)
+lapply(oms, function(x) x@CAL_nsamp)
+lapply(oms, function(x) x@CAL_ESS)
 # What should the assessment interval be?
 # Every 5 years?
 
@@ -64,14 +60,45 @@ oms$pop@Iobs <- c(0.20, 0.35)
 # arrowtooth should be around 0.15-0.25 (synopsis report)
 oms$arr@Iobs <- c(0.15, 0.25)
 
+# TODO: FINISH THIS:
+oms$pop@CAL_nsamp <- c(100, 100)
+oms$pop@CAL_ESS <- c(100, 100)
+oms$pop@Ibiascv
+oms$pop@beta
+
+oms$rdb@CAL_nsamp <- c(100, 100)
+oms$rdb@CAL_ESS <- c(100, 100)
+oms$rdb@Ibiascv
+oms$rdb@beta
+
+oms$rgh@CAL_nsamp <- c(100, 100)
+oms$rgh@CAL_ESS <- c(100, 100)
+oms$rgh@Ibiascv
+oms$rgh@beta
+
+oms$srt@CAL_nsamp <- c(100, 100)
+oms$srt@CAL_ESS <- c(100, 100)
+oms$srt@Ibiascv
+oms$srt@beta
+
+# oms$yel@CAL_nsamp
+# oms$yel@CAL_ESS
+
+oms$arr@CAL_nsamp <- c(100, 100)
+oms$arr@CAL_ESS <- c(100, 100)
+oms$arr@Ibiascv
+oms$arr@beta
+
 candidate_mps <- readr::read_csv(here("report/data/dlmtool-mps.csv")) %>%
   filter(Candidate == "Y") %>%
   rename(mp = `Management Procedure`)
 mps_keep <- gsub(" ", "", unlist(strsplit(candidate_mps$mp, " ")))
 mps_keep <- sort(union(mps_keep, DLMtool::avail("Reference")))
 
-# FIXME: Error: Islope3 is not a valid MP!?
-mps_keep <- mps_keep[!mps_keep %in% c("Islope3")]
+library(MSEtool)
+mps_keep <- union(mps_keep, c(".DDSS_MSY", ".DDSS_4010", ".SP_MSY", ".SP_4010"))
+mps_keep <- sort(mps_keep)
+mps_keep <- mps_keep[!grepl("L", mps_keep)] # no length-based MPs
 
 DLMtool::setup(cpus = parallel::detectCores())
 for (i in seq_along(oms)) {
@@ -82,7 +109,7 @@ for (i in seq_along(oms)) {
   oms[[i]]@Cbiascv <- c(0.05, 0.05)
   oms[[i]]@interval <- 5 # otherwise a mix of 3 and 4
 
-  fi <- paste0(file.path(folder, names(oms)[i]), ".rds")
+  fi <- paste0(file.path(mse_gen_dir, names(oms)[i]), ".rds")
   if (!file.exists(fi)) {
     mse[[i]] <- runMSE(OM = oms[[i]], MPs = mps_keep, parallel = TRUE, ntrials = 1000)
     saveRDS(mse[[i]], file = fi)
@@ -92,76 +119,87 @@ for (i in seq_along(oms)) {
 }
 snowfall::sfStop()
 
-source("R/plot-probability-table.R")
-source("R/plots.R")
-source("R/trade-plots.R")
-source("R/pm-functions.R")
-library(gfutilities)
+`LT P40` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
+`LT P80` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
+STY <- gfdlm::pm_factory("LTY", 0.5, c(6, 20))
+LTY <- gfdlm::pm_factory("LTY", 0.5, c(36, 50))
+PM <- c("LT P40", "LT P80", "STY", "LTY", "AAVY", "PNOF")
+
+probs <- lapply(mse, function(x) {
+  gfdlm:::get_probs(x, PM)
+})
+
+lapply(seq_along(probs), function(i) {
+  pdf(paste0("report/figure/screening-probs-", names(oms)[i], ".pdf"), width = 5, height = 10)
+  print(plot_probs(probs[[i]]))
+  dev.off()
+})
 
 pm <- lapply(mse, function(x) {
-  pm_pass(x,
-    pm_list = list("PNOF", "P100", "P10", "P40", "LTY", "AAVY"),
-    lims = c(0, 0, 0, 0, 0, 0))
+  gfdlm:::eval_pm(x,
+    pm_list = PM)
 })
 for (i in seq_along(oms)) pm[[i]]$species <- names(oms)[i]
 
-# pm    probcap
-# <fct> <fct>
-#   1 PNOF  Prob. F < FMSY (Years 1 - 50)
-# 2 P100  Prob. SB > SBMSY (Years 1 - 50)
-# 4 P10   Prob. SB > 0.1 SBMSY (Years 1 - 50)
-# 5 P40   Prob. SB > 0.4 SBMSY (Years 1 - 50)
-# 6 LTY   Prob. Yield > 0.5 Ref. Yield (Years 41-50)
 
 wide_pm <- bind_rows(pm) %>%
   as.data.frame() %>%
-  filter(!species %in% c("rdb"), mp != "YPR") %>%
-  filter(pm %in% c("PNOF", "P100", "P40", "LTY", "AAVY")) %>%
+  # filter(!species %in% c("rdb"), mp != "YPR") %>%
+  filter(mp != "YPR") %>%
+  filter(pm %in% PM) %>%
   reshape2::dcast(class + species + mp ~ pm, value.var = "prob")
 
-# relative to peak MP:
-top_pm <- wide_pm %>%
-  group_by(species) %>%
-  mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
-    P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
-  filter(PNOF > 0.5) %>%
-  filter(P40 > 0.8) %>%
-  filter(P100 > 0.5) %>%
-  filter(LTY > 0.5) %>%
-  filter(class != "Reference") %>%
-  group_by(species) %>%
-  top_n(n = 10L, wt = LTY) %>%
-  as.data.frame()
-#
-# # absolute performance:
+# relative performance:
 # top_pm <- wide_pm %>%
 #   group_by(species) %>%
-#   filter(P40 > 0.90) %>%
-#   filter(P100 > 0.50) %>%
+#   mutate(P100 = P100 / max(P100), PNOF = PNOF / max(PNOF),
+#     P40 = P40 / max(P40), LTY = LTY / max(LTY), AAVY = AAVY / max(AAVY)) %>%
+#   filter(PNOF > 0.5) %>%
+#   filter(P40 > 0.8) %>%
+#   filter(P100 > 0.5) %>%
+#   filter(LTY > 0.5) %>%
 #   filter(class != "Reference") %>%
 #   group_by(species) %>%
 #   top_n(n = 10L, wt = LTY) %>%
 #   as.data.frame()
+#
+# # absolute performance:
+top_pm <- wide_pm %>%
+  group_by(species) %>%
+  mutate(LTY_FMSYref = LTY[mp == "FMSYref"]) %>%
+  # filter(LTY  > 0.50 * LTY_FMSYref) %>%
+  filter(LTY  > 0.50) %>%
+  filter(STY  > 0.50) %>%
+  filter(PNOF > 0.50) %>%
+  filter(`LT P80`  > 0.50) %>%
+  filter(`LT P40`  > 0.80) %>%
+  filter(class != "Reference") %>%
+  group_by(species) %>%
+  # top_n(n = 20L, wt = LTY) %>%
+  as.data.frame()
+
+omitted <- filter(wide_pm, !mp %in% as.character(unique(top_pm$mp)), class != "Reference") %>%
+  pull(mp) %>% as.character() %>% unique() %>% sort()
+omitted
 
 top_pm
-sort(table(top_pm$mp))
+rev(sort(table(top_pm$mp)))
 
-top_pm_names <- unique(top_pm$mp)
-length(top_pm_names)
+top_mp_names <- unique(top_pm$mp)
+length(top_mp_names)
 saveRDS(top_pm, file = here("generated-data/top-mp-screening.rds"))
 
-top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
-top_top_pm_names
+top_top_mp_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
+top_top_mp_names
 
 species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
   species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
     "yelloweye rockfish", "arrowtooth flounder"))
 
-# FIXME: Should the constant catch MPs be removed? They don't have any feedback built in.
 plot_pm <- function(x, y, colour) {
   wide_pm %>%
     left_join(species_names, by = "species") %>%
-    filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
+    filter(mp %in% top_top_mp_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
     ggplot(aes_string(x = x, y = y)) +
     geom_point(aes_string(colour = colour, shape = "class")) +
     xlim(0, 1) + ylim(0, 1) +
@@ -172,103 +210,56 @@ plot_pm <- function(x, y, colour) {
     gfplot::theme_pbs()
 }
 saveRDS(wide_pm, file = here("generated-data/wide-pm-screening.rds"))
-plot_pm("P100", "LTY", "AAVY")
-plot_pm("P100", "LTY", "PNOF")
-plot_pm("P40", "LTY", "AAVY")
-plot_pm("P40", "PNOF", "LTY")
-plot_pm("P100", "PNOF", "LTY")
+# plot_pm("LT P40", "LTY", "AAVY")
+# plot_pm("P100", "LTY", "PNOF")
+# plot_pm("P40", "LTY", "AAVY")
+# plot_pm("P40", "PNOF", "LTY")
+# plot_pm("P100", "PNOF", "LTY")
 
-# https://stackoverflow.com/a/46999174
-calculate_radar <- function(mydf) {
-  df <- cbind(mydf[, -1], mydf[,2])
-  myvec <- c(t(df))
-  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (ncol(df) - 1))
-  xx <- myvec * sin(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
-  yy <- myvec * cos(rep(c(angles[-ncol(df)], angles[1]), nrow(df)))
-  graphData <- data.frame(group = rep(mydf[, 1], each = ncol(mydf)),
-    x = xx, y = yy)
-  graphData
+
+# -------------------------------------------------------------------------------------------------
+# Plot grid of spiders by species
+make_radar_plot <- function(mps, file_name = NULL, ...){
+  out <- lapply(seq_along(species_names$species), function(x){
+    tmp <- as.data.frame(pm[[x]]) %>%
+      filter(mp %in% mps) %>%
+      filter(mp %in% top_top_mp_names | mp %in% reference_mp) %>%
+      filter(pm %in% PM)
+    ggspider::spider_web(tmp, "mp", "pm", "prob")
+  })
+  if (!is.null(file_name)) {
+    pdf(file_name, width = 11, height = 12)
+    on.exit(dev.off())
+  }
+  cowplot::plot_grid(plotlist = out,
+                     labels = gfsynopsis:::first_cap(species_names$species_full),
+                     label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
 }
 
-calculate_spokes <- function(mydf) {
-  .n <- ncol(mydf) - 1
-  angles <- seq(from = 0, to = 2 * pi, by = (2 * pi) / (.n))
-  data.frame(x = 0, y = 0, xend = sin(angles[-1]), yend = cos(angles[-1]))
-}
+average_catch_mp <- c("AvC", "CC1", "CC2", "CC3", "CC4", "CC5")
+data_moderate_mp <- c("DD", "DD4010", "SP_4010", "SP_MSY")
+length_mp <- c("L95target", "Lratio_BHI", "Lratio_BHI2", "Lratio_BHI3",
+  "LstepCC1", "LstepCC2", "Ltarget1", "Ltarget2", "Fdem_ML", "YPR_ML")
+reference_mp <- c("NFref", "FMSYref", "FMSYref75")
+index_mp <- c("Iratio", "Islope1", "Islope2", "Islope4", "Itarget1",
+  "Itarget2", "Itarget3", "Itarget4", "ITM ICI", "ICI2", "SBT1", "SBT2")
 
-make_radar <- function(.species) {
-  dat <- wide_pm %>%
-    filter(mp %in% top_top_pm_names, species == .species) %>%
-    select(-1, -2)
+pdf(here::here("report/figure/screening-radar-average-catch.pdf"), width = 12, height = 12)
+make_radar_plot(average_catch_mp)
+dev.off()
 
-  spokes_data <- calculate_spokes(dat)
-  spokes_data$pm <- names(dat[, -1])
-  radar_data <- calculate_radar(dat)
-  label_data <- data.frame(x = 0, y = c(0.5, 0.75))
+pdf(here::here("report/figure/screening-radar-data-moderate.pdf"), width = 12, height = 12)
+make_radar_plot(data_moderate_mp)
+dev.off()
 
-  ## for ggrepel labels:
-  # radar_data$pm <- rep(c(names(dat[,-1]), ""), length(unique(dat[,1])))
-  # labs <- filter(radar_data, pm %in% c("AAVY", "PNOF")) %>%
-  #   group_by(group) %>%
-  #   summarize(xx = approx(x = x, y = y, n = 7)$x[6],
-  #     yy = approx(x = x, y = y, n = 7)$y[6])
+pdf(here::here("report/figure/screening-radar-length.pdf"), width = 11, height = 12)
+make_radar_plot(length_mp)
+dev.off()
 
-  radar_data %>%
-    ggplot(aes(x = x, y = y)) +
-    geom_segment(
-      data = spokes_data,
-      aes(x = x, y = y, xend = xend, yend = yend), colour = "grey75", lty = 1
-    ) +
-    # FIXME: do this more elegantly in the data:
-    geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
-      aes(x = xend * 0.5, y = yend * 0.5), colour = "grey75", lty = 2
-    ) +
-    geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
-      aes(x = xend * 0.75, y = yend * 0.75), colour = "grey75", lty = 2
-    ) +
-    geom_path(
-      data = rbind(spokes_data, spokes_data[1, ]),
-      aes(x = xend * 1, y = yend * 1), colour = "grey75", lty = 2
-    ) +
-    geom_path(aes(colour = as.factor(group)), lwd = 0.8) +
-    coord_equal() +
-    geom_text(data = spokes_data, aes(
-      x = xend * 1.1, y = yend * 1.1,
-      label = pm
-    ), colour = "grey30") +
-    geom_text(
-      data = label_data,
-      aes(x = x, y = y, label = y), colour = "grey50",
-      nudge_y = 0.04, hjust = 0, nudge_x = 0.01
-    ) +
-    gfplot::theme_pbs() +
-    labs(colour = "MP") +
-    # scale_color_viridis_d() +
-    scale_color_brewer(palette = "Set2") +
-    # guides(colour = FALSE) +
-    # ggrepel::geom_text_repel(data = labs,
-    #   aes(x = xx, y = yy, label = group, colour = group),
-    #   nudge_y = 0.1, nudge_x = -0.1) +
-    theme(
-      axis.line = element_blank(),
-      axis.text.x = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      panel.background = element_blank(),
-      panel.border = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      plot.background = element_blank()
-    ) +
-    theme(legend.position="right")
+pdf(here::here("report/figure/screening-radar-reference.pdf"), width = 11, height = 12)
+make_radar_plot(reference_mp)
+dev.off()
 
-}
-
-out <- lapply(species_names$species, make_radar)
-pdf("report/figure/screening-radar.pdf", width = 11, height = 13)
-cowplot::plot_grid(plotlist = out, labels = species_names$species_full, label_fontface = "plain", hjust = 0, label_x = 0.05, nrow = 3)
+pdf(here::here("report/figure/screening-radar-index.pdf"), width = 11, height = 12)
+make_radar_plot(index_mp)
 dev.off()

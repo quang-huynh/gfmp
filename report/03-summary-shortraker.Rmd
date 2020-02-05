@@ -1,0 +1,39 @@
+# SHORTRAKER ROCKFISH CASE STUDY
+
+## BACKGROUND
+
+Shortraker rockfish (*Sebastes borealis*) occur throughout the North Pacific from Japan, the Okhotsk Sea, and southeastern Kamchatka to the Bering Sea and Aleutian Islands and south to California [@love2002]. It has been caught in BC at depths between 20 m and 1300 m, with most captured between 200 m and 600 m.
+
+Shortraker rockfish can grow as large as 120 cm and up to 30 kg [@love2002], and has been measured in BC waters as large as 108 cm and up to 21.7 kg. The oldest shortraker aged in BC was a female caught in a trawl survey on the West Coast of Haida Gwaii in 1997 aged at 157 years (ages are known from otoliths collected in surveys conducted in 1997, 2002--2003, 2006--2008 and 2010--2012; additional otoliths have been collected on surveys from 2013-present which have yet to be aged).
+
+<!--Biological parameters not previously estimated for shortraker in BC:
+Natural mortality - 0.027-0.042 (gonad somatic index; mcdermott 1994 MSc thesis UW, all US areas)
+  A previous estimate of M in GOA was computed based on multiplying the ratio of the max age of rougheye (then 140) to max age of     shortraker in BC (then 120) by the mid-point of the range of Z for rougheye (then 0.025) to yield 0.03. Max age of rougheye/blackspotted in BC currenlty 147, and 157 for shortraker, and higher values for Z used in rougheye review (@haigh2005). This **would yield smaller estimate for mortality that we may want to try using**
+Age at maturity - 21.4 (hutchinson 2004, based on experimental aging, and indirectly on size at maturity in mcdermott 1994, requires further study for confirmation)
+Size at maturity - 44.9 (mcdermott 1994, all US areas), 49.9 (Conrath 2017, GOA)-->
+
+<!-- maturity & natural mortality - see us assessments -->
+
+## History of fishery
+
+Shortraker rockfish are part of the slope rockfish complex (Pacific Ocean perch, yellowmouth rockfish, redstripe rockfish, rougheye rockfish, shortspine/longspine thornyheads and shortraker rockfish) and represents a small portion of the BC trawl and hook and line fisheries. A trawl fishery for slope rockfish has existed in BC since the 1940s, with relatively minor Canadian trawl catches and uncertain historic foreign catches. No quotas were in effect for slope rockfish prior to 1977. For most subsequent years, rockfish management has involved a combination of species/area quotas, area/time closures, and trip limits on the major species. Shortraker rockfish quotas were introduced in 1996. The trawl fishery underwent a major change in 1997 through the introduction of individual vessel quotas (IVQs), where individual vessels were allocated a proportion of the total allowable catch based on vessel length and catch in previous years [@schnute1999a, @dfo2017].
+
+## History of assessment/analytical methods
+
+Shortraker was last assessed as part of the slope rockfish assemblage in 1998 [@schnute1999a] and updated in 1999 [@schnute1999b]. The seven slope rockfish species were managed within six major areas (3C, 3D,AS, 5CD, 5EN, 5ES) for a total of 42 species-area combinations, called "assessment units". A detailed catch-at-age analysis was conducted for one of these assessment units, Pacific ocean perch in area 5AB, as a benchmark stock, and quotas for the other 41 assessment units resulted from scale factors relating each unit to the benchmark stock. Scale factors were estimated from historical fisheries data, research surveys, and knowledge from expert fishermen.
+
+Slope rockfish assessments suffered from the lack of reliable time series on fishery catch [@schnute1999a]. The port monitoring program initiated in 1994 and the at-sea observer program initiated in 0ct 1995 led to major improvements in data quality. In the 1998 assessment report, it was noted that depth was an important factor influencing trawl catch per unit effort (CPUE), and therefore all analyses of CPUE data incorporated depth stratification. It was also noted that CPUE in commercial tows was lower than in survey tows for some species in similar time, place and depth. Commercial CPUE data was determined to therefore not reflect stock abundance; consequently, a fishery-independent industry-sponsored survey of the slope rockfish was developed in collaboration between industry and DFO.
+
+## Data sources
+
+Commercial and fishery catch, effort, and biological data are available for Shortraker Rockfish in DFO databases for analysis as described above for Rex Sole. The fishery-independent trawl surveys mentioned in the Rex Sole case study have also been capturing and collecting data on Shortraker Rockfish and other groundfish species since 2003. In addition, rockfish data have been gathered with longline surveys conducted in collaboration with industry in the north and south along the BC coast in alternating years since 2006 and the International Pacific Halibut Commission Fishery Independent Setline Survey has sampled rockfish species since 1995 (either on all hooks or the first 20 of each skate). Commercial sampling became more reliable with the implementation of 100% observer coverage for the trawl fishery in 1996, and in 2006 for the hook and line sectors.
+
+Historic rockfish catch reports are uncertain prior to 100% monitoring being implemented. As in recent rockfish stock assessments, historic catch prior to these years is reconstructed by calculating catch ratios of shortraker rockfish to a reference group (here, all species of rockfish other than Pacific Ocean perch) from a period of high confidence in reported catch (1997:2005 for trawl, and 2007:2011 for longline fisheries). This ratio is applied to total landings of the reference group for historic years to estimate historic shortraker catch. Discarded catch is similarly estimated for historic years from modern catch data, but only uses observer data. For trawl data, observer records from 1996 to 2006 contain reliable discard information. For the hook and line rockfish fishery, observer data include discards from 1999 and 2005, and are considered reliable between 2000 and 2004. Discard ratios are calculated as the means of annual means of discarded to landed ratios for all fishing events within PMFC areas by each fishery. For halibut, sablefish and dogfish-lingcod fisheries in which shortraker is rarely retained, shortraker landings are not a useful denominator for the discard ratio and instead landings of a target species or species group is used. 
+
+## US
+
+In the US, shortraker rockfish are important (or moderately important) to commercial trawl and longline fisheries with most of the species occurring in Alaska and some occurring south of BC as far as Point Conception, California. It is managed and assessed as separate stocks: Gulf of Alaska (GOA) stock, Bering Sea/Aleutian Islands (BEAI) stock. The GOA stock was last assessed in 2017 [@echave2017] and BEAI stock in 2018 [@spies2018].
+
+## Table of changes over time?
+
+<!-- see Schnute 1999 for table of slope rf management changes up to 1999-->

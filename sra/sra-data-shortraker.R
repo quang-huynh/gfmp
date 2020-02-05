@@ -1,39 +1,13 @@
-library("dplyr")
+library(dplyr)
 species_name <- "shortraker rockfish"
 starting_year <- 1977
 ending_year <- 2018
 all_years <- seq(starting_year, ending_year)
 
 science_name <- "Sebastes borealis"
-species_file <- here::here(
-  "generated-data",
-  paste0(gsub(" ", "-", species_name), ".rds")
-)
-species_file_privacy <- here::here(
-  "generated-data",
-  paste0(gsub(" ", "-", species_name), "-privacy.rds")
-)
 
-if (!file.exists(species_file) && !file.exists(species_file_privacy)) {
-  d_short <- list()
-  d_short$commercial_samples <- gfdata::get_commercial_samples(species_name)
-  d_short$survey_samples <- gfdata::get_survey_samples(species_name)
-  d_short$catch <- gfdata::get_catch(species_name)
-  d_short$survey_index <- gfdata::get_survey_index(species_name)
-  saveRDS(d_short, file = species_file)
-
-  # privacy compliant version:
-  d_privacy <- d_short
-  d_privacy@commercial_samples <- NULL
-  d_privacy@catch <- NULL
-  saveRDS(d_privacy, file = species_file_privacy)
-} else {
-  if (file.exists(species_file)) {
-    d_short <- readRDS(species_file)
-  } else {
-    d_short <- readRDS(species_file_privacy)
-  }
-}
+d_short <- load_data_shortraker()
+d_privacy <- load_data_shortraker(private = TRUE)
 
 short_om <- readRDS(here::here("generated-data", "shortraker-om.rds"))
 short_om@M
@@ -53,8 +27,8 @@ short_om@Iobs <- c(0.4, 0.6)
 
 make_raker_cal <- function(dat, survey, length_bin = 5) {
   dat <- filter(dat, survey_abbrev == survey)
-  cal <- pbs2dlm::tidy_cal(dat, yrs = all_years, interval = length_bin)
-  length_bins <- pbs2dlm::get_cal_bins(cal, length_bin_interval = length_bin)
+  cal <- gfdlm::tidy_cal(dat, yrs = all_years, interval = length_bin)
+  length_bins <- gfdlm::get_cal_bins(cal, length_bin_interval = length_bin)
   list(cal = cal[1, , ], length_bins = length_bins)
 }
 
@@ -62,17 +36,17 @@ cal_wchg <- make_raker_cal(d_short$survey_samples, "SYN WCHG")
 cal_qcs <- make_raker_cal(d_short$survey_samples, "SYN QCS")
 cal_wcvi <- make_raker_cal(d_short$survey_samples, "SYN WCVI")
 
-caa_wchg <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
-  pbs2dlm::tidy_caa(yrs = all_years)
+caa_wchg <- filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
+  gfdlm::tidy_caa(yrs = all_years)
 caa_wchg[1, , ]
 
-caa_qcs <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN QCS") %>%
-  pbs2dlm::tidy_caa(yrs = all_years)
+caa_qcs <- filter(d_short$survey_samples, survey_abbrev == "SYN QCS") %>%
+  gfdlm::tidy_caa(yrs = all_years)
 caa_qcs[1, , ]
 
-mean_length <- dplyr::filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
-  pbs2dlm::tidy_mean_length() %>%
-  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
+mean_length <- filter(d_short$survey_samples, survey_abbrev == "SYN WCHG") %>%
+  gfdlm::tidy_mean_length() %>%
+  filter(n > 10, year <= ending_year, year >= starting_year) %>%
   right_join(tibble(year = all_years), by = "year") %>%
   pull(mean_length)
 

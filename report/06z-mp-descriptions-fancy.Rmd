@@ -1,0 +1,12 @@
+### `DD`: Delay Difference
+
+A simple delay-difference assessment with $U_\textrm{MSY}$ and MSY as leading parameters that estimate the TAC using a time-series of catch. This model includes observation error only and has does not estimate process error (recruitment deviations). There is the assumption that knife-edge selectivity-at-age occurs age of 50% selectivity (which is back-calculated from the growth curve based on an input value of length at 50% selectivity). It depends on other assumptions such as temporally stationary productivity and that fishing mortality can be derived from an estimated catchability and effort series. See @carruthers2012 and @hilborn1992\.
+
+The TAC is calculated as:
+$$
+\textrm{TAC} = U_\textrm{MSY} * \textrm{Current Biomass}
+$$
+
+The DD4010 variant is identical but imposes the 40:10 rule on the TAC.
+
+TODO: come back to this and explain more or discard.

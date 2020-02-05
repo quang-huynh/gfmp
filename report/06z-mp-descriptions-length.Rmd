@@ -1,0 +1,124 @@
+### `BK_ML`: Beddington and Kirkwood life-history
+
+An MP that sets the TAC based on an approximation of $F_\textrm{max}$ based on the length at first capture relative to the asymptotic length and the von Bertalanffy growth parameters $K$.  $F_\textrm{max}$ is the fishing mortality that produces the maximum yield assuming constant recruitment independent of spawning biomass.
+
+The TAC is calculated as:
+$$
+\textrm{TAC} = A F_{\textrm{max}},
+$$
+
+where $A$ is vulnerable stock abundance, and $F_{\textrm{max}}$ is calculated as:
+
+$$
+F_{\textrm{max}} = \frac{0.6K}{0.67-L_c/L_\infty},
+$$
+
+where $K$ is the von Bertalanffy growth coefficient, $L_c$ is the length at first capture, and $L_\infty$ is the von Bertalanffy asymptotic length.
+
+Abundance ($A$) is estimated as:
+
+$$
+A = \frac{\bar{C}}{\left(1-e^{-F}\right)},
+$$
+
+where $\bar{C}$ is the mean catch, and $F$ is estimated using mean length data. Specifically, total mortality $Z$ is estimated as TODO and $F$ is calculated as $Z$ - $M$, where $M$ is drawn from the operating model with error.
+
+### `Fratio_ML`: $F_\textrm{MSY}/M$ ratio method using mean lengths
+
+Calculates the overfishing limit based on a fixed ratio of $F_\textrm{MSY}$ to $M$ multiplied by a current estimate of abundance. This method estimates current abundance by using average catch and an estimate of $F$ from mean lengths. See @gulland1971 and @martell2013\.
+
+The TAC is calculated as:
+$$
+TAC = F_\textrm{MSY}A,
+$$
+
+where $F_\textrm{MSY}$ is calculated as $\frac{F_\textrm{MSY}}{M}M$ and $A$ is an estimate of current abundance.
+
+### `Fdem_ML`: Demographic $F_\textrm{MSY}$ method using mean lengths
+
+$F_\textrm{MSY}$ is calculated as $r/2$ where $r$ is calculated from a demographic approach (including steepness). This is coupled with an estimate of current abundance using mean lengths that gives you the overfishing limit (OFL).
+
+The TAC is calculated as:
+$$
+\textrm{TAC} = F_\textrm{MSY}A,
+$$
+
+where $A$ is an estimate of current abundance, and $F_\textrm{MSY}$ is estimated as $r/2$, where $r$ is the intrinsic rate of population growth, estimated from the life-history parameters using the methods of @mcallister2001\.
+
+### `Ltarget`: Length target
+
+An MP that incrementally adjusts the TAC to reach a target mean length in catches. There are four target length MPs proposed by @geromont2015.
+
+If $L_\textrm{recent} \ge L_0$ the TAC is calculated as:
+$$
+\textrm{TAC} = 0.5 \textrm{TAC}^* [1+(\frac{L_\textrm{recent}-L_0}{L_\textrm{target}-L_0})],
+$$
+
+otherwise:
+$$
+\textrm{TAC} = 0.5 \textrm{TAC}^* \left[\frac{L_\textrm{recent}}{L_0}^2\right],
+$$
+
+where $TAC^*$ is $(1-xx)$ mean catches from the last 5 historical years, $L_\textrm{recent}$ is the mean length in the last 5 years, $L_0$ is (except for L95target) 0.9 times the average catch in the last 10 historical years ($L_\textrm{ave}$), and $L_\textrm{target}$ is (except for L95target) the multiplier $xL$ times $L_\textrm{ave}$.
+
+There are five variants of this procedure:
+
+- Ltarget1: The least precautionary, with $xx = 0$ and $xL = 1.05$
+- Ltarget2: Increasingly biologically precautionary, with $xx = 0$ and $xL = 1.10$
+- Ltarget3: Increasingly biologically precautionary, with $xx = 0$ and $xL = 1.15$
+- Ltarget4: Increasingly biologically precautionary, with $xx = 0.2$ and $xL = 1.15$
+- L95target: The same as Ltarget1 but here the target and limit mean lengths are based on the length at maturity distribution rather than an arbitrary multiplicative of the mean length. $xx = 0.2$ and $xL = 1.15$
+
+### `Lratio`: Mean-length-based indicator
+
+The TAC is calculated as the most recent catch, modified by the ratio alpha, where the numerator is the mean length of the catch (of lengths larger than Lc) and the denominator is the mean length expected at MSY. Here, Lc is the length at full selection (LFS).
+
+The TAC is calculated as:
+$$
+\textrm{TAC}_y = C_{y-1} \frac{L}{L_\textrm{ref}},
+$$
+
+where where $C_{y-1}$ is the catch from the previous year, $L$ is the mean length of the catch over the last 3 years (of lengths larger than $L_c$) and $L_\textrm{ref}$ is the mean length expected at MSY and is calculated as $L_\textrm{ref} = 0.75L_c + 0.25L_\textrm{inf}$ . $L_c$ is the length at full selection (LFS).
+
+There are three variants of this procedure:
+
+- Lratio_BHI: Assumes $M/K = 1.5$ and $F_\textrm{MSY}/M = 1$. Natural mortality $M$ and von Bertalanffy $K$ are not used in this MP (see Appendix A of @jardim2015)
+-Lratio_BHI2: A more general version that calculates the reference mean length $L_\textrm{ref}$ as a function of $M$, $K$, and presumed $F_\textrm{MSY}/M$
+-Lratio_BHI3: A modified version of Lratio_BHI2 where mean length is calculated for lengths > modal length ($L_c$)
+
+### `LstepCC`: Step-wise constant catch
+
+A management procedure that incrementally adjusts the TAC according to the mean length of recent catches.
+
+The TAC is calculated as:
+$$
+TAC =
+\begin{cases}
+TAC^* - 2 S*TAC^*, & \textrm{if}\ r \lt 0.96 \\
+TAC^* - S*TAC^*, & \textrm{if}\ 0.96 \ge r \gt 0.98 \\
+TAC^*, & \textrm{if}\ 0.98 \ge r \gt 1.05 \\
+TAC^* + S*TAC^*, & \textrm{if}\ r \ge 1.05,
+\end{cases}
+$$
+
+where $TAC^*$ is $(1-xx)$ times average catch in the first year, and previous catch in all projection years, $S$ is step-size, and $r$ is the ratio of $L_\textrm{recent}$ and $L_\textrm{ave}$, which are mean length over the most recent 5 years and 10 historical years respectively.
+
+There are four variants of this procedure:
+
+- LstepCC1: The least biologically precautionary, with $xx = 0$
+- LstepCC2: Increasingly biologically precautionary, with $xx = 0.1$
+- LstepCC3: Increasingly biologically precautionary, with $xx = 0.2$
+- LstepCC4: Increasingly biologically precautionary, with $xx = 0.3$
+
+### `YPR_ML`: Yield per recruit analysis to get F~MSY~ proxy with a mean-length estimator
+
+A yield per recruit (YPR) approximation to F~MSY~, which is the position of the ascending YPR curve for which $\mathrm{d} \textrm{YPR}/ \mathrm{d} F = 0.1 ( \mathrm{d} \textrm{YPR}/ \mathrm{d} 0)$. The ML variant uses a mean length estimate of $Z$ to infer current abundance.
+
+The TAC is calculated as:
+$$
+\textrm{TAC} = F_{0.1} A,
+$$
+
+where $F_{0.1}$ is the fishing mortality $F$, the slope of the YRP curve is 10% of the slope at the origin, and $A$ is the estimate of current abundance. For the ML variant, a mean length estimate of recent $Z$ is used to infer current abundance. TODO
+
+The YPR curve is calculated using an equilibrium age-structured model with life-history and selectivity parameters sampled from the Data object.

@@ -1,0 +1,138 @@
+\clearpage
+
+# MANAGEMENT PROCEDURE SCREENING
+
+Objectives:
+
+1. Get down to a manageable number of MPs to describe at this review meeting and future review meetings.
+1. Reduce computational burden by excluding MPs that are unlikely to work well for us.
+
+We started with all of the output-control MPs currently in DLMtool (Table \@ref(tab:screening-table)).
+We excluded any MPs that required current estimates of abundance, recent age composition data, or a current estimate of depletion because these would not be available for the stocks for which this framework will apply.
+
+We then downloaded all British Colombia groundfish operating models in the [DLMtool library](https://www.datalimitedtoolkit.org/fishery_library/). These included:
+
+1. Pacific Ocean Perch in Queen Charlotte Sound
+1. Rougheye Rockfish
+1. Shortspine Thornyhad
+1. Inside Yelloweye Rockfish
+1. Arrowtooth Flounder
+1. Redbanded Rockfish (FIXME: this OM had problems and doesn't show up in the results; given problems accepting the assessment we could probably leave this one out since it's scraped from that)
+
+*FIXME: add regions... I think these are all mostly coast wide except for POP*
+
+We used them as entered in the library with the following exceptions:
+
+1. In some cases we adjusted the survey CVs to better match the values displayed in the latest groundfish synopsis report (Pacific Ocean Perch = 0.20 to 0.35, Arrowtooth Flounder = 0.15 to 0.25). We expected this to be an important parameter given that many of the MPs rely on a survey index.
+1. We standardized the CV on the catch observations across the stocks to be 0.05 to 0.10 (i.e., quite low).
+1. We standardized the bias in catch observations from iteration to iteration to be 0.05 (i.e., quite low.
+1. We standardized the assessment frequency to be every five years.
+
+We ran 100 simulation iterations for each stock with a 50-year projection.  We then calculated the following performance metrics (PMs):
+
+*FIXME: do we like a 50-year projection or is that a bit long?*
+
+1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
+1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
+1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
+1. LTY: Probability yield > 0.5 MSY (years 36--50)
+1. STY: Probability yield > 0.5 MSY (years 6--20)
+1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
+
+In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
+
+1. Eliminate MPs with LT P40 < 0.9.
+1. Eliminate MPs with LT P80 < 0.6.
+1. Eliminate MPs with PNOF < 0.6.
+1. Eliminate MPs with LTY < 0.5.
+1. Eliminate MPs with STY < 0.5.
+
+*FIXME: Obviously these thresholds and this approach is up for debate. This is just a first pass.*
+
+*FIXME: Note that Yelloweye Rockfish doesn't factor into this because it starts so depleted.*
+
+```{r screening-top-top}
+top_pm <- readRDS(here::here("generated-data/top-mp-screening.rds"))
+```
+
+```{r screening-top-table, results='asis'}
+library(dplyr)
+top_mps <- group_by(top_pm, mp) %>% 
+  summarize(n = n()) %>% 
+  arrange(-n, mp) %>% 
+  rename(MP = mp, `Number of stocks` = n)
+csasdown::csas_table(top_mps, caption = "Management procedures (MPs) that made it through the initial screening process for at least one stock.")
+```
+
+```{r screening-get-top-names}
+top_top_pm_names <- names(table(top_pm$mp))[table(top_pm$mp) > 1L]
+```
+
+`r nrow(top_mps)` MPs made it through the above filtering process (Table \@ref(tab:screening-top-table)).
+
+We then retained only those that made it through the filtering process for at least two stocks.
+
+*FIXME: do we like that filtering?*
+
+The resulting MPs were `r top_top_pm_names`: (Fig. \@ref(fig:screening-radar-reference), \@ref(fig:screening-radar-length), \@ref(fig:screening-radar-average-catch), \@ref(fig:screening-radar-moderate))
+
+-------------------
+
+## Observations and things I just don't understand in the plots
+
+<!-- 1. Why is AAVY so low for POP with AvC (average historical catch)? There should be no variability! The others looked fine for average catch. -->
+
+1. It looks like all of the length-based MPs perform very similarly with a couple minor exceptions. Maybe we can narrow this down more at this stage?
+
+1. Interesting to note that more "classical" assessment models like DD and surplus production models don't necessarily do as well as a simple management procedures. (Note that the MSEtool state space delay difference models performed very poorly; maybe some default parameter setting or maybe convergence problems?)
+
+```{r screening-radar-reference, fig.cap="Radar plots of performance metrics across screened management procedures. (Reference MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-reference.pdf"))
+```
+
+```{r screening-radar-length, fig.cap="Radar plots of performance metrics across screened management procedures. (Length-based MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-length.pdf"))
+```
+
+```{r screening-radar-index, fig.cap="Radar plots of performance metrics across screened management procedures. (Index-based MPs", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-index.pdf"))
+```
+
+```{r screening-radar-average-catch, fig.cap="Radar plots of performance metrics across screened management procedures. (Average-catch-based MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-average-catch.pdf"))
+```
+
+```{r screening-radar-moderate, fig.cap="Radar plots of performance metrics across screened management procedures. ('Data-moderate' MPs)", fig.pos="p"}
+knitr::include_graphics(here::here("report/figure/screening-radar-data-moderate.pdf"))
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+species_names <- tibble(species = c("pop", "rgh", "srt", "yel", "arr"),
+  species_full = c("pacific ocean perch", "rougheye rockfish", "shortspine thornyhead",
+    "yelloweye rockfish", "arrowtooth flounder"))
+plot_pm <- function(x, y, colour) {
+  wide_pm %>%
+    left_join(species_names, by = "species") %>%
+    filter(!is.na(species_full)) %>%
+    filter(mp %in% top_top_pm_names | class == "Reference" | mp %in% c("DD", "AvC")) %>%
+    ggplot(aes_string(x = x, y = y)) +
+    geom_point(aes_string(colour = colour, shape = "class")) +
+    xlim(0, 1) + ylim(0, 1) +
+    facet_wrap(~species_full) +
+    ggrepel::geom_text_repel(aes_string(label = "mp", colour = colour)) +
+    scale_color_viridis_c(direction = -1) +
+    scale_shape_manual(values = c("Reference" = 4, "Output" = 21)) +
+    gfplot::theme_pbs()
+}
+wide_pm <- readRDS(here::here("generated-data/wide-pm-screening.rds"))
+```
+
+```{r screening-probs-table-arr, fig.cap="Performance metrics Pacific Ocean Perch. Need to deal with the length of the column names. This shows all the MPs that were run, not just the filtered ones. The MPs are ordered by performance metric value starting from the leftmost performance metric and working right to break ties.", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/screening-probs-pop.pdf"))
+```
+
+```{r screening-probs-table-yel, fig.cap="Performance metrics Yelloweye Rockfish", out.width="3.5in"}
+knitr::include_graphics(here::here("report/figure/screening-probs-yel.pdf"))
+```

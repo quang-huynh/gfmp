@@ -34,6 +34,7 @@ report/_bookdown.yml
 junk/
 sra/knitr-cache*
 sra/knitr-figs*
-
+nodejs/
 
 report/gfmp-outline.mindnode/QuickLook/Preview.jpg
+report/resdoc.toc

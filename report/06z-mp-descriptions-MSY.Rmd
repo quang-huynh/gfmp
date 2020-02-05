@@ -1,0 +1,77 @@
+### `GB_target`: Geromont and Butterworth target CPUE and catch
+
+An MP that modifies a time-series of catch recommendations and aims for a target catch rate and catch level based on $B\textrm{MSY}/B_0$ and MSY, respectively.
+
+If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
+
+$$
+\textrm{TAC}= C_\textrm{ref}\left( w + (1-w)\frac{I_\textrm{rec}-I_0}{I_\textrm{target}-I_0} \right),
+$$
+
+otherwise:
+$$
+\textrm{TAC}= wC_\textrm{ref} \frac{I_\textrm{rec}}{I_0}^2,
+$$
+
+where $C_\textrm{ref}$ is a reference catch assumed to be a proxy for MSY, $w$ is a gain parameter, $I_\textrm{rec}$ is the average index over the last 4 years, $I\textrm{target}$ is the target Index, and $I_0$ is 0.2 x the average index over the past 5 years.
+
+In the MSE $C_\textrm{ref}$ is the calculated MSY subject to observation error, and $I\textrm{target}$ is assumed to be the index at MSY subject to observation error.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+<!-- *TODO: this one assumes a proxy for MSY! remove?* -->
+<!-- Thoughts:
+- requires a reference index level and a reference catch (MSY)
+- not suitable to combine with a historical reference level because we don't have index values going back that far to match up between the real and simulated data
+-->
+
+### `GB_CC`: Geromont and Butterworth constant catch
+
+A simple MP that aims for a reference catch (as a proxy for MSY) subject to imperfect information. The TAC is calculated to be equivalent to a reference catch which is assumed to be a proxy for MSY. The TAC is calculated as:
+
+$$
+\textrm{TAC} = C_\textrm{ref},
+$$
+
+where $C_{ref}$ is the reference catch. In the MSE $C_{ref}$ is the calculated MSY subject to observation error, therefore it is important to adequately represent error on assumed MSY if this MP is then to be applied to real data. See @geromont2015\.
+
+The TAC is subject to the following conditions:
+
+- if next TAC > 1.2 last catch, then $TAC = 1.2 * \textrm{last catch}$
+- if next TAC < 0.8 last catch, then $TAC = 0.8 * \textrm{last catch}$
+
+<!-- *TODO: remove this MP because it assumes knowing MSY?* -->
+<!-- Thoughts:
+- this one might be a candidate to substitute an historical reference point
+-->
+
+<!--
+
+### `SBT2`: Complex SBT1 Simple management procedure
+
+SBT2, requires, amongst other things, knowledge of mean recruitment over the last 5 and 10 years! not realistic to apply in our case
+
+For SBT2, the TAC is calculated as:
+
+$$
+\textrm{TAC}_y = 0.5 (C_{y-1} + C_\textrm{targ} \delta),
+$$
+
+where $C_{y-1}$ is catch in the previous year, $C_\textrm{targ}$ is a target catch, and:
+
+$$
+\delta =
+\begin{cases}
+R^{1+epsR} & \textrm{if}\ R \lt 1 \\
+R^{1-epsR} & \textrm{if}\ R \ge 1,
+\end{cases}
+$$
+
+where $epsR$ is a control parameter and $R = \frac{\bar{r}}{\phi}$ where $\bar{r}$ is the mean recruitment over the last 5 years and $\phi$ is the mean recruitment over the last 10 years.
+
+-->
+
+*TODO: requires knowledge of MSY! remove?*
