@@ -56,7 +56,7 @@ if (!dir.exists(fig_dir)) dir.create(fig_dir)
 }
 
 get_filtered_scenario <- function(type, column) {
-  filter(sc, scenario_type == type) %>%
+  dplyr::filter(sc, scenario_type == type) %>%
     pull(!!column) %>%
     set_names()
 }
@@ -122,8 +122,8 @@ stopifnot(length(mp_not_sat) > 1)
 mse_sat <- purrr::map(scenarios, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat))
 mse_sat_with_ref <- purrr::map(scenarios_ref, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref))
 
-pm_df_list_sat <- map(pm_df_list, ~filter(.x, MP %in% mp_sat))
-pm_df_list_sat_with_ref <- map(pm_df_list, ~filter(.x, MP %in% mp_sat_with_ref))
+pm_df_list_sat <- map(pm_df_list, dplyr::filter, MP %in% mp_sat)
+pm_df_list_sat_with_ref <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_ref)
 
 # Tigure plots ----------------------------------------------------------------
 
@@ -135,14 +135,14 @@ g <- gfdlm::plot_tigure(pm_min,
 .ggsave("pm-table-min", 4.25, 6.25)
 
 mp_order <- arrange(pm_avg, `LT LRP`, `LT USR`, `STC`, `LTC`, AAVC) %>%
-  filter(MP %in% mp_sat_with_ref) %>% pull(MP)
+  dplyr::filter(MP %in% mp_sat_with_ref) %>% pull(MP)
 
-g <- map(pm_df_list, filter, MP %in% mp_sat_with_ref) %>%
+g <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_ref_human) %>%
   plot_tigure_facet()
 .ggsave("pm-tigures-ref-set", 12, 7.5)
 
-g <- map(pm_df_list_rob, filter, MP %in% mp_sat_with_ref) %>%
+g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_rob_human) %>%
   plot_tigure_facet()
 .ggsave("pm-tigures-rob-set", 8.5, 3.3)
@@ -200,36 +200,36 @@ walk(names(mse_sat_with_ref), ~ {
 custom_pal <- c(RColorBrewer::brewer.pal(length(mp_sat), "Set2"), ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
 
-g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+g <- pm_df_list %>% map(dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_ref_human) %>%
   plot_radar_facet(custom_pal = custom_pal)
 .ggsave("spider-satisficed-panel-reference", 12, 11)
 
-g <- pm_df_list_rob %>% map(filter, MP %in% mp_sat_with_ref) %>%
+g <- pm_df_list_rob %>% map(dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_rob_human) %>%
   plot_radar_facet(custom_pal = custom_pal)
 .ggsave("spider-satisficed-panel-robustness", 10, 5)
 
-g <- pm_avg %>% filter(MP %in% mp_sat_with_ref) %>%
+g <- pm_avg %>% dplyr::filter(MP %in% mp_sat_with_ref) %>%
   plot_radar(custom_pal = custom_pal)
 .ggsave("spider-satisficed-avg-reference", 6, 6)
 
-g <- pm_min %>% filter(MP %in% mp_sat_with_ref) %>%
+g <- pm_min %>% dplyr::filter(MP %in% mp_sat_with_ref) %>%
   plot_radar(custom_pal = custom_pal)
 .ggsave("spider-satisficed-min-reference", 6, 6)
 
-g <- pm_min %>% filter(MP %in% mp_sat_with_ref) %>%
+g <- pm_min %>% dplyr::filter(MP %in% mp_sat_with_ref) %>%
   plot_radar(custom_pal = custom_pal)
 .ggsave("spider-satisficed-min-reference", 6, 6)
 
 # Parallel coordinate plots ---------------------------------------------------
 
-g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+g <- pm_df_list %>% map(dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_ref_human) %>%
   gfdlm::plot_parallel_coords(type = "facet", custom_pal = custom_pal)
 .ggsave("parallel-coordinates", 8, 6.6)
 
-g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
+g <- pm_df_list %>% map(dplyr::filter, MP %in% mp_sat_with_ref) %>%
   gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
 .ggsave("parallel-coordinates-avg", 5, 3)
 
