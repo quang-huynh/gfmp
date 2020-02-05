@@ -9,6 +9,7 @@ library("here")
 
 # Settings --------------------------------------------------------------------
 
+sp <- "rex" # Species: used in filenames
 cores <- floor(parallel::detectCores() / 2L)
 sc <- readRDS("generated-data/rex-scenarios.rds")
 sc # look good?
@@ -24,7 +25,7 @@ mp <- readr::read_csv(here::here("data", "mp.txt"),
 )
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-sp <- "rex"
+ref_mp_cols <- c("grey60", "grey20", "grey85") %>% set_names(reference_mp)
 
 catch_breaks <- c(0, 100000, 200000)
 catch_labels <- c("0", "100", "200")
@@ -197,8 +198,8 @@ walk(names(mse_sat_with_ref), ~ {
 
 # Radar plots -----------------------------------------------------------------
 
-custom_pal <- c(RColorBrewer::brewer.pal(length(mp_sat), "Set2"),
-  "grey60", "grey20", "grey85") %>% set_names(mp_sat_with_ref)
+custom_pal <- c(RColorBrewer::brewer.pal(length(mp_sat), "Set2"), ref_mp_cols) %>%
+  set_names(mp_sat_with_ref)
 
 g <- pm_df_list %>% map(filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_ref_human) %>%
