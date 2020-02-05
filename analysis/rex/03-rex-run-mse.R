@@ -134,8 +134,8 @@ g <- gfdlm::plot_tigure(pm_min,
 )
 .ggsave("pm-table-min", 4.25, 6.25)
 
-mp_order <- arrange(pm_avg, `LT LRP`, `LT USR`, `STC`, `LTC`, AAVC) %>%
-  dplyr::filter(MP %in% mp_sat_with_ref) %>% pull(MP)
+# mp_order <- arrange(pm_avg, `LT LRP`, `LT USR`, `STC`, `LTC`, AAVC) %>%
+#   dplyr::filter(MP %in% mp_sat_with_ref) %>% pull(MP)
 
 g <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_ref) %>%
   set_names(scenarios_ref_human) %>%
@@ -233,6 +233,19 @@ g <- pm_df_list %>% map(dplyr::filter, MP %in% mp_sat_with_ref) %>%
   gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
 .ggsave("parallel-coordinates-avg", 5, 3)
 
+# Bivariate trade-off plots ---------------------------------------------------
+
+g <- pm_df_list %>%
+  map(dplyr::filter, MP %in% union(mp_sat, reference_mp[reference_mp != "NFref"])) %>%
+  gfdlm::plot_tradeoff("LT LRP", "STC", custom_pal = custom_pal)
+.ggsave("bivariate-trade-off-reference", 8, 6)
+
+g <- pm_df_list_rob %>%
+  map(dplyr::filter, MP %in% union(mp_sat, reference_mp[reference_mp != "NFref"])) %>%
+  gfdlm::plot_tradeoff("LT LRP", "STC", custom_pal = custom_pal) +
+  facet_wrap(~scenario, ncol = 2)
+.ggsave("bivariate-trade-off-robustness", 6, 3)
+
 # Psychedelic pyramid worms ---------------------------------------------------
 
 walk(names(mse_sat_with_ref), ~{
@@ -266,13 +279,13 @@ g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
 
 # Optimize PNG files on Unix --------------------------------------------------
 
-cores <- round(parallel::detectCores() / 2L)
-files_per_core <- 5L
-setwd(fig_dir)
-if (!gfplot:::is_windows()) {
-  system(paste0(
-    "find -X . -name '*.png' -print0 | xargs -0 -n ",
-    files_per_core, " -P ", cores, " optipng -strip all"
-  ))
-}
-setwd(here::here())
+# cores <- round(parallel::detectCores() / 2L)
+# files_per_core <- 5L
+# setwd(fig_dir)
+# if (!gfplot:::is_windows()) {
+#   system(paste0(
+#     "find -X . -name '*.png' -print0 | xargs -0 -n ",
+#     files_per_core, " -P ", cores, " optipng -strip all"
+#   ))
+# }
+# setwd(here::here())
