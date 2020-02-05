@@ -4,9 +4,9 @@ author: |
   Sean C. Anderson^1^,
   Robyn E. Forrest^1^,
   Chris J. Grandin^1^,
-  Elise A. Keppel^1^,
-  Quang C. Huynh^2^
-author_list: "Anderson, S.C., Forrest, R.E., Grandin, C.J., Keppel, E.A., Huynh, Q.C."
+  Quang C. Huynh^2^,
+  Elise A. Keppel^1^
+author_list: "Anderson, S.C., Forrest, R.E., Grandin, C.J., Huynh, Q.C., Keppel, E.A."
 address: |
   ^1^Pacific Biological Station\
      Fisheries and Oceans Canada, 3190 Hammond Bay Road\
