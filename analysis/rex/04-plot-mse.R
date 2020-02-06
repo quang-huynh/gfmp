@@ -156,10 +156,19 @@ g <- pm_df_list_rob %>%
 
 # Psychedelic pyramid worms ---------------------------------------------------
 
-walk(names(mse_sat_with_ref), ~{
-  g <- plot_worms(mse_sat_with_ref[[.x]], this_year = this_year)
-  .ggsave(paste0("neon-worms-", .x), 8, 6.6)
-})
+MPs <- union(mp_sat, reference_mp[reference_mp != "NFref"])
+d <- purrr::map(scenarios_ref, ~ DLMtool::Sub(mse[[.x]], MPs = MPs)) %>%
+  set_names(scenarios_ref_human)
+
+g <- d %>% plot_worms_grid(this_year = this_year, include_historical = FALSE) +
+  coord_fixed(xlim = c(0, 2.5), ylim = c(0, 2), expand = FALSE) +
+  scale_x_continuous(breaks = c(0, 1, 2)) +
+  scale_y_continuous(breaks = c(0, 1))
+.ggsave("neon-worms-projection", 10, 8.5)
+
+g <- d %>% plot_worms_grid(this_year = this_year, include_historical = TRUE) +
+  coord_fixed(xlim = c(0, 3), ylim = c(0, 3), expand = FALSE)
+.ggsave("neon-worms-all", 10, 8.5)
 
 # Sensitivity plots -----------------------------------------------------------
 
