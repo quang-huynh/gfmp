@@ -2,8 +2,7 @@
 
 # Tigure plots ----------------------------------------------------------------
 
-g <- gfdlm::plot_tigure(pm_avg,
-  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh))
+g <- gfdlm::plot_tigure(pm_avg)
 .ggsave("pm-table-avg", 4.25, 6.5)
 g <- gfdlm::plot_tigure(pm_min,
   satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh),
