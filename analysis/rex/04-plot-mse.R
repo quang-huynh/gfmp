@@ -96,6 +96,14 @@ g <- pm_min %>% dplyr::filter(MP %in% MPs) %>%
   plot_radar(custom_pal = custom_pal)
 .ggsave("spider-satisficed-min-reference", 6, 6)
 
+d <- pm_avg %>% inner_join(rename(mp, MP = mp), by = "MP") %>%
+  split(.$type) %>%
+  map(select, -type)
+g <- d %>% map(plot_radar)
+g <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
+  hjust = 0, label_size = 11, align = "hv")
+.ggsave("spider-all-avg-reference", 8.5, 8.5)
+
 # Parallel coordinate plots ---------------------------------------------------
 
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
@@ -111,6 +119,28 @@ g <- pm_df_list_rob %>% map(dplyr::filter, MP %in% MPs) %>%
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
   gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
 .ggsave("parallel-coordinates-avg", 5, 3)
+
+# FIXME: pull this into package:
+d <- pm_avg %>% inner_join(rename(mp, MP = mp), by = "MP") %>%
+  split(.$type) %>%
+  map(select, -type)
+g <- names(d) %>% map(~{
+  gfdlm::plot_parallel_coords(d[.x], type = "single", rotate_labels = TRUE) +
+    theme(strip.text = element_text(face = "bold", size = 11)) +
+    guides(lty = FALSE, fill = FALSE) +
+    scale_color_brewer(palette = "Set2") +
+    coord_cartesian(ylim = c(-0.01, 1.01), expand = FALSE) +
+    theme(plot.margin = grid::unit(c(1, .5, .5, .5), "lines")) +
+    theme(
+      panel.grid.major.y = element_line(colour = "grey85"),
+      panel.grid.major.x = element_line(colour = "grey85"),
+      panel.grid.minor.y = element_line(colour = "grey96")
+    )
+})
+g2 <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
+  hjust = 0, label_size = 11, vjust = 1, align="hv") +
+  theme(plot.margin = grid::unit(c(1, 0, 1, 1), "lines"))
+.ggsave("parallel-coordinates-all-avg-reference", 8.5, 8.5)
 
 # Bivariate trade-off plots ---------------------------------------------------
 

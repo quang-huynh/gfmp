@@ -15,13 +15,7 @@ sc # look good?
 nsim <- 200L
 interval <- 2L
 base_om <- "ceq100" # affects some default plots
-mp <- readr::read_csv(here::here("data", "mp.txt"),
-  comment = "#",
-  col_types = readr::cols(
-    mp = readr::col_character(),
-    type = readr::col_character()
-  )
-)
+mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 ref_mp_cols <- c("grey60", "grey20", "grey85") %>% set_names(reference_mp)
