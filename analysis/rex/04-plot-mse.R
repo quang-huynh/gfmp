@@ -63,11 +63,6 @@ g <- DLMtool::Sub(mse[[base_om]], MPs = mp_eg_not_sat) %>%
 
 # Kobe ------------------------------------------------------------------------
 
-walk(names(mse_sat_with_ref), ~ {
-  g <- gfdlm::plot_kobe(mse_sat[[.x]])
-  .ggsave(paste0("kobe-", .x), 8, 7.5)
-})
-
 g <- mse_sat %>%
   set_names(scenarios_human) %>%
   gfdlm::plot_kobe_grid()
