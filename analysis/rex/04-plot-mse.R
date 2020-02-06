@@ -71,7 +71,6 @@ walk(names(mse_sat_with_ref), ~ {
 g <- mse_sat %>%
   set_names(scenarios_human) %>%
   gfdlm::plot_kobe_grid()
-.ggsave("kobe-grid-satisficed2", 13, 7)
 .ggsave("kobe-grid-satisficed", 7, 13)
 
 # Radar plots -----------------------------------------------------------------
