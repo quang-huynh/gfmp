@@ -109,7 +109,7 @@ pm_avg <- group_by(pm_df, MP) %>% summarise_if(is.numeric, mean)
 pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 
 mp_sat <- dplyr::filter(pm_min, `LT LRP` > LT_LRP_thresh, `STC` > STC_thresh) %>%
-  arrange(-`LT LRP`) %>%
+  arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`, -AAVC) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
@@ -131,12 +131,9 @@ g <- gfdlm::plot_tigure(pm_avg,
   satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh))
 .ggsave("pm-table-avg", 4.25, 6.5)
 g <- gfdlm::plot_tigure(pm_min,
-  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh), alpha = .6
+  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh),
 )
 .ggsave("pm-table-min", 4.25, 6.5)
-
-# mp_order <- arrange(pm_avg, `LT LRP`, `LT USR`, `STC`, `LTC`, AAVC) %>%
-#   dplyr::filter(MP %in% mp_sat_with_ref) %>% pull(MP)
 
 g <- map(pm_df_list, dplyr::filter, MP %in% mp_sat) %>%
   set_names(scenarios_ref_human) %>%
