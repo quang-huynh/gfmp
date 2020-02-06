@@ -26,8 +26,8 @@ as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 ref_mp_cols <- c("grey60", "grey20", "grey85") %>% set_names(reference_mp)
 
-catch_breaks <- c(0, 100000, 200000)
-catch_labels <- c("0", "100", "200")
+catch_breaks <- c(0, 100000, 200000, 300000)
+catch_labels <- c("0", "100", "200", "300")
 
 # Satisficing rules:
 LT_LRP_thresh <- 0.8
@@ -127,30 +127,31 @@ pm_df_list_sat_with_ref <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_re
 
 # Tigure plots ----------------------------------------------------------------
 
-g <- gfdlm::plot_tigure(pm_avg)
-.ggsave("pm-table-avg", 4.25, 6.25)
+g <- gfdlm::plot_tigure(pm_avg,
+  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh))
+.ggsave("pm-table-avg", 4.25, 6.5)
 g <- gfdlm::plot_tigure(pm_min,
-  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh)
+  satisficed = c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh), alpha = .6
 )
-.ggsave("pm-table-min", 4.25, 6.25)
+.ggsave("pm-table-min", 4.25, 6.5)
 
 # mp_order <- arrange(pm_avg, `LT LRP`, `LT USR`, `STC`, `LTC`, AAVC) %>%
 #   dplyr::filter(MP %in% mp_sat_with_ref) %>% pull(MP)
 
-g <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_ref) %>%
+g <- map(pm_df_list, dplyr::filter, MP %in% mp_sat) %>%
   set_names(scenarios_ref_human) %>%
-  plot_tigure_facet()
-.ggsave("pm-tigures-ref-set", 12, 7.5)
+  plot_tigure_facet(ncol = 2)
+.ggsave("pm-tigures-ref-set", 7, 6.5)
 
-g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat_with_ref) %>%
+g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat) %>%
   set_names(scenarios_rob_human) %>%
   plot_tigure_facet()
-.ggsave("pm-tigures-rob-set", 8.5, 3.3)
+.ggsave("pm-tigures-rob-set", 7, 2.25)
 
 # Convergence -----------------------------------------------------------------
 
 walk(names(mse_sat_with_ref), ~ {
-  g <- gfdlm::plot_convergence(mse_sat_with_ref[[.x]], PM) +
+  g <- gfdlm::plot_convergence(mse_sat_with_ref[[.x]], PM, ylim = c(0.5, 1)) +
     scale_color_brewer(palette = "Set2")
   .ggsave(paste0("converge-", .x), 6.5, 6.5)
 })
@@ -161,14 +162,14 @@ walk(names(mse_sat_with_ref), ~ {
   g <- plot_main_projections(mse_sat_with_ref[[.x]],
     catch_breaks = catch_breaks,
     catch_labels = catch_labels)
-  .ggsave(paste0("projections-satisficed-", .x), 6.5, 6.5)
+  .ggsave(paste0("projections-satisficed-", .x), 7.5, 7.5)
 })
 
 # All not satisficed ones for "base":
-DLMtool::Sub(mse[[base_om]], MPs = mp_not_sat) %>%
+g <- DLMtool::Sub(mse[[base_om]], MPs = mp_not_sat) %>%
   plot_main_projections(catch_breaks = catch_breaks,
     catch_labels = catch_labels)
-.ggsave(paste0("projections-all-not-satisficed"), 6.5, 27)
+.ggsave(paste0("projections-all-not-satisficed"), 7.5, 27)
 
 # Example not satisficed ones for "base":
 mp_eg_not_sat <- c(
@@ -186,14 +187,20 @@ mp_eg_not_sat <- mp_eg_not_sat[mp_eg_not_sat %in% mp_not_sat]
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_eg_not_sat) %>%
   plot_main_projections(catch_breaks = catch_breaks,
     catch_labels = catch_labels)
-.ggsave(paste0("projections-eg-not-satisficed"), 6.5, 6.5)
+.ggsave(paste0("projections-eg-not-satisficed"), 8, 9.5)
 
 # Kobe ------------------------------------------------------------------------
 
 walk(names(mse_sat_with_ref), ~ {
-  g <- gfdlm::plot_kobe(mse_sat_with_ref[[.x]])
+  g <- gfdlm::plot_kobe(mse_sat[[.x]])
   .ggsave(paste0("kobe-", .x), 8, 7.5)
 })
+
+g <- mse_sat %>%
+  set_names(scenarios_human) %>%
+  gfdlm::plot_kobe_grid()
+.ggsave("kobe-grid-satisficed2", 13, 7)
+.ggsave("kobe-grid-satisficed", 7, 13)
 
 # Radar plots -----------------------------------------------------------------
 
@@ -260,22 +267,22 @@ slots <- c("D", "hs", "M", "ageM", "L50", "Linf", "K", "Isd")
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
   gfdlm::plot_sensitivity(`LT LRP`, slots = slots,
     ylab = expression(Mean~SSB/SSB[MSY]~"in"~years~36-50))
-.ggsave("sensitivity-bbmsy-base", 12.5, 8)
+.ggsave("sensitivity-bbmsy-base", 12.5, 5)
 
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
   gfdlm::plot_sensitivity(`STY`, slots = slots,
     ylab = "Mean catch/reference catch in years 6-20")
-.ggsave("sensitivity-yield-base", 12.5, 8)
+.ggsave("sensitivity-yield-base", 12.5, 5)
 
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
   gfdlm::plot_sensitivity_trajectory("B_BMSY", slots = slots) +
   coord_cartesian(ylim = c(0, 4))
-.ggsave("sensitivity-traj-bbmsy-base", 12.5, 7)
+.ggsave("sensitivity-traj-bbmsy-base", 12.5, 5)
 
 g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
   gfdlm::plot_sensitivity_trajectory("F_FMSY", slots = slots) +
   coord_cartesian(ylim = c(0, 4))
-.ggsave("sensitivity-traj-ffmsy-base", 12.5, 7)
+.ggsave("sensitivity-traj-ffmsy-base", 12.5, 5)
 
 # Optimize PNG files on Unix --------------------------------------------------
 
