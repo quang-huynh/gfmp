@@ -21,9 +21,11 @@ g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat) %>%
 
 # Convergence -----------------------------------------------------------------
 
-g <- mse %>% set_names(scenarios_human) %>%
-  gfdlm::plot_convergence(PM)
-.ggsave("converge", 9, 9)
+g <- scenarios %>%
+  purrr::map(~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)) %>%
+  set_names(scenarios_human) %>%
+  gfdlm::plot_convergence(PM, ylim = c(0.3, 1), custom_pal = custom_pal)
+.ggsave("converge", 9, 10)
 
 # Projections -----------------------------------------------------------------
 
@@ -162,11 +164,13 @@ g <- pm_avg %>% dplyr::filter(MP %in% MPs) %>%
 
 g <- pm_df_list %>%
   map(dplyr::filter, MP %in% union(mp_sat, reference_mp[reference_mp != "NFref"])) %>%
+  set_names(scenarios_ref_human) %>%
   gfdlm::plot_tradeoff("LT LRP", "STC", custom_pal = custom_pal)
-.ggsave("bivariate-trade-off-reference", 8, 6)
+.ggsave("bivariate-trade-off-reference", 7.5, 6.5)
 
 g <- pm_df_list_rob %>%
   map(dplyr::filter, MP %in% union(mp_sat, reference_mp[reference_mp != "NFref"])) %>%
+  set_names(scenarios_rob_human) %>%
   gfdlm::plot_tradeoff("LT LRP", "STC", custom_pal = custom_pal) +
   facet_wrap(~scenario, ncol = 2)
 .ggsave("bivariate-trade-off-robustness", 6, 3)
