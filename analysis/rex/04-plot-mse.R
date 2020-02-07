@@ -21,11 +21,9 @@ g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat) %>%
 
 # Convergence -----------------------------------------------------------------
 
-walk(names(mse_sat_with_ref), ~ {
-  g <- gfdlm::plot_convergence(mse_sat_with_ref[[.x]], PM, ylim = c(0.5, 1)) +
-    scale_color_brewer(palette = "Set2")
-  .ggsave(paste0("converge-", .x), 6.5, 6.5)
-})
+g <- mse %>% set_names(scenarios_human) %>%
+  gfdlm::plot_convergence(PM)
+.ggsave("converge", 9, 9)
 
 # Projections -----------------------------------------------------------------
 
@@ -99,19 +97,32 @@ g <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
 
 # Parallel coordinate plots ---------------------------------------------------
 
+pm_groups <- list(c("LT LRP", "LT USR", "FMSY"), c("STC", "LTC", "AAVC"))
+
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
   set_names(scenarios_ref_human) %>%
   gfdlm::plot_parallel_coords(type = "facet", custom_pal = custom_pal)
 .ggsave("parallel-coordinates", 8, 6.6)
 
+g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
+  set_names(scenarios_ref_human) %>%
+  gfdlm::plot_parallel_coords(type = "facet", custom_pal = custom_pal,
+    groups = pm_groups)
+.ggsave("parallel-coordinates-grouped", 8, 6.6)
+
 g <- pm_df_list_rob %>% map(dplyr::filter, MP %in% MPs) %>%
   set_names(scenarios_rob_human) %>%
   gfdlm::plot_parallel_coords(type = "facet", custom_pal = custom_pal)
-.ggsave("parallel-coordinates", 8, 6.6)
+.ggsave("parallel-coordinates-rob", 7, 3)
 
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
   gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
 .ggsave("parallel-coordinates-avg", 5.5, 3.5)
+
+g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
+  gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal,
+    groups = pm_groups)
+.ggsave("parallel-coordinates-avg-grouped", 5.5, 3.5)
 
 # FIXME: pull this into package:
 d <- pm_avg %>% inner_join(rename(mp, MP = mp), by = "MP") %>%
@@ -131,7 +142,7 @@ g <- names(d) %>% map(~{
     )
 })
 g2 <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
-  hjust = 0, label_size = 11, vjust = 1, align="hv") +
+  hjust = 0, label_size = 11, vjust = 1, align = "hv") +
   theme(plot.margin = grid::unit(c(1, 0, 1, 1), "lines"))
 .ggsave("parallel-coordinates-all-avg-reference", 8.5, 8.5)
 
@@ -144,7 +155,6 @@ g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
 .ggsave("lollipops-ref", 8, 7)
 
 g <- pm_avg %>% dplyr::filter(MP %in% MPs) %>%
-  list() %>% set_names("Average") %>%
   gfdlm::plot_lollipop(custom_pal = custom_pal)
 .ggsave("lollipops-ref-avg", 4.5, 5)
 
