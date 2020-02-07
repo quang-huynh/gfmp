@@ -111,7 +111,7 @@ g <- pm_df_list_rob %>% map(dplyr::filter, MP %in% MPs) %>%
 
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
   gfdlm::plot_parallel_coords(type = "single", custom_pal = custom_pal)
-.ggsave("parallel-coordinates-avg", 5, 3)
+.ggsave("parallel-coordinates-avg", 5.5, 3.5)
 
 # FIXME: pull this into package:
 d <- pm_avg %>% inner_join(rename(mp, MP = mp), by = "MP") %>%
@@ -134,6 +134,19 @@ g2 <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
   hjust = 0, label_size = 11, vjust = 1, align="hv") +
   theme(plot.margin = grid::unit(c(1, 0, 1, 1), "lines"))
 .ggsave("parallel-coordinates-all-avg-reference", 8.5, 8.5)
+
+# Lollipops -------------------------------------------------------------------
+
+g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
+  set_names(scenarios_ref_human) %>%
+  gfdlm::plot_lollipop(custom_pal = custom_pal, dodge = 0.65) +
+  facet_wrap(~scenario, ncol = 4)
+.ggsave("lollipops-ref", 8, 7)
+
+g <- pm_avg %>% dplyr::filter(MP %in% MPs) %>%
+  list() %>% set_names("Average") %>%
+  gfdlm::plot_lollipop(custom_pal = custom_pal)
+.ggsave("lollipops-ref-avg", 4.5, 5)
 
 # Bivariate trade-off plots ---------------------------------------------------
 
