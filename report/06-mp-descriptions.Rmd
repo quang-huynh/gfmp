@@ -43,7 +43,7 @@ knitr::kable(table_screening,
 
 Here we include an overview of a selection of output-controlled (TAC-based) MPs that may be used as part of this framework. The MPs are a combination of those from the literature that have been implemented in DLMtool and some MPs that have been used in recent assessments for other BC groundfish.
 
-We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or other publications where MPs were developed wherever possible.
+We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or the primary source publications wherever possible.
 
 We have modified many standard MPs to discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will likely be based. We did note these MPs with a `.` in front of them. For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data. We do not make this distinction in the descriptions below, but use the dot notation throughout the case studies.
 
@@ -58,7 +58,7 @@ mps <- DLMtool::MPtype(DLMtool::avail('MP')) %>%
 csasdown::csas_table(mps)
 ```
 
-MPs in this category set a constant catch, often based on some his average historical catch. This type of MP is static and therefore does not incorporate feedback between subsequent stock status and MP recommendations. Nonetheless, these MPs are simple, may represent only a minor modification to the status quo, and in some circumstances, depending on average historical catches, may prove to satisfy performance metrics.
+MPs in this category set a constant catch, often based on some average historical catch. This type of MP is static and therefore does not incorporate feedback between subsequent stock status and MP recommendations. Nonetheless, these MPs are simple, may represent only a minor modification to the status quo, and in some circumstances, depending on average historical catches, may prove to satisfy performance metrics.
 
 ### CC_hist and CC_hist20: Average historical catch {#sec:mp-cc-hist}
 
@@ -68,7 +68,7 @@ This is a simple management procedure in which the mean historical catch is calc
 \textrm{TAC}_y = \frac{\sum_{i=1}^{n}C_i}{n},
 \end{equation}
 
-where $n$ is the number of historical years, and $C_i$ is the catch in historical year $i$ with $i$ starting of the first historical year. For our purposes in British Columbia, we suggest instead using average catch from the last 20 years, which encompasses a time period after the implementation of trawl ITQs in 1996. We denote this MP "CC_hist20":
+where $n$ is the number of historical years, and $C_i$ is the catch in historical year $i$ with $i$ starting of the first historical year. For our purposes in British Columbia, we suggest alternatives using average catch from the last 20 years, which encompasses a time period after the implementation of trawl ITQs in 1996. We denote this MP "CC_hist20":
 
 \begin{equation}
 \textrm{TAC}_y = \frac{\sum_{i=n-20+1}^{n}C_i}{20}.
@@ -218,7 +218,7 @@ pars %>%
 
 ### ICI: Index confidence interval {#sec:mp-ici}
 
-This MP adjusts the TAC based on the value of the relative abundance index in the current year divided by the relative abundance index mean and standard error  [@jardim2015] (Fig. \@ref(fig:mp-ici-demo)). The TAC is calculated as:
+This MP adjusts the TAC based on the value of the relative abundance index in the current year divided by the relative abundance index mean and standard error  [@jardim2015] (Fig. \@ref(fig:mp-ici-demo)). There are two versions: ICI, which uses an asymmetric confidence interval; and ICI2, which uses a symmetrical confidence interval. In both cases, the TAC is calculated as:
 
 \begin{equation}
 \textrm{TAC}_y= \alpha_y C_{y-1},
@@ -240,7 +240,7 @@ The symbol $I_y$ represents the index in the most recent year, $\alpha_1$ is 0.7
 Written out more explicitly, the procedure for implementing these MPs is as follows:
 
 - Calculate the mean ($\mu_I$) and standard deviation of the relative abundance index through time.
-- Divide the standard deviation by the number of available relative abundance index time steps to derive the standard error ($\sigma_I$).
+- Divide the standard deviation by the square root of the number of available relative abundance index time steps to derive the standard error ($\sigma_I$).
 
 For ICI:
 
