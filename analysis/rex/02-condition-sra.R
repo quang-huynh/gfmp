@@ -209,7 +209,7 @@ saveRDS(rex_sra_dec_m, file = here("generated-data", "rex-sra-dec-m.rds"))
 # Set up the scenario names ---------------------------------------------------
 
 sc <- tibble::tribble(
-  ~scenario,     ~scenarios_human,        ~scenario_type,
+  ~scenario,     ~scenario_human,        ~scenario_type,
   "ceq50",       "Catch eq. 50%",         "Reference",
   "ceq100",      "Catch eq. 100%",        "Reference",
   "ceq200",      "Catch eq. 200%",        "Reference",
@@ -254,8 +254,8 @@ get_depletion <- function(x, scenario) {
   left_join(d1, d2, by = "year")
 }
 
-g <- purrr::map2_df(sra_rex, sc$scenarios_human, get_depletion) %>%
-  mutate(scenario = factor(scenario, levels = sc$scenarios_human)) %>%
+g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
   ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
   geom_ribbon(fill = "grey90") +
   geom_ribbon(fill = "grey70", mapping = aes(ymin = lwr50, ymax = upr50)) +
@@ -282,15 +282,15 @@ get_sra_survey <- function(sra, sc_name, survey_names = c("SYN WCVI", "CPUE")) {
 }
 surv <- purrr::map2_dfr(sra_rex, sc$scenario, get_sra_survey)
 surv <- left_join(surv, sc, by = "scenario")
-surv$scenarios_human <- factor(surv$scenarios_human, levels = sc$scenarios_human)
+surv$scenario_human <- factor(surv$scenario_human, levels = sc$scenario_human)
 surv$year <- surv$year + min(indexes$year) - 1
 
 surv_plot <- surv %>%
-  group_by(scenarios_human, survey) %>%
+  group_by(scenario_human, survey) %>%
   mutate(geo_mean = exp(mean(log(value)))) %>%
   mutate(value = value/geo_mean)
 
-surv_plot_distinct <- surv_plot %>% select(scenarios_human, survey, geo_mean) %>%
+surv_plot_distinct <- surv_plot %>% select(scenario_human, survey, geo_mean) %>%
   distinct()
 
 # FIXME: functionalize this:
@@ -312,7 +312,7 @@ indexes1 <- bind_rows(data.frame(
 
 # FIXME: BAD TEMPORARY HACK!!! SA: 2020-01-21
 surv_plot2 <- surv_plot %>%
-  group_by(iter, survey, scenarios_human) %>%
+  group_by(iter, survey, scenario_human) %>%
   group_split() %>%
   map_dfr(~{if(.$value[1] > 0.5 || .$scenario == "ceq200-cpue") .})
 
@@ -321,7 +321,7 @@ g <- ggplot(surv_plot2, aes(year, value,
   geom_line(alpha = 0.05) +
   geom_pointrange(data = indexes1, mapping = aes(x = year, y = biomass, ymin = lwr, ymax = upr,
     fill = as.character(survey)), inherit.aes = FALSE, pch = 21, colour = "grey40") +
-  facet_wrap(vars(scenarios_human)) +
+  facet_wrap(vars(scenario_human)) +
   gfplot::theme_pbs() +
   scale_color_brewer(palette = "Set2", direction = -1) +
   scale_fill_brewer(palette = "Set2", direction = -1) +

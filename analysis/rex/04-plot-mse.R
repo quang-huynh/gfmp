@@ -23,7 +23,7 @@ g <- map(pm_df_list_rob, dplyr::filter, MP %in% mp_sat) %>%
 
 g <- scenarios %>%
   purrr::map(~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)) %>%
-  set_names(scenarios_human) %>%
+  set_names(scenario_human) %>%
   gfdlm::plot_convergence(PM, ylim = c(0.3, 1), custom_pal = custom_pal)
 .ggsave("converge", 9, 10)
 
@@ -62,14 +62,14 @@ g <- DLMtool::Sub(mse[[base_om]], MPs = mp_eg_not_sat) %>%
 
 # Kobe ------------------------------------------------------------------------
 
-g <- mse_sat %>%
-  set_names(scenarios_human) %>%
+MPs <- union(mp_sat, reference_mp[reference_mp != "NFref"])
+
+g <- purrr::map(scenarios_ref, ~ DLMtool::Sub(mse[[.x]], MPs = MPs)) %>%
+  set_names(scenarios_ref_human) %>%
   gfdlm::plot_kobe_grid()
-.ggsave("kobe-grid-satisficed", 7, 13)
+.ggsave("kobe-grid-satisficed", 9.5, 10.5)
 
 # Radar plots -----------------------------------------------------------------
-
-MPs <- union(mp_sat, reference_mp[reference_mp != "NFref"])
 
 g <- pm_df_list %>% map(dplyr::filter, MP %in% MPs) %>%
   set_names(scenarios_ref_human) %>%
@@ -95,7 +95,7 @@ d <- pm_avg %>% inner_join(rename(mp, MP = mp), by = "MP") %>%
 g <- d %>% map(plot_radar)
 g <- cowplot::plot_grid(plotlist = g, ncol = 2, labels = names(d),
   hjust = 0, label_size = 11, align = "hv")
-.ggsave("spider-all-avg-reference", 8.5, 8.5)
+.ggsave("spider-all-avg-reference", 10, 10)
 
 # Parallel coordinate plots ---------------------------------------------------
 
@@ -218,7 +218,7 @@ g <- DLMtool::Sub(mse[[base_om]], MPs = mp_sat) %>%
 # Optimize PNG files on Unix --------------------------------------------------
 
 cores <- round(parallel::detectCores() / 2L)
-files_per_core <- 5L
+files_per_core <- 6L
 setwd(fig_dir)
 if (!identical(.Platform$OS.type, "windows")) {
   system(paste0(
