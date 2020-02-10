@@ -30,9 +30,9 @@ The equation implemented in DLMtool is this:
  
  I don't know if this matters at all but we might be asked questions about it since it is a satisficed MP.
  
-Something funny about itarget 5 as I have implemented it. I could have made a mistake but I think my code is the same as in gfdlm. In the GFMP working paper it looks like it has a cap on it that isn't documented ??? Just trying to understand so I can explain it (to myself and others who ask). So please tell me what I have missed or done incorrectly.
+Something funny about itarget5 as I have implemented it. I could have made a mistake but I think my code is the same as in gfdlm. In the GFMP working paper it looks like it has a cap on it that isn't documented ??? Just trying to understand so I can explain it (to myself and others who ask). So please tell me what I have missed or done incorrectly.
 
-*To compare the base B&G2015 Itarget MPs and Itarget5, compare the green lines (whih have w=0.5) to the pink lines*. Two plots for each MP with different x axes.
+*To compare the base B&G2015 Itarget MPs and Itarget5, compare the green lines (which have w=0.5) to the pink lines*. Two plots for each MP with different x axes.
 
 And sorry these aren't nice facet plots ...
 
@@ -119,14 +119,27 @@ get_Itarget_HCR <- function(Iav=4,Cav=100,Imulti=1.5,Cmulti=1){
 }
 ```
 
- 
+## Itarget1 (with alternative w values), plus Itarget5
+
 ```{r, echo=TRUE}
-
 dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=1.5,Cmulti=1)
-dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2,Cmulti=1)
-dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=1)
-dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=0.7)
-
 ```
  
+## Itarget2 (with alternative w values), plus Itarget5
+ 
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2,Cmulti=1)
+```
+
+## Itarget3 (with alternative w values), plus Itarget5
+
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=1)
+```
+
+## Itarget4 (with alternative w values), plus Itarget5
+
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=0.7)
+```
 
