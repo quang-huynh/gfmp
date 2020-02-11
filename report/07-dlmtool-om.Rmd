@@ -12,6 +12,10 @@ The full operating model with many parameters varying by year, multiple subareas
 
 *TODO: Add equation numbers*
 
+*TODO: improve clarification throughout which parameters are user-specified and where they are in the document*
+
+*TODO: ADD EXPLANATION THAT FISHING DYNAMICS WILL GET OVERWRITTEN BY THE SRA FOR SRA-CALIBRATED OMS*
+
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Last historical year, the ``current'' year is denoted by $c$. -->
@@ -120,30 +124,31 @@ $$
 S_{y} = \sum_{a = 1}^{n_{a}}{m_{a}W_{a}N_{y,a}}.
 $$
 
-
 ## FISHING DYNAMICS {#sec:dlmtool-fishing-dynamics}
 
-TODO: reword some of this!
+*TODO: explain where these parameters come from (q, effort, selectivity and DMR) and what happens to these values when the model is fit using the SRA*
 
-Fishing mortality rate $F$ is calculated according to a catchability coefficient, annual effort $E$, age-selectivity $s$, the retention rate (probability of retaining a fish given it is caught) and $R$ the discard mortality rate $\theta_{M \textrm{disc}}$ (fraction of released fish that die):
+*TODO: continue cleaning up this section*
+
+The fishing mortality rate $F_{y,a}$ is calculated using a catchability coefficient $q$, annual effort $E$, selectivity-at-age $s_a$, the retention rate-at-age (probability of retaining a fish of age $a$ given it is caught) $R_a$, and the discard mortality rate $\theta_{M \textrm{disc}}$ (fraction of released fish that die):
 
 $$
 F_{y,a} = q E_y  s_{a} \left( R_{a} + \ \left( 1 - R_{a} \right)\ {\theta}_{M \textrm{disc}} \right).
 $$
 
-The catchability coefficient is calculated by numerical optimization such that stock depletion in the current year matches user-specified depletion \(D\) (spawning biomass relative to unfished levels):
+The catchability coefficient ($q$) is calculated by numerical optimization such that stock depletion in the current year matches user-specified depletion \(D\) (spawning biomass relative to unfished levels):
 
 $$
 q = \textrm{opt}\left( D\ \vert \ E_{y}, s_{a}, R_{a}, {\theta}_{M \textrm{disc}}, M, {h}, W \right).
 $$
 
-The overall retention rate at age $R_a$, is a combination of an age-specific retention $r$ with a maximum value of $1$, and a constant rate of discarding \(\gamma\):
+The overall retention rate-at-age $R_a$, is a combination of an age-specific retention $r_a$ with a maximum value of $1$, and a constant rate of discarding \(\gamma\):
 
 $$
 R_{a} = r_{a}\ (1 - \gamma).
 $$
 
-Vulnerable biomass is the product of numbers $N$, weight $W$, and age selectivity $s$:
+Vulnerable biomass $V_{y}$ is the product of numbers-at-age $N_a,y$, weight-at-age $W_a$, and selectivity-at-age $s_a$:
 
 $$
 V_{y} = \sum_{a = 1}^{n_{a}}N_{y,a}W_{a} s_{a}.
@@ -151,7 +156,7 @@ $$
 
 The vulnerability-at-age $s_{a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
-TODO
+*TODO*
 
 <!-- s_{y,a} = \left\{ \begin{matrix} -->
 <!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{smax}} \\ -->
@@ -159,7 +164,7 @@ TODO
 <!-- \end{matrix} \right -->
 
 The length at maximum selectivity \(L_{\textrm{smax}}\) is
-defined in the OM (Table App.D.1). The standard deviation parameters of the
+user-defined. The standard deviation parameters of the
 ascending limb is given by user-specified length at 5%
 vulnerability \({L}_{5}\):
 
@@ -174,9 +179,9 @@ $$
 \sigma_{\textrm{sdesc}}^{2} = \frac{\overline{L} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{{{V}}_{\overline{L}}}}}}
 $$
 
-Age-specific retention $r$, is modelled using the same double-normal curve as selectivity:
+Age-specific retention $r_a$, is modelled using the same double-normal curve as selectivity:
 
-TODO
+*TODO*
 <!-- \(r_{y,a} = \left\{ \begin{matrix} -->
 <!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{rmax}} \\ -->
 <!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{rmax}} \\ -->
@@ -207,13 +212,13 @@ $$
 C_{y,a} = N_{y,a}\left( 1 - e^{- Z_{y,a}} \right) \frac{E_{y} s_{a} R_{a}\ }{Z_{y,a}}.
 $$
 
-In projected years when TACs are recommended by MPs, the equations are reversed and fishing mortality rates are calculated from prescribed catches. To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass (post retention because this is used to distribute landings) across ages:
+In projected years (indicated by a dot) when TACs are recommended by MPs, the equations are reversed and fishing mortality rates are calculated from prescribed catches. To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass (post retention because this is used to distribute landings) across ages:
 
 $$
 {\dot{V}}_{y,a} = N_{y,a} W_{a} s_{a} R_{a}.
 $$
 
-The realized catches \(\dot{C}\ \) are the TAC recommendations accounting
+The realized projected catches \(\dot{C}\ \) are the TAC recommendations accounting
 for implementation error in the TAC $I_\textrm{TAC}$ (see TODO for the implementation error equations), retention rates $R$ and post-release mortality rate $\theta_{M{\textrm{disc}}}$:
 
 $$
@@ -226,6 +231,8 @@ $$
 Fishing mortality rates are then calculated from these realized catches
 subject to the constraint that they do not exceed user-specified
 ${F_\textrm{max}}$:
+
+*TODO: shouldn't Fs have a dot to indicate projections?*
 
 $$
 F_{y,a} = \min \left( - \ln\left( 1 - \frac{{\dot{C}}_{y,a}}{N_{y,a}{W}_{a}} \right),F_{\max} \right).
