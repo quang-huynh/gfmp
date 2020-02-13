@@ -6,23 +6,33 @@
 
 <!-- *Not too many details; reference the paper* -->
 
-The full operating model with many parameters varying by year, multiple subareas, and additional possible parameterizations is described in the appendices of @carruthers2018. Here we summarize a simplified version that represents a model sufficiently complex to represent most base models in the framework. In particular, we don't express parameters as varying through time where we have recommended that they be treated as fixed through time as provisional starting points. Wherever possible, we follow the notation conventions used in @carruthers2018 for consistency.
+The DLMtool population dynamics operating model (OM) is an age-structured model decribed below. The OM is very flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
+Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation bias parameters.
+A full range of possible parameterizations is described in the appendices of @carruthers2018.
+Here we present the simplest version of the OM, without time-varying parameters, multiple sub-areas or implementation bias. This OM structure should be suitable as a base OM for most species intended to be assessed with the framework. 
+More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified.
+Wherever possible, we follow the notation conventions used in the appendices of @carruthers2018 for consistency.
 
-**The following is preliminary and largely reproduced from the DLMtool paper [@carruthers2018] appendix for completeness with some modifications. Equation numbers will be added.**
+*TODO: Do we agree on these names for the milestone years??*
 
-*TODO: Add equation numbers*
+There are two distinct time-periods in the simulation framework: (1) The historical period, which covers the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$; and (2) the projection period, which covers the period from the first year after $t_c$, to the final projection year $t_N$. 
+The historical period is calibrated to historical observations.
+The closed-loop simulations and calculation of performance metrics begin in year $t_{c+1}$.
 
-*TODO: improve clarification throughout which parameters are user-specified and where they are in the document*
+Operating model development in the MP Framework follows three steps:
 
-*TODO: Clarify why we start with DLMtool OM then use SRA*
+1. Set parameter values and ranges in the DLMtool OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr));
 
-*TODO: DELETE FLEET SLOT*
+2. Pass the OM parameters to the `SRA_scope` function in MSEtool, which fits an age-structured stock reduction analysis (SRA) [@kimura1982; @walters2006] to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
+This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality that are consistent with historical observations. 
+Equations for the `SRA_scope` model are provided in Appendix \@ref(app:sra); then
+
+3. Pass the calibrated parameter values back to the DLMtool OM for use in the closed-loop simulation projections.
+
 
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Last historical year, the ``current'' year is denoted by $c$. -->
-
-The DLMtool population dynamics model is an age-structured model. 
 
 ### Growth and maturity
 
@@ -71,7 +81,12 @@ where \(\theta_{a50}\) and \(\theta_{a95}\) represent the age at 50% and 95% mat
 ### Population dynamics
 Leading parameters of the population dynamics model, defined as ranges or fixed values by the user, are: unfished recruitment \({{R}}_{0}\), the steepness parameter of the stock-recruit relationship ($h$) [@mace1988], and natural mortality ($M$).
 
-Numbers-at-age are initialized in the first historical year as a function of  \({{R}}_{0}\) and a vector of lognormal recruitment deviations $\varepsilon_{R,y}$:
+Numbers-at-age are initialized in the first historical year using the SRA model (Appendix \@ref(app:sra)).
+
+<!--
+#RF COMMENTED OUT Feb 12 2020. Initial numbers and recruits for the historical period are estimated by the SRA and fully reported in the SRA appendix. 
+
+Numbers-at-age are initialized in the first historical yearas a function of  \({{R}}_{0}\) and a vector of lognormal recruitment deviations $\varepsilon_{R,y}$:
 
 \begin{equation}
 N_{1,a} = {{R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}\ \cdot \varepsilon_{R,y - a}.
@@ -96,6 +111,23 @@ $W_a$, and unfished numbers at age  \({{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}\)
 S_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}.
 (\#eq:dlm-om-so)
 \end{equation}
+-->
+During the projection period, the number of fish $N$ in each year $y$ > $t_c$  and age $a$ > 1 is calculated from the previous year and age class,
+subject to the instantaneous total mortality rate $Z_{a}$:
+
+\begin{equation}
+N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} .
+(\#eq:dlm-om-muma)
+\end{equation}
+
+Total mortality rate $Z_{y,a}$ is the sum of the instantaneous natural mortality ($M$) and fishing mortality ($F_{y,a}$) rates:
+
+\begin{equation}
+Z_{y,a} = M + F_{y,a}.
+(\#eq:dlm-om-z)
+\end{equation}
+Fishing mortality rate calculations are provided in Section **TODO - in SRA Appendix**.
+
 
 Annual recruitment deviations are generated by first sampling from a lognormal distribution with mean $1$ and standard deviation \({{\sigma}}_{R}\):
 
@@ -113,22 +145,7 @@ Temporal autocorrelation \({{\theta}}_{\textrm{AC}}\) is added to these initial 
 
 where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term, where the user defines \({{\theta}}_{\textrm{AC}}\), and setting \({{\theta}}_{\textrm{AC}}\) to zero implies no autocorrelation.
 
-The number of fish $N$ in each year $y$ > 1  and age $a$ > 1 is then
-calculated from the previous year and age class,
-subject to the instantaneous total mortality rate $Z_{a}$:
 
-\begin{equation}
-N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} .
-(\#eq:dlm-om-muma)
-\end{equation}
-
-Total mortality rate $Z_{y,a}$ is the sum of the instantaneous natural mortality ($M$) and fishing mortality ($F_{y,a}$) rates:
-
-\begin{equation}
-Z_{y,a} = M + F_{y,a}.
-(\#eq:dlm-om-z)
-\end{equation}
-Fishing mortality rate calculations are provided in Section **TODO - in SRA Appendix**.
 
 The spawning biomass $S_{y}$ in a given year is the
 sum over ages of the spawning biomass over ages of the maturity at age $m_a$, weight at age
