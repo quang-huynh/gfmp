@@ -19,7 +19,7 @@ base_om <- "ceq100" # affects some default plots
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-ref_mp_cols <- c("grey60", "grey20", "grey85") %>% set_names(reference_mp)
+ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
 #
 catch_breaks <- c(0, 100000, 200000, 300000)
 catch_labels <- c("0", "100", "200", "300")
@@ -85,6 +85,7 @@ fit_scenario <- function(scenario) {
     message("Loading closed-loop-simulation for ", scenario, " OM")
     mse <- readRDS(file_name)
   }
+  mse@OM$CurrentYr <- om[[1]]@CurrentYr # fixed in latest DLMtool
   mse
 }
 mse <- map(scenarios, fit_scenario)
@@ -140,5 +141,25 @@ plots <- gfdlm::plot_factory(
   tradeoff = c("LT LRP", "STC"),
   catch_breaks = catch_breaks,
   catch_labels = catch_labels,
-  satisficed_criteria = satisficed_criteria
+  satisficed_criteria = satisficed_criteria,
+  skip_projections = TRUE,
+  dodge = 0.8
 )
+
+pm_angle <- theme(axis.text.x.bottom = element_text(angle = 90, hjust = 1), panel.grid.major.y = element_line(colour = "grey85"),
+  panel.grid.minor.y = element_line(colour = "grey96"))
+plots$dot_refset + pm_angle
+# ggsave("~/Desktop/g1.pdf", width = 11, height = 7)
+plots$dot_refset_avg
+# ggsave("~/Desktop/g2.png", width = 6, height = 4)
+
+plots$tigure_refset
+# ggsave("~/Desktop/g3.png", width = 6, height = 7)
+
+plots$radar_refset
+# ggsave("~/Desktop/g4.png", width = 11, height = 11)
+
+plots$lollipops_refset
+# ggsave("~/Desktop/g5.png", width = 9, height = 9)
+
+plots$parallel_refset
