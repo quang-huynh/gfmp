@@ -127,7 +127,7 @@ mp_eg_not_sat <- c(
   ".SP6040_prior"
 )
 
-plots <- gfdlm::make_typical_plots(
+plots <- gfdlm::plot_factory(
   mse_list = mse,
   pm = PM,
   scenario_df = sc,
@@ -137,6 +137,7 @@ plots <- gfdlm::make_typical_plots(
   mp_ref = reference_mp,
   custom_pal = custom_pal,
   eg_scenario = "ceq100",
+  tradeoff = c("LT LRP", "STC"),
   catch_breaks = catch_breaks,
   catch_labels = catch_labels,
   satisficed_criteria = satisficed_criteria
