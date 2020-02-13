@@ -27,7 +27,6 @@ catch_labels <- c("0", "100", "200", "300")
 # Satisficing rules:
 LT_LRP_thresh <- 0.8
 STC_thresh <- 0.7
-this_year <- 2018
 
 # Set up PMs ------------------------------------------------------------------
 
@@ -132,10 +131,9 @@ plots <- gfdlm::make_typical_plots(
   mse_list = mse,
   pm = PM,
   scenario_df = sc,
-  this_year = this_year,
   mp_sat = mp_sat,
   mp_not_sat = mp_not_sat,
-  mp_not_sat_highlight = mp_eg_not_sat,
+  mp_not_sat2 = mp_eg_not_sat,
   mp_ref = reference_mp,
   custom_pal = custom_pal,
   eg_scenario = "ceq100",
