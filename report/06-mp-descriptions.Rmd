@@ -432,7 +432,7 @@ pars1 <- expand.grid(
   avg_catch_hist = 100,
   Irecent = seq(0.1, 3, length.out = 300),
   Iave = c(1),
-  x = c(0.0),
+  xx = c(0.0),
   Imulti = c(1.5),
   type = "Itarget1", stringsAsFactors = FALSE
 )
@@ -447,12 +447,12 @@ pars3$Imulti <- 2.5
 pars4 <- pars1
 pars4$type <- "Itarget4"
 pars4$Imulti <- 2.5
-pars4$x <- 0.3
+pars4$xx <- 0.3
 
 pars <- bind_rows(list(pars1, pars2, pars3, pars4))
 pars$tac <- purrr::pmap_dbl(pars, f)
 pars %>%
-  mutate(x = paste("x =", x)) %>%
+  mutate(x = paste("x =", xx)) %>%
   mutate(Imulti = paste("Imulti =", Imulti)) %>%
   ggplot(aes(Irecent, tac, colour = type)) +
   geom_line() +
