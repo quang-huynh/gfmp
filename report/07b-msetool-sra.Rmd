@@ -136,6 +136,7 @@ N_{1,a} =
       R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i) & a = 1, \ldots, A-1\\
       \dfrac{R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
 \end{cases}
+(\#eq:dlm-sra-numinit)
 \end{equation}
 
 where the $R^{\textrm{eq}}$ is the equilibrium recruitment and $Z^{\textrm{eq}}_a = M_{1,a} + \Sigma_f v_{1,a,f} F^{\textrm{eq}}_f$ is the equilibrium total mortality rate.
@@ -146,6 +147,7 @@ Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calcul
 
 \begin{equation}
 R^{\textrm{eq}} = \dfrac{\alpha^{\textrm{BH}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{BH}}\phi^{\textrm{eq}}},
+(\#eq:dlm-sra-recinit)
 \end{equation}
 
 where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^{\textrm{eq}}_a$.
