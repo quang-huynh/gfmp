@@ -491,11 +491,11 @@ knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
 
 \clearpage
 
-(ref:fig-methods-spider) This spider (or radar) [@punt2016] plot illustrates performance metric trade-offs amongst a set of MPs.
-Each spoke of the web represents a performance metric (Section \@ref(sec:approach2)).
+(ref:fig-methods-spider) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
+Each spoke represents a performance metric (Section \@ref(sec:approach2)).
 Each line represents a management procedure.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
-Therefore, lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.
+Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4.5in"}
 knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))

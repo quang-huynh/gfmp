@@ -285,7 +285,7 @@ knitr::include_graphics(here::here("report/figure/rex-pm-tigures-ref-set.png"))
 
 \clearpage
 
-```{r rex-spider-all-mps, fig.cap="Spider plots of performance metric trade-offs amongst all MPs for the averaged reference set of OMs. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
+```{r rex-spider-all-mps, fig.cap="Radar plots of performance metric trade-offs amongst all MPs for the averaged reference set of OMs. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-avg-panel.png"))
 ```
 
