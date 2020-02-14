@@ -155,16 +155,13 @@ V_{y,a} = N_{y,a} W_{a} s_{a} R_{a}
 
 where the vulnerability-at-age  $s_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
-*TODO: fix this equation. It is rendering in html but not pdf*
-<!--
 \begin{equation}
 s_{y,a} = \left\{ \begin{matrix} 
- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{smax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{smax}} \\ 
 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{smax}} \\ 
-\end{matrix} \right
-(\#eq:dlm-om-selay)
+\end{matrix} \right.\ 
+(\#eq:dlm-om-say)
 \end{equation}
--->
 
 The length at maximum selectivity \(L_{\textrm{smax}}\) is
 user-defined. The standard deviation parameters of the
@@ -203,15 +200,15 @@ R_{a} = r_{a}\ (1 - \gamma).
 (\#eq:dlm-om-retention)
 \end{equation}
 
-where age-specific retention $r_a$, is modelled using the same form of double-normal curve as selectivity:
+where age-specific retention $r_{y,a}$, is modelled using the same form of double-normal curve as selectivity:
 
-*TODO: fix this equation. It is rendering in html but not pdf*
-
-<!-- \(r_{y,a} = \left\{ \begin{matrix} -->
-<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{rmax}} \\ -->
-<!-- 2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{rmax}} \\ -->
-<!-- \end{matrix} \right.\ \) -->
-
+\begin{equation}
+r_{y,a} = \left\{ \begin{matrix} 
+2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{rmax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{rmax}} \\ 
+\end{matrix} \right.\ 
+(\#eq:dlm-om-ray)
+\end{equation}
 
 The length at maximum retention \({L}_{\textrm{rmax}}\) is
 user-specified. The standard deviation parameters of the
@@ -240,6 +237,7 @@ ${F_\textrm{max}}$:
 F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{W}_{a}} \right),F_{\max} \right).
 (\#eq:dlm-om-Fay)
 \end{equation}
+
 
 ## OBSERVATION AND IMPLEMENTATION DYNAMICS
 
