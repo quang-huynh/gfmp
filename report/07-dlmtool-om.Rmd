@@ -6,35 +6,35 @@
 
 <!-- *Not too many details; reference the paper* -->
 
-*TODO: Add references to slot names for user-defined parameters. Need to decide on a consistent method. E.g., do we just put the slot name in parentheses after the parameter or say something specific like "This parameter is  defined under stock@M etc. This is potentially problematic as we are giving the stock and other objects species-specific names (e.g., stock_rex@M). We could just use rex as an example. Or we could go with something generic like stock_speciesname@M*
+<!-- *TODO: Add references to slot names for user-defined parameters. Need to decide on a consistent method. E.g., do we just put the slot name in parentheses after the parameter or say something specific like "This parameter is  defined under stock@M etc. This is potentially problematic as we are giving the stock and other objects species-specific names (e.g., stock_rex@M). We could just use rex as an example. Or we could go with something generic like stock_speciesname@M* -->
 
-The DLMtool population dynamics operating model (OM) is an age-structured model decribed below. The OM is very flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
-Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation bias parameters.
+The DLMtool population dynamics operating model (OM) is an age-structured model decribed below. The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
+Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
 A full range of possible parameterizations is described in the appendices of @carruthers2018.
-Here we present the simplest version of the OM, without time-varying parameters, multiple sub-areas or implementation bias. This OM structure should be suitable as a base OM for most species intended to be assessed with the framework. 
-More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual species.
+Here, we present the simplest version of the OM, without time-varying parameters, multiple sub-areas, or implementation bias. 
+This OM structure should be suitable as a base OM for most species intended to be assessed with the framework.
+More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
 Wherever possible, we follow the notation conventions used in the appendices of @carruthers2018 for consistency.
 
-*TODO: Do we agree on these names for the milestone years??*
+<!-- *TODO: Do we agree on these names for the milestone years??* -->
 
-There are two distinct time-periods in the simulation framework: (1) The historical period, which covers the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$; and (2) the projection period, which covers the period from the first year after $t_c$, to the final projection year $t_N$. 
-The historical period is calibrated to historical observations uing an age-structured stock reduction analysis (SRA) [@kimura1982; @walters2006], described in Appendix \@ref(app:sra).
+There are two distinct time-periods in the simulation framework: 
+(1) The historical period, which covers the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$ (where "c" represents "current"); and 
+(2) the projection period, which covers the period from the first year after $t_c$ to the final projection year $t_N$. 
+The historical period is calibrated to historical observations using an age-structured stock-reduction analysis (SRA) [@kimura1982; @walters2006], described in Appendix \@ref(app:sra).
 The closed-loop simulations and calculation of performance metrics begin in year $t_{c+1}$.
 
-Operating model development in the MP Framework follows three steps:
+Operating model development in the MP Framework when using DLMtool follows three steps:
 
 1. Set parameter values and ranges in the DLMtool OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr));
 
-2. Pass the OM parameters to the `SRA_scope` function in MSEtool, which fits an age-structured SRA  to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
+2. Pass the OM parameters to the SRA model (`SRA_scope()` function in MSEtool), which conditions the OM by fiting an age-structured SRA to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
 This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality that are consistent with historical observations. 
-Equations for the `SRA_scope` model are provided in Appendix \@ref(app:sra); then
+Equations for the SRA model are provided in Appendix \@ref(app:sra); then
 
-3. Pass the calibrated parameter values back to the DLMtool OM for use in the closed-loop simulation projections.
-
+3. Pass the calibrated parameter values back to the DLMtool OM (now the "conditioned" OM) for use in the closed-loop simulation projections.
 
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
-
-<!-- Last historical year, the ``current'' year is denoted by $c$. -->
 
 ### Growth and maturity
 
@@ -45,7 +45,7 @@ L_{y,a} = L_{\infty}\left( 1 - \exp( - \kappa(a - a_{0} \right))
 (\#eq:dlm-om-vonb)
 \end{equation}
 
-where ${\kappa}$ represents the growth rate, $L_{\infty}$ represents the maximum length and $a_0$ represents the theoretical age where length is zero.
+where $\kappa$ represents the growth rate, $L_{\infty}$ represents the maximum length and $a_0$ represents the theoretical age where length is zero.
 
 Weight-at-age ($W_a$) is  assumed to be related to length-at-age ($L_a$) by:
 
@@ -54,14 +54,16 @@ W_{y,a} = \beta_{W}\ {L_{a}}^{\alpha_{W}}.
 (\#eq:dlm-om-wta)
 \end{equation}
 
-Maturity is specified according to length, using a logistic model with parameters describing length-at-50% maturity ($\theta_{l50}$) and the length increment to 95% maturity ($\theta_{l50-95}$). Maturity-at-length ($m_l$) is then calculated as:
+Maturity is specified according to length, using a logistic model with parameters describing length-at-50% maturity ($\theta_{l50}$) and the length increment to 95% maturity ($\theta_{l50-95}$). Maturity ($m$) at length ($l$) is then calculated as:
+
+<!-- TODO: I might've messed this up in my interpretation of Delta l50, which is now been removed! Check this! -->
 
 \begin{equation}
-m_{l} = \frac{1}{1 + e^{{- \ln}19\left( \frac{l - \mathrm{\Delta}_{l50} \cdot L_{\infty}}{{{\theta}}_{l50-95}} \right)}},
+m_{l} = \frac{1}{1 + e^{{- \ln}19\left( \frac{l - \theta_{l50}}{{{\theta}}_{l50-95}} \right)}},
 (\#eq:dlm-om-matl)
 \end{equation}
 
-and maturity-at-age is calculated using the length-at-age:
+where and maturity ($m$) at age ($a$) is calculated using the length-at-age:
 
 \begin{equation}
 m_{a} = \frac{1}{1 + e^{{- \ln}19\left( \frac{a - \theta_{a50}}{\theta_{a95} - \theta_{a50}} \right)}}
@@ -70,17 +72,19 @@ m_{a} = \frac{1}{1 + e^{{- \ln}19\left( \frac{a - \theta_{a50}}{\theta_{a95} - \
 
 where \(\theta_{a50}\) and \(\theta_{a95}\) represent the age at 50% and 95% maturity given by the inverse von-Bertalanffy growth curve:
 
+<!-- TODO: check these! -->
 \begin{equation}
-\theta_{a50} = \frac{- \ln\left( 1 - \mathrm{\Delta}_{l50} \right)}{\kappa} + t_{0}
+\theta_{a50} = \frac{- \ln\left( 1 - \theta_{l50} / L_{\infty} \right)}{\kappa} + t_{0}
 (\#eq:dlm-om-invonb)
 \end{equation}
 
 \begin{equation}
-\theta_{a95} = \frac{- \ln\left( 1 - \left( \mathrm{\Delta}_{l50} + \frac{{{\theta}}_{l50\_ 95}}{L_{\infty}} \right) \right)}{\kappa} + t_{0}
+\theta_{a95} = \frac{- \ln\left( 1 - \left( \theta_{l50} / L_{\infty} + {{\theta}}_{l50\_ 95} / L_{\infty} \right) \right)}{\kappa} + t_{0}
 (\#eq:dlm-om-theta95)
 \end{equation}
 
 ### Population dynamics
+
 Leading parameters of the population dynamics model, defined as fixed values or ranges by the user, are: unfished recruitment \({{R}}_{0}\), the steepness parameter of the stock-recruit relationship ($h$) [@mace1988], and natural mortality ($M$). 
 
 Recruitmment and numbers-at-age are initialized in the first historical year using the SRA model (Appendix \@ref(app:sra), Equations \@ref(eq:dlm-sra-numinit) and \@ref(eq:dlm-sra-recinit)).
@@ -95,7 +99,7 @@ N_{y, a = 1} = \left( \frac{4 {h} R_{0} S_{y-1}} {S_{0}  \left( 1 - {h} \right) 
 \end{equation}
 
 where unfished spawning biomass \(S_{0}\) is calculated as the
-sum over ages of the maturity at age $m_a$, weight at age
+sum over ages of the maturity at age $m_a$, weight-at-age
 $W_a$, and unfished numbers at age  \({{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}\):
 
 \begin{equation}
@@ -104,7 +108,7 @@ S_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}
 \end{equation}
 
 and spawning biomass $S_{y}$ in a given year is the
-sum over ages of the maturity at age $m_a$, the weight at age
+sum over ages of the maturity-at-age $m_a$, the weight-at-age
 $W_a$, and numbers at age $N_{y,a}$:
 
 \begin{equation}
@@ -126,10 +130,10 @@ Temporal autocorrelation \({{\theta}}_{\textrm{AC}}\) is added to these initial 
 (\#eq:dlm-om-auto)
 \end{equation}
 
-where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term, where the user defines \({{\theta}}_{\textrm{AC}}\), and setting \({{\theta}}_{\textrm{AC}}\) to zero implies no autocorrelation.
+where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term, and setting \({{\theta}}_{\textrm{AC}}\) to zero implies no autocorrelation.
 
 The number of fish $N$ in each year $y$ > $t_c$ and age $a$ > 1 is then calculated from the numbers in the previous year and age class,
-subject to the instantaneous total mortality rate-at-age $Z_{a}$:
+subject to the instantaneous total mortality rate ($Z$) at age ($a$):
 
 \begin{equation}
 N_{y + 1,a + 1} = N_{a}e^{- Z_{a}} 
@@ -141,7 +145,7 @@ where the total mortality rate $Z_{y,a}$ is the sum of the instantaneous rates o
 \begin{equation}
 Z_{y,a} = M + F_{y,a}.
 (\#eq:dlm-om-z)
-\end{equation}.
+\end{equation}
 
 ## FISHING DYNAMICS {#sec:dlmtool-fishing-dynamics}
 
@@ -157,24 +161,21 @@ where the vulnerability-at-age  $s_{y,a}$ is calculated from a double-normal sel
 
 \begin{equation}
 s_{y,a} = \left\{ \begin{matrix} 
-2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{smax}} \\ 
-2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{smax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\ 
 \end{matrix} \right.\ 
 (\#eq:dlm-om-say)
 \end{equation}
 
-The length at maximum selectivity \(L_{\textrm{smax}}\) is
-user-defined. The standard deviation parameters of the
-ascending limb is given by user-specified length at 5%
-vulnerability \({L}_{5}\):
+<!-- The length at maximum selectivity \(L_{\textrm{smax}}\) is user-defined.  -->
+The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability \({L}_{5}\):
 
 \begin{equation}
 \sigma_{\textrm{sasc}}^{2} = \frac{{{L}}_{5} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 \end{equation}
 
-While the standard deviation of the descending limb is given by user-specified vulnerability \({V}_{\overline{L}} \) of fish of
-length \(\overline{L}\):
+While the standard deviation of the descending limb is given by the vulnerability \({V}_{\overline{L}} \) of fish of length \(\overline{L}\):
 
 \begin{equation}
 \sigma_{\textrm{sdesc}}^{2} = \frac{\overline{L} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{{{V}}_{\overline{L}}}}}}
@@ -193,7 +194,7 @@ C_{y,a} = \frac{V_{y,a}} {\sum_{a}^{n_{a}}V_{y,a}}
 (\#eq:dlm-om-cata)
 \end{equation}
 
-where ($I_\textrm{TAC}$) is user-defined (slot **TODO**), and the overall retention rate-at-age $R_a$, is a combination of an age-specific retention $r_a$ with a maximum value of $1$ (Equation **TODO**), and a constant rate of discarding \(\gamma\):
+where ($I_\textrm{TAC}$) is user-defined, and the overall retention rate-at-age $R_a$, is a combination of an age-specific retention $r_a$ with a maximum value of $1$ (Equation **TODO**), and a constant rate of discarding \(\gamma\):
 
 \begin{equation}
 R_{a} = r_{a}\ (1 - \gamma).
@@ -204,8 +205,8 @@ where age-specific retention $r_{y,a}$, is modelled using the same form of doubl
 
 \begin{equation}
 r_{y,a} = \left\{ \begin{matrix} 
-2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {\widetilde{L}}_{\textrm{rmax}} \\ 
-2^{- \ \frac{{(L_{y,a} - {\widetilde{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {\widetilde{L}}_{\textrm{rmax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{rmax}} \\ 
+2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{rmax}} \\ 
 \end{matrix} \right.\ 
 (\#eq:dlm-om-ray)
 \end{equation}
