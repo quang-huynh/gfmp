@@ -381,7 +381,7 @@ ggcatch <- mp_catch_sr_short2 %>%
   ggplot(aes(x=as.factor(Year),y=Catch,fill=MP))+
   geom_boxplot()+
   geom_hline(yintercept=med_refY_sr, linetype="dashed", color = "black")+
-  ggtitle("Shortlist of MPs: Catch showing ref yield")+ xlab("Year")+ ylab("Catch") +
+  ggtitle("Shortlist of MPs: Catch showing ref catch")+ xlab("Year")+ ylab("Catch") +
 print(ggcatch)
 
 

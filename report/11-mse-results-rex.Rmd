@@ -65,12 +65,12 @@ We defined the objectives for Rex Sole to be the same as those listed in Section
 
 The performance metrics measuring the objectives are:
 
-1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
-1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
-1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
-1. LTY: Probability yield > 0.5 MSY (years 36--50)
-1. STY: Probability yield > 0.5 MSY (years 6--20)
-1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
+1. LT LRP: Probability SB > 0.4 *B*~MSY~ (years 36--50)
+2. LT USR: Probability SB > 0.8 *B*~MSY~ (years 36--50)
+3. FMSY: P(F < *F*~MSY~) (years 1--50)
+4. STC: Probability catch > 0.5 MSY (years 6--20)
+5. LTC: Probability catch > 0.5 MSY (years 36--50)
+6. AAVC: Probability AAVY (average annual variability in catch) < 0.2 (years 1--50)
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
 
@@ -379,7 +379,7 @@ knitr::include_graphics(here::here("report/figure/rex-pm-tigures-rob-set.png"))
 
 ### Sensitivity Tests
 
-The closed-loop simulation results demonstrate that conservation and yield metrics are generally insensitive to the range of operating model parameter values explored within a given operating model with the exception of the depletion in the final historical year (D) (Figure \@ref(fig:rex-sens-bbmsy)--\@ref(fig:rex-proj-sens-ffmsy)).
+The closed-loop simulation results demonstrate that conservation and catch metrics are generally insensitive to the range of operating model parameter values explored within a given operating model with the exception of the depletion in the final historical year (D) (Figure \@ref(fig:rex-sens-bbmsy)--\@ref(fig:rex-proj-sens-ffmsy)).
 We note that the sensitivity demonstrated here is sensitivity to the range of parameter values within an already conditioned OM.
 Changing some of these parameter values prior to fitting the conditioning SRA model would demonstrate sensitivity in some cases (as demonstrated by the OM scenarios).
 
@@ -395,7 +395,7 @@ knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png
 ```
 
 (ref:fig-rex-sens-yield)
-Same as Figure \@ref(fig:rex-sens-bbmsy) but for mean yield in years 6--20 of the projection.
+Same as Figure \@ref(fig:rex-sens-bbmsy) but for mean catch in years 6--20 of the projection.
 
 ```{r rex-sens-yield, fig.cap="(ref:fig-rex-sens-yield)", out.width="\\textwidth"}
 knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png"))

@@ -32,12 +32,12 @@ We ran 100 simulation iterations for each stock with a 50-year projection.  We t
 
 *FIXME: do we like a 50-year projection or is that a bit long?*
 
-1. LT P40: Probability SB > 0.4 SB~MSY~ (years 36--50)
-1. LT P80: Probability SB > 0.8 SB~MSY~ (years 36--50)
-1. PNOF: Probability of not overfishing P(F < F~FMSY~) (years 1--50)
-1. LTY: Probability yield > 0.5 MSY (years 36--50)
-1. STY: Probability yield > 0.5 MSY (years 6--20)
-1. AAVY: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
+1. LT LRP: Probability SB > 0.4 *B*~MSY~ (years 36--50)
+2. LT USR: Probability SB > 0.8 *B*~MSY~ (years 36--50)
+3. FMSY: P(F < *F*~MSY~) (years 1--50)
+4. STC: Probability catch > 0.5 MSY (years 6--20)
+5. LTC: Probability catch > 0.5 MSY (years 36--50)
+6. AAVC: Probability AAVY (average annual variability in yield) < 0.2 (years 1--50)
 
 In order to eliminate MPs that did not consistently perform well across multiple stocks, we used the following filtering process:
 
