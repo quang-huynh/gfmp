@@ -36,6 +36,8 @@ Equations for the SRA model are provided in Appendix \@ref(app:sra); then
 
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
+Parameters for the population dynamics are included in the `Stock` object of DLMtool.
+
 ### Growth and maturity
 
 The operating model assumes that growth follows a von Bertalanffy model:
@@ -148,7 +150,7 @@ Z_{y,a} = M + F_{y,a}.
 \end{equation}
 
 ## FISHING DYNAMICS {#sec:dlmtool-fishing-dynamics}
-
+Parameters for the fleet dynamics are included in the `Fleet` object of DLMtool.
 During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) is calculated from the TAC prescribed by the MP ($\textrm{TAC}_{\mathrm{MP},y}$).
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
 
@@ -184,7 +186,7 @@ While the standard deviation of the descending limb is given by the vulnerabilit
 
 The realized projected catches $C_{y,a}$ are the TAC recommendations across ages. 
 Projected catches may account for retention rate ($R_{y,a}$) and post-release discard mortality rate $\theta_{M{\textrm{disc}}}$ in the presence of discarding.
-Implementation error ($I_\textrm{TAC}$) may also be accounted for:
+Implementation uncertainty ($I_\textrm{TAC}$, Equation \@ref(eq:dlm-om-itac)) may also be accounted for, e.g., in the presence of consistent under-utilization of TACs. 
 
 \begin{equation}
 C_{y,a} = \frac{V_{y,a}} {\sum_{a}^{n_{a}}V_{y,a}}
@@ -240,7 +242,64 @@ F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{W}_{a}} \right),F_{
 \end{equation}
 
 
-## OBSERVATION AND IMPLEMENTATION DYNAMICS
+## OBSERVATION DYNAMICS
 
-*TODO. RF will pull the necessary equations from @carruthers2018. Some will just be referred to the default slots (e.g., all implementation error settings)*
+Parameters for observation dynamics are included in the `Obs` object of DLMtool.
+
+
+## IMPLEMENTATION DYNAMICS
+
+Parameters for implementation dynamics are included in the `Imp` object of DLMtool.
+DLMtool includes three types of implementation error, which relate to MPs that provide management advice in terms of Total Allowable Catch (TAC), Total Allowable Effort (TAE) and size limits (SL). 
+This Framework only considers MPs that provide TAC advice for its quota-managed groundfish fishery.
+Given that BC groundfish fisheries are subject to 100% at-sea and dockside observer coverage, we make the assumption that under-reporting of TACs is negligible. 
+However, for non-target species, there is a possibility that TACs will not be fully-utilized. 
+The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-cata). 
+
+The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a constant fraction of the TAC taken ${\widetilde{b}}_{\text{TAC}}$ and a degree of inter-annual
+variability controlled by ${\widetilde{\sigma}}_{\text{TAC}}$.
+
+
+\begin{equation}
+I_{TAC,y} = {\widetilde{b}}_{\text{TAC}}\text{\ exp}\left( \varepsilon_{TAC,y} - \frac{{\widetilde{\sigma}}_{\text{TAC}}}{2} \right)
+(\#eq:dlm-om-itac)
+\end{equation}
+
+
+where ${\widetilde{b}}_{\text{TAC}}$ is an improper fraction (e.g.
+${\widetilde{b}}_{\text{TAC}}$ = 0.7 is equivalent to 30% catch
+underages) and the lognormal error term $\varepsilon_{TAC,y}$, is drawn from a standard
+normal distribution whose standard deviation
+${\widetilde{\sigma}}_{\text{TAC}}$ was sampled at random in each
+simulation:
+
+\begin{equation}
+\varepsilon_{TAC,y}\sim N\left( 0,{\widetilde{\sigma}}_{\text{TAC}} \right)
+(\#eq:dlm-om-epsilontac)
+\end{equation}
+
+By default DLMtool samples simulation-specific variability
+${\widetilde{\sigma}}_{\text{TAC}}$ from a uniform distribution.
+
+\begin{equation}
+{\widetilde{\sigma}}_{\text{TAC}}\sim U\left( \text{LB}_{\text{TAC}},\text{UB}_{\text{TAC}} \right)
+(\#eq:dlm-om-sigmatac)
+\end{equation}
+
+and mean fraction of recommendation ${\widetilde{b}}_{\text{TAC}}$ from
+a log-normal distribution:
+
+\begin{equation}
+{\widetilde{b}}_{\text{TAC}} = \ exp\left( \varepsilon_{\text{bTAC}} - \frac{\sigma_{\text{bTAC}}}{2} \right)
+(\#eq:dlm-om-btac)
+\end{equation}
+
+\begin{equation}
+\varepsilon_{\text{bTAC}}\sim N\left( 0,\sigma_{\text{bTAC}} \right)
+(\#eq:dlm-om-epsilonbtac)
+\end{equation}
+
+## CALCULATION OF REFERENCE POINTS
+
+*TODO: RF will write this*
 
