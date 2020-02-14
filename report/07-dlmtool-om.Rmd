@@ -10,7 +10,7 @@
 
 The DLMtool population dynamics operating model (OM) is an age-structured model decribed below. The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
-A full range of possible parameterizations is described in the appendices of @carruthers2018.
+A full range of possible parameterizations is described in the appendices of @carruthers2018, adapted here for the MP Framework.
 Here, we present the simplest version of the OM, without time-varying parameters, multiple sub-areas, or implementation bias. 
 This OM structure should be suitable as a base OM for most species intended to be assessed with the framework.
 More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
@@ -149,7 +149,8 @@ Z_{y,a} = M + F_{y,a}.
 (\#eq:dlm-om-z)
 \end{equation}
 
-## FISHING DYNAMICS {#sec:dlmtool-fishing-dynamics}
+## FLEET DYNAMICS {#sec:dlmtool-fleet-dynamics}
+
 Parameters for the fleet dynamics are included in the `Fleet` object of DLMtool.
 During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) is calculated from the TAC prescribed by the MP ($\textrm{TAC}_{\mathrm{MP},y}$).
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
@@ -196,7 +197,7 @@ C_{y,a} = \frac{V_{y,a}} {\sum_{a}^{n_{a}}V_{y,a}}
 (\#eq:dlm-om-cata)
 \end{equation}
 
-where ($I_\textrm{TAC}$) is user-defined, and the overall retention rate-at-age $R_a$, is a combination of an age-specific retention $r_a$ with a maximum value of $1$ (Equation **TODO**), and a constant rate of discarding \(\gamma\):
+where ($I_\textrm{TAC}$) is user-defined, and the overall retention rate-at-age $R_a$, is a combination of an age-specific retention $r_{y,a}$ with a maximum value of $1$ (Equation \@ref(eq:dlm-om-ray)), and a constant rate of discarding \(\gamma\):
 
 \begin{equation}
 R_{a} = r_{a}\ (1 - \gamma).
@@ -246,24 +247,29 @@ F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{W}_{a}} \right),F_{
 
 Parameters for observation dynamics are included in the `Obs` object of DLMtool.
 The observation dynamics emulate the collection of data for use in the MPs.
-Three fundamental types of data are simulated by the OM: (1) time series data (e.g. annual
-catches from 1970-2017); (2) catch composition data (e.g., length or age samples); and (3) single-value variables and parameters (e.g., bias parameters to simulate consistent underestimation of natural mortality rate or steepness of the stock-recruitment relationship).
+Two fundamental types of data are simulated by the OM: (1) time series data (e.g. annual
+catches from 1970-2017); and (2) catch composition data (e.g., length or age samples).
 
 ### Time series data
 
 Time series data are simulated with various types of error that would be expected from real-life sampling of fisheries data (e.g., lognormal observation error in indices of abundance). 
 
-<!-- TODO: RF checking with AH that the index equations are correct. I adapted them from the catch series equations in @carruthers2018 Appendix E, given we are not adding obs error to the catch data, it seemed more appropriate to explicitly explain how indices are generated. Note this is quite different from what we discussed with Quang this week, where the sigma comes from the fit to the SRA -->
-
-Annual observed indices of abundance are calculated by adding observation error and bias to annual relative spawning biomass ($S_{y}$;  Equation \@ref(eq:dlm-om-sy)) through a
-factor term $\omega_{C,y}$ that includes bias and imprecision in the index observations:
+Annual observed indices of abundance are calculated by adding observation error and bias to annual relative total biomass ($B_{y}$) through a
+factor term $\omega_{I,y}$ that includes bias and imprecision in the index observations:
 
 \begin{equation}
-I_{y}^{\text{obs}} = \omega_{I,y}\frac{{S_{y}}^{\beta}}{\frac{1}{y}\sum_{i = 1}^{y}{S_{i}}^{\beta}}
+I_{y}^{\text{obs}} = \omega_{I,y}\frac{{B_{y}}^{\beta}}{\frac{1}{y}\sum_{i = 1}^{y}{B_{i}}^{\beta}}
 (\#eq:dlm-om-iy)
 \end{equation}
 
-where $\beta$ is the hyperstability-hyperdepletion parameter. When $\beta$ is 1
+where $B_{y}$ is the sum over ages of the weight-at-age $W_a$, and numbers at age $N_{y,a}$:
+
+\begin{equation}
+B_{y} = \sum_{a = 1}^{n_{a}}{W_{a}N_{y,a}}
+(\#eq:dlm-om-by)
+\end{equation}
+
+and where $\beta$ is the hyperstability-hyperdepletion parameter. When $\beta$ is 1
 the index is linearly related to spawning biomass $S_y$. When $\beta$ is
 greater than 1 the index is hyper deplete and moves faster than true
 spawning biomass changes. When $\beta$ is lower than 1 the index is
@@ -293,6 +299,8 @@ sampled at random in each simulation:
 By default DLMtool samples simulation-specific observation error
 ${\widetilde{\sigma}}_{I}$ from a uniform distribution.
 
+<!--TODO: the above text will need to be modified to reflect that sigma comes from conditioning in the SRA. Still to determine whether it will come from historical observed index or from residuals in SRA fit to historical observed index-->
+
 \begin{equation}
 {\widetilde{\sigma}}_{I}\sim U\left( \text{LB}_{I},\text{UB}_{I} \right)
 (\#eq:dlm-om-sigi)
@@ -310,102 +318,57 @@ and bias ${\widetilde{b}}_{I}$ from a log-normal distribution:
 (\#eq:dlm-om-epsilonbi)
 \end{equation}
 
-<!--
-This convention means that the user can specify an unbiased (e.g. low
-$\sigma_{\text{bC}}$ and therefore sampled values of
-${\widetilde{b}}_{I}$ close to 1) or a biased (e.g. high
-$\sigma_{\text{bC}}$ and therefore sampled values of
-${\widetilde{b}}_{I}$ substantially lower or higher than 1) time series
-that can be observed with a low degree of error (e.g. low sampled values
-of ${\widetilde{\sigma}}_{I}$ specified by lower *LB~I~* and *UB~I~*) or
-high degree of error (e.g. high sampled values of
+This approach means that the user can specify an unbiased time series (e.g., low
+$\sigma_{\text{bI}}$ and therefore sampled values of
+${\widetilde{b}}_{I}$ close to 1), or a biased time series (e.g., high
+$\sigma_{\text{bI}}$ and therefore sampled values of
+${\widetilde{b}}_{I}$ substantially lower or higher than 1). 
+The time series can also be observed with a low degree of error (e.g., low sampled values
+of ${\widetilde{\sigma}}_{I}$ specified by lower *LB~I~* and *UB~I~*), or
+a large degree of error (e.g., large sampled values of
 ${\widetilde{\sigma}}_{I}$ specified by higher *LB~I~* and *UB~I~*).
-Table App E.1. details all time series data that are simulated, their
-biases and observation errors using the $\sigma_{b}$ (parameter
-controlling extent of bias) and *LB~I~* and *UB~I~* (range of
-observation error) conventions described here.
 
-Other time series data are simulated in the same way (Table App.E.1).
-These include estimates of absolute biomass calculated from annual
-vulnerable biomass *V* (Eqn 30)
-($\sigma_{\text{bB}}\ {,\widetilde{b}}_{B}$, ${\widetilde{\sigma}}_{B}$,
-*LB~B~* and *UB~B~*),stock depletion calculated from spawning biomass
-relative to unfished levels (Eqn 27)
-($\sigma_{\text{bD}}\ {,\widetilde{b}}_{D}$, ${\widetilde{\sigma}}_{D}$,
-*LB~D~* and *UB~D~*), annual total fishing mortality rate calculated in
-Eqns 25, 40 and 41 ($\sigma_{\text{bF}}\ {,\widetilde{b}}_{F}$,
-${\widetilde{\sigma}}_{F}$, *LB~F~* and *UB~F~*), and relative abundance
-indices calculated from time series of spawning biomass *S* (Eqn 15)
-($\sigma_{\text{bI}}\ {,\widetilde{b}}_{I}$, ${\widetilde{\sigma}}_{I}$,
-*LB~I~* and *UB~I~*). The last of these differs because it is simulated
-with an additional parameter controlling non-linearity in the
-relationship between spawning biomass and the index:
+Observations of annual catch can be calculated in the same way (using parameters $\sigma_{\text{bC}}\ {,\widetilde{b}}_{C}$, ${\widetilde{\sigma}}_{C}$,
+*LB~C~* and *UB~C~*)).
+In the current framework for Pacific groundfish species, where groundfish fisheries are subject to 100% at-sea and dockside observer coverage, we make the assumption that catches are observed without error.
 
-55)
-$I_{y}^{\text{obs}} = \omega_{I,y}\frac{{S_{y}}^{\text{beta}}}{\frac{1}{y}\sum_{i = 1}^{y}{S_{i}}^{\text{beta}}}$
+### Catch composition data
 
-where $\omega_{I,y}$ is the index factor that, like annual catches (Eqns
-49 - 54 ) includes bias and imprecision in the index observations and
-*beta* is the hyperstability-hyperdepletion parameter. When *beta* is 1
-the index is linearly related to spawning biomass *S*. When *beta* is
-greater than 1 the index is hyper deplete and moves faster than true
-spawning biomass changes. When *beta* is lower than 1 the index is
-hyperstable and moves slower than true spawning biomass changes. Note
-that in every year *y* that the index is recalculated, it is
-re-normalised to have a mean value of 1 over all years.
-
-***Single value variables and parameters***
-
-Unlike time-series data, single value variables and parameters are
-assumed to have a fixed bias over the entire projected time series. For
-example, growth rate *κ* may be consistently over or under-estimated:
-
-56)
-$\kappa^{\text{obs}} = {\widetilde{b}}_{\kappa}\ \widetilde{\kappa}\ $
-
-57)
-${\widetilde{b}}_{\kappa} = \ exp\left( \varepsilon_{\text{bκ}} - \frac{\sigma_{\text{bκ}}}{2} \right)$
-
-58\) $\ \varepsilon_{\text{bκ}}\sim N\left( 0,\sigma_{\text{bκ}} \right)$
-
-A number of slots in the *Obs* object control consistent biases in
-observed quantities that are described in further detail in Table
-App.E.2.
-
-***Catch composition data***
+<!-- TODO: I don't think we use CAL anywhere. If so can simplify the description below to be only in terms of CAA because we haven't anywhere defined how CAL is generated by the model-->
 
 Two types of catch composition observations are simulated, catches by
 age class by year (CAA) and catches by length class by year (CAL).
 
 These observation models use a simple multinomial model that accounts
-for effective sample size (the number of independent observations). For
-both CAA and CAL observation models the user specifies an average annual
+for effective sample size (the number of independent observations). 
+For both CAA and CAL observation models the user specifies an average annual
 number of samples (number of individuals measured for example) and the
-annual effective sample size. For example, *ESS~CAA~* independent catch
-samples at age (e.g. 20 per year) are sampled in proportion *p* to the
-spatial catch-at-age predicted by the model *C* (Eqns. 37 and 39):
+annual effective sample size($C_{y,a}^{\text{obs}}$ or $C_{y,l}^{\text{obs}}$). 
+For example, $ESS_{CAA}$ independent catch
+samples-at-age (e.g. 20 per year) are sampled in proportion $p$ to the
+catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
 
-59)
-${\dot{C}}_{y,a}^{\text{obs}}\sim multinomial\left( \text{ESS}_{\text{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a,r} \right)$
+\begin{equation}
+C_{y,a}^{\text{obs}}\sim multinomial\left( \text{ESS}_{\text{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a,r} \right)
+(\#eq:dlm-om-cataobs)
+\end{equation}
 
-For each year, the frequency of samples at age are inflated to match the
-total sample size *n~CAA~* and rounded to the nearest integer:
+For each year, the frequency of samples at age is inflated to match the
+total sample size $n~CAA~$ and rounded to the nearest integer:
 
-60)
-$C_{y,a}^{\text{obs}} = nint\left( \ \frac{{\dot{C}}_{y,a}^{\text{obs}}\ n_{\text{CAA}}}{\text{ESS}_{\text{CAA}}} \right)$
+\begin{equation}
+C_{y,a}^{\text{obs}} = nint\left( \ \frac{{\dot{C}}_{y,a}^{\text{obs}}\ n_{\text{CAA}}}{\text{ESS}_{\text{CAA}}} \right)
+(\#eq:dlm-om-cataobs-freq)
+\end{equation}
 
-Due to rounding, this relatively simple model generates frequency at age
-data that is approximately equal to (but not always exactly) the average
+Due to rounding, this relatively simple model generates frequency-at-age
+data that are approximately equal to the average
 annual sample size:
 
-61\) $\sum_{a}^{n_{a}}{C_{y,a}^{\text{obs}}\ } \approx n_{\text{CAA}}$
-
-For example, for 10 age classes, *n~CAA~* = 200 and *n~ESS~* = 45, 90%
-of simulations sampled $\sum_{a}^{n_{a}}{C_{y,a}^{\text{obs}}\ }$equal
-to 199, 200 or 201 and less than 1% of simulation were less than 198 or
-greater than 202.
-
--->
+\begin{equation}
+\sum_{a}^{n_{a}}{C_{y,a}^{\text{obs}}\ } \approx n_{\text{CAA}}
+(\#eq:dlm-om-cataobs-equality)
+\end{equation}
 
 ## IMPLEMENTATION DYNAMICS
 
