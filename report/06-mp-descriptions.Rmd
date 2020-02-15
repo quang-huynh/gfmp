@@ -324,13 +324,13 @@ where:
 @geromont2015 and @geromont2015a propose a number of configurations of these MPs.
 We propose starting with the following provisional versions, and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
 
-We recommend the following provisional "default" values:
+We recommend the following provisional base values:
 $\lambda = 0.2$, $\delta = 0$, $w = 0.5$, $x = 0$.
 This represents:
 
 - the TAC adjustment lowering quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
 - a target index of the average index value over the last 10 years ($\delta = 0$),
-- a moderate "steepness" of the adjustment slope ($w = 0.5$),
+- a moderate steepness of the adjustment slope ($w = 0.5$),
 - and a target catch equal to the average historical catch over the last 5 years of the historical period ($x = 0$).
 
 We then recommend varying each of the parameters while holding the others at their default values (Figure \@ref(fig:mp-itarget-demo2)):
@@ -355,7 +355,7 @@ f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w, lambda = 0.2) {
 }
 pars <- expand.grid(
   TACtarg = c(80, 100, 120),
-  Irecent = seq(0, 3, length.out = 300),
+  Irecent = seq(0, 1.8, length.out = 300),
   Itarg = c(0.8, 1, 1.2),
   Iave = 1,
   w = seq(0.2, 0.8, 0.1),
@@ -383,7 +383,7 @@ pars %>%
 ```{r mp-itarget-demo2, fig.cap="Illustration of provisional Itarget MPs based on Iave = 1.", fig.asp=0.75}
 pars <- expand.grid(
   TACtarg = c(80, 100, 120),
-  Irecent = seq(0, 3, length.out = 300),
+  Irecent = seq(0, 2, length.out = 300),
   Itarg = c(0.8, 1, 1.2),
   Iave = 1,
   w = c(0.2, 0.5, 0.8),
