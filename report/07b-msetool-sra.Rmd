@@ -1,6 +1,6 @@
 # MSETOOL STOCK REDUCTION ANALYSIS {#app:sra}
 
-**The following is preliminary and largely reproduced from an MSEtool vignette (written by Quang Huynh) for completeness with some modifications.**
+**The following is preliminary and largely reproduced from an MSEtool vignette (written by Quang Huynh) for completeness with some modifications. Updated by QH and imported by RF Feb 14 2020**
 
 **The text before the equations will be rewritten for the purposes of this document.**
 

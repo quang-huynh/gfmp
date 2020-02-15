@@ -277,17 +277,14 @@ hyperstable and moves slower than true spawning biomass changes. Note
 that in every year $y$ that the index is recalculated, it is
 re-normalised to have a mean value of 1 over all years.
 
-The index factor $\omega_{I,y}$ includes both bias ${\widetilde{b}}_{I}$
-and imprecision ${\widetilde{\sigma}}_{I}$ in observations.
+The index factor $\omega_{I,y}$ represents imprecision in observations via ${\widetilde{\sigma}}_{I}$ .
 
 \begin{equation}
-\omega_{I,y} = {\widetilde{b}}_{I}\text{\ exp}\left( \varepsilon_{I,y} - \frac{{\widetilde{\sigma}}_{I}}{2} \right)
+\omega_{I,y} = \text{exp}\left( \varepsilon_{I,y} - \frac{{\widetilde{\sigma}}_{I}}{2} \right)
 (\#eq:dlm-om-omegai)
 \end{equation}
 
-where bias ${\widetilde{b}}_{I}$ is an improper fraction (e.g.
-${\widetilde{b}}_{I}$ = 1.2 is equivalent to a 20% positive bias) and
-the lognormal error term $\epsilon$, is drawn from a standard normal
+where the lognormal error term $\epsilon$, is drawn from a standard normal
 distribution whose standard deviation ${\widetilde{\sigma}}_{I}$ is
 sampled at random in each simulation:
 
@@ -304,33 +301,13 @@ ${\widetilde{\sigma}}_{I}$ from a uniform distribution.
 \begin{equation}
 {\widetilde{\sigma}}_{I}\sim U\left( \text{LB}_{I},\text{UB}_{I} \right)
 (\#eq:dlm-om-sigi)
-\end{equation}
+\end{equation}.
 
-and bias ${\widetilde{b}}_{I}$ from a log-normal distribution:
-
-\begin{equation}
-{\widetilde{b}}_{I} = \ exp\left( \varepsilon_{\text{bI}} - \frac{\sigma_{\text{bI}}}{2} \right)
-(\#eq:dlm-om-biasi)
-\end{equation}
-
-\begin{equation}
-\varepsilon_{\text{bI}}\sim N\left( 0,\sigma_{\text{bI}} \right)
-(\#eq:dlm-om-epsilonbi)
-\end{equation}
-
-This approach means that the user can specify an unbiased time series (e.g., low
-$\sigma_{\text{bI}}$ and therefore sampled values of
-${\widetilde{b}}_{I}$ close to 1), or a biased time series (e.g., high
-$\sigma_{\text{bI}}$ and therefore sampled values of
-${\widetilde{b}}_{I}$ substantially lower or higher than 1). 
-The time series can also be observed with a low degree of error (e.g., low sampled values
+This approach means that the user can specify a time series with a low degree of error (e.g., low sampled values
 of ${\widetilde{\sigma}}_{I}$ specified by lower *LB~I~* and *UB~I~*), or
 a large degree of error (e.g., large sampled values of
 ${\widetilde{\sigma}}_{I}$ specified by higher *LB~I~* and *UB~I~*).
 
-Observations of annual catch can be calculated in the same way (using parameters $\sigma_{\text{bC}}\ {,\widetilde{b}}_{C}$, ${\widetilde{\sigma}}_{C}$,
-*LB~C~* and *UB~C~*)).
-In the current framework for Pacific groundfish species, where groundfish fisheries are subject to 100% at-sea and dockside observer coverage, we make the assumption that catches are observed without error.
 
 ### Catch composition data
 
