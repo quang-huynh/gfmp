@@ -45,7 +45,7 @@ For specific stocks, analysts might consider other starting years that are relev
 For these MPs, TAC is calculated as some fraction of the average historical catch over the last 5 years [@geromont2015]:
 
 \begin{equation}
-\textrm{TAC}_y = (\alpha)\frac{\sum_{i=n-5+1}^{n}C_i}{5},
+\textrm{TAC}_y = \alpha \frac{\sum_{i=n-5+1}^{n}C_i}{5},
 \end{equation}
 
 where $\alpha$ is some value greater than zero.
@@ -89,11 +89,14 @@ Due to the biennial nature of most BC surveys for any one area, we propose an al
 This MP adjusts TAC based on previous catch and the trend in a relative abundance index to aim for relatively stable catch rates [@geromont2015] (Fig. \@ref(fig:mp-gbslope-demo)).
 The TAC is calculated as:
 
+<!--also Butterworth, D.S. and H.F. Geromont. 2001. Evaluation of a class of possible simple interim
+management procedures for the Namibian Hake fishery. S. Afr. J. mar. Sci. 23: 357-374-->
+
 \begin{equation}
 \textrm{TAC}_y= C_{y-1}(1+\lambda \beta_I),
 \end{equation}
 
-where $C_{y-1}$ is catch from the previous year, $\beta_I$ is the slope of a linear regression of the ln abundance index over the last $n$ years (default of $n = 5$), and $\lambda$ is a parameter between 0 and 1 that controls how quickly TAC is adjusted based on the slope of the index.
+where $C_{y-1}$ is catch from the previous year, $\beta_I$ is the slope of a linear regression of the ln abundance index over the last $n$ years (default of $n = 5$), and $\lambda$ is a control parameter between 0 and 1 that adjusts how quickly TAC is adjusted based on the slope of the index.
 The TAC is subject to the following conditions that limit the rate at which the TAC can be adjusted up or down:
 
 - if next TAC > 1.2 last catch, then TAC = 1.2 $\times$ last catch
@@ -102,7 +105,7 @@ The TAC is subject to the following conditions that limit the rate at which the 
 The default $\lambda$ value is 1 in DLMtool.
 Here we propose adding a version with a lower version of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index.
 Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data.
-We denote these MPs as "GB_slope_6_1", "GB_slope_6_0.66", "GB_slope_8_1", and "GB_slope_8_0.66" where the numbers indicate the number of years and $\lambda$ value, respectively.
+We denote these MPs as "GB_slope_6_1", "GB_slope_6_0.66", "GB_slope_8_1", and "GB_slope_8_0.66", where the numbers indicate the number of years and $\lambda$ value, respectively.
 The number of years and the $\lambda$ parameter could be explored as tuning parameters for specific stocks.
 
 ```{r mp-gbslope-demo, fig.cap="Illustration of GB\\_slope across different values of $\\lambda$, the gain/smoothing parameter that controls how sensitive the TAC recommendations are to changes in the relative abundance index.", fig.width=6, out.width="3.75in"}
@@ -214,7 +217,7 @@ The MP assigns TAC based on:
 \end{equation}
 
 where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and $\Delta I_y$ is the current index value divided by the last observed index value (every two years for a biennial survey).
-We set $\delta_\textrm{min} = -0.50$ as in [@cox2020], but this could be tuned for individual stocks.
+We set $\delta_\textrm{min} = -0.5$ as in [@cox2020], but this could be tuned for individual stocks.
 The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
 This MP can be additionally smoothed:
@@ -224,9 +227,9 @@ This MP can be additionally smoothed:
 \end{equation}
 
 where $\lambda$ controls the degree of smoothing and can range between 0 and 1. @cox2020 used $\lambda=0.5$.
-We define these MPs for DLMtool as "IDX" and ($\delta_{\textrm{min}} = 0.5$, $\delta_{\textrm{max}} = 0.25$) and "IDX_smooth" (same as IDX but with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one previously recommended).
+We define these MPs for DLMtool as "IDX" ($\delta_{\textrm{min}} = -0.5$, $\delta_{\textrm{max}} = 0.25$) and "IDX_smooth" (same as IDX but with $\lambda = 0.5$ to split the difference between the potentially proposed TAC and the one previously recommended).
 
-$\textrm{TAC}_\textrm{Floor} = 0$ would ideally be set on a stock-by-stock basis to a reasonable value required to maintain other groundfish fisheries.
+$\textrm{TAC}_\textrm{Floor}$ would ideally be set on a stock-specific basis to a reasonable value required to maintain other groundfish fisheries.
 Provisionally, in the absence of a stock-specific floor value, "IDX" will set the floor to 20% of the average catch from the last 5 historical years.
 
 ```{r mp-idx-demo, fig.cap="Illustration of IDX."}
@@ -294,236 +297,137 @@ There are two variants of this procedure:
 
 We denote our historical variants "IT5_hist" and "IT10_hist".
 
-<!-- TODO: implement this historical reference version -->
-
 ### Itarget: Incremental index target {#sec:mp-itarget}
 
-A set of management procedures that incrementally adjust the TAC from a reference level that is a fraction of mean recent catches to a target relative abundance index.
+The "Itarget" MPs incrementally adjust the TAC based on reference catch and abundance index values (Figure \@ref(fig:mp-itarget-demo)).
 
 If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
 
 \begin{equation}
-\textrm{TAC}_y = 0.5\ \textrm{TAC}^* \left[1+\left(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0}\right)\right],
+\textrm{TAC}_{y+1} = \textrm{TAC}^* \left[w + (1 - w)\left(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0}\right)\right],
 \end{equation}
 
 otherwise:
 
 \begin{equation}
-\textrm{TAC}_y = 0.5\ \textrm{TAC}^*\left(\frac{I_\textrm{recent}}{I_0}\right)^2,
+\textrm{TAC}_{y+1} = w \cdot \textrm{TAC}^* \left(\frac{I_\textrm{recent}}{I_0}\right)^2,
 \end{equation}
 
-where $I_0$ is $0.8 I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $(1-x)C$ where $x$ and $I_\textrm{multi}$ are arguments to the function and $C$ is the average catch over the last 5 years of the historical period.
+where:
 
-There are four index/CPUE target MPs proposed by @geromont2015 (Figure \@ref(fig:mp-itarget-demo)):
+- $I_0$ is $\lambda I_\textrm{ave}$, i.e., some fraction of the average index over the 10 years prior to the projection period, and represents a lower index level below which future TACs are reduced quadratically;
+- $I_\textrm{recent}$ is the average index over the most recent 5 years
+- $I_\textrm{target}$ is $(1 + \delta) I_\textrm{ave}$; the target index value
+- $\textrm{TAC}^*$ is a catch target defined as $(1 - x)C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last 5 years of the historical period ($C_\textrm{ave}$).
+- $w$ is a smoothing parameter that defines the "steepness" of the adjustment slope.
 
-- Itarget1: The least biologically precautionary, with $x = 0$ and $I_\textrm{multi} = 1.5$
-- Itarget2: Increasingly biological precautionary, with $x = 0$ and $I_\textrm{multi} = 2.0$
-- Itarget3: Increasingly biological precautionary, with $x = 0$ and $I_\textrm{multi} = 2.5$
-- Itarget4: Most biological precautionary, with $x = 0.3$ and $I_\textrm{multi} = 2.5$
+@geromont2015 and @geromont2015a propose a number of configurations of these MPs.
+We propose starting with the following provisional versions, and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
 
-```{r mp-itarget-demo, fig.cap="Illustration of the Itarget MP."}
-f <- function(avg_catch_hist, Irecent, Iave, xx, Imulti, ...) {
-  TACstar <- (1 - xx) * avg_catch_hist
-  Itarget <- Iave * Imulti
-  I0 <- 0.8 * Iave
+We recommend the following provisional "default" values:
+$\lambda = 0.2$, $\delta = 0$, $w = 0.5$, $x = 0$.
+This represents:
+
+- the TAC adjustment lowering quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
+- a target index of the average index value over the last 10 years ($\delta = 0$),
+- a moderate "steepness" of the adjustment slope ($w = 0.5$),
+- and a target catch equal to the average historical catch over the last 5 years of the historical period ($x = 0$).
+
+We then recommend varying each of the parameters while holding the others at their default values (Figure \@ref(fig:mp-itarget-demo2)):
+
+- Itarget_base:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x = 0$
+- Itarget_w0.8:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.8$, $x = 0$
+- Itarget_x0.2:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x =  0.2$
+- Itarget_x0.8:  $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x = -0.2$
+- Itarget_d1.2:   $\lambda = 0.2$, $\delta =  0.2$,  $w = 0.5$, $x = 0$
+- Itarget_d0.8:  $\lambda = 0.2$, $\delta = -0.2$,  $w = 0.5$, $x = 0$
+
+```{r mp-itarget-demo, fig.cap="Illustration of possible Itarget MPs across a range of tuning parameters based on Iave = 1.", fig.asp=0.75}
+f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w, lambda = 0.2) {
+  I0 <- lambda * Iave
   if (Irecent >= I0) {
-    TAC <- 0.5 * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
+    TAC <- TACtarg * ((w + (1 - w) * ((Irecent - I0) / (Itarg - I0))))
   } else {
-    TAC <- 0.5 * TACstar * (Irecent/I0)^2
+    TAC <- w * TACtarg * (Irecent / I0)^2
   }
   if (TAC < 0) tac <- 0
   TAC
 }
-pars1 <- expand.grid(
-  avg_catch_hist = 100,
-  Irecent = seq(0.1, 3, length.out = 300),
-  Iave = c(1),
-  xx = c(0.0),
-  Imulti = c(1.5),
-  type = "Itarget1", stringsAsFactors = FALSE
+pars <- expand.grid(
+  TACtarg = c(80, 100, 120),
+  Irecent = seq(0, 3, length.out = 300),
+  Itarg = c(0.8, 1, 1.2),
+  Iave = 1,
+  w = seq(0.2, 0.8, 0.1),
+  lambda = c(0.2)
 )
-pars2 <- pars1
-pars2$type <- "Itarget2"
-pars2$Imulti <- 2
-
-pars3 <- pars1
-pars3$type <- "Itarget3"
-pars3$Imulti <- 2.5
-
-pars4 <- pars1
-pars4$type <- "Itarget4"
-pars4$Imulti <- 2.5
-pars4$xx <- 0.3
-
-pars <- bind_rows(list(pars1, pars2, pars3, pars4))
-pars$tac <- purrr::pmap_dbl(pars, f)
+pars$tac <- purrr::pmap_dbl(pars, f_itarget)
 pars %>%
-  mutate(x = paste("x =", xx)) %>%
-  mutate(Imulti = paste("Imulti =", Imulti)) %>%
-  ggplot(aes(Irecent, tac, colour = type)) +
+  mutate(TACtarg = paste("TAC* = ", sprintf("%3.0f", TACtarg))) %>%
+  mutate(Itarg = paste("Itarget = ", Itarg)) %>%
+  ggplot(aes(Irecent, tac, colour = as.factor(w), group = paste(lambda, w))) +
   geom_line() +
-  ggsidekick::theme_sleek() +
-  facet_grid(x~Imulti) +
+  gfdlm::theme_pbs() +
+  facet_grid(TACtarg ~ Itarg) +
   labs(
-    colour = "MP",
-    x = expression(I[recent]/I[target]),
+    color = "w",
+    x = expression(I[recent] / I[target]),
     y = "TAC (based on 100 t average\nin last 5 historical years)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-  scale_color_brewer(palette ="Set2") +
-  theme(legend.position = "top")
+  scale_color_viridis_d() +
+  coord_cartesian(expand = FALSE)
 ```
 
-```{r}
-# f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w) {
-#   I0 <- 0.2 * Iave
-#   if (Irecent >= I0) {
-#     TAC <- TACtarg * ((w + (1 - w) * ((Irecent - I0) / (Itarg - I0))))
-#   } else {
-#     TAC <- w * TACtarg * (Irecent / I0)^2
-#   }
-#   if (TAC < 0) tac <- 0
-#   TAC
-# }
-# pars <- expand.grid(
-#   TACtarg = c(75, 100, 125),
-#   Irecent = seq(0, 3, length.out = 300),
-#   Itarg = c(0.75, 1, 1.25),
-#   Iave = 1,
-#   w = seq(0.2, 0.8, 0.1)
-# )
-# pars$tac <- purrr::pmap_dbl(pars, f_itarget)
-# pars %>%
-#   mutate(TACtarg = paste("TACtarg = ", sprintf("%3.0f", TACtarg))) %>%
-#   mutate(Itarg = paste("Itarg = ", Itarg)) %>%
-#   ggplot(aes(Irecent, tac, colour = as.factor(w))) +
-#   geom_line() +
-#   gfdlm::theme_pbs() +
-#   facet_grid(TACtarg ~ Itarg) +
-#   labs(
-#     color = "w",
-#     x = expression(I[recent] / I[target]),
-#     y = "TAC (based on 100 t average\nin last 5 historical years)"
-#   ) +
-#   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
-#   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-#   scale_color_viridis_d() +
-#   coord_cartesian(expand = FALSE)
-```
-
-Given that the Itarget MPs proposed in @geromont2015 are fairly biologically conservative (they require an increase in the index value relative to the historical target before matching the recent TAC), we propose the following alternative (Itarget5):
-
-If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
-
-\begin{equation}
-\textrm{TAC}_y = \textrm{TAC}^* \left[1+\left(\frac{I_\textrm{recent} - I_0}{I_\textrm{target} - I_0}\right)\right],
-\end{equation}
-
-otherwise:
-
-\begin{equation}
-\textrm{TAC}_y = \textrm{TAC}^*\left(\frac{I_\textrm{recent}}{I_0}\right)^2,
-\end{equation}
-
-where $I_0$ is $I_\textrm{ave}$ (the average index over the 10 years prior to the projection period), $I_\textrm{recent}$ is the average index over the past 5 years, $I_\textrm{target}$ is $I_\textrm{multi} \cdot I_\textrm{ave}$, and $\textrm{TAC}^*$ is $C$ where $I_\textrm{multi}$ is an argument to the function and $C$ is the average catch over the last 5 years of the historical period (Figure \@ref(fig:mp-itarget-demo2)).
-
-```{r mp-itarget-demo2, fig.cap="Illustration of the modified Itarget MP, Itarget5."}
-f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, I0_ratio = 0.8, TACstar_ratio = 0.5, ...) {
-  TACstar <- (1 - x) * avg_catch_hist
-  Itarget <- Iave * Imulti
-  I0 <- I0_ratio * Iave
-  if (Irecent >= I0) {
-    TAC <- TACstar_ratio * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
-  } else {
-    TAC <- TACstar_ratio * TACstar * (Irecent/(I0))^2
-  }
-  if (TAC < 0) tac <- 0
-  if (TAC > 1.2 * avg_catch_hist) TAC <- 1.2 * avg_catch_hist
-  TAC
-}
+```{r mp-itarget-demo2, fig.cap="Illustration of provisional Itarget MPs based on Iave = 1.", fig.asp=0.75}
 pars <- expand.grid(
-  avg_catch_hist = 100,
-  Irecent = seq(0.1, 3, length.out = 300),
-  Iave = c(1),
-  x = c(0),
-  Imulti = c(2, 4),
-  I0_ratio = c(1),
-  TACstar_ratio = c(1),
-  stringsAsFactors = FALSE
+  TACtarg = c(80, 100, 120),
+  Irecent = seq(0, 3, length.out = 300),
+  Itarg = c(0.8, 1, 1.2),
+  Iave = 1,
+  w = c(0.2, 0.5, 0.8),
+  lambda = 0.2
 )
-pars$tac <- purrr::pmap_dbl(pars, f)
-pars %>%
-  mutate(x = paste("x =", x)) %>%
-  mutate(Imulti = paste("Imulti =", Imulti)) %>%
-  ggplot(aes(Irecent, tac)) +
+pars2 <- dplyr::filter(pars, TACtarg == 100, Itarg == 1, w == 0.5) %>%
+  bind_rows(dplyr::filter(pars, TACtarg == 100, Itarg == 1, w == 0.8)) %>%
+  bind_rows(dplyr::filter(pars, TACtarg == 120, Itarg == 1, w == 0.5)) %>%
+  bind_rows(dplyr::filter(pars, TACtarg == 80,  Itarg == 1, w == 0.5)) %>%
+  bind_rows(dplyr::filter(pars, TACtarg == 100, Itarg == 1.2, w == 0.5)) %>%
+  bind_rows(dplyr::filter(pars, TACtarg == 100, Itarg == 0.8, w == 0.5))
+
+pars2$tac <- purrr::pmap_dbl(pars2, f_itarget)
+pars2 %>%
+  mutate(TACtarg = paste("TAC* = ", sprintf("%3.0f", TACtarg))) %>%
+  mutate(Itarg = paste("Itarget = ", Itarg)) %>%
+  ggplot(aes(Irecent, tac, colour = as.factor(w))) +
   geom_line() +
-  ggsidekick::theme_sleek() +
-  facet_wrap(~Imulti) +
+  gfdlm::theme_pbs() +
+  facet_grid(TACtarg ~ Itarg) +
+  labs(
+    color = "w",
+    x = expression(I[recent] / I[target]),
+    y = "TAC (based on 100 t average\nin last 5 historical years)"
+  ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-  labs(
-    x = expression(I[recent]/I[target]),
-    y = "TAC (based on 100 t average\nin last 5 historical years)"
-  )
-
-# library(manipulate)
-#
-# f_manipulate <- function() {
-#   f <- function(avg_catch_hist, Irecent, Iave, x, Imulti, I0_ratio = 0.8, TACstar_ratio = 0.5, ...) {
-#     TACstar <- (1 - x) * avg_catch_hist
-#     Itarget <- Iave * Imulti
-#     I0 <- I0_ratio * Iave
-#     if (Irecent >= I0) {
-#       TAC <- TACstar_ratio * TACstar * (1 + ((Irecent - I0)/(Itarget - I0)))
-#     } else {
-#       TAC <- TACstar_ratio * TACstar * (Irecent/(I0))^2
-#     }
-#     if (TAC < 0) tac <- 0
-#     if (TAC > 1.2 * avg_catch_hist) TAC <- 1.2 * avg_catch_hist
-#     TAC
-#   }
-#   pars <- expand.grid(
-#     avg_catch_hist = 100,
-#     Irecent = seq(0.1, 3, length.out = 300),
-#     Iave = c(1),
-#     x = c(0),
-#     Imulti = c(2),
-#     I0_ratio = c(1),
-#     TACstar_ratio = c(1),
-#     stringsAsFactors = FALSE
-#   )
-#   pars$tac <- purrr::pmap_dbl(pars, f)
-#   pars %>%
-#     # mutate(x = paste("x =", x)) %>%
-#     # mutate(Imulti = paste("Imulti =", Imulti)) %>%
-#     ggplot(aes(Irecent, tac)) +
-#     geom_line() +
-#     ggsidekick::theme_sleek() +
-#     # facet_wrap(~Imulti) +
-#     geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
-#     geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-#     labs(
-#       x = expression(I[recent]/I[target]),
-#       y = "TAC (based on 100 t average\nin last 5 historical years)"
-#     )
-# }
-#
-# f_manipulate()
-#
-# manipulate()
+  scale_color_viridis_d() +
+  coord_cartesian(expand = FALSE)
 ```
-
 
 ### ITM: Index target based on natural mortality rate {#sec:mp-itm}
 
-An index target MP where the TAC is modified according to current index levels. The current index level is calculated as the mean index over some number of years determined by natural mortality $M$ relative to a target level (Figs \@ref(fig:mp-itm-demo)).
+"ITM" is an index-target MP where the TAC is modified according to current index levels with the window defining "current" based on the assumed natural mortality $M$ (Figs \@ref(fig:mp-itm-demo)).
+
+The MP is defined as:
 
 \begin{equation}
 \textrm{TAC}_y = \textrm{TAC}_{y-1} \delta I,
 \end{equation}
 
-where $\delta I$ is the ratio of the mean index over $4 \left(1/M\right)^{1/4}$ years to the reference index. The maximum fractional change in TAC is determined by $mc$, defined as $mc = \textrm{max} \left( \left( 5+25M \right) / 100,\ 0.2\right)$. As in the other reference index MPs, instead of using the default relative index value at MSY as the reference, we use an historical period of the index, provisionally the last 10 years before the projection period.
+where $\delta I$ is the ratio of the mean index over $4 \left(1/M\right)^{1/4}$ years to the reference index.
+The maximum fractional change in TAC is determined by $x$, defined as $x = \textrm{max} \left( \left( 5+25M \right) / 100,\ 0.2\right)$.
+As in the other reference index MPs, we use an historical period of the index to set the reference index level---provisionally the last 10 years before the projection period.
 
 ```{r mp-itm-demo, fig.cap="Illustration of the ITM MP. (a) Illustration of how TAC recommendation is based on natural mortality (M) and $\\delta I$, the proportional change in the recent relative abundance index compared to a reference level. Note that the effect of M only appears for large values of M---0.2 and 0.5 are overlapping in this figure. (b) Illustration of how M relates to the number of years over which to calculate the mean recent relative abundance index.", fig.asp=0.385}
 f <- function(tac_prev, M, deltaI) {
@@ -557,7 +461,7 @@ g1 <- pars %>%
     y = "TAC (based on 100 t last year)"
   )+
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
-  scale_color_brewer(palette ="Set2") +
+  colour_scale +
   theme(legend.position = c(0.2, 0.75))
 
 f <- function(M) {
@@ -570,7 +474,7 @@ pars$years <- purrr::pmap_dbl(pars, f)
 g2 <- pars %>%
   ggplot(aes(M, years)) +
   geom_line() +
-  ggsidekick::theme_sleek() +
+  gfdlm::theme_pbs() +
   labs(
     x = expression(M),
     y = "Years"
