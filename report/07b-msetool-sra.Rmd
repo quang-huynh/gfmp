@@ -362,12 +362,11 @@ I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}
 
 ### Likelihoods
 
-<!-- TODO: Update equations below with Quang's new version-->
-
-The log-likelihood component $\Lambda_1$ of the catch is
+If the model is conditioned on catch and fishing mortality rates are estimated parameters, then the log-likelihood component $\Lambda_1$ of the catch is
 
 \begin{equation}
-\Lambda_1 = \sum_f \left[\lambda^{\tilde{C}}_f \sum_y \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{obs}}_{y,f}) - \log(\tilde{C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right],
+\Lambda_1 = \sum_f \left[\lambda^{\tilde{C}}_f \sum_y \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{obs}}_{y,f}) - \log(\tilde{C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right]
+(\#eq:om-sra-like-catch)
 \end{equation}
 
 where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch.
@@ -375,15 +374,15 @@ where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantit
 The log-likelihood component $\Lambda_2$ of survey data is
 
 \begin{equation}
-\Lambda_2 = \sum_s \left[ \lambda^I_s \sum_y \left(-\log(\sigma_{y,s}) - \dfrac{[\log(I_{y,s}) - \log(q_s B_{y,s})]^2}{2\sigma_{y,s}^2}\right) \right],
+\Lambda_2 = \sum_s \left[ \lambda^I_s \sum_y \left(-\log(\sigma_{y,s}) - \dfrac{[\log(I^{\textrm{obs}}_{y,s}) - \log(I^{\textrm{pred}}_{y,s})]^2}{2\sigma_{y,s}^2}\right) \right]
+(\#eq:om-sra-like-ind)
 \end{equation}
-
-where $I$ is the value of the survey with $s$ indexing survey, $\sigma_{y,s}$ is the corresponding standard deviation of the survey, $q$ is a scaling coefficient, and $B_{y,s}$ is the reference biomass that corresponds to the index, e.g., spawning biomass or vulnerable biomass.
 
 The log-likelihood component $\Lambda_3$ of catch-at-age data is
 
 \begin{equation}
-\Lambda_3 = \sum_f \lambda^A_f \left[\sum_y O^A_{y,f} \log(p_{y,a,f})\right],
+\Lambda_3 = \sum_f \lambda^A_f \left[\sum_y O^A_{y,f} \sum_a p^{\textrm{obs}}_{y,a,f} \log(p^{\textrm{pred}}_{y,a,f})\right]
+(\#eq:om-sra-like-caa)
 \end{equation}
 
 where $O^A$ is the annual sample sizes for the age compositions.
@@ -391,15 +390,17 @@ where $O^A$ is the annual sample sizes for the age compositions.
 The log-likelihood component $\Lambda_4$ of catch-at-length data is
 
 \begin{equation}
-\Lambda_4 = \sum_f \lambda^L_f \left[ \sum_y O^L_{y,f} \log(p_{y,\ell,f}) \right]
+\Lambda_4 = \sum_f \lambda^L_f \left[ \sum_y O^L_{y,f} \sum_{\ell} p^{\textrm{obs}}_{y,\ell,f} \log(p^{\textrm{pred}}_{y,\ell,f})\right]
+(\#eq:om-sra-like-cal)
 \end{equation}
 
-where $O^L$ represents the annual sample sizes for the length compositions.
+where $O^L$ is the annual sample sizes for the length compositions.
 
 The log-likelihood component $\Lambda_5$ of observed mean lengths in the catch is
 
 \begin{equation}
-\Lambda_5 = \sum_f \lambda^{\bar{L}}_f\left[ \sum_y \left(-\log(\omega_f) - \dfrac{[\bar{L}^{\textrm{obs}}_{y,f} - \bar{L}^{\textrm{pred}}_{y,f}]^2}{2 \omega^2_f}\right)\right],
+\Lambda_5 = \sum_f \lambda^{\bar{L}}_f\left[ \sum_y \left(-\log(\omega_f) - \dfrac{[\bar{L}^{\textrm{obs}}_{y,f} - \bar{L}^{\textrm{pred}}_{y,f}]^2}{2 \omega^2_f}\right)\right]
+(\#eq:om-sra-like-meanl)
 \end{equation}
 
 where $\omega_f$ is the standard deviation of mean lengths.
@@ -407,7 +408,8 @@ where $\omega_f$ is the standard deviation of mean lengths.
 The log-likelihood component $\Lambda_6$ of annual estimated recruitment deviates $\delta_y$ in log space is
 
 \begin{equation}
-\Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\delta_y^2}{2 \tau^2}\right),
+\Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\delta_y^2}{2 \tau^2}\right)
+(\#eq:om-sra-like-recdevs)
 \end{equation}
 
 where $\tau$ is the standard deviation of recruitment deviates.
@@ -415,11 +417,13 @@ where $\tau$ is the standard deviation of recruitment deviates.
 The log-likelihood component $\Lambda_7$ of the equilibrium catch is
 
 \begin{equation}
-\Lambda_7 = \sum_f \lambda^{\tilde{C}}_f \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{eq,obs}}_f) - \log(\tilde{C}^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right),
+\Lambda_7 = \sum_f \lambda^{\tilde{C}}_f \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{eq,obs}}_f) - \log(\tilde{C}^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right)
+(\#eq:om-sra-like-eqcatch)
 \end{equation}
 
 The total log-likelihood $\textrm{LL}$ to be maximized is
-
 \begin{equation}
-\textrm{LL} = \sum_{i=1}^7\Lambda_i.
+\textrm{LL} = \sum_{i=1}^7\Lambda_i
+(\#eq:om-sra-like-tot)
 \end{equation}
+
