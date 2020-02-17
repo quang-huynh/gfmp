@@ -92,29 +92,29 @@ Leading parameters of the population dynamics model, defined as fixed values or 
 Recruitmment and numbers-at-age are initialized in the first historical year using the SRA model (Appendix \@ref(app:sra), Equations \@ref(eq:om-sra-numinit) and \@ref(eq:om-sra-recinit)).
 
 During the projection period (years $y$ = $t_{c+1}$ to $y$ = $t_N$), the number of fish recruited to the first age group in each year $N_{y,a=1}$
-is calculated as a function of last year's spawning biomass \(S_{y-1}\), assuming a Beverton-Holt stock-recruit relationship with annual
+is calculated as a function of last year's spawning biomass \(B_{y-1}\), assuming a Beverton-Holt stock-recruit relationship [@beverton1957] with annual
 lognormal recruitment deviations $\varepsilon_{R,y-1}$:
 
 \begin{equation}
-N_{y, a = 1} = \left( \frac{4 {h} R_{0} S_{y-1}} {S_{0}  \left( 1 - {h} \right) + \left( 5{h} - 1 \right) S_{y-1}} \right) \cdot \varepsilon_{R,y-1},
+N_{y, a = 1} = \left( \frac{4 {h} R_{0} B_{y-1}} {B_{0}  \left( 1 - {h} \right) + \left( 5{h} - 1 \right) B_{y-1}} \right) \cdot \varepsilon_{R,y-1},
 (\#eq:dlm-om-recy)
 \end{equation}
 
-where unfished spawning biomass \(S_{0}\) is calculated as the
+where unfished spawning biomass \(B_{0}\) is calculated as the
 sum over ages of the maturity at age $m_a$, weight-at-age
 $W_a$, and unfished numbers at age  \({{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}\):
 
 \begin{equation}
-S_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}.
+B_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}.
 (\#eq:dlm-om-so)
 \end{equation}
 
-and spawning biomass $S_{y}$ in a given year is the
+and spawning biomass $B_{y}$ in a given year is the
 sum over ages of the maturity-at-age $m_a$, the weight-at-age
 $W_a$, and numbers at age $N_{y,a}$:
 
 \begin{equation}
-S_{y} = \sum_{a = 1}^{n_{a}}{m_{a}W_{a}N_{y,a}}.
+B_{y} = \sum_{a = 1}^{n_{a}}{m_{a}W_{a}N_{y,a}}.
 (\#eq:dlm-om-sy)
 \end{equation}
 
@@ -262,10 +262,10 @@ I_{y}^{\text{obs}} = \omega_{I,y}\frac{{B_{y}}^{\beta}}{\frac{1}{y}\sum_{i = 1}^
 (\#eq:dlm-om-iy)
 \end{equation}
 
-where $B_{y}$ is the sum over ages of the weight-at-age $W_a$, and numbers at age $N_{y,a}$:
+where $B^T_{y}$ is total biomass given by the sum over ages of the weight-at-age $W_a$, and numbers at age $N_{y,a}$:
 
 \begin{equation}
-B_{y} = \sum_{a = 1}^{n_{a}}{W_{a}N_{y,a}}
+B^T_{y} = \sum_{a = 1}^{n_{a}}{W_{a}N_{y,a}}
 (\#eq:dlm-om-by)
 \end{equation}
 
