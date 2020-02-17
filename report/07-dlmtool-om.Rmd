@@ -106,7 +106,7 @@ $W_a$, and unfished numbers at age  \({{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}\)
 
 \begin{equation}
 B_{0} = \sum_{a = 1}^{n_{a}}{m_{a}\ W_{a}{\ {R}}_{0}\ e^{\sum_{i = 1}^{a}M_{i}}}.
-(\#eq:dlm-om-so)
+(\#eq:dlm-om-bo)
 \end{equation}
 
 and spawning biomass $B_{y}$ in a given year is the
@@ -145,9 +145,12 @@ N_{y + 1,a + 1} = N_{a}e^{- Z_{a}}
 where the total mortality rate $Z_{y,a}$ is the sum of the instantaneous rates of natural mortality ($M$), assumed constant across years and ages unless otherwise specified, and fishing mortality-at-age ($F_{y,a}$, defined in Equation \@ref(eq:dlm-om-Fay)):
 
 \begin{equation}
-Z_{y,a} = M + F_{y,a}.
+Z_{y,a} = M + F_{y,a}v_{y,a}.
 (\#eq:dlm-om-z)
 \end{equation}
+
+where v_{y,a} is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-vay).
+
 
 ## FLEET DYNAMICS {#sec:dlmtool-fleet-dynamics}
 
@@ -156,18 +159,18 @@ During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) i
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
 
 \begin{equation}
-V_{y,a} = N_{y,a} W_{a} s_{a} R_{a}
+V_{y,a} = N_{y,a} W_{a} v_{a} R_{a}
 (\#eq:dlm-om-vulcom)
 \end{equation}
 
-where the vulnerability-at-age  $s_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
+where the vulnerability-at-age  $v_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
 \begin{equation}
-s_{y,a} = \left\{ \begin{matrix} 
+v_{y,a} = \left\{ \begin{matrix} 
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\ 
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\ 
 \end{matrix} \right.\ 
-(\#eq:dlm-om-say)
+(\#eq:dlm-om-vay)
 \end{equation}
 
 <!-- The length at maximum selectivity \(L_{\textrm{smax}}\) is user-defined.  -->
