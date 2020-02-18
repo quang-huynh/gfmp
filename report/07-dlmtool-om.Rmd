@@ -277,7 +277,7 @@ $$
 where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right)
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right)
 (\#eq:dlm-om-epsiloni)
 $$
 
