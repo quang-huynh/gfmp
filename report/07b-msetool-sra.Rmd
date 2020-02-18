@@ -250,25 +250,16 @@ where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respect
 If the model is fit to age-composition data, the catch (in numbers) $C^N$ at age for fleet $f$ is
 
 $$
-C^N_{y,a,f} = \dfrac{v_{y,a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp[-Z_{y,a}]).
+C^N_{y,a,f} = \dfrac{v_{a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp(-Z_{y,a}).
 (\#eq:sra-om-cyaf)
 $$
 
-In our framework, we recommend conditioning the model on observed catches, as these are better reported than effort, and easier to interpret for a multispecies fishery.
-In this case, with a model conditioned on catch, then $F_{y,f}$ can be estimated as parameters or solved iteratively to match the observed catch.
-In other applications, if the model is conditioned on effort, then
-
-$$
-F_{y,f} = q_f E_{y,f},
-(\#eq:sra-om-fyf-eff)
-$$
-
-where $E_{y,f}$ is the observed effort and $q_f$ is the scaling coefficient.
+In this framework, we recommend conditioning the model on observed catches, as these are better reported than effort, and easier to interpret for a multispecies fishery.
+In this case, with a model conditioned on catch, $F_{y,f}$ can be estimated as parameters (or solved iteratively to match the observed catch).
 
 ### Catch-at-length
 
 If the model is fit to length-composition data, the catch-at-length is calculated assuming a normally distributed length-at-age $P(\ell,a)$, where
-
 
 $$
 C^N_{y,\ell,f} = \sum_a C^N_{y,a,f} P(\ell \vert a),
@@ -289,10 +280,10 @@ $$
 
 where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age).
 
-The catch in weight $\tilde{C}$ is
+The fitted catch in weight $C_{y,f}$ is
 
 $$
-\tilde{C}_{y,f} = \sum_a C^N_{y,a,f} w_{y,a}.
+C_{y,f} = \sum_a C^N_{y,a,f} w_{y,a}.
 (\#eq:sra-om-cyfw)
 $$
 
@@ -324,29 +315,29 @@ $$
 If the $s^{\textrm{th}}$ survey is biomass-based, then the survey value $I_{y,s}$ is calculated as
 
 $$
-I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a} w_{y,a},
+I_{y,s} = q_s \sum_a v_{a,s} N_{y,a} w_{y,a},
 (\#eq:sra-om-iysb)
 $$
 
-where $q$ is the scaling coefficient and $s$ indexes survey.
+where $q$ is the scaling coefficient and $s$ indexes each survey.
 
 If the survey is abundance-based, then
 
 $$
-I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}.
+I_{y,s} = q_s \sum_a v_{a,s} N_{y,a}.
 (\#eq:sra-om-iysn)
 $$
 
 ### Likelihoods
 
-If the model is conditioned on catch and fishing mortality rates are estimated parameters, then the log-likelihood component $\Lambda_1$ of the catch is
+If the model is conditioned on catch, and fishing mortality rates are estimated parameters, then the log-likelihood component $\Lambda_1$ of the catch is
 
 $$
-\Lambda_1 = \sum_f \left[\lambda^{\tilde{C}}_f \sum_y \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{obs}}_{y,f}) - \log(\tilde{C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right],
+\Lambda_1 = \sum_f \left[\lambda^{C}_f \sum_y \left(-\log(0.01) - \dfrac{[\log({C}^{\textrm{obs}}_{y,f}) - \log({C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right],
 (\#eq:sra-om-like-catch)
 $$
 
-where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch.
+where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a very small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch almost perfectly.
 
 The log-likelihood component $\Lambda_2$ of survey data is
 
