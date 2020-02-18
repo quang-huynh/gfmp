@@ -452,17 +452,8 @@ obs_rex@CAL_ESS <- c(100, 200)
 obs_rex@CAL_nsamp <- c(100, 200)
 obs_rex@CAA_ESS <- c(100, 200)
 obs_rex@CAA_nsamp <- c(100, 200)
-```
-
-<!-- slot-chunk-begin -->
-### Name {#app:desc-obs-name-rex}
-
-*The name of the observation model object.*
-
-```{r desc-obs-name-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Name <- "BC observation model"
 ```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Cobs {#app:desc-obs-cobs-rex}
@@ -529,17 +520,8 @@ obs_rex@beta <- c(1, 1)
 
 ```{r warnings = FALSE}
 imp_rex <- DLMtool::Perfect_Imp
-```
-
-<!-- slot-chunk-begin -->
-### Name {#app:desc-imp-name-rex}
-
-*The name of the Implementation error object.*
-
-```{r desc-imp-name-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@Name <- "BC Implementation"
 ```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### TACFrac {#app:desc-imp-tacfrac-rex}
