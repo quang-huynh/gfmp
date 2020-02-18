@@ -40,7 +40,7 @@ $$
 
 where $\kappa$ represents the growth rate, $L_{\infty}$ represents the maximum length and $a_0$ represents the theoretical age where length is zero.
 
-Weight-at-age ($W_a$) is  assumed to be related to length-at-age ($L_a$) by:
+Weight-at-age ($W_a$) is assumed to be related to length-at-age ($L_a$) by:
 
 $$
 W_{y,a} = \beta_{W}\ {L_{a}}^{\alpha_{W}}.
@@ -163,11 +163,11 @@ $$
 v_{y,a} = \left\{ \begin{matrix} 
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\ 
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\ 
-\end{matrix} \right.\ 
+\end{matrix} \right, 
 (\#eq:dlm-om-vay)
 $$
 
-<!-- The length at maximum selectivity \(L_{\textrm{smax}}\) is user-defined.  -->
+and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
 The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability $L_{5}$):
 
 $$
