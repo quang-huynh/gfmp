@@ -1,6 +1,6 @@
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
-The DLMtool population dynamics operating model (OM) is an age-structured model decribed below.
+The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model decribed below.
 The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
 A full range of possible parameterizations is described in the appendices of @carruthers2018, adapted here for the MP Framework.
@@ -15,7 +15,7 @@ There are two distinct time-periods in the simulation framework:
 The historical period is calibrated to historical observations using an age-structured stock-reduction analysis [SRA; @kimura1982; @walters2006], described in Appendix \@ref(app:sra).
 The closed-loop simulations and calculation of performance metrics begin in year $t_{c+1}$.
 
-Operating model development in the MP Framework using DLMtool follows three steps:
+Operating model development in the MP Framework follows three steps:
 
 1. Set parameter values and ranges in the OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendix \@ref(app:desc-om-rex).
 
@@ -170,14 +170,14 @@ $$
 -->
 
 and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
-The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability $L_{5}$):
+The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability ($L_5$):
 
 $$
 \sigma_{\textrm{sasc}}^{2} = \frac{{{L}}_{5} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 $$
 
-While the standard deviation of the descending limb is given by the vulnerability \({V}_{\overline{L}} \) of fish of length \(\overline{L}\):
+While the standard deviation of the descending limb is given by the vulnerability \({V}_{\overline{L}} \) of fish of mean length \(\overline{L}\):
 
 $$
 \sigma_{\textrm{sdesc}}^{2} = \frac{\overline{L} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{{{V}}_{\overline{L}}}}}}
@@ -209,38 +209,33 @@ $$
 r_{y,a} = \left\{ \begin{matrix}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{rmax}} \\
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{rmax}} \\
-\end{matrix} \right.\
+\end{matrix} \right,
 (\#eq:dlm-om-ray)
 $$
 
-The length at maximum retention \({L}_{\textrm{rmax}}\) is
-user-specified. The standard deviation parameters of the
-ascending limb is given by user-specified length at 5% retention
-\({r}_{5}\):
+where \({L}_{\textrm{rmax}}\) is the length at maximum retention.
+The standard deviation parameters of the ascending limb is given by the length at 5% retention \({r}_{5}\):
 
 $$
 \sigma_{\textrm{rasc}}^{2} = \frac{{{r}}_{5} - {L}_{\textrm{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-sigrasc)
 $$
 
-While the standard deviation of the descending limb is given by
-user-specified retention \({{r}}_{\overline{L}} \) of fish of
-length \(\overline{L}\):
+While the standard deviation of the descending limb is given by retention \({{r}}_{\overline{L}} \) of fish of length \(\overline{L}\):
 
 $$
 \sigma_{\textrm{rdesc}}^{2} = \frac{\overline{L} - {{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{{{r}}_{\overline{L}}}}}}
 (\#eq:dlm-om-sigrdec)
 $$
 
-Fishing mortality rates are then calculated from the realized catches $C_{y,a}$
-subject to the constraint that they do not exceed user-specified
-${F_\textrm{max}}$:
+Fishing mortality rates are then calculated from the realized catches $C_{y,a}$ subject to the constraint that they do not exceed ${F_\textrm{max}}$:
 
 $$
 F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{W}_{a}} \right),F_{\max} \right).
 (\#eq:dlm-om-Fay)
 $$
 
+The parameter ${F_\textrm{max}}$ can be adjusted, but is set to 3 by default.
 
 ## OBSERVATION DYNAMICS
 
@@ -282,17 +277,17 @@ $$
 where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{I,y}\sim N\left( 0,{{\sigma}}_{I} \right)
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right)
 (\#eq:dlm-om-epsiloni)
 $$
 
-By default DLMtool samples simulation-specific observation error
+By default the OM samples simulation-specific observation error
 ${{\sigma}}_{I}$ from a uniform distribution.
 
 <!--TODO: the above text will need to be modified to reflect that sigma comes from conditioning in the SRA. Still to determine whether it will come from historical observed index or from residuals in SRA fit to historical observed index-->
 
 $$
-{\sigma}_{I}\sim U\left( \textrm{LB}_{I},\textrm{UB}_{I} \right).
+{\sigma}_{I}\sim \textrm{Uniform}\left( \textrm{LB}_{I},\textrm{UB}_{I} \right).
 (\#eq:dlm-om-sigi)
 $$
 
@@ -303,33 +298,34 @@ This approach means that the OM can specify a time series with a low degree of e
 
 <!-- TODO: I don't think we use CAL anywhere. If so can simplify the description below to be only in terms of CAA because we haven't anywhere defined how CAL is generated by the model-->
 
-Two types of catch composition observations are simulated, catches by age class by year (CAA) and catches by length class by year (CAL).
+Two types of catch composition observations are simulated, catches-by-age-class-by-year (CAA) and catches-by-length-class-by-year (CAL).
+Although we do not propose any provisional MPs that use CAA or CAL, future applications may explore the value of information related to aging fish otoliths.
+Therefore, we describe the observation model component of CAA.
+We do not describe the observation model of CAL at this time.
 
-These observation models use a simple multinomial model that accounts
+The observation model for CAA uses a simple multinomial distribution that accounts
 for effective sample size (the number of independent observations).
-For both CAA and CAL observation models the user specifies an average annual
-number of samples (number of individuals measured for example) and the
+For CAA observation models, the OM specifies an average annual
+number of samples (number of individuals measured, for example) and the
 annual effective sample size($C_{y,a}^{\textrm{obs}}$ or $C_{y,l}^{\textrm{obs}}$).
 For example, $\textrm{ESS}_{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
 
 $$
-C_{y,a}^{\textrm{obs}}\sim \textrm{multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a,r} \right)
+C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a,r} \right)
 (\#eq:dlm-om-cataobs)
 $$
 
 For each year, the frequency of samples at age is inflated to match the
-total sample size $n \cdot \textrm{CAA}$ and rounded to the nearest integer:
+total sample size $n \cdot \textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
 
 $$
 C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right)
 (\#eq:dlm-om-cataobs-freq)
 $$
 
-Due to rounding, this relatively simple model generates frequency-at-age
-data that are approximately equal to the average
-annual sample size:
+Due to rounding, this model generates frequency-at-age data that are approximately equal to the average annual sample size:
 
 $$
 \sum_{a}^{n_{a}}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}
@@ -350,22 +346,22 @@ The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a c
 variability controlled by ${{\sigma}}_{\textrm{TAC}}$.
 
 $$
-I_{TAC,y} = {\widetilde{b}}_{\text{TAC}}\text{\ exp}\left( \varepsilon_{TAC,y} - \frac{{\widetilde{\sigma}}_{\text{TAC}}}{2} \right)
+I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}}{2} \right)
 (\#eq:dlm-om-itac)
 $$
 
-where ${{b}}_{\text{TAC}}$ is an improper fraction (e.g. ${{b}}_{\text{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
+where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{TAC,y}\sim N\left( 0,{\widetilde{\sigma}}_{\text{TAC}} \right)
+\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}} \right)
 (\#eq:dlm-om-epsilontac)
 $$
 
-By default DLMtool samples simulation-specific variability
-${{\sigma}}_{\text{TAC}}$ from a uniform distribution.
+By default the OM samples simulation-specific variability
+${{\sigma}}_{\textrm{TAC}}$ from a uniform distribution.
 
 $$
-\sigma_{\textrm{TAC}}\sim U\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right)
+\sigma_{\textrm{TAC}}\sim \textrm{Uniform}\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right)
 (\#eq:dlm-om-sigmatac)
 $$
 
@@ -373,22 +369,22 @@ and mean fraction of recommendation $b_{\textrm{TAC}}$ from
 a lognormal distribution:
 
 $$
-{{b}}_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\text{bTAC}}}{2} \right)
+b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}}{2} \right)
 (\#eq:dlm-om-btac)
 $$
 
 $$
-\varepsilon_{\textrm{bTAC}}\sim N\left( 0,\sigma_{\textrm{bTAC}} \right)
+\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
 (\#eq:dlm-om-epsilonbtac)
 $$
 
 ## CALCULATION OF MSY-BASED REFERENCE POINTS
 
-Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\text{MSY}$ and the Upper Stock Reference (USR) is defined as the OM value of $0.8B_\text{MSY}$.
-$B_\text{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\text{MSY}$.
+Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\textrm{MSY}$ and the Upper Stock Reference (USR) is defined as the OM value of $0.8B_\textrm{MSY}$.
+$B_\textrm{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\textrm{MSY}$.
 
 Calculation of BRPs is done using estimated parameters from the conditioning stage, described in Appendix \@ref(app:sra).
-In the absence of annual variability in life history and/or selectivity parameters, $F_\text{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
+In the absence of annual variability in life history and/or selectivity parameters, $F_\textrm{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
 
 $$
 Y^e = F^e R^e \phi_b,
@@ -451,14 +447,14 @@ $$
 
 <!--TODO: do we want to explain how DLMtool numerically solves for FMSY (e.g., Newton-Raphson algorithm or just leave it vague)? My preference is to leave it vague. there are lots of ways to do it and the details aren't really important as long as it works.-->
 
-After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\text{MSY}$, $B_\text{MSY}$ is simply calculated:
+After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is simply calculated:
 
 $$
-B_{\text{MSY}} = \phi_f R^e
+B_{\textrm{MSY}} = \phi_f R^e
 (\#eq:dlm-om-bmsy)
 $$
 
-with $F^e=F_\text{MSY}$ in Equation \@ref(eq:dlm-om-survivorship).
+with $F^e=F_\textrm{MSY}$ in Equation \@ref(eq:dlm-om-survivorship).
 
 <!-- TODO: Do we want to say anything about cases where parameters are time-varying? The DLmtool guide mentions it. I would suggest leaving it out, as we might choose to do it a different way anyway if the FSERP project identifies a best approach ... -->
 
