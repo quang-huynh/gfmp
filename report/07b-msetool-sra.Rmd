@@ -145,14 +145,17 @@ v_{y,a,f} =
 (\#eq:sra-om-vyaf)
 $$
 
-where $L_{y,a}$ is the mean length-at-age in year $y$, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(V^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the selectivity function. In this parameterization, length-based selectivity is constant over time. The corresponding age-based selectivity is constant over time if growth is not time-varying.
+where $L_{y,a}$ is the mean length-at-age in year $y$, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(V^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the vulnerability function. In this parameterization, length-based vulnerability is constant over time. The corresponding age-based vulnerability is constant over time if growth is not time-varying.
 
-Total mortality $Z$ in year $y$ and for age $a$ is the sum of fishing mortality $F$ from all fleets and natural mortality $M$,
+Total mortality $Z$ in year $y$ and for age $a$ is given by
 
 $$
-Z_{y,a} = M_{y,a} + \Sigma_f v_{y,a,f} F_{y,f}
+Z_{y,a} = M_{y} + \Sigma_f v_{y,a,f} F_{y,f}
 (\#eq:sra-om-zya)
 $$
+
+where $F_{y,f}$ is fishing mortality by year $y$ and fleet $f$, and $M_{y,a}$ is natural mortality in year $y$.
+
 
 ### Initial population distribution
 
