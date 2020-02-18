@@ -498,7 +498,8 @@ The position of each line on each spoke represents the probability of that MP ac
 Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 
 ```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4.5in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))
+# knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))
+plot(1)
 ```
 
 \clearpage
@@ -509,7 +510,8 @@ The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 
 For example, the 0.50 (outermost) contour lines encompass approximately 50% of the iterations.
 
 ```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
+# knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
+plot(1)
 ```
 
 \clearpage
@@ -521,22 +523,8 @@ There is one diamond per year of the historical and projection period.
 The lines and diamonds change color over time and specific points in time are illustrated with symbols (first year, last historical year, and last projected year).
 
 ```{r methods-worm, fig.cap="(ref:fig-methods-worm)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
-```
-
-\clearpage
-
-(ref:fig-methods-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here mean B/B~MSY~ in years 36--50 of the projection) to OM parameter values (x-axis).
-A variety of MPs are illustrated across rows.
-Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother (encompassing a 75% moving window of the data).
-For example, the top-left panel illustrates the sensitivity of the MP ".ICI" in terms of the mean B/B~MSY~ in years 36--50 across different values of D (depletion in the final historical year).
-For iterations that had a lower value of D (more depleted in the final historical year) there is a wider spread of possible B/B~MSY~ values in years 36--50 (left side of panel).
-Iterations that had a higher value of D (right side of panel) have a more consistent B/B~MSY~ in years 36--50.
-Note that none of these panels show strong patterns of sensitivity.
-Any strong pattern in the points with changes in an OM parameter value highlight that an MP is sensitive to that OM parameter value.
-
-```{r methods-sens, fig.cap="(ref:fig-methods-sens)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
+plot(1)
 ```
 
 \clearpage
@@ -549,7 +537,8 @@ Substantial differences between the trajectories for the two colours would indic
 For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
 
 ```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
+plot(1)
 ```
 
 

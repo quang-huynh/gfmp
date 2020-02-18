@@ -1,3 +1,5 @@
+\clearpage
+
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
 The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model decribed below.
@@ -153,21 +155,19 @@ During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) i
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
 
 $$
-V_{y,a} = N_{y,a} W_{a} v_{a} R_{a}
+V_{y,a} = N_{y,a} W_{a} v_{y,a} R_{a}
 (\#eq:dlm-om-vulcom)
 $$
 
 where the vulnerability-at-age  $v_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
-<!--
 $$
 v_{y,a} = \left\{ \begin{matrix}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\
-\end{matrix} \right,
+\end{matrix} \right\} ,
 (\#eq:dlm-om-vay)
 $$
--->
 
 and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
 The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability ($L_5$):
@@ -209,7 +209,7 @@ $$
 r_{y,a} = \left\{ \begin{matrix}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{rmax}} \\
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{rmax}} \\
-\end{matrix} \right,
+\end{matrix} \right\}
 (\#eq:dlm-om-ray)
 $$
 
@@ -277,22 +277,27 @@ $$
 where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right)
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right)
 (\#eq:dlm-om-epsiloni)
 $$
 
+<!--
 By default the OM samples simulation-specific observation error
 ${{\sigma}}_{I}$ from a uniform distribution.
+-->
 
 <!--TODO: the above text will need to be modified to reflect that sigma comes from conditioning in the SRA. Still to determine whether it will come from historical observed index or from residuals in SRA fit to historical observed index-->
 
+<!--
 $$
 {\sigma}_{I}\sim \textrm{Uniform}\left( \textrm{LB}_{I},\textrm{UB}_{I} \right).
 (\#eq:dlm-om-sigi)
 $$
+-->
 
+<!--
 This approach means that the OM can specify a time series with a low degree of error (e.g., low sampled values of ${\sigma}_{I}$ specified by lower $\textrm{LB}_I$ and $\textrm{UB}_I$), or a large degree of error (e.g., large sampled values of ${\sigma}_{I}$ specified by higher $\textrm{LB}_I$ and $\textrm{UB}_I$).
-
+-->
 
 ### Catch composition data
 
@@ -307,8 +312,8 @@ The observation model for CAA uses a simple multinomial distribution that accoun
 for effective sample size (the number of independent observations).
 For CAA observation models, the OM specifies an average annual
 number of samples (number of individuals measured, for example) and the
-annual effective sample size($C_{y,a}^{\textrm{obs}}$ or $C_{y,l}^{\textrm{obs}}$).
-For example, $\textrm{ESS}_{CAA}$ independent catch
+annual effective sample size ($C_{y,a}^{\textrm{obs}}$).
+For example, $\textrm{ESS}_\textrm{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
 
@@ -318,7 +323,7 @@ C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}
 $$
 
 For each year, the frequency of samples at age is inflated to match the
-total sample size $n \cdot \textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
+total sample size $n_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
 
 $$
 C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right)
@@ -346,14 +351,14 @@ The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a c
 variability controlled by ${{\sigma}}_{\textrm{TAC}}$.
 
 $$
-I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}}{2} \right)
+I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right)
 (\#eq:dlm-om-itac)
 $$
 
 where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}} \right)
+\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}}^2 \right)
 (\#eq:dlm-om-epsilontac)
 $$
 
@@ -369,12 +374,12 @@ and mean fraction of recommendation $b_{\textrm{TAC}}$ from
 a lognormal distribution:
 
 $$
-b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}}{2} \right)
+b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}^2}{2} \right)
 (\#eq:dlm-om-btac)
 $$
 
 $$
-\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
+\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}}^2 \right)
 (\#eq:dlm-om-epsilonbtac)
 $$
 
@@ -447,7 +452,7 @@ $$
 
 <!--TODO: do we want to explain how DLMtool numerically solves for FMSY (e.g., Newton-Raphson algorithm or just leave it vague)? My preference is to leave it vague. there are lots of ways to do it and the details aren't really important as long as it works.-->
 
-After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is simply calculated:
+After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is calculated:
 
 $$
 B_{\textrm{MSY}} = \phi_f R^e
