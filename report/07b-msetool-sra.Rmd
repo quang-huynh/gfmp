@@ -35,7 +35,7 @@ In this case, with $i = 1:n$ (e.g., $n=250$) simulations in the closed-loop simu
 Alternatively, the user can provide values in the `cpars` section of the operating model, e.g.,
 
 \begin{equation}
-h_\text{samp} \sim \text{rbeta}(250, 13.3, 4.4)
+h_\text{samp} \sim \text{rbeta}(n, 13.3, 4.4)
 \end{equation}
 
 then
