@@ -155,16 +155,16 @@ During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) i
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
 
 $$
-V_{y,a} = N_{y,a} W_{a} v_{y,a} R_{a}
+V_{y,a} = N_{y,a} W_{a} v_{a} R_{a}
 (\#eq:dlm-om-vulcom)
 $$
 
-where the vulnerability-at-age  $v_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
+where the vulnerability-at-age $v_{a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
 $$
-v_{y,a} = \left\{ \begin{matrix}
-2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\
-2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\
+v_{a} = \left\{ \begin{matrix}
+2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{a} \leq {{L}}_{\textrm{smax}} \\
+2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{a} > {{L}}_{\textrm{smax}} \\
 \end{matrix} \right\} ,
 (\#eq:dlm-om-vay)
 $$
@@ -184,7 +184,7 @@ $$
 (\#eq:dlm-om-sigldes)
 $$
 
-The realized projected catches $C_{y,a}$ are the TAC recommendations across ages.
+The realized projected catches $C_{y,a}$ are the TAC recommendations across ages (with possible implementation error).
 Projected catches may account for retention rate ($R_{y,a}$) and post-release discard mortality rate $\theta_{M{\textrm{disc}}}$ in the presence of discarding.
 Implementation uncertainty ($I_\textrm{TAC}$, Equation \@ref(eq:dlm-om-itac)) may also be accounted for, e.g., in the presence of consistent under-utilization of TACs.
 
