@@ -76,6 +76,16 @@ names(om) <- scenarios
 
 # Fit MPs to all OMs ----------------------------------------------------------
 
+# .om <- om[[1]]
+# .om@nsim <- 5
+# load_all("../gfdlm/")
+# .mp <- add_SP_prior(.SP4010_gf, r_prior = c(0.3, 0.1))
+# .mp <- add_SP_prior(.SP4010_gf, r_prior = c(0.3, 0.1))
+# .mp <- add_SP_prior(.SP4010_gf, r_prior = c(0.3, 0.1))
+# .mp <- use_AddInd(IDX)
+# m <- runMSE(OM =.om, MPs = ".mp", parallel = FALSE)
+
+
 fit_scenario <- function(scenario) {
   file_name <- here("generated-data", paste0(sp, "-mse-", scenario, ".rds"))
   if (!file.exists(file_name)) {
