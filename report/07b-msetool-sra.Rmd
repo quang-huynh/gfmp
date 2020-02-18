@@ -27,16 +27,16 @@ In MSEtool, `SRA_scope()` is the main function for scoping historical scenarios 
 The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters. 
 For example, the steepness parameter of the stock-recruit relationship ($h$) is usually highly uncertain. The user can specify a range of values for $h$ (e.g., 0.6 to 0.9 with a uniform distribution):
 
-\begin{equation}
+$$
 h \sim U (0.6,0.9)
-\end{equation}
+$$
 
 In this case, with $i = 1:n$ (e.g., $n=250$) simulations in the closed-loop simulation,  `SRA_scope` will sample $n$ steepness values from this distribution and then fit the SRA model $n$ times. 
 Alternatively, the user can provide values in the `cpars` section of the operating model, e.g.,
 
-\begin{equation}
+$$
 h_\text{samp} \sim \text{rbeta}(n, 13.3, 4.4)
-\end{equation}
+$$
 
 then `OM@cpars$h` = $0.8 h_\text{samp}  + 0.2$
 
@@ -175,7 +175,7 @@ For fleet $f$ with flat-topped selectivity, two parameters are used, the length 
 For dome selectivity, a third parameter, the selectivity at $L_{\infty}$, $V^{L_{\infty}}_f$ is also used. 
 Length-based selectivity is converted to age-based selectivity in the age-structured model as:
 
-\begin{equation}
+$$
 v_{y,a,f} = 
 \begin{cases}
 2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{asc}}_f)]^2} & \textrm{if } L_{y,a} < L^{\textrm{FS}}_f\\ 
@@ -183,40 +183,40 @@ v_{y,a,f} =
 2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome and } L_{y,a} \ge L^{\textrm{FS}}_f
 \end{cases}
 (\#eq:sra-om-vyaf)
-\end{equation}
+$$
 
 where $L_{y,a}$ is the mean length-at-age in year $y$, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(V^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the selectivity function. In this parameterization, length-based selectivity is constant over time. The corresponding age-based selectivity is constant over time if growth is not time-varying.
 
 Total mortality $Z$ in year $y$ and for age $a$ is the sum of fishing mortality $F$ from all fleets and natural mortality $M$,
 
-\begin{equation}
+$$
 Z_{y,a} = M_{y,a} + \Sigma_f v_{y,a,f} F_{y,f}
 (\#eq:sra-om-zya)
-\end{equation}
+$$
 
 ### Initial population distribution
 
 The population age distribution in the first year of the model $y=1$ is in equilibrium where
 
-\begin{equation}
+$$
 N_{1,a} = 
 \begin{cases}
       R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i) & a = 1, \ldots, A-1\\
       \dfrac{R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
 \end{cases}
 (\#eq:sra-om-numinit)
-\end{equation}
+$$
 
 where the $R^{\textrm{eq}}$ is the equilibrium recruitment and $Z^{\textrm{eq}}_a = M_{1,a} + \Sigma_f v_{1,a,f} F^{\textrm{eq}}_f$ is the equilibrium total mortality rate. Unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch in weight $\tilde{C}^{\textrm{eq}}_f$ prior to the first year of the model should be provided. In the equilibrium yield curve,  $F^{\textrm{eq}}_f$ would be the fishing mortality corresponding to fishing at $F^{\textrm{eq}}_f$. Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated as:
 
-\begin{equation}
+$$
 R^{\textrm{eq}} = 
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{B}}\phi^{\textrm{eq}}} & \textrm{if Beverton-Holt stock-recruit relationship}\\
       \dfrac{\log(\alpha^{\textrm{R}}\phi^{\textrm{eq}})}{\beta^{\textrm{R}}\phi^{\textrm{eq}}} & \textrm{if Ricker stock-recruit relationship}
 \end{cases}
 (\#eq:om-sra-recinit)
-\end{equation}
+$$
 
 where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^{\textrm{eq}}_a$. From steepness $h$, $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_0}$, $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B^S_0}$, $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_0}$, $\beta^{\textrm{R}} = \frac{\log(5h)}{B^S_0}$, where $\phi_0$ and $B^S_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
 
@@ -224,7 +224,7 @@ where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^
 
 After setting the equilibrium population age distribution in the first year of the model, the population abundance $N_{y,a}$ in subsequent years is
 
-\begin{equation}
+$$
 N_{y,a} =
 \begin{cases}
       R_y & a = 1\\
@@ -232,7 +232,7 @@ N_{y,a} =
       N_{y-1,a-1} \exp(-Z_{y-1,a-1}) + N_{y-1,a} \exp(-Z_{y-1,a}) & a = A
 \end{cases}
 (\#eq:om-sra-nya)
-\end{equation}
+$$
 
 where $R_y$ is the recruitment and $A$ is the maximum-age as the plus-group. Recruitment is modelled as
 
@@ -240,41 +240,41 @@ where $R_y$ is the recruitment and $A$ is the maximum-age as the plus-group. Rec
 
 
 
-\begin{equation}
+$$
 R_y = 
 \begin{cases}
       \dfrac{\alpha^{\textrm{BH}} B^S_{y-1}}{1 + \beta^{\textrm{BH}}B^S_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{if Beverton-Holt stock-recruit relationship}\\
       \alpha^{\textrm{Ricker}} B^S_{y-1} \exp(-\beta^{\textrm{Ricker}} B^S_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{if Ricker stock-recruit relationship}
 \end{cases},
 (\#eq:om-sra-rya)
-\end{equation}
+$$
 
 where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates.
 
 The spawning biomass is $B^S_y$ is
 
-\begin{equation}
+$$
 B^S_y = \sum_a w_{y,a} m_{y,a} N_{y,a}
 (\#eq:om-sra-sy)
-\end{equation}
+$$
 
 where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respectively.
 
 ## Catch-at-age
 
 If the model is fit to age-composition data, the catch (in numbers) $C^N$ at age for fleet $f$ is
-\begin{equation}
+$$
 C^N_{y,a,f} = \dfrac{v_{y,a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp[-Z_{y,a}])
 (\#eq:om-sra-cyaf)
-\end{equation}
+$$
 
 In our framework, we recommend conditioning the model on observed catches, as these are better reported than effort, and easier to interpret for a multispecies fishery. In this case, with a model conditioned on catch, then $F_{y,f}$ can be estimated as parameters or solved iteratively to match the observed catch. 
 In other applications, if the model is conditioned on effort, then
 
-\begin{equation}
+$$
 F_{y,f} = q_f E_{y,f}
 (\#eq:om-sra-fyf-eff)
-\end{equation}
+$$
 
 where $E_{y,f}$ is the observed effort and $q_f$ is the scaling coefficient.
 
@@ -283,14 +283,14 @@ where $E_{y,f}$ is the observed effort and $q_f$ is the scaling coefficient.
 If the model is fit to length-composition data, the catch-at-length is calculated assuming a normally distributed length-at-age $P(\ell,a)$, where
 
 
-\begin{equation}
+$$
 C^N_{y,\ell,f} = \sum_a C^N_{y,a,f} P(\ell \vert a)
 (\#eq:om-sra-cylf)
-\end{equation}
+$$
 
 and
 
-\begin{equation}
+$$
 P(\ell \vert a) = 
 \begin{cases}
       \phi(L'_{\ell+1}) & \ell = 1\\
@@ -298,122 +298,122 @@ P(\ell \vert a) =
       1 -\phi(L'_\ell) & \ell = L
 \end{cases}
 (\#eq:om-sra-pla)
-\end{equation}
+$$
 
 where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age). 
 
 The catch in weight $\tilde{C}$ is
 
-\begin{equation}
+$$
 \tilde{C}_{y,f} = \sum_a C^N_{y,a,f} w_{y,a}
 (\#eq:om-sra-cyfw)
-\end{equation}
+$$
 
 The mean length of the catch $\bar{L}_{y,f}$ is
 
-\begin{equation}
+$$
 \bar{L}_{y,f} = \dfrac{\sum_{\ell} L_{\ell} C^N_{y,\ell,f}}{\sum_{\ell} C^N_{y,\ell,f}}
 (\#eq:om-sra-lmean)
-\end{equation}
+$$
 
 where $L_\ell$ is the midpoint of the length bin $\ell$.
 
 The proportion of the catch-at-age is
 
-\begin{equation}
+$$
 p_{y,a,f} = \dfrac{C^N_{y,a,f}}{\sum_a C^N_{y,a,f}}
 (\#eq:om-sra-pyaf)
-\end{equation}
+$$
 
 The proportion of the catch-at-length is
 
-\begin{equation}
+$$
 p_{y,\ell,f} = \dfrac{C^N_{y,\ell,f}}{\sum_{\ell}C^N_{y,\ell,f}}
 (\#eq:om-sra-pylf)
-\end{equation}
+$$
 
 ## Survey 
 
 If the $s^{\textrm{th}}$ survey is biomass-based, then the survey value $I_{y,s}$ is calculated as
 
-\begin{equation}
+$$
 I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a} w_{y,a}
 (\#eq:om-sra-iysb)
-\end{equation}
+$$
 
 where $q$ is the scaling coefficient and $s$ indexes survey.
 
 If the survey is abundance-based, then 
 
-\begin{equation}
+$$
 I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}
 (\#eq:om-sra-iysn)
-\end{equation}
+$$
 
 ### Likelihoods
 
 If the model is conditioned on catch and fishing mortality rates are estimated parameters, then the log-likelihood component $\Lambda_1$ of the catch is
 
-\begin{equation}
+$$
 \Lambda_1 = \sum_f \left[\lambda^{\tilde{C}}_f \sum_y \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{obs}}_{y,f}) - \log(\tilde{C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right]
 (\#eq:om-sra-like-catch)
-\end{equation}
+$$
 
 where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch.
 
 The log-likelihood component $\Lambda_2$ of survey data is
 
-\begin{equation}
+$$
 \Lambda_2 = \sum_s \left[ \lambda^I_s \sum_y \left(-\log(\sigma_{y,s}) - \dfrac{[\log(I^{\textrm{obs}}_{y,s}) - \log(I^{\textrm{pred}}_{y,s})]^2}{2\sigma_{y,s}^2}\right) \right]
 (\#eq:om-sra-like-ind)
-\end{equation}
+$$
 
 The log-likelihood component $\Lambda_3$ of catch-at-age data is
 
-\begin{equation}
+$$
 \Lambda_3 = \sum_f \lambda^A_f \left[\sum_y O^A_{y,f} \sum_a p^{\textrm{obs}}_{y,a,f} \log(p^{\textrm{pred}}_{y,a,f})\right]
 (\#eq:om-sra-like-caa)
-\end{equation}
+$$
 
 where $O^A$ is the annual sample sizes for the age compositions.
 
 The log-likelihood component $\Lambda_4$ of catch-at-length data is
 
-\begin{equation}
+$$
 \Lambda_4 = \sum_f \lambda^L_f \left[ \sum_y O^L_{y,f} \sum_{\ell} p^{\textrm{obs}}_{y,\ell,f} \log(p^{\textrm{pred}}_{y,\ell,f})\right]
 (\#eq:om-sra-like-cal)
-\end{equation}
+$$
 
 where $O^L$ is the annual sample sizes for the length compositions.
 
 The log-likelihood component $\Lambda_5$ of observed mean lengths in the catch is
 
-\begin{equation}
+$$
 \Lambda_5 = \sum_f \lambda^{\bar{L}}_f\left[ \sum_y \left(-\log(\omega_f) - \dfrac{[\bar{L}^{\textrm{obs}}_{y,f} - \bar{L}^{\textrm{pred}}_{y,f}]^2}{2 \omega^2_f}\right)\right]
 (\#eq:om-sra-like-meanl)
-\end{equation}
+$$
 
 where $\omega_f$ is the standard deviation of mean lengths.
 
 The log-likelihood component $\Lambda_6$ of annual estimated recruitment deviates $\delta_y$ in log space is
 
-\begin{equation}
+$$
 \Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\delta_y^2}{2 \tau^2}\right)
 (\#eq:om-sra-like-recdevs)
-\end{equation}
+$$
 
 where $\tau$ is the standard deviation of recruitment deviates.
 
 The log-likelihood component $\Lambda_7$ of the equilibrium catch is
 
-\begin{equation}
+$$
 \Lambda_7 = \sum_f \lambda^{\tilde{C}}_f \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{eq,obs}}_f) - \log(\tilde{C}^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right)
 (\#eq:om-sra-like-eqcatch)
-\end{equation}
+$$
 
 The total log-likelihood $\textrm{LL}$ to be maximized is
-\begin{equation}
+$$
 \textrm{LL} = \sum_{i=1}^7\Lambda_i
 (\#eq:om-sra-like-tot)
-\end{equation}
+$$
 
