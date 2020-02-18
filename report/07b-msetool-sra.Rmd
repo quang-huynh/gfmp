@@ -6,52 +6,44 @@
 
 ## A BACKGROUND ON STOCK REDUCTION ANALYSIS {#sec:sra-background}
 
-For conditioning an operating model, it is desirable that some objective method be available (as opposed to intuition or a simple guess) to inform key historical parameters. 
-Biological studies can be used to inform life history parameters such as growth and maturity, while other parameters such as historical depletion and fishing mortality have typically been informed by an assessment model. 
-In data-limited or data-moderate settings, the lack of an accepted assessment makes it difficult to parameterize historical depletion and F.
+The operating model (OM) defined in Appendix \@ref(app:dlmtool-om) is conditioned  by fitting an age-structured stock-reduction analysis (SRA) [@kimura1982; @walters2006] to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
+This step produces estimates of parameters that produce time-series trajectories that are consistent with historical observations. 
+This is especially important in data-limited or data-moderate situations, where the lack of an accepted assessment makes it difficult to parameterize historical depletion and fishing mortality $F$.
 
-In the literature, the term "stock reduction analysis" has been used to describe a model in which the predicted total catch matches the observed catch. 
-@kimura1982 presented SRA as an alternative to a VPA or surplus production model.
-The SRA would be suitable over the VPA when catch-at-age data weren't available, while also utilizing an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history instead a pooled biomass dynamics approach with a surplus production model. 
+In the literature, the term "stock reduction analysis" has been used to describe a model in which the predicted total catch matches the observed catch.
+@kimura1982 presented SRA as an alternative to a virtual production analysis (VPA) or surplus production model.
+The SRA approach is more applicable to data-limited species than, for example, a VPA when annual catch-at-age data aren't available, while also utilizing an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history, rather than taking a pooled biomass-dynamics approach (e.g., surplus production model). 
 
-Stock reduction analysis (SRA) is a potential tool for conditioning operating models in the absence of information from assessments. In any assessment, point estimates of depletion and unfished recruitment may not be credible if there is high uncertainty of input values to the model such as natural mortality, recruitment compensation (i.e., steepness). 
+Another advantage of the SRA approach for BC groundfish fisheries is it accommodates model-conditioning on multiple indices of abundance (e.g., accommodating indices from multiple fishery-independent surveys and/or commercial CPUE series).
 
-In this context, we don't look at point estimates, but rather try to reduce the range of plausible parameters. @walters2006 used SRA as an approach to address a broader question: what combinations of historical fishing mortality and recruitment could have generated the observed data? 
-We would exclude parameters that would otherwise generate unlikely scenarios in the historical reconstruction of the stock. 
-
-Consider two extreme scenarios. 
-If the productivity or unfished stock size is too low, then the modeled population would crash while trying to explain the observed catches over time. On the other hand, if the productivity or unfished stock size is too high, then the observed catches are tiny in relation to the population, and implies still unfished conditions despite the observed fishing history. 
-Finding a suitable range of parameters is akin to "threading the needle" in order to avoid these two extreme scenarios.
+For data-limited species, where it may only be possible to provide ranges of values for key parameters, the SRA approach tries to reduce the range of plausible parameters to be consistent with historical observations. 
+for example, @walters2006 used SRA as an approach to address the broader question: what combinations of historical fishing mortality and recruitment could have generated the observed data?
 
 ## STOCK REDUCTION ANALYSIS IN THE CONTEXT OF DLMTOOL {#sec:sra-dlmtool}
 
-The stock reduction paradigm can be quite useful for informing the historical scenarios in a DLMtool operating model. 
-Suppose that we are unsure about how to specify certain life history parameters, e.g. steepness. 
-For other life history parameters such as growth, we may be more certain or we prefer to incorporate uncertainty in other parameters. 
-With some data, we can try to fit an age-structured model that estimates historical depletion (spawning biomass in the last year of the historical period relative to that when fishing started), recruitment, and fishing mortality that are consistent with the specified parameter values. 
+In MSEtool, `SRA_scope()` is the main function for scoping historical scenarios for an OM. 
+`SRA_scope` takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and historical observed data (observed catches, indices of abundance and, if available, composition data), fits the SRA to the observed data, and then returns a list with an updated OM and calibrated outputs from the SRA. 
 
-In MSEtool, `SRA_scope()` will be the main function for scoping historical scenarios for an operating model `OM`. 
-`SRA_scope` takes an operating model, data, in order to run the SRA and then returns a list with an updated OM and predicted outputs from the SRA. 
-All model configurations for the SRA will also be specified through arguments passed through `SRA_scope`.
+The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters. 
+For example, the steepness parameter of the stock-recruit relationship ($h$) is usually highly uncertain. The user can specify a range of values for $h$ (e.g., 0.6 to 0.9 with a uniform distribution):
 
-The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified as such. 
-For example, steepness is highly uncertain, then one could specify a range of values, for example, between 0.6 and 0.9 with a uniform distribution, in an operating model:
+\begin{equation}
+h \sim U (0.6,0.9)
+\end{equation}
 
-```{r, eval = FALSE}
-OM@h <- c(0.6, 0.9)
-```
+In this case, with $i = 1:n$ (e.g., $n=250$) simulations in the closed-loop simulation,  `SRA_scope` will sample $n$ steepness values from this distribution and then fit the SRA model $n$ times. 
+Alternatively, the user can provide values in the `cpars` section of the operating model, e.g.,
 
-If one wishes to run 250 simulations in the closed-loop simulation, then `SRA_scope` will sample 250 steepness values from this distribution and then fit the SRA model 250 times. 
-Alternatively, one can manually provide values in the `cpars` section of the operating model:
+\begin{equation}
+h_\text{samp} \sim \text{rbeta}(250, 13.3, 4.4)
+\end{equation}
 
-```{r, eval = FALSE}
-# Sample from a beta distribution and transform the random variable
-h_samp <- rbeta(250, 13.3, 4.4)
-OM@cpars$h <- 0.8 * h_samp + 0.2 # Mean = 0.8 with SD = 0.08
-```
+then
 
-The SRA model reconstruction from `i-th` fit will be conditioned on the `i-th` sampled value of steepness. 
-The sampled values of steepness (as well as all input parameters to the SRA) are saved in the OM object returned by `SRA_scope` to ensure consistency.
+`OM@cpars$h` = $0.8 h_\text{samp}  + 0.2$
+
+The SRA model reconstruction from `i-th` fit will be conditioned on the `i-th` sampled value of $h$. 
+The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved in the OM object returned by `SRA_scope`.
 
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
 

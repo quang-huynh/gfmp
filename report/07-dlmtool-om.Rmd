@@ -28,7 +28,7 @@ Operating model development in the MP Framework when using DLMtool follows three
 
 1. Set parameter values and ranges in the DLMtool OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr));
 
-2. Pass the OM parameters to the SRA model (`SRA_scope()` function in MSEtool), which conditions the OM by fiting an age-structured SRA to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
+2. Pass the OM parameters to the SRA model (`SRA_scope()` function in MSEtool), which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
 This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality that are consistent with historical observations. 
 Equations for the SRA model are provided in Appendix \@ref(app:sra); then
 
@@ -406,6 +406,7 @@ a log-normal distribution:
 Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\text{MSY}$ and the Upper Stock Reference (USR) is defined as the OM value of $0.8B_\text{MSY}$.
 $B_\text{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\text{MSY}$.
 
+Calculation of BRPs is done using estimated parameters from the conditioning stage, described in Appendix \@ref(app:sra). 
 In the absence of annual variability in life history and/or selectivity parameters, $F_\text{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
 
 \begin{equation}
