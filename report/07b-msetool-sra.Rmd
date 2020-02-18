@@ -1,3 +1,5 @@
+\clearpage
+
 # MSETOOL STOCK REDUCTION ANALYSIS {#app:sra}
 
 <!--
@@ -35,7 +37,7 @@ h \sim \textrm{Uniform} (0.6,0.9).
 $$
 
 In this case, with $i = 1$ to $n$ (e.g., $n = 250$) simulations in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
-The SRA model reconstruction from the $i$-th fit will be conditioned on the $i$-th sampled value of $h$.
+The SRA model reconstruction from the $i^{\textrm{th}}$ fit will be conditioned on the $i^{\textrm{th}}$ sampled value of $h$.
 The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved alongside the estimated parameters to form the conditioned OM.
 
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
@@ -313,7 +315,7 @@ where $q$ is the scaling coefficient and $s$ indexes survey.
 If the survey is abundance-based, then
 
 $$
-I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}
+I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}.
 (\#eq:sra-om-iysn)
 $$
 
