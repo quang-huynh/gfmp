@@ -51,12 +51,12 @@ A full time series of the conditioning variable (i.e., catch) is required needed
 
 In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
-In these cases, the SRA model is set up such that a value for equilibrium catch ($C_\textrm{eq}$) prior to the first year of the catch time series can be assumed.
+In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
 The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
-However, even using this approach, initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
-We therefore recommend treating $C_\textrm{eq}$ as a major axis of uncertainty if this approach is taken.
+However, initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
+We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
 An alternative approach is to use catch-reconstruction methods [e.g., @porch2004; @starr2017] to reconstruct the catch time series back to the time when the stock was considered unfished.
-While this approach avoids the uncertainty associated with estimating depletion based on $C_\textrm{eq}$, it may introduce other sources of uncertainty associated with the reconstruction approach.
+While this approach avoids the uncertainty associated with estimating depletion based on $C^{\textrm{eq}}_f$, it may introduce other sources of uncertainty associated with the reconstruction approach.
 
 In addition to the conditioning time series, additional data types can be used, which do not need to be available in every year of the historical time series:
 
@@ -129,7 +129,7 @@ Historical OM parameters that are updated by the SRA scoping function include:
 
 If initial depletion is estimated, then the annual recruitment deviations in the first year `OM@cpars$Perr_y` ($\varepsilon_{R,y}$) are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-numinit)).
 
-If multiple fleets are used for conditioning, then annual vulnerability-at-age ($v_{y,a,f}$, Equation \@ref(eq:sra-om-vyaf)) will be updated based on the relative fishing mortality among fleets.
+If multiple fleets are used for conditioning, then vulnerability-at-age ($v_{a,f}$, Equation \@ref(eq:sra-om-vaf)) will be updated based on the relative fishing mortality among fleets.
 
 *TODO: the sentence above is rather vague. Improve it and refer to equations where necessary (or consider deleting it)*
 
@@ -139,36 +139,36 @@ The default assumption in the projection period of the closed-loop simulation is
 
 ### Vulnerability-at-age and mortality
 
-Fleet-specific vulnerability-at-age ($v_{y,a,f}$) is length-based and modeled as a double-exponential function (using base 2).
+Fleet-specific vulnerability-at-age ($v_{a,f}$) is length-based and modeled as a double-exponential function (using base 2).
 For fleet $f$ with asymptotic vulnerability, a two-parameter logistic function is used, with parameters defining the length-of-5%-vulnerability ($L^5_f$) and the length-of-full-vulnerability $L^{\textrm{FS}}_f$.
-For dome-shaped vulnerability, a third parameter, the vulnerability at $L_{\infty}$, $V^{L_{\infty}}_f$ is also used.
+For dome-shaped vulnerability, a third parameter, the vulnerability at $L_{\infty}$, $v^{L_{\infty}}_f$ is also used.
 Length-based vulnerability is converted to age-based vulnerability in the age-structured model as:
 
 $$
-v_{y,a,f} =
+v_{a,f} =
 \begin{cases}
-2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{asc}}_f)]^2} & \textrm{if } L_{y,a} < L^{\textrm{FS}}_f\\
-1 & \textrm{if logistic and } L_{y,a} \ge L^{\textrm{FS}}_f,\\
-2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome-shaped and } L_{y,a} \ge L^{\textrm{FS}}_f
+2^{-[(L_{a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{asc}}_f)]^2} & \textrm{if } L_{a} < L^{\textrm{FS}}_f\\
+1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}}_f,\\
+2^{-[(L_{a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}_f
 \end{cases},
-(\#eq:sra-om-vyaf)
+(\#eq:sra-om-vaf)
 $$
 
-where $L_{y,a}$ is the mean length-at-age in year $y$, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(V^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the vulnerability function. In this parameterization, length-based vulnerability is constant over time. The corresponding age-based vulnerability is constant over time if growth is not time-varying.
+where $L_{y,a}$ is the mean length-at-age, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(v^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the vulnerability function. In this parameterization, length-based vulnerability is constant over time. The corresponding age-based vulnerability is constant over time if growth is not time-varying.
 
 Total mortality $Z$ in year $y$ and for age $a$ is given by
 
 $$
-Z_{y,a} = M_{y} + \Sigma_f v_{y,a,f} F_{y,f}
+Z_{y,a} = M + \Sigma_f v_{a,f} F_{y,f}
 (\#eq:sra-om-zya)
 $$
 
-where $F_{y,f}$ is fishing mortality by year $y$ and fleet $f$, and $M_{y,a}$ is natural mortality in year $y$.
+where $F_{y,f}$ is fishing mortality in year $y$ and fleet $f$, and $M$ is natural mortality, assumed here to be constnt.
 
 
 ### Initial population distribution
 
-The population age distribution in the first year of the model $y=1$ is in equilibrium:
+Numbers-at-age in the first year of the model $y=1$ are assumed to be in an equilibrium state:
 
 $$
 N_{1,a} =
@@ -179,7 +179,19 @@ N_{1,a} =
 (\#eq:sra-om-numinit)
 $$
 
-where the $R^{\textrm{eq}}$ is the equilibrium recruitment and $Z^{\textrm{eq}}_a = M_{1,a} + \Sigma_f v_{1,a,f} F^{\textrm{eq}}_f$ is the equilibrium total mortality rate. Unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch in weight $\tilde{C}^{\textrm{eq}}_f$ prior to the first year of the model should be provided. In the equilibrium yield curve,  $F^{\textrm{eq}}_f$ would be the fishing mortality corresponding to fishing at $F^{\textrm{eq}}_f$. Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated as:
+where the $R^{\textrm{eq}}$ is the equilibrium recruitment (Equation \@ref(eq:sra-om-recinit)) and $Z^{\textrm{eq}}_a$ is the equilibrium total mortality rate:
+
+$$
+Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f
+(\#eq:sra-om-zeq)
+$$
+
+where unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. 
+
+To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch in weight $C^{\textrm{eq}}_f$ prior to the first year of the model should be provided. In the equilibrium yield curve,  $F^{\textrm{eq}}_f$ would be the fishing mortality corresponding to fishing at $F^{\textrm{eq}}_f$.
+
+
+Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated as:
 
 $$
 R^{\textrm{eq}} =
