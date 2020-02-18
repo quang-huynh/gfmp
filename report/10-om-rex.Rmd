@@ -122,10 +122,10 @@ stock_rex@maxage <- 27
 
 *Natural mortality rate. Uniform distribution lower and upper bounds.*
 
-@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. Here, we add some uncertainty around this value.
+@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value elsewhere.
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@M <- c(0.14, 0.20)
+stock_rex@M <- c(0.17, 0.25)
 ```
 <!-- slot-chunk-end -->
 
@@ -134,7 +134,7 @@ stock_rex@M <- c(0.14, 0.20)
 
 *Steepness of the stock-recruit relationship. Uniform distribution lower and upper bounds with values from 1/5 to 1.*
 
-@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98). Here we will choose a value that approximately encompasses this range.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98). Here we will choose a value that approximately encompasses this range. We include alternative steepness scenarios elsewhere.
 
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@h <- c(0.70, 0.95)
