@@ -165,7 +165,6 @@ $$
 
 where $F_{y,f}$ is fishing mortality in year $y$ and fleet $f$, and $M$ is natural mortality, assumed here to be constnt.
 
-
 ### Initial population distribution
 
 Numbers-at-age in the first year of the model $y=1$ are assumed to be in an equilibrium state:
@@ -188,21 +187,25 @@ $$
 
 where unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. 
 
-To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch in weight $C^{\textrm{eq}}_f$ prior to the first year of the model should be provided. In the equilibrium yield curve,  $F^{\textrm{eq}}_f$ would be the fishing mortality corresponding to fishing at $F^{\textrm{eq}}_f$.
+To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch (in weight)  prior to the first year of the model $C^{\textrm{eq}}_f$ should be provided. 
 
-
-Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated as:
+Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 
 $$
 R^{\textrm{eq}} =
 \begin{cases}
-      \dfrac{\alpha^{\textrm{B}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{B}}\phi^{\textrm{eq}}} & \textrm{if Beverton-Holt stock-recruit relationship}\\
-      \dfrac{\log(\alpha^{\textrm{R}}\phi^{\textrm{eq}})}{\beta^{\textrm{R}}\phi^{\textrm{eq}}} & \textrm{if Ricker stock-recruit relationship},
+      \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
+      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker}
 \end{cases}
 (\#eq:sra-om-recinit)
 $$
 
-where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^{\textrm{eq}}_a$. From steepness $h$, $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_0}$, $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B^S_0}$, $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_0}$, $\beta^{\textrm{R}} = \frac{\log(5h)}{B^S_0}$, where $\phi_0$ and $B^S_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
+where $\phi_f$ is equilibrium spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif)), $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
+$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
+$\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
+and
+$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
 
 ### Dynamics equations
 
@@ -218,29 +221,29 @@ N_{y,a} =
 (\#eq:sra-om-nya)
 $$
 
-where $R_y$ is the recruitment and $A$ is the maximum-age as the plus-group. Recruitment is modelled as
+where $R_y$ is the recruitment and $A$ is the maximum-age, treated as a plus-group. 
 
-<!--TODO: change B^S to S-->
+<!-- TODO: RF to add note about how plus group is handled in DLMtool if the SRA is used (Issue #94)-->
+
+Annual recruitment is modelled as
 
 $$
 R_y =
 \begin{cases}
-      \dfrac{\alpha^{\textrm{BH}} B^S_{y-1}}{1 + \beta^{\textrm{BH}}B^S_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{if Beverton-Holt stock-recruit relationship}\\
-      \alpha^{\textrm{Ricker}} B^S_{y-1} \exp(-\beta^{\textrm{Ricker}} B^S_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{if Ricker stock-recruit relationship},
+      \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{Beverton-Holt}\\
+      \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{Ricker},
 \end{cases},
 (\#eq:sra-om-rya)
 $$
 
-where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates.
-
-The spawning biomass is $B^S_y$ is
+where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates, and $B_y$ is annual spawning biomass, given by
 
 $$
-B^S_y = \sum_a w_{y,a} m_{y,a} N_{y,a},
-(\#eq:sra-om-sy)
+B_y = \sum_a w_{y,a} m_{y,a} N_{y,a},
+(\#eq:sra-om-by)
 $$
 
-where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respectively.
+where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respectively (Equations \@ref(eq:dlm-om-vonb) and \@ref(eq:dlm-om-wta)).
 
 ### Catch-at-age
 
