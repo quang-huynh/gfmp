@@ -1,13 +1,14 @@
 mp, type
 
-CC_hist, "Constant catch"
 CC_hist20, "Constant catch"
 
-CC100, "Constant catch"
-CC90, "Constant catch"
-CC80, "Constant catch"
-CC70, "Constant catch"
-CC60, "Constant catch"
+CC1.2, "Constant catch"
+CC1.1, "Constant catch"
+CC1.0, "Constant catch"
+CC0.9, "Constant catch"
+CC0.8, "Constant catch"
+CC0.7, "Constant catch"
+CC0.6, "Constant catch"
 
 .Iratio2, "Index ratio"
 
@@ -21,20 +22,18 @@ CC60, "Constant catch"
 .Islope0.4_80, "Index slope"
 .Islope0.4_100, "Index slope"
 
-.ICI, "Index ratio"
-.ICI2, "Index ratio"
-
 .IDX, "Index ratio"
 .IDX_smooth, "Index ratio"
 
 .IT10_hist, "Index target"
 .IT5_hist, "Index target"
 
-.Itarget1, "Index target"
-.Itarget2, "Index target"
-.Itarget3, "Index target"
-.Itarget4, "Index target"
-.Itarget5, "Index target"
+.Itarget_base, "Index target"
+.Itarget_w0.8, "Index target"
+.Itarget_x0.2, "Index target"
+.Itarget_x0.8, "Index target"
+.Itarget_d1.2, "Index target"
+.Itarget_d0.8, "Index target"
 
 .ITM_hist, "Index target"
 
