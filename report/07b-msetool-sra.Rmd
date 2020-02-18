@@ -28,32 +28,21 @@ The function takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and hist
 
 The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters.
 For example, the steepness parameter of the stock-recruit relationship ($h$) is usually highly uncertain.
-The user can specify a range of values for $h$ (e.g., 0.6 to 0.9 with a uniform distribution):
+The initial OM can specify a range of values for $h$ (e.g., 0.6 to 0.9 with a uniform distribution):
 
 $$
-h \sim U (0.6,0.9)
+h \sim \textrm{Uniform} (0.6,0.9).
 $$
 
-In this case, with $i = 1$ to $n$ (e.g., $n=250$) simulations in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
-
-<!--
-Alternatively, the user can provide values in the `cpars` section of the operating model, e.g.,
-
-$$
-h_\text{samp} \sim \text{rbeta}(n, 13.3, 4.4)
-$$
-
-then `OM@cpars$h` = $0.8 h_\text{samp}  + 0.2$
--->
-
-The SRA model reconstruction from the i-th fit will be conditioned on the i-th sampled value of $h$.
-The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved alongside the estimated parameters in the conditioned OM.
+In this case, with $i = 1$ to $n$ (e.g., $n = 250$) simulations in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
+The SRA model reconstruction from the $i$-th fit will be conditioned on the $i$-th sampled value of $h$.
+The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved alongside the estimated parameters to form the conditioned OM.
 
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
 
 The SRA model can be conditioned on catch or fishing effort.
 For BC groundfish species, we recommend conditioning the model on catch.
-If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed.
+If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed catches.
 <!--If conditioned on effort, the estimated fishing mortality in the model will be proportional to the observed effort.-->
 A full time series of the conditioning variable (i.e., catch) is required needed.
 <!--, and length of the historical period `OM@nyears` will be the length of the conditioned time series.-->
