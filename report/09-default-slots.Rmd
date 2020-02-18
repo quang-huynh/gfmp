@@ -129,6 +129,30 @@ stock_default@Prob_staying <- c(0.5, 0.5)
 ```
 <!-- slot-chunk-end -->
 
+<!-- slot-chunk-begin -->
+### SRrel {#app:desc-stock-srrel-default}
+
+*Type of stock-recruit relationship. Single integer value, switch (1) Beverton-Holt (2) Ricker.*
+
+We will use a Beverton-Holt stock-recruit relationship as has been used in most BC groundfish assessments and is assumed in the estimates of steepness defined in this operating model.
+
+```{r desc-stock-srrel-default, results = knitr_results, echo = knitr_echo}
+stock_default@SRrel <- 1L
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Fdisc {#app:desc-stock-fdisc-default}
+
+*Fraction of discarded fish that die. Uniform distribution lower and upper bounds.*
+
+As described below, provisionally, we suggest setting up the OM such that all discards are considered part of the catch. Since the discard rate will be set to zero, this parameter will have no effect. In specific scenarios it could be explored.
+
+```{r desc-stock-fdisc-default, results = knitr_results, echo = knitr_echo}
+stock_default@Fdisc <- c(1, 1)
+```
+<!-- slot-chunk-end -->
+
 ## DEFAULT FLEET SLOTS {#app:desc-fleet-default}
 
 ```{r warnings = FALSE}
@@ -301,6 +325,20 @@ fleet_default@MPA
 ```
 <!-- slot-chunk-end -->
 
+<!-- slot-chunk-begin -->
+### DR {#app:desc-fleet-dr-default}
+
+*Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
+
+Since all the discards are included in the catch, we will set this to 0.
+
+```{r desc-fleet-dr-default, results = knitr_results, echo = FALSE}
+fleet_default@DR <- 0
+```
+
+<!-- slot-chunk-end -->
+
+
 ## DEFAULT OBSERVATION SLOTS {#app:desc-obs-default}
 
 ```{r warnings = FALSE}
@@ -308,13 +346,13 @@ obs_default <- methods::new('Obs')
 ```
 
 <!-- slot-chunk-begin -->
-### Crefbiascv {#app:desc-obs-crefbiascv-rex}
+### Crefbiascv {#app:desc-obs-crefbiascv-default}
 
 *Log-normal CV for sampling persistent bias in MSY. Uniform distribution lower and upper bounds.*
 
 The provisional MPs do not make use of this slot.
 
-```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-crefbiascv-default, results = knitr_results, echo = knitr_echo}
 obs_default@Crefbiascv
 ```
 <!-- slot-chunk-end -->

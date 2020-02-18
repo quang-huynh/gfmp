@@ -73,6 +73,8 @@ stock_rex@Frac_area_1 <- c(0.5, 0.5)
 stock_rex@Prob_staying <- c(0.5, 0.5)
 stock_rex@Mexp <- c(NA_real_, NA_real_)
 stock_rex@R0 <- 1000
+stock_rex@SRrel <- 1L
+stock_rex@Fdisc <- c(1, 1)
 ```
 
 <!-- slot-chunk-begin -->
@@ -138,18 +140,6 @@ stock_rex@M <- c(0.17, 0.25)
 
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@h <- c(0.70, 0.95)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### SRrel {#app:desc-stock-srrel-rex}
-
-*Type of stock-recruit relationship. Single integer value, switch (1) Beverton-Holt (2) Ricker.*
-
-We will use a Beverton-Holt stock-recruit relationship as has been used in most BC groundfish assessments and is assumed in the estimates of steepness defined in this operating model.
-
-```{r desc-stock-srrel-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@SRrel <- 1L
 ```
 <!-- slot-chunk-end -->
 
@@ -319,18 +309,6 @@ round(stock_rex@b, 2)
 ```
 <!-- slot-chunk-end -->
 
-<!-- slot-chunk-begin -->
-### Fdisc {#app:desc-stock-fdisc-rex}
-
-*Fraction of discarded fish that die. Uniform distribution lower and upper bounds.*
-
-We will assume that all discarded fish die.
-
-```{r desc-stock-fdisc-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Fdisc <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-
 ## FLEET SLOT DESCRIPTIONS {#app:desc-fleet-rex}
 
 ```{r warnings = FALSE}
@@ -345,6 +323,7 @@ fleet_rex@EffYears <- 1996:2018
 fleet_rex@EffLower <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@EffUpper <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@Spat_targ <- c(1, 1)
+fleet_rex@DR <- 0
 ```
 
 <!-- slot-chunk-begin -->
@@ -512,19 +491,6 @@ We do not have any length data on discards but assume that they will be retained
 ```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@Rmaxlen <- c(1, 1)
 ```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### DR {#app:desc-fleet-dr-rex}
-
-*Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
-
-Since all the discards are included in the catch, we will set this to 0.
-
-```{r desc-fleet-dr-rex, results = knitr_results, echo = FALSE}
-fleet_rex@DR <- 0
-```
-
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
