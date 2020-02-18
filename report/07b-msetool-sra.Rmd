@@ -221,11 +221,11 @@ N_{y,a} =
 (\#eq:sra-om-nya)
 $$
 
-where $R_y$ is the recruitment and $A$ is the maximum-age, treated as a plus-group. 
+where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum-age, treated as a plus-group. 
 
 <!-- TODO: RF to add note about how plus group is handled in DLMtool if the SRA is used (Issue #94)-->
 
-Annual recruitment is modelled as
+Annual recruitment $R_y$ is modelled as
 
 $$
 R_y =
