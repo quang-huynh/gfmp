@@ -57,9 +57,9 @@ get_filtered_scenario <- function(type, column) {
 scenarios <- sc$scenario %>% set_names()
 scenarios_human <- sc$scenario_human %>% set_names()
 scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-scenarios_ref_human <- get_filtered_scenario("Reference", "scenarios_human")
+scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
 scenarios_rob <- get_filtered_scenario("Robustness", "scenario")
-scenarios_rob_human <- get_filtered_scenario("Robustness", "scenarios_human")
+scenarios_rob_human <- get_filtered_scenario("Robustness", "scenario_human")
 
 # Read OMs --------------------------------------------------------------------
 
