@@ -128,7 +128,7 @@ $$
 (\#eq:dlm-om-auto)
 $$
 
-where $\theta_{\mathrm{AC}}$ represents a first-order autocorrelation term, and setting $\theta_\textrm{AC}$ to zero implies no autocorrelation.
+where $\theta_{\textrm{AC}}$ represents a first-order autocorrelation term, and setting $\theta_\textrm{AC}$ to zero implies no autocorrelation.
 
 The number of fish $N$ in each year $y > t_c$ and age $a > 1$ is then calculated from the numbers in the previous year and age class, subject to the instantaneous total mortality rate ($Z$) at age ($a$):
 

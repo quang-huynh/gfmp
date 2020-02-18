@@ -84,11 +84,9 @@ OM@LFS
 
 - Growth (length-at-age) using DLMtool OM slots `OM@Linf, OM@K, OM@t0` (or alternatively, `OM@cpars$Len_age`) [$L_{\infty}$, $\kappa$, $a_{0}$]
 
-- Variability in length-at-age `OM@LenCV` only if length data are used
-
 - Length-weight conversion factors using slots `OM@a` and `OM@b` (or alternatively, `OM@cpars$Wt_age`) [$\alpha_{W}$, $\beta_{W}$]
 
-- Natural mortality using slots `OM@M, OM@M2` or `OM@cpars$M_ageArray`[$M$, $M_2$]
+- Natural mortality `OM@M` or `OM@cpars$M_ageArray`[$M$]
 
 - Maturity using slots `OM@L50, OM@L50_95` or `OM@cpars$Mat_age` [$\theta_{l50}$, $\theta_{l50-95}$]
 
@@ -100,107 +98,49 @@ OM@LFS
 
 - Unfished recruitment `OM@R0` as the starting value [$R_0$].
 
-<!--TODO: We have not talked about time-varying scenarios at all. Add a section in the DLMtool OM documentation??-->
+*TODO: We have not talked about time-varying scenarios. Add a section in the DLMtool OM documentation*
 
 If growth, natural mortality, or maturity are set to be time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well. 
 Selectivity is fixed if no age or length compositions are provided. Otherwise, the ascending limb of selectivity is estimated with age or length composition data. 
 If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled from slot `OM@Vmaxlen` or estimated in the SRA. 
 
-
-```{r, eval = FALSE}
-OM@nyears <- 50
-OM@proyears <- 30
-
-M_ageArray <- array(0.4, c(OM@nsim, OM@maxage, OM@nyears + OM@proyears)) # Default M = 0.4
-M_ageArray[, , 1:30] <- 0.2 # M = 0.2 in the first 30 years of the simulation
-OM@cpars$M_ageArray <- M_ageArray
-```
-
-The SRA will pick up this change in the model as well.
-
-The easiest way to turn off time-varying growth and M is to set:
-
-```{r, eval = FALSE}
-OM@Linfsd <- OM@Ksd <- OM@Msd <- c(0, 0)
-```
-
 Information about the slots in the OM object can be viewed through `class?OM`.
-If passing custom objects to the operating model that override default inputs (e.g., for time-varying parameters), then `DLMtool::validcpars()` will be helpful for setting up and indexing the dimensions of the custom objects.
 
 ## Updated parameters and SRA model evaluation
 
+*TODO: Consolidate this list with the parameters above. Add them all to the same table and indicate whether or not they are updated*
+
 Historical OM parameters that are updated by the SRA scoping function include:
 
-- Unfished recruitment `OM@R0`, only if catch is provided.
-- Depletion `OM@D`
-- Annual fishing effort in `OM@EffYears`, `OM@EffLower`, `OM@EffUpper`, and `OM@cpars$Find`. In conjunction with depletion, effort will be equal to the apical fishing mortality.
-- Recruitment autocorrelation `OM@AC` which is estimated post-hoc from the recruitment deviation estimates.
-- Annual recruitment deviations `OM@cpars$Perr_y`. Historical recruitment are those estimated from the model, while future recruitment will be sampled with autocorrelation.
-- Selectivity parameters `OM@L5, OM@LFS, and OM@Vmaxlen`. If multiple fleets are modeled, then the F-at-age matrix is used to derive the effective selectivity and placed in `OM@cpars$V`.
+- Unfished recruitment `OM@R0` (when the model is conditioned on catch). [$R_0$]
+- Depletion `OM@D` [$\frac{B_{t}}{B_0}$]
+- Recruitment autocorrelation `OM@AC` which is estimated post-hoc from the recruitment deviation estimates. [$\theta_{\textrm{AC}}$]
+- Annual recruitment deviations `OM@cpars$Perr_y`. Historical recruitment are those estimated from the model, while future recruitment will be sampled with autocorrelation. [$\sigma_{R}$]
+- Selectivity parameters `OM@L5, OM@LFS, and OM@Vmaxlen`. If multiple fleets are modeled, then the F-at-age matrix is used to derive the effective selectivity and placed in `OM@cpars$V`. [$L_{5}$, $L_{LFS}$]
 
-If initial depletion is estimated, then the recruitment deviations `OM@cpars$Perr_y` for the operating model are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model.
+If initial depletion is estimated, then the annual recruitment deviations in the first year `OM@cpars$Perr_y` ($\varepsilon_{R,y}$) are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-numinit)).
 
-The SRA model will estimate and return R0 when conditioned on catch.
-When conditioning on effort, the model is generally scale-independent; there can be information to inform depletion but not the stock size.
-The exception occurs when the SRA is conditioned on effort from multiple-fleets, in which case, catch data from all fleets (incomplete series are acceptable) are needed to inform the relative F's among fleets.
-In this scenario, R0 is estimated.
+If multiple fleets are used for conditioning, then annual vulnerability-at-age ($v_{y,a,f}$, Equation \@ref(eq:sra-om-vyaf)) will be updated based on the relative fishing mortality among fleets. 
 
-Additionally, if multiple fleets are used for conditioning, then the annual selectivity can change based on the relative F among fleets.
-In this case, the annual selectivity is passed from the OM output in the `OM@cpars$V` slot.
-The default assumption in the projection period of the closed-loop simulation is that the selectivity and relative F among fleets are identical to those in the last historical year.
-Fleet allocation in management procedures can be explored in `multiMSE`, see `vignette("multiMSE")`.
+*TODO: the sentence above is rather vague. Improve it and refer to equations where necessary (or consider deleting it)*
 
-Life history parameters used in the SRA reconstruction will be also passed to `OM@cpars` to ensure reproducibility.
-Time-varying parameters affect calculation of reference points, mostly importantly unfished depletion.
-In `SRA_scope` (and DLMtool), depletion is the ratio of the spawning biomass in the terminal year and the unfished spawning biomass in the first year of the model.
-In this sense, depletion used to describe changes in the stock since fishing began.
-If life-history parameter are time-varying, then this definition may not necessarily reflect a management target.
-
-The relative effort provided in the output is the apical F from the SRA.
-When running the management strategy evaluation with `DLMtool::runMSE()`, the apical F may be re-scaled to ensure that specified depletion has been reached at the beginning and end of the historical period.
-For simple operating models, i.e. those with conditions identical to the SRA, the apical F's in the MSE should be nearly identical to those from the SRA.
-To confirm that this is the case, one can run the `plot` function on output returned by `SRA_scope`:
-
-```{r, eval = FALSE}
-output <- SRA_scope(...)
-plot(output)
-```
-
-This function returns a markdown report with:
-
-- Histograms of updated parameters in the OM object
-- Fits of the SRA model to the provided data
-- Output from the SRA model, e.g. predicted recruitment
-- Fits to an additional run of the SRA model to mean life history values among simulations (only when `SRA_scope(..., mean_fit = TRUE)` is run)
-- Comparisons of the historical period of the updated OM to the estimated SRA output
-
-Currently, it is possible to create a more complex operating model than the SRA model itself.
-For example, discard mortality, movement, and spatial targetting are currently not modeled in the SRA.
-It is assumed that the catch in the SRA are all known sources of removal, i.e. landings plus discards.
-The SRA is a single area model, whereas DLMtool uses a multiple-area model. A simple operating model that best matches the SRA model may have the following configurations:
-
-```{r, eval = FALSE}
-OM@DR <- c(0, 0) # All discards are accounted for
-OM@Size_area_1 <- OM@Frac_area_1 <- OM@Prob_staying <- c(0.5, 0.5) # A well-mixed stock in 2 areas of equal sizes
-```
-
-It may be desirable to compare the SRA to a simple operating model before incorporating more complex dynamics in the operating model.
+The default assumption in the projection period of the closed-loop simulation is that the selectivity and relative fishing mortality among fleets are identical to those in the last historical year $t_c$.
 
 ## DESCRIPTION OF THE SRA MODEL
 
-### Selectivity and mortality
+### Vulnerability-at-age and mortality
 
-Selectivity $v$ is length-based and modeled as a double-exponential function (using base 2).
-For fleet $f$ with flat-topped selectivity, two parameters are used, the length of 5% selectivity ($L^5_f$) and the length of full selectivity $L^{\textrm{FS}}_f$.
-For dome selectivity, a third parameter, the selectivity at $L_{\infty}$, $V^{L_{\infty}}_f$ is also used.
-Length-based selectivity is converted to age-based selectivity in the age-structured model as:
+Fleet-specific vulnerability-at-age ($v_{y,a,f}$) is length-based and modeled as a double-exponential function (using base 2).
+For fleet $f$ with asymptotic vulnerability, a two-parameter logistic function is used, with parameters defining the length-of-5%-vulnerability ($L^5_f$) and the length-of-full-vulnerability $L^{\textrm{FS}}_f$.
+For dome-shaped vulnerability, a third parameter, the vulnerability at $L_{\infty}$, $V^{L_{\infty}}_f$ is also used.
+Length-based vulnerability is converted to age-based vulnerability in the age-structured model as:
 
 $$
 v_{y,a,f} =
 \begin{cases}
 2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{asc}}_f)]^2} & \textrm{if } L_{y,a} < L^{\textrm{FS}}_f\\
 1 & \textrm{if logistic and } L_{y,a} \ge L^{\textrm{FS}}_f,\\
-2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome and } L_{y,a} \ge L^{\textrm{FS}}_f
+2^{-[(L_{y,a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome-shaped and } L_{y,a} \ge L^{\textrm{FS}}_f
 \end{cases}
 (\#eq:sra-om-vyaf)
 $$
