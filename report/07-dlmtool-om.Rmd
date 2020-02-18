@@ -155,21 +155,19 @@ During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) i
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass across ages ($V_{y,a}$):
 
 $$
-V_{y,a} = N_{y,a} W_{a} v_{a} R_{a}
+V_{y,a} = N_{y,a} W_{a} v_{y,a} R_{a}
 (\#eq:dlm-om-vulcom)
 $$
 
 where the vulnerability-at-age  $v_{y,a}$ is calculated from a double-normal selectivity curve and length-at-age:
 
-<!--
 $$
 v_{y,a} = \left\{ \begin{matrix}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{smax}} \\
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{smax}} \\
-\end{matrix} \right,
+\end{matrix} \right\} ,
 (\#eq:dlm-om-vay)
 $$
--->
 
 and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
 The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability ($L_5$):
