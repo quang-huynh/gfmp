@@ -100,26 +100,9 @@ OM@LFS
 
 - Unfished recruitment `OM@R0` as the starting value [$R_0$].
 
-If growth, natural mortality, or maturity are time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well. 
-For example, if we're setting up an operating model where the length of the historical period is 50 years, and we believe that natural mortality has doubled from 0.2 to 0.4 since Year 30 and will remain so into the future, this code can be used to set up this scenario:
+<!--TODO: We have not talked about time-varying scenarios at all. Add a section in the DLMtool OM documentation??-->
 
-```{r, eval = FALSE}
-OM@nyears <- 50
-OM@proyears <- 30
-
-M_ageArray <- array(0.4, c(OM@nsim, OM@maxage, OM@nyears + OM@proyears)) # Default M = 0.4
-M_ageArray[, , 1:30] <- 0.2 # M = 0.2 in the first 30 years of the simulation
-OM@cpars$M_ageArray <- M_ageArray
-```
-
-The SRA will pick up this change in the model as well.
-
-The easiest way to turn off time-varying growth and M is to set:
-
-```{r, eval = FALSE}
-OM@Linfsd <- OM@Ksd <- OM@Msd <- c(0, 0)
-```
-
+If growth, natural mortality, or maturity are set to be time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well. 
 Selectivity is fixed if no age or length compositions are provided. Otherwise, the ascending limb of selectivity is estimated with age or length composition data. 
 If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled from slot `OM@Vmaxlen` or estimated in the SRA. 
 
