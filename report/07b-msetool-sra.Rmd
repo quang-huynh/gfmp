@@ -54,32 +54,51 @@ A full time series of the conditioning variable (i.e., catch) is needed, and len
 In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions. 
 However, for some groundfish species in BC, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet). In these cases, users can pass `SRA_scope` a value for asssumed equilibrium catch ($C_{eq}$) prior to the first year of the catch time series. 
 The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
-However, even using this approach, initial depletion is difficult to estimate with precision without other sources of information (e.g., age-composition data). 
+However, even using this approach, initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data). 
 We therefore recommend treating $C_{eq}$ as a major axis of uncertainty if this approach is taken.
 An alternative approach is to use catch-reconstruction methods [e.g., @porch2004; @starr2017] to reconstruct the catch time series back to the time when the stock was considered unfished. While this approach avoids the uncertainty associated with estimating depletion based on $C_{eq}$, it may introduce other sources of uncertainty associated with the reconstruction approach, which may itself cause controversy.
 
 In addition to the conditioning time series, additional data types can be used, which do not need to be available in every year of the historical time series:
 
-- Time series of indices of abundance (either as surveyed biomass or fishery-dependent catch-per-unit-effort (CPUE))
+- Time series of indices of abundance (either as surveyed biomass or fishery-dependent catch-per-unit-effort (CPUE));
 - Age-composition data
 - Length-composition data
-- Mean length data (this option is generally for very sparse data scenarios when mean length data are available but not the composition data)
+- Mean length (in commercial or survey data) 
 
-Multiple surveys and fleets can be accommodated with `SRA_scope`. One of these several data types in addition to catch or effort is generally needed to obtain depletion estimates. 
-Availability of these data can be quite sparse over time, yet still informative. 
-For example, an age composition sample from a single recent year that shows a very truncated age structure can be sufficient to imply a heavily depleted stock.
+The use of mean length data is generally for very sparse data scenarios, when mean length data are available but there is no reliable composition data.
 
-The required pre-specified OM parameters needed for SRA scoping are:
+Multiple surveys and fleets can be accommodated by the SRA. Including one of these data types in addition to the conditioning catch time series is generally needed to inform depletion estimates. 
+Even in cases where availability of these data is sparse over time, they can still be informative for estimates of depletion. 
+For example, an age-composition sample from a single recent year that shows a very truncated age structure can imply a heavily depleted stock. Age-composition data from one or a few years can also be informative about selectivity, which in turn informs estimates of stock size.
 
-- Growth (length-at-age) using slots `OM@Linf, OM@K, OM@t0` (or alternatively, `OM@cpars$Len_age`)
+The required pre-specified OM parameters needed for SRA scoping are provided in Table **TODO**:
+
+*TODO: turn this into a table with parameter symbols if applicable (I added these in square parentheses] and slots. Same format we will use in 07-dlmtool-om.rmd*
+
+<!-- Note the following parameters in the list below have not been defined in the OM as far as I can tell. Should we add them to the OM documentation or remove them here? 
+OM@LenCV
+OM@M2
+Checking that OM@Perr = $\sigma_{R}$
+OM@LFS
+-->
+
+- Growth (length-at-age) using DLMtool OM slots `OM@Linf, OM@K, OM@t0` (or alternatively, `OM@cpars$Len_age`) [$L_{\infty}$, $\kappa$, $a_{0}$]
+
 - Variability in length-at-age `OM@LenCV` only if length data are used
-- Length-weight conversion factors using slots `OM@a` and `OM@b` (or alternatively, `OM@cpars$Wt_age`)
-- Natural mortality using slots `OM@M, OM@M2` or `OM@cpars$M_ageArray`
-- Maturity using slots `OM@L50, OM@L50_95` or `OM@cpars$Mat_age`
-- Standard deviation of recruitment deviations using slot `OM@Perr` or `OM@cpars$Perr`
-- Stock-recruit relationship with `OM@SRrel`
-- Selectivity parameters with `OM@L5`, `OM@LFS`, and `OM@Vmaxlen`. If there are no age or length compositions, then selectivity in the model is fixed to these values. Otherwise, these are used as starting values.
-- Unfished recruitment `OM@R0` as the starting value.
+
+- Length-weight conversion factors using slots `OM@a` and `OM@b` (or alternatively, `OM@cpars$Wt_age`) [$\alpha_{W}$, $\beta_{W}$]
+
+- Natural mortality using slots `OM@M, OM@M2` or `OM@cpars$M_ageArray`[$M$, $M_2$]
+
+- Maturity using slots `OM@L50, OM@L50_95` or `OM@cpars$Mat_age` [$\theta_{l50}$, $\theta_{l50-95}$]
+
+- Standard deviation of recruitment deviations using slot `OM@Perr` or `OM@cpars$Perr` [$\sigma_{R}$]
+
+- Stock-recruit relationship with `OM@SRrel` (Beverton-Holt or Ricker)
+
+- Selectivity parameters with `OM@L5`, `OM@LFS`, and `OM@Vmaxlen`. If there are no age or length compositions, then selectivity in the model is fixed to these values. Otherwise, these are used as starting values. [$L_{5}$, $L_{LFS}$]
+
+- Unfished recruitment `OM@R0` as the starting value [$R_0$].
 
 If growth, natural mortality, or maturity are time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well. 
 For example, if we're setting up an operating model where the length of the historical period is 50 years, and we believe that natural mortality has doubled from 0.2 to 0.4 since Year 30 and will remain so into the future, this code can be used to set up this scenario:
@@ -215,7 +234,7 @@ R^{\textrm{eq}} =
       \dfrac{\alpha^{\textrm{B}}\phi^{\textrm{eq}} - 1}{\beta^{\textrm{B}}\phi^{\textrm{eq}}} & \textrm{if Beverton-Holt stock-recruit relationship}\\
       \dfrac{\log(\alpha^{\textrm{R}}\phi^{\textrm{eq}})}{\beta^{\textrm{R}}\phi^{\textrm{eq}}} & \textrm{if Ricker stock-recruit relationship}
 \end{cases}
-(\#eq:om-sra-recinit)
+(\#eq:sra-om-recinit)
 \end{equation}
 
 where $\phi^{\textrm{eq}}$ is the spawners-per-recruit when the mortality is $Z^{\textrm{eq}}_a$. From steepness $h$, $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_0}$, $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B^S_0}$, $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_0}$, $\beta^{\textrm{R}} = \frac{\log(5h)}{B^S_0}$, where $\phi_0$ and $B^S_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
@@ -231,7 +250,7 @@ N_{y,a} =
       N_{y-1,a-1} \exp(-Z_{y-1,a-1}) & a = 2, \ldots, A - 1,\\
       N_{y-1,a-1} \exp(-Z_{y-1,a-1}) + N_{y-1,a} \exp(-Z_{y-1,a}) & a = A
 \end{cases}
-(\#eq:om-sra-nya)
+(\#eq:sra-om-nya)
 \end{equation}
 
 where $R_y$ is the recruitment and $A$ is the maximum-age as the plus-group. Recruitment is modelled as
@@ -246,7 +265,7 @@ R_y =
       \dfrac{\alpha^{\textrm{BH}} B^S_{y-1}}{1 + \beta^{\textrm{BH}}B^S_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{if Beverton-Holt stock-recruit relationship}\\
       \alpha^{\textrm{Ricker}} B^S_{y-1} \exp(-\beta^{\textrm{Ricker}} B^S_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{if Ricker stock-recruit relationship}
 \end{cases},
-(\#eq:om-sra-rya)
+(\#eq:sra-om-rya)
 \end{equation}
 
 where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates.
@@ -255,7 +274,7 @@ The spawning biomass is $B^S_y$ is
 
 \begin{equation}
 B^S_y = \sum_a w_{y,a} m_{y,a} N_{y,a}
-(\#eq:om-sra-sy)
+(\#eq:sra-om-sy)
 \end{equation}
 
 where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respectively.
@@ -265,7 +284,7 @@ where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respect
 If the model is fit to age-composition data, the catch (in numbers) $C^N$ at age for fleet $f$ is
 \begin{equation}
 C^N_{y,a,f} = \dfrac{v_{y,a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp[-Z_{y,a}])
-(\#eq:om-sra-cyaf)
+(\#eq:sra-om-cyaf)
 \end{equation}
 
 In our framework, we recommend conditioning the model on observed catches, as these are better reported than effort, and easier to interpret for a multispecies fishery. In this case, with a model conditioned on catch, then $F_{y,f}$ can be estimated as parameters or solved iteratively to match the observed catch. 
@@ -273,7 +292,7 @@ In other applications, if the model is conditioned on effort, then
 
 \begin{equation}
 F_{y,f} = q_f E_{y,f}
-(\#eq:om-sra-fyf-eff)
+(\#eq:sra-om-fyf-eff)
 \end{equation}
 
 where $E_{y,f}$ is the observed effort and $q_f$ is the scaling coefficient.
@@ -285,7 +304,7 @@ If the model is fit to length-composition data, the catch-at-length is calculate
 
 \begin{equation}
 C^N_{y,\ell,f} = \sum_a C^N_{y,a,f} P(\ell \vert a)
-(\#eq:om-sra-cylf)
+(\#eq:sra-om-cylf)
 \end{equation}
 
 and
@@ -297,7 +316,7 @@ P(\ell \vert a) =
       \phi(L'_{\ell+1}) - \phi(L'_\ell) & \ell = 2, \ldots, L - 1,\\
       1 -\phi(L'_\ell) & \ell = L
 \end{cases}
-(\#eq:om-sra-pla)
+(\#eq:sra-om-pla)
 \end{equation}
 
 where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age). 
@@ -306,14 +325,14 @@ The catch in weight $\tilde{C}$ is
 
 \begin{equation}
 \tilde{C}_{y,f} = \sum_a C^N_{y,a,f} w_{y,a}
-(\#eq:om-sra-cyfw)
+(\#eq:sra-om-cyfw)
 \end{equation}
 
 The mean length of the catch $\bar{L}_{y,f}$ is
 
 \begin{equation}
 \bar{L}_{y,f} = \dfrac{\sum_{\ell} L_{\ell} C^N_{y,\ell,f}}{\sum_{\ell} C^N_{y,\ell,f}}
-(\#eq:om-sra-lmean)
+(\#eq:sra-om-lmean)
 \end{equation}
 
 where $L_\ell$ is the midpoint of the length bin $\ell$.
@@ -322,14 +341,14 @@ The proportion of the catch-at-age is
 
 \begin{equation}
 p_{y,a,f} = \dfrac{C^N_{y,a,f}}{\sum_a C^N_{y,a,f}}
-(\#eq:om-sra-pyaf)
+(\#eq:sra-om-pyaf)
 \end{equation}
 
 The proportion of the catch-at-length is
 
 \begin{equation}
 p_{y,\ell,f} = \dfrac{C^N_{y,\ell,f}}{\sum_{\ell}C^N_{y,\ell,f}}
-(\#eq:om-sra-pylf)
+(\#eq:sra-om-pylf)
 \end{equation}
 
 ## Survey 
@@ -338,7 +357,7 @@ If the $s^{\textrm{th}}$ survey is biomass-based, then the survey value $I_{y,s}
 
 \begin{equation}
 I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a} w_{y,a}
-(\#eq:om-sra-iysb)
+(\#eq:sra-om-iysb)
 \end{equation}
 
 where $q$ is the scaling coefficient and $s$ indexes survey.
@@ -347,7 +366,7 @@ If the survey is abundance-based, then
 
 \begin{equation}
 I_{y,s} = q_s \sum_a v_{y,a,s} N_{y,a}
-(\#eq:om-sra-iysn)
+(\#eq:sra-om-iysn)
 \end{equation}
 
 ### Likelihoods
@@ -356,7 +375,7 @@ If the model is conditioned on catch and fishing mortality rates are estimated p
 
 \begin{equation}
 \Lambda_1 = \sum_f \left[\lambda^{\tilde{C}}_f \sum_y \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{obs}}_{y,f}) - \log(\tilde{C}^{\textrm{pred}}_{y,f})]^2}{2 \times 0.01^2}\right)\right]
-(\#eq:om-sra-like-catch)
+(\#eq:sra-om-like-catch)
 \end{equation}
 
 where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch.
@@ -365,14 +384,14 @@ The log-likelihood component $\Lambda_2$ of survey data is
 
 \begin{equation}
 \Lambda_2 = \sum_s \left[ \lambda^I_s \sum_y \left(-\log(\sigma_{y,s}) - \dfrac{[\log(I^{\textrm{obs}}_{y,s}) - \log(I^{\textrm{pred}}_{y,s})]^2}{2\sigma_{y,s}^2}\right) \right]
-(\#eq:om-sra-like-ind)
+(\#eq:sra-om-like-ind)
 \end{equation}
 
 The log-likelihood component $\Lambda_3$ of catch-at-age data is
 
 \begin{equation}
 \Lambda_3 = \sum_f \lambda^A_f \left[\sum_y O^A_{y,f} \sum_a p^{\textrm{obs}}_{y,a,f} \log(p^{\textrm{pred}}_{y,a,f})\right]
-(\#eq:om-sra-like-caa)
+(\#eq:sra-om-like-caa)
 \end{equation}
 
 where $O^A$ is the annual sample sizes for the age compositions.
@@ -381,7 +400,7 @@ The log-likelihood component $\Lambda_4$ of catch-at-length data is
 
 \begin{equation}
 \Lambda_4 = \sum_f \lambda^L_f \left[ \sum_y O^L_{y,f} \sum_{\ell} p^{\textrm{obs}}_{y,\ell,f} \log(p^{\textrm{pred}}_{y,\ell,f})\right]
-(\#eq:om-sra-like-cal)
+(\#eq:sra-om-like-cal)
 \end{equation}
 
 where $O^L$ is the annual sample sizes for the length compositions.
@@ -390,7 +409,7 @@ The log-likelihood component $\Lambda_5$ of observed mean lengths in the catch i
 
 \begin{equation}
 \Lambda_5 = \sum_f \lambda^{\bar{L}}_f\left[ \sum_y \left(-\log(\omega_f) - \dfrac{[\bar{L}^{\textrm{obs}}_{y,f} - \bar{L}^{\textrm{pred}}_{y,f}]^2}{2 \omega^2_f}\right)\right]
-(\#eq:om-sra-like-meanl)
+(\#eq:sra-om-like-meanl)
 \end{equation}
 
 where $\omega_f$ is the standard deviation of mean lengths.
@@ -399,7 +418,7 @@ The log-likelihood component $\Lambda_6$ of annual estimated recruitment deviate
 
 \begin{equation}
 \Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\delta_y^2}{2 \tau^2}\right)
-(\#eq:om-sra-like-recdevs)
+(\#eq:sra-om-like-recdevs)
 \end{equation}
 
 where $\tau$ is the standard deviation of recruitment deviates.
@@ -408,12 +427,12 @@ The log-likelihood component $\Lambda_7$ of the equilibrium catch is
 
 \begin{equation}
 \Lambda_7 = \sum_f \lambda^{\tilde{C}}_f \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{eq,obs}}_f) - \log(\tilde{C}^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right)
-(\#eq:om-sra-like-eqcatch)
+(\#eq:sra-om-like-eqcatch)
 \end{equation}
 
 The total log-likelihood $\textrm{LL}$ to be maximized is
 \begin{equation}
 \textrm{LL} = \sum_{i=1}^7\Lambda_i
-(\#eq:om-sra-like-tot)
+(\#eq:sra-om-like-tot)
 \end{equation}
 
