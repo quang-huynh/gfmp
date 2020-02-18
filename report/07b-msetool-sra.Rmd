@@ -215,8 +215,8 @@ $$
 N_{y,a} =
 \begin{cases}
       R_y & a = 1\\
-      N_{y-1,a-1} \exp(-Z_{y-1,a-1}) & a = 2, \ldots, A - 1,\\
-      N_{y-1,a-1} \exp(-Z_{y-1,a-1}) + N_{y-1,a} \exp(-Z_{y-1,a}) & a = A,
+      N_{y-1,a-1}\ e^{-Z_{y-1,a-1}} & a = 2, \ldots, A - 1,\\
+      N_{y-1,a-1}\ e^{-Z_{y-1,a-1}} + N_{y-1,a}\ e^{-Z_{y-1,a}} & a = A,
 \end{cases}
 (\#eq:sra-om-nya)
 $$

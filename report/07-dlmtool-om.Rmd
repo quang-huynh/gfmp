@@ -117,7 +117,7 @@ $$
 where A is the user-defined maximum age, ${R}_{0}e^{M{(a-1)}}$ gives unfished numbers-at-age, and spawning biomass $B_y$ in a given year is calculated as
 
 $$
-B_{y} = \sum_{a = 1}^{n_{a}}{m_{a}w_{a}N_{y,a}}.
+B_{y} = \sum_{a = 1}^{n_{a}}{m_{a}w_{a}N_{y,a}}
 (\#eq:dlm-om-sy)
 $$
 
@@ -139,21 +139,28 @@ $$
 
 where $\theta_{\textrm{AC}}$ represents a first-order autocorrelation term, and setting $\theta_\textrm{AC}$ to zero implies no autocorrelation.
 
-The number of fish $N$ in each year $y > t_c$ and age $a > 1$ is then calculated from the numbers in the previous year and age class, subject to the instantaneous total mortality rate ($Z$) at age ($a$):
+The number of fish $N$ in each year $y > t_c$ is then calculated from the numbers in the previous year and age class, subject to the instantaneous total mortality rate ($Z$) at age ($a$):
 
 $$
-N_{y, a} = N_{y-1,a-1}e^{- Z_{a-1}}
+N_{y,a} =
+\begin{cases}
+      R_y & a = 1\\
+      N_{y-1,a-1}\  e^{-Z_{y-1,a-1}} & 1<a<A\\
+      N_{y-1,a-1}\  e^{-Z_{y-1,a-1}} + N_{y-1,a}\ e^{-Z_{y-1,a}} & a = A
+\end{cases}
 (\#eq:dlm-om-nya)
 $$
 
-where the total mortality rate $Z_{y,a}$ is the sum of the instantaneous rates of natural mortality ($M$), assumed constant across years and ages unless otherwise specified, and fishing mortality-at-age ($F_{y,a}$, defined in Equation \@ref(eq:dlm-om-Fay)):
+where $A$ is the maximum age class and the annual total mortality rate $Z_{y,a}$ is the sum of the instantaneous rates of natural mortality ($M$), assumed constant across years and ages unless otherwise specified, and fishing mortality-at-age ($F_{y,a}$, defined in Equation \@ref(eq:dlm-om-Fay)):
 
 $$
-Z_{y,a} = M + F_{y,a}v_{y,a}.
-(\#eq:dlm-om-z)
+Z_{y,a} = M + F_{y,a}v_{a}
+(\#eq:dlm-om-zya)
 $$
 
-where $v_{y,a}$ is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-vay).
+where $v_{a}$ is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-va).
+
+Note that Equation \@ref(eq:dlm-om-nya) treats the maximum age class $A$ as a plus group. This is not the default in DLMtool, which usually makes the assumption that $A$ is large enough to include all age classes (i.e., $N_{y-1,a-1}e^{-Z_{y-1,a-1}}$ is used for all age classes including $a = A$). However, when the model is conditioned using the SRA (Appendix \@ref(app:sra)), this model does default to treating $A$ as a plus group (Equation \@ref(eq:sra-om-nya)). Therefore, to ensure consistency between the historical and projection periods, the SRA function `SRA_scope()` sets DLMtool to treat $A$ as a plus group (setting `OM@cpars$plusgroup` = TRUE) for the closed-loop simulations. Since we recommend always conditioning OMs for BC groundfish using the SRA, we include the plus group in Equation \@ref(eq:dlm-om-nya).
 
 ## FLEET DYNAMICS {#sec:dlmtool-fleet-dynamics}
 
@@ -173,7 +180,7 @@ v_{a} = \left\{ \begin{matrix}
 2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{a} \leq {{L}}_{\textrm{smax}} \\
 2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{a} > {{L}}_{\textrm{smax}} \\
 \end{matrix} \right\} ,
-(\#eq:dlm-om-vay)
+(\#eq:dlm-om-va)
 $$
 
 and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
@@ -467,6 +474,8 @@ B_{\textrm{MSY}} = \phi_f R^e
 $$
 
 with $F^e=F_\textrm{MSY}$ in Equation \@ref(eq:dlm-om-survivorship).
+
+Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is treated as a plus group in Equation \@ref(eq:dlm-om-survivorship). While this is not the default setting in DLMtool, it becomes the default when the SRA is used to condition the OM (see explanation in Section \@ref(sec:dlmtool-pop-dynamics)).
 
 <!-- TODO: Do we want to say anything about cases where parameters are time-varying? The DLmtool guide mentions it. I would suggest leaving it out, as we might choose to do it a different way anyway if the FSERP project identifies a best approach ... -->
 
