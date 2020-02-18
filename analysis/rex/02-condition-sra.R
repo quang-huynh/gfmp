@@ -88,7 +88,7 @@ plot(all_years, indexes$trawl_cpue, type = "p")
 #   CAL_bins = cal_wcvi$length_bins
 # )
 
-rex_om@nsim <- 210 # 10 extras in case some don't converge
+rex_om@nsim <- 260 # 10 extras in case some don't converge
 cores <- floor(parallel::detectCores() / 2)
 
 rex_om@Cobs <- c(0, 0)
@@ -152,7 +152,7 @@ saveRDS(rex_sra_ceq200_cpue, file = here("generated-data", "rex-sra-ceq200-cpue.
 
 rex_om@M
 rex_om_high_m <- rex_om
-rex_om_high_m@M <- c(0.25, 0.25)
+rex_om_high_m@M <- c(0.35, 0.35)
 rex_sra_high_m <- fit_sra_rex(rex_om_high_m)
 
 saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
@@ -196,29 +196,18 @@ rex_om_inc_m@cpars$M_ageArray <- M_age
 rex_sra_inc_m <- fit_sra_rex(rex_om_inc_m)
 saveRDS(rex_sra_inc_m, file = here("generated-data", "rex-sra-inc-m.rds"))
 
-rex_om_dec_m <- rex_om
-M_age <- array(0.20,
-  c(rex_om_dec_m@nsim, rex_om_dec_m@maxage, rex_om_dec_m@nyears + rex_om_dec_m@proyears))
-m <- seq(0.20, 0.10, length.out = rex_om_dec_m@proyears)
-for (i in seq_along(m)) M_age[, , rex_om_dec_m@nyears + i] <- m[i]
-plot(M_age[1,1,]) # one sim; one age
-rex_om_dec_m@cpars$M_ageArray <- M_age
-rex_sra_dec_m <- fit_sra_rex(rex_om_dec_m)
-saveRDS(rex_sra_dec_m, file = here("generated-data", "rex-sra-dec-m.rds"))
-
 # Set up the scenario names ---------------------------------------------------
 
 sc <- tibble::tribble(
   ~scenario,     ~scenario_human,        ~scenario_type,
-  "ceq50",       "Catch eq. 50%",         "Reference",
-  "ceq100",      "Catch eq. 100%",        "Reference",
-  "ceq200",      "Catch eq. 200%",        "Reference",
-  "ceq200-cpue", "Catch eq. 200% + CPUE", "Reference",
-  "high-m",      "M = 0.25",              "Reference",
+  "ceq50",       "Ceq. 50%",         "Reference",
+  "ceq100",      "Ceq. 100%",        "Reference",
+  "ceq200",      "Ceq. 200%",        "Reference",
+  "ceq200-cpue", "Ceq. 200%, CPUE", "Reference",
+  "high-m",      "M = 0.35",              "Reference",
   "low-h",       "h = 0.5-0.7",           "Reference",
   "high-h",      "h = 0.95",              "Reference",
-  "inc-m",       "M increasing",          "Robustness",
-  "dec-m",       "M decreasing",          "Robustness"
+  "inc-m",       "M inc,",          "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = "generated-data/rex-scenarios.rds")
@@ -233,12 +222,10 @@ names(sra_rex) <- sc$scenario
 # FIXME: get this into gfdlm:
 get_depletion <- function(x, scenario) {
   depletion <- x@SSB / sapply(x@Misc, getElement, "E0_SR")
+  last_year <- dim(depletion)[2]
+  all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
 
-  # FIXME: BAD TEMPORARY HACK!!! SA: 2020-01-21
-  if (scenario != "Catch eq. 200% + CPUE" & scenario != "Catch eq. 200%")
-    depletion <- depletion[depletion[,1] > 0.05,]
-
-  d1 <- t(apply(depletion[, -nyear], 2,
+  d1 <- t(apply(depletion[, -last_year], 2,
     FUN = quantile,
     probs = c(0.025, 0.5, 0.975)
   )) %>%
@@ -246,7 +233,9 @@ get_depletion <- function(x, scenario) {
     cbind(all_years) %>%
     mutate(scenario = scenario) %>%
     rename(lwr = 1, med = 2, upr = 3, year = all_years)
-  d2 <- t(apply(depletion[, -nyear], 2, FUN = quantile, probs = c(0.25, 0.75))) %>%
+  d2 <- t(apply(depletion[, -last_year], 2,
+    FUN = quantile,
+    probs = c(0.25, 0.75))) %>%
     as.data.frame() %>%
     cbind(all_years) %>%
     rename(lwr50 = 1, upr50 = 2, year = all_years)
@@ -267,66 +256,9 @@ ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
   width = 8, height = 6
 )
 
-# FIXME: get this into gfdlm along with Quang's composition version:
-get_sra_survey <- function(sra, sc_name, survey_names = c("SYN WCVI", "CPUE")) {
-  n_surv <- dim(sra@Misc[[1]]$Ipred)[2]
-  out2 <- purrr::map(seq_len(n_surv), function(i) {
-    surveys <- do.call(cbind, purrr::map(sra@Misc, ~ .$Ipred[,i,drop=FALSE]))
-    out <- reshape2::melt(surveys) %>%
-      rename(year = Var1, iter = Var2)
-    out$scenario <- sc_name
-    out$survey <- survey_names[i]
-    out
-  })
-  bind_rows(out2)
-}
-surv <- purrr::map2_dfr(sra_rex, sc$scenario, get_sra_survey)
-surv <- left_join(surv, sc, by = "scenario")
-surv$scenario_human <- factor(surv$scenario_human, levels = sc$scenario_human)
-surv$year <- surv$year + min(indexes$year) - 1
-
-surv_plot <- surv %>%
-  group_by(scenario_human, survey) %>%
-  mutate(geo_mean = exp(mean(log(value)))) %>%
-  mutate(value = value/geo_mean)
-
-surv_plot_distinct <- surv_plot %>% select(scenario_human, survey, geo_mean) %>%
-  distinct()
-
-# FIXME: functionalize this:
-indexes <- readRDS(here::here("generated-data/rex-indexes.rds"))
-indexes1 <- bind_rows(data.frame(
-  year = indexes$year,
-  biomass = indexes$trawl_cpue,
-  lwr = exp(log(indexes$trawl_cpue) - 2 * indexes$trawl_sd * 1.5), # FIXME: 1.5 * hardcoded
-  upr = exp(log(indexes$trawl_cpue) + 2 * indexes$trawl_sd * 1.5), # FIXME: 1.5 * hardcoded
-  survey = "CPUE"),
-  data.frame(
-    year = indexes$year,
-    biomass = indexes$biomass,
-    lwr = exp(log(indexes$biomass) - 2 * indexes$re),
-    upr = exp(log(indexes$biomass) + 2 * indexes$re),
-    survey = "SYN WCVI")) %>%
-  left_join(surv_plot_distinct, by = "survey") %>%
-  mutate(biomass = biomass / geo_mean, lwr = lwr / geo_mean, upr = upr / geo_mean)
-
-# FIXME: BAD TEMPORARY HACK!!! SA: 2020-01-21
-surv_plot2 <- surv_plot %>%
-  group_by(iter, survey, scenario_human) %>%
-  group_split() %>%
-  map_dfr(~{if(.$value[1] > 0.5 || .$scenario == "ceq200-cpue") .})
-
-g <- ggplot(surv_plot2, aes(year, value,
-  group = paste(iter, survey), colour = as.character(survey))) +
-  geom_line(alpha = 0.05) +
-  geom_pointrange(data = indexes1, mapping = aes(x = year, y = biomass, ymin = lwr, ymax = upr,
-    fill = as.character(survey)), inherit.aes = FALSE, pch = 21, colour = "grey40") +
-  facet_wrap(vars(scenario_human)) +
-  gfplot::theme_pbs() +
-  scale_color_brewer(palette = "Set2", direction = -1) +
-  scale_fill_brewer(palette = "Set2", direction = -1) +
-  ylab("Scaled index value") + xlab("Year") + labs(colour = "Survey", fill = "Survey")
-ggsave(here::here("report/figure/rex-index-fits.png"), width = 9, height = 7)
+sra_rex %>% set_names(sc$scenario_human) %>%
+  gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE"))
+ggsave(here::here("report/figure/rex-index-fits.png"), width = 6, height = 8)
 
 # FIXME: get this into gfdlm:
 get_sra_selectivity <- function(sc_name) {
