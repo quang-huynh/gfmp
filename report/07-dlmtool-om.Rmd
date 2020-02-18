@@ -151,7 +151,6 @@ Z_{y,a} = M + F_{y,a}v_{y,a}.
 
 where v_{y,a} is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-vay).
 
-
 ## FLEET DYNAMICS {#sec:dlmtool-fleet-dynamics}
 
 Parameters for the fleet dynamics are included in the `Fleet` object of DLMtool.
@@ -402,7 +401,75 @@ a log-normal distribution:
 (\#eq:dlm-om-epsilonbtac)
 \end{equation}
 
-## CALCULATION OF REFERENCE POINTS
+## CALCULATION OF MSY-BASED REFERENCE POINTS
 
-*TODO: RF will write this*
+Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\text{MSY}$ and the Upper Stock Reference (USR) is defined as the OM value of $0.8B_\text{MSY}$.
+$B_\text{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\text{MSY}$.
+
+In the absence of annual variability in life history and/or selectivity parameters, $F_\text{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
+
+\begin{equation}
+Y^e = F^e R^e \phi_f
+(\#eq:dlm-om-yeq)
+\end{equation}
+
+where $R^e$ is equilibrium recruitment (Equation \@ref(eq:dlm-om-req)) and $\phi_f$ is equilibrium spawning biomass-per-recruit, defined in Equation \@ref(eq:dlm-om-phif) below.
+
+In this framework, we assume a Beverton-Holt stock-recruit relationship [@beverton1957], although DLMtool also allows users to select the Ricker form [@ricker1954]:
+
+\begin{equation}
+R^e = 
+\begin{cases}
+      \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
+      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker}
+\end{cases}
+(\#eq:dlm-om-req)
+\end{equation}
+
+where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
+$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_e}$, 
+$\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
+and
+$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_e}$,
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, 
+where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_e$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
+
+Equilibrium spawning biomass-per-recruit is calculated
+
+\begin{equation}
+\phi_f = \sum_{a=1}^A \iota_a W_a m_a
+(\#eq:dlm-om-phif)      
+\end{equation}
+
+where $\iota_a$ is equilibrium survivorship-at-age:
+
+\begin{equation}
+   \iota_a=
+      \begin{cases} 
+            1, & a=1 \\                
+            \iota_{a-1}e^{-Z^e_{a-1}}, & 1<a<A \\
+            \dfrac{\iota_{a-1}e^{-Z^e_{a-1}}}{1-e^{-Z^e_{a}}} , & a=A\\
+      \end{cases}
+(\#eq:dlm-om-survivorship)      
+\end{equation}
+
+where $Z^e_{a}$ is equilibrium total mortality-at-age: 
+
+\begin{equation}
+Z^e_{a} = M +  F^e_{a}v_{a}
+(\#eq:dlm-om-zeq)      
+\end{equation}
+
+<!--TODO: do we want to explain how DLMtool numerically solves for FMSY (e.g., Newton-Raphson algorithm or just leave it vague)? My preference is to leave it vague. there are lots of ways to do it and the details aren't really important as long as it works.-->
+
+After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\text{MSY}$, $B_\text{MSY}$ is simply calculated:
+
+\begin{equation}
+B_{\text{MSY}} = \phi_f R^e
+(\#eq:dlm-om-bmsy)      
+\end{equation}
+
+with $F^e=F_\text{MSY}$ in Equation \@ref(eq:dlm-om-survivorship).
+
+<!-- TODO: Do we want to say anything about cases where parameters are time-varying? The DLmtool guide mentions it. I would suggest leaving it out, as we might choose to do it a different way anyway if the FSERP project identifies a best approach ... -->
 
