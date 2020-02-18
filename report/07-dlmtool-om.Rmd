@@ -410,11 +410,11 @@ Calculation of BRPs is done using estimated parameters from the conditioning sta
 In the absence of annual variability in life history and/or selectivity parameters, $F_\text{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
 
 \begin{equation}
-Y^e = F^e R^e \phi_f
+Y^e = F^e R^e \phi_b
 (\#eq:dlm-om-yeq)
-\end{equation}
+\end{equation}.
 
-where $R^e$ is equilibrium recruitment (Equation \@ref(eq:dlm-om-req)) and $\phi_f$ is equilibrium spawning biomass-per-recruit, defined in Equation \@ref(eq:dlm-om-phif) below.
+where $R^e$ is equilibrium recruitment (Equation \@ref(eq:dlm-om-req)) and $\phi_b$ is equilibrium vulnerable biomass-per-recruit, defined in Equation \@ref(eq:dlm-om-phib) below.
 
 In this framework, we assume a Beverton-Holt stock-recruit relationship [@beverton1957], although DLMtool also allows users to select the Ricker form [@ricker1954]:
 
@@ -435,7 +435,7 @@ $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_e}$,
 $\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, 
 where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_e$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
 
-Equilibrium spawning biomass-per-recruit is calculated
+Following the approach of @botsford1981, equilibrium spawning biomass-per-recruit is calculated
 
 \begin{equation}
 \phi_f = \sum_{a=1}^A \iota_a W_a m_a
@@ -459,6 +459,13 @@ where $Z^e_{a}$ is equilibrium total mortality-at-age:
 \begin{equation}
 Z^e_{a} = M +  F^e_{a}v_{a}
 (\#eq:dlm-om-zeq)      
+\end{equation}
+
+Finally, using the same approach, $\phi_b$ is calculated
+
+\begin{equation}
+\phi_b = \sum_{a=1}^A \iota_a W_a v_a
+(\#eq:dlm-om-phib)      
 \end{equation}
 
 <!--TODO: do we want to explain how DLMtool numerically solves for FMSY (e.g., Newton-Raphson algorithm or just leave it vague)? My preference is to leave it vague. there are lots of ways to do it and the details aren't really important as long as it works.-->
