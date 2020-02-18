@@ -428,12 +428,12 @@ R^e =
 \end{equation}
 
 where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
-$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_e}$, 
+$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$, 
 $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
 and
-$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_e}$,
+$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
 $\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, 
-where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_e$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
+where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_f^0$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
 
 Following the approach of @botsford1981, equilibrium spawning biomass-per-recruit is calculated
 
