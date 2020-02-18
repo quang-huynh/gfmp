@@ -258,7 +258,7 @@ ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
 
 sra_rex %>% set_names(sc$scenario_human) %>%
   gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE"))
-ggsave(here::here("report/figure/rex-index-fits.png"), width = 6, height = 8)
+ggsave(here::here("report/figure/rex-index-fits.png"), width = 5.5, height = 9.5)
 
 # FIXME: get this into gfdlm:
 get_sra_selectivity <- function(sc_name) {
