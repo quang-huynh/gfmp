@@ -38,34 +38,32 @@ Alternatively, the user can provide values in the `cpars` section of the operati
 h_\text{samp} \sim \text{rbeta}(n, 13.3, 4.4)
 \end{equation}
 
-then
-
-`OM@cpars$h` = $0.8 h_\text{samp}  + 0.2$
+then `OM@cpars$h` = $0.8 h_\text{samp}  + 0.2$
 
 The SRA model reconstruction from `i-th` fit will be conditioned on the `i-th` sampled value of $h$. 
 The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved in the OM object returned by `SRA_scope`.
 
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
 
-The first order of business with set-up of the SRA model is to decide whether to condition the model on catch, e.g., `SRA_scope(..., condition = "catch")` or effort.
+The SRA model can be conditioned on catch, e.g., `SRA_scope(..., condition = "catch")` or fishing effort.
+For BC groundfish species, we recommend conditioning the model on catch.
 If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed. 
 If conditioned on effort, the estimated fishing mortality in the model will be proportional to the observed effort. 
-A full time series of the conditioning variable is needed, and length of the historical period `OM@nyears` will be the length of the conditioned time series.
+A full time series of the conditioning variable (i.e., catch) is needed, and length of the historical period `OM@nyears` will be the length of the conditioned time series.
 
-Ideally, the time series begins at unfished conditions. 
-One could pass the asssumed equilibrium catch or equilibrium effort prior to the first year of data to `SRA_scope`. 
-The SRA will then attempt to estimate the initial depletion in the first year of the historical period. 
-However, initial depletion may be generally difficult to estimate with precision (consider what data are informative to estimate initial depletion, perhaps an age or length sample from that first year that shows the truncation of the composition data relative to unfished conditions). 
+In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions. 
+However, for some groundfish species in BC, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet). In these cases, users can pass `SRA_scope` a value for asssumed equilibrium catch ($C_{eq}$) prior to the first year of the catch time series. 
+The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
+However, even using this approach, initial depletion is difficult to estimate with precision without other sources of information (e.g., age-composition data). 
+We therefore recommend treating $C_{eq}$ as a major axis of uncertainty if this approach is taken.
+An alternative approach is to use catch-reconstruction methods [e.g., @porch2004; @starr2017] to reconstruct the catch time series back to the time when the stock was considered unfished. While this approach avoids the uncertainty associated with estimating depletion based on $C_{eq}$, it may introduce other sources of uncertainty associated with the reconstruction approach, which may itself cause controversy.
 
-If catch or effort data are unavailable going back to unfished conditions, then the data could be extrapolated back in time using reconstruction. 
-Examples of catch reconstruction methods for the purposes of a stock asesssment can be found in **TODO: Porch et al. (2004) and Appendix A of Starr and Haigh (2017)**.
+In addition to the conditioning time series, additional data types can be used, which do not need to be available in every year of the historical time series:
 
-In addition to the conditioning variable, additional data types can be used:
-
-- Indices of abundance (either as surveyed biomass or fishery-dependent catch-per-unit time series)
-- Age compositions
-- Length compositions
-- Mean lengths (this option is generally for very sparse data scenarios when mean length data are available but not the composition data)
+- Time series of indices of abundance (either as surveyed biomass or fishery-dependent catch-per-unit-effort (CPUE))
+- Age-composition data
+- Length-composition data
+- Mean length data (this option is generally for very sparse data scenarios when mean length data are available but not the composition data)
 
 Multiple surveys and fleets can be accommodated with `SRA_scope`. One of these several data types in addition to catch or effort is generally needed to obtain depletion estimates. 
 Availability of these data can be quite sparse over time, yet still informative. 
