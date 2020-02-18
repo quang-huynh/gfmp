@@ -75,17 +75,8 @@ stock_rex@Mexp <- c(NA_real_, NA_real_)
 stock_rex@R0 <- 1000
 stock_rex@SRrel <- 1L
 stock_rex@Fdisc <- c(1, 1)
-```
-
-<!-- slot-chunk-begin -->
-### Name {#app:desc-stock-name-rex}
-
-*The name of the Stock object.*
-
-```{r desc-stock-name-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Name <- "Rex Sole WCVI"
 ```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### Common_Name {#app:desc-stock-common_name-rex}
@@ -324,17 +315,12 @@ fleet_rex@EffLower <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@EffUpper <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@Spat_targ <- c(1, 1)
 fleet_rex@DR <- 0
-```
-
-<!-- slot-chunk-begin -->
-### Name {#app:desc-fleet-name-rex}
-
-*Name of the Fleet object.*
-
-```{r desc-fleet-name-rex, results = knitr_results, echo = knitr_echo}
+fleet_rex@LR5 <- c(1, 5) # fake
+fleet_rex@LFR <- c(5, 6) # fake
+fleet_rex@Rmaxlen <- c(1, 1)
+fleet_default@Vmaxlen <- c(1, 1)
 fleet_rex@Name <- "BC Fleet"
 ```
-<!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
 ### nyears {#app:desc-fleet-nyears-rex}
@@ -432,18 +418,6 @@ fleet_rex@LFS <- c(0.8, 1.2)
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### Vmaxlen {#app:desc-fleet-vmaxlen-rex}
-
-*The vulnerability of fish at `Linf`. Uniform distribution lower and upper bounds. Fraction.*
-
-We will set this to 1. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
-
-```{r desc-fleet-vmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@Vmaxlen <- c(1, 1)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
 ### isRel {#app:desc-fleet-isrel-rex}
 
 *Are the selectivity parameters in units of size-of-maturity (`TRUE`) (or absolute units, for example, cm) (`FALSE`).*
@@ -452,44 +426,6 @@ As mentioned above, the slots have been entered as units of size at maturity.
 
 ```{r desc-fleet-isrel-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@isRel <- TRUE
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### LR5 {#app:desc-fleet-lr5-rex}
-
-*Shortest length corresponding ot 5% retention. Uniform distribution lower and upper bounds.*
-
-We will assume this is 1/4 of `Linf`. This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
-
-```{r desc-fleet-lr5-rex, results = knitr_results, echo = knitr_echo}
-quarter_linf <- stock_rex@Linf / 4
-fleet_rex@LR5 <- c(quarter_linf, quarter_linf)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### LFR {#app:desc-fleet-lfr-rex}
-
-*Shortest length that is fully retained. Uniform distribution lower and upper bounds.*
-
-We will assume this is 1/2 of `Linf`. This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
-
-```{r desc-fleet-lfr-rex, results = knitr_results, echo = knitr_echo}
-half_linf <- stock_rex@Linf / 2
-fleet_rex@LFR <- c(half_linf, half_linf)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### Rmaxlen {#app:desc-fleet-rmaxlen-rex}
-
-*The retention of fish at `Linf`. Uniform distribution lower and upper bounds.*
-
-We do not have any length data on discards but assume that they will be retained if they are large (at `Linf`). This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch.
-
-```{r desc-fleet-rmaxlen-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@Rmaxlen <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -509,6 +445,13 @@ We will start with a built-in observation object and substitute values as we go:
 
 ```{r warnings = FALSE}
 obs_rex <- DLMtool::Precise_Unbiased
+```
+
+```{r desc-obs-default, warnings = FALSE, echo=FALSE}
+obs_rex@CAL_ESS <- c(100, 200)
+obs_rex@CAL_nsamp <- c(100, 200)
+obs_rex@CAA_ESS <- c(100, 200)
+obs_rex@CAA_nsamp <- c(100, 200)
 ```
 
 <!-- slot-chunk-begin -->
@@ -547,59 +490,6 @@ We will keep this at 0 because observation error on catch should be very small w
 
 ```{r desc-obs-cbiascv-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Cbiascv <- c(0, 0)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### CAA_nsamp {#app:desc-obs-caa_nsamp-rex}
-
-*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds.*
-
-This slot will not be relevant in the main operating model since none of the MPs make use of age data.
-
-```{r desc-obs-caa_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAA_nsamp <- c(100, 200)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### CAA_ESS {#app:desc-obs-caa_ess-rex}
-
-*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds.*
-
-This slot will not be relevant in the main operating model since none of the MPs make use of age data.
-
-```{r desc-obs-caa_ess-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAA_ESS <- c(50, 100)
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### CAL_nsamp {#app:desc-obs-cal_nsamp-rex}
-
-*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds.*
-
-The number of Rex Sole fish sampled for length each year in the SYN WCVI survey is somewhere between 3000 and 4000.
-
-This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
-
-```{r desc-obs-cal_nsamp-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAL_nsamp <- c(3000, 4000)
-obs_rex@CAL_nsamp
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
-### CAL_ESS {#app:desc-obs-cal_ess-rex}
-
-*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds.*
-
-Based on the calculations described in @pennington2002 (TODO: explain elsewhere), the effective sample size for catch at length appears to be around 100 to 400, depending on the year.
-
-This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
-
-```{r desc-obs-cal_ess-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@CAL_ESS <- c(100, 400)
 ```
 <!-- slot-chunk-end -->
 
