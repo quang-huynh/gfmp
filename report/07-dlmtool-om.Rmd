@@ -1,17 +1,10 @@
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
-<!-- *A summary of the important features of the DLMtool operating model* -->
-
-<!-- *Draw on appendix of DLMtool paper but simplified to have one region* -->
-
-<!-- *Not too many details; reference the paper* -->
-
-<!-- *TODO: Add references to slot names for user-defined parameters. Need to decide on a consistent method. E.g., do we just put the slot name in parentheses after the parameter or say something specific like "This parameter is  defined under stock@M etc. This is potentially problematic as we are giving the stock and other objects species-specific names (e.g., stock_rex@M). We could just use rex as an example. Or we could go with something generic like stock_speciesname@M* -->
-
-The DLMtool population dynamics operating model (OM) is an age-structured model decribed below. The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
+The DLMtool population dynamics operating model (OM) is an age-structured model decribed below.
+The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time.
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
 A full range of possible parameterizations is described in the appendices of @carruthers2018, adapted here for the MP Framework.
-Here, we present the simplest version of the OM, without time-varying parameters, multiple sub-areas, or implementation bias. 
+Here, we present the simplest version of the OM, without time-varying parameters, multiple sub-areas, or implementation bias.
 This OM structure should be suitable as a base OM for most species intended to be assessed with the framework.
 More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
 Wherever possible, we follow the notation conventions used in the appendices of @carruthers2018 for consistency.
@@ -21,31 +14,31 @@ Wherever possible, we follow the notation conventions used in the appendices of 
 There are two distinct time-periods in the simulation framework: 
 (1) The historical period, which covers the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$ (where "c" represents "current"); and 
 (2) the projection period, which covers the period from the first year after $t_c$ to the final projection year $t_N$. 
-The historical period is calibrated to historical observations using an age-structured stock-reduction analysis (SRA) [@kimura1982; @walters2006], described in Appendix \@ref(app:sra).
+The historical period is calibrated to historical observations using an age-structured stock-reduction analysis [SRA; @kimura1982; @walters2006], described in Appendix \@ref(app:sra).
 The closed-loop simulations and calculation of performance metrics begin in year $t_{c+1}$.
 
-Operating model development in the MP Framework when using DLMtool follows three steps:
+Operating model development in the MP Framework using DLMtool follows three steps:
 
-1. Set parameter values and ranges in the DLMtool OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr));
+1. Set parameter values and ranges in the OM (OM equations in this appendix; default parameter settings in Appendix \@ref(app:default-slots); examples of user-defined parameter settings in Appendix \@ref(app:desc-om-rex).
 
-2. Pass the OM parameters to the SRA model (`SRA_scope()` function in MSEtool), which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (and to age- and length-composition data if available). 
+2. Pass the OM parameters to the SRA model, which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (and to age- and length-composition data if available).
 This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality that are consistent with historical observations. 
-Equations for the SRA model are provided in Appendix \@ref(app:sra); then
+Equations for the SRA model are provided in Appendix \@ref(app:sra).
 
-3. Pass the calibrated parameter values back to the DLMtool OM (now the "conditioned" OM) for use in the closed-loop simulation projections.
+3. Pass the calibrated parameter values back to the OM (now the "conditioned" OM) for use in the closed-loop simulation projections.
 
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
-Parameters for the population dynamics are included in the `Stock` object of DLMtool.
+<!-- Parameters for the population dynamics are included in the `Stock` object of DLMtool. -->
 
 ### Growth and maturity
 
 The operating model assumes that growth follows a von Bertalanffy model:
 
-\begin{equation}
+$$
 L_{y,a} = L_{\infty}\left( 1 - \exp( - \kappa(a - a_{0} \right))
 (\#eq:dlm-om-vonb)
-\end{equation}
+$$
 
 where $\kappa$ represents the growth rate, $L_{\infty}$ represents the maximum length and $a_0$ represents the theoretical age where length is zero.
 
