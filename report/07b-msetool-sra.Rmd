@@ -282,6 +282,7 @@ where $m_{y,a}$ and $w_{y,a}$ are the maturity-at-age and weight-at-age, respect
 ## Catch-at-age
 
 If the model is fit to age-composition data, the catch (in numbers) $C^N$ at age for fleet $f$ is
+
 $$
 C^N_{y,a,f} = \dfrac{v_{y,a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp[-Z_{y,a}])
 (\#eq:sra-om-cyaf)
@@ -431,6 +432,7 @@ $$
 $$
 
 The total log-likelihood $\textrm{LL}$ to be maximized is
+
 $$
 \textrm{LL} = \sum_{i=1}^7\Lambda_i
 (\#eq:sra-om-like-tot)
