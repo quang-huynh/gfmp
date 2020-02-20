@@ -3,7 +3,7 @@ chapter_name: "Chapter "
 rmd_files: ["index.Rmd",
             "01-introduction.Rmd",
             "02-best-practices.Rmd",
-            "04-summary-rex.Rmd",
+            #"04-summary-rex.Rmd",
             #"03-summary-shortraker.Rmd",
             "05-discussion.Rmd",
             "06-mp-descriptions.Rmd",

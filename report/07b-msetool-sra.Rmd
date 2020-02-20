@@ -385,7 +385,7 @@ where $\tau$ is the standard deviation of recruitment deviates.
 The log-likelihood component $\Lambda_7$ of the equilibrium catch is
 
 $$
-\Lambda_7 = \sum_f \lambda^{\tilde{C}}_f \left(-\log(0.01) - \dfrac{[\log(\tilde{C}^{\textrm{eq,obs}}_f) - \log(\tilde{C}^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right).
+\Lambda_7 = \sum_f \lambda^{C}_f \left(-\log(0.01) - \dfrac{[\log(C^{\textrm{eq,obs}}_f) - \log(C^{\textrm{eq,pred}}_f)]^2}{2 \times 0.01^2}\right).
 (\#eq:sra-om-like-eqcatch)
 $$
 
