@@ -29,11 +29,31 @@ filter_data_rex <- function(d,
 load_data_rex <- gfdlm::load_data_factory("rex sole",
   file = here("generated-data", "rex-sole.rds")
 )
+
+all_years <- 1996:2018
+if (!file.exists(here::here("generated-data", "rex-catch.rds"))) {
+  # .d <- readRDS("/Volumes/Extreme-SSD/gfs/report/data-cache/rex-sole.rds")
+  # .d <- .d$catch
+  .d <- gfdata::get_catch("rex sole")
+  table(.d$year)
+  .d$area <- gfplot::assign_areas(.d$major_stat_area_name)
+  d_catch <- dplyr::filter(.d, year <= 2019, area == "3CD")
+  # d_catch <- catch <- d_catch %>%
+  #   gfplot::tidy_catch() %>%
+  #   group_by(year) %>%
+  #   summarize(value = sum(value)) %>%
+  #   right_join(tibble(year = all_years), by = "year") %>%
+  #   pull(value)
+  saveRDS(d_catch, file = here::here("generated-data", "rex-catch.rds"))
+} else {
+  d_catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
+}
 ```
 
 ```{r}
 science_name <- "Glyptocephalus zachirusadus"
 drex <- load_data_rex() %>% filter_data_rex()
+drex$catch <- dplyr::filter(d_catch, year <= 2018)
 saveRDS(drex, here::here("generated-data", "rex-filter-data.rds"))
 ```
 
@@ -103,7 +123,9 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated. Positive integer.*
 
-@munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years. We do not have ages in our database to inform the maximum age for this region.
+The maximum recorded age for a Rex Sole in BC waters is 15 in the Hecate Strait Multispecies Assemblage survey in 1998. We do not have ages in our database for 3CD to inform the maximum age for this region. @munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years.
+
+<!-- M = 5.4/15 = 0.36.  -->
 
 ```{r desc-stock-maxage-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@maxage <- 27
@@ -230,6 +252,9 @@ gfplot::plot_mat_ogive(m_mat)
 stock_rex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
 stock_rex@L50
 ```
+
+`r round(stock_rex@L50, 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm)  [@abookire2005].
+
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
@@ -310,7 +335,7 @@ fleet_rex <- DLMtool::Generic_Fleet
 fleet_rex@Esd <- c(0, 0)
 fleet_rex@qinc <- c(0, 0)
 fleet_rex@qcv <- c(0, 0)
-fleet_rex@EffYears <- 1996:2018
+fleet_rex@EffYears <- 1996:2019
 fleet_rex@EffLower <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@EffUpper <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@Spat_targ <- c(1, 1)
@@ -318,7 +343,7 @@ fleet_rex@DR <- 0
 fleet_rex@LR5 <- numeric(0) # fake
 fleet_rex@LFR <- numeric(0) # fake
 fleet_rex@Rmaxlen <- numeric(0) # fake
-fleet_default@Vmaxlen <- c(1, 1)
+fleet_rex@Vmaxlen <- c(1, 1) # i.e. not domed
 fleet_rex@Name <- "BC Fleet"
 ```
 
