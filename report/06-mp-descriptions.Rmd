@@ -317,15 +317,15 @@ where:
 
 - $I_0$ is $\lambda I_\textrm{ave}$, i.e., some fraction of the average index over the 10 years prior to the projection period, and represents a lower index level below which future TACs are reduced quadratically;
 - $I_\textrm{recent}$ is the average index over the most recent 5 years
-- $I_\textrm{target}$ is $(1 + \delta) I_\textrm{ave}$; the target index value
-- $\textrm{TAC}^*$ is a catch target defined as $(1 - x)C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last 5 years of the historical period ($C_\textrm{ave}$).
+- $I_\textrm{target}$ is $\delta I_\textrm{ave}$; the target index value
+- $\textrm{TAC}^*$ is a catch target defined as $x C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last 5 years of the historical period ($C_\textrm{ave}$).
 - $w$ is a smoothing parameter that defines the "steepness" of the adjustment slope.
 
 @geromont2015 and @geromont2015a propose a number of configurations of these MPs.
 We propose starting with the following provisional versions, and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
 
 We recommend the following provisional base values:
-$\lambda = 0.2$, $\delta = 0$, $w = 0.5$, $x = 0$.
+$\lambda = 0.2$, $\delta = 1$, $w = 0.5$, $x = 1$.
 This represents:
 
 - the TAC adjustment lowering quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
@@ -335,12 +335,12 @@ This represents:
 
 We then recommend varying each of the parameters while holding the others at their default values (Figure \@ref(fig:mp-itarget-demo2)):
 
-- Itarget_base:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x = 0$
-- Itarget_w0.8:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.8$, $x = 0$
-- Itarget_x0.2:   $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x =  0.2$
-- Itarget_x0.8:  $\lambda = 0.2$, $\delta = 0$,     $w = 0.5$, $x = -0.2$
-- Itarget_d1.2:   $\lambda = 0.2$, $\delta =  0.2$,  $w = 0.5$, $x = 0$
-- Itarget_d0.8:  $\lambda = 0.2$, $\delta = -0.2$,  $w = 0.5$, $x = 0$
+- Itarget_base:   $\lambda = 0.2$, $\delta = 1$,     $w = 0.5$, $x = 0$
+- Itarget_w0.8:   $\lambda = 0.2$, $\delta = 1$,     $w = 0.8$, $x = 0$
+- Itarget_x0.2:   $\lambda = 0.2$, $\delta = 1$,     $w = 0.5$, $x = 1.2$
+- Itarget_x0.8:   $\lambda = 0.2$, $\delta = 1$,     $w = 0.5$, $x = 0.8$
+- Itarget_d1.2:   $\lambda = 0.2$, $\delta = 1.2$,   $w = 0.5$, $x = 0$
+- Itarget_d0.8:   $\lambda = 0.2$, $\delta = 0.8$,   $w = 0.5$, $x = 0$
 
 ```{r mp-itarget-demo, fig.cap="Illustration of possible Itarget MPs across a range of tuning parameters based on Iave = 1.", fig.asp=0.75}
 f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w, lambda = 0.2) {
@@ -350,7 +350,7 @@ f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w, lambda = 0.2) {
   } else {
     TAC <- w * TACtarg * (Irecent / I0)^2
   }
-  if (TAC < 0) tac <- 0
+  if (TAC < 0) TAC <- 0
   TAC
 }
 pars <- expand.grid(
