@@ -477,5 +477,23 @@ with $F^e=F_\textrm{MSY}$ in Equation \@ref(eq:dlm-om-survivorship).
 
 Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is treated as a plus group in Equation \@ref(eq:dlm-om-survivorship). While this is not the default setting in DLMtool, it becomes the default when the SRA is used to condition the OM (see explanation in Section \@ref(sec:dlmtool-pop-dynamics)).
 
-<!-- TODO: Do we want to say anything about cases where parameters are time-varying? The DLmtool guide mentions it. I would suggest leaving it out, as we might choose to do it a different way anyway if the FSERP project identifies a best approach ... -->
+## TIME-VARYING PARAMETERS
+
+The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
+
+DLMtool allows users to allow a number of key parameters to vary through time, according to user-specified slope parameters . 
+For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
+This will affect other model variables that depend on growth, including maturity-at-length and age, and vulnerability-at-length and age.
+
+Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
+
+Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
+
+Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$} and related metrics (e.g., $B_\textrm{MSY}$}) at each time-step in the model. It is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period. 
+
+We recommend further simulation-testing of both options in future applications of the MP Framework if time-varying parameters are thought to be important.
+
+## DLMTOOL SLOTS
+
+*TODO. EK is making a table for the slots. Not sure if we need to put this under a heading or whether it is just a table in this appendix*
 
