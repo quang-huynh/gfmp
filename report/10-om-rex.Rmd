@@ -315,9 +315,9 @@ fleet_rex@EffLower <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@EffUpper <- rep(1, length(fleet_rex@EffYears))
 fleet_rex@Spat_targ <- c(1, 1)
 fleet_rex@DR <- 0
-fleet_rex@LR5 <- c(1, 5) # fake
-fleet_rex@LFR <- c(5, 6) # fake
-fleet_rex@Rmaxlen <- c(1, 1)
+fleet_rex@LR5 <- numeric(0) # fake
+fleet_rex@LFR <- numeric(0) # fake
+fleet_rex@Rmaxlen <- numeric(0) # fake
 fleet_default@Vmaxlen <- c(1, 1)
 fleet_rex@Name <- "BC Fleet"
 ```
@@ -378,15 +378,10 @@ dplyr::filter(rex_commercial, length <= 17) %>% nrow()
 
 Let's pick a range based on those values:
 
-```{r min-caught-rex4, echo=TRUE}
-l5 <- c(16, 18)
-```
-
-Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. The 95% CI of size at maturity from this analysis is `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]`.
+<!-- Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. The 95% CI of size at maturity from this analysis is `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]`. -->
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@L5 <- c(l5[1] / stock_rex@L50[[2]], l5[2] / stock_rex@L50[[1]])
-round(fleet_rex@L5, 2)
+fleet_rex@L5 <- c(16, 18)
 ```
 <!-- slot-chunk-end -->
 
@@ -407,12 +402,13 @@ abline(v = stock_rex@L50[[1]], col = "red")
 abline(v = stock_rex@L50[[2]], col = "red")
 ```
 
-Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. Size at maturity has been entered as `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]` (shown as vertical red lines in the above plot).
+<!-- Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. Size at maturity has been entered as `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]` (shown as vertical red lines in the above plot). -->
 
-TODO: We will assume that Rex Sole is fully vulnerable to fishing by approximately size at maturity:
+We will assume that Rex Sole is fully vulnerable to fishing by approximately size at maturity:
 
 ```{r desc-fleet-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@LFS <- c(0.8, 1.2)
+fleet_rex@LFS <- c(0.9, 1.1) * stock_rex@L50
+round(fleet_rex@LFS, 1)
 ```
 
 <!-- slot-chunk-end -->
@@ -422,10 +418,10 @@ fleet_rex@LFS <- c(0.8, 1.2)
 
 *Are the selectivity parameters in units of size-of-maturity (`TRUE`) (or absolute units, for example, cm) (`FALSE`).*
 
-As mentioned above, the slots have been entered as units of size at maturity.
+The size slots have been entered as absolute units (cm).
 
 ```{r desc-fleet-isrel-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@isRel <- TRUE
+fleet_rex@isRel <- FALSE
 ```
 <!-- slot-chunk-end -->
 
