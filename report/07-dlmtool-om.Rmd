@@ -158,7 +158,7 @@ Z_{y,a} = M + F_{y,a}v_{a},
 (\#eq:dlm-om-zya)
 $$
 
-where and fishing mortality-at-age ($F_{y,a}$, defined in Equation \@ref(eq:dlm-om-Fay)), and $v_{a}$ is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-va).
+where $F_{y,a}$ is fishing mortality-at-age, defined in Equation \@ref(eq:dlm-om-Fay)), and $v_{a}$ is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-va).
 
 Note that Equation \@ref(eq:dlm-om-nya) treats the maximum age class $A$ as a plus group (i.e., the age class $A$ includes all fish of age $A$ and older). 
 This is not the default in DLMtool, which usually makes the assumption that $A$ is large enough to include all age classes (i.e., $N_{y,a} = N_{y-1,a-1}e^{-Z_{y-1,a-1}}$ is used for all age classes including $a = A$).
