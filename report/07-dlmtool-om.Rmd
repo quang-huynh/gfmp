@@ -489,6 +489,8 @@ Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user
 
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
 
+Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model. 
+
 Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$} and related metrics (e.g., $B_\textrm{MSY}$}) at each time-step in the model. It is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period. 
 
 We recommend further simulation-testing of both options in future applications of the MP Framework if time-varying parameters are thought to be important.
