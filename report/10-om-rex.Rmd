@@ -462,7 +462,7 @@ fleet_rex@isRel <- FALSE
 *The current calendar year (final year) of the historical simulations (e.g., 2019).*
 
 ```{r desc-fleet-currentyr-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@CurrentYr <- 2018
+fleet_rex@CurrentYr <- 2019
 ```
 <!-- slot-chunk-end -->
 
