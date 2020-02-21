@@ -215,7 +215,7 @@ $$
 where ($I_\textrm{TAC}$) is user-defined, and the overall retention rate-at-age $\dot{R}_a$, is a combination of an age-specific retention $r_{y,a}$ with a maximum value of $1$ (Equation \@ref(eq:dlm-om-ray)), and a constant rate of discarding \(\gamma\):
 
 $$
-R_{a} = r_{a}\ (1 - \gamma).
+\dot{R}_{a} = r_{a}\ (1 - \gamma).
 (\#eq:dlm-om-retention)
 $$
 
@@ -349,7 +349,7 @@ $$
 Due to rounding, this model generates frequency-at-age data that are approximately equal to the average annual sample size:
 
 $$
-\sum_{a}^{n_{a}}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}
+\sum_{a}^{A}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}
 (\#eq:dlm-om-cataobs-equality)
 $$
 
@@ -471,7 +471,7 @@ $$
 After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is calculated:
 
 $$
-B_{\textrm{MSY}} = \phi_f R^e
+B_{\textrm{MSY}} = \phi_f^\textrm{MSY} R^e
 (\#eq:dlm-om-bmsy)
 $$
 
@@ -483,19 +483,27 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 
 The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
 
-DLMtool allows users to allow a number of key parameters to vary through time, according to user-specified slope parameters . 
+DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters. 
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
-This will affect other model variables that depend on growth, including maturity-at-length and age, and vulnerability-at-length and age.
+This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and vulnerability-age (Equation \@ref(eq:dlm-om-va).
 
 Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
-
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
 
-Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model. 
+Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model.
 
-Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$} and related metrics (e.g., $B_\textrm{MSY}$}) at each time-step in the model. It is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period. 
+In the presence of time-varying parameters, $B_0$ is calculated as 
 
-We recommend further simulation-testing of both options in future applications of the MP Framework if time-varying parameters are thought to be important.
+$$
+B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}}
+(\#eq:dlm-om-dyn-bo)
+$$
+
+which is the average unfished spawning biomass over the first $\theta_{a50}$ years of the historical period, where age-at-50%-maturity ($\theta_{a50}$), rounded up to the nearest integer, is used as an approximation of generation time and $B_{unfished}^y$ is calculated $B_0$ (Equation \@ref(eq:dlm-om-bo)). Other alternative interpretations of $B_0$ could also be programmed (e.g., average $B_0$ across the whole historical period, or at the end of the historical period), depending on the desired benchmark or target.
+
+Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
+
+How to treat reference points when parameters, particularly productivity parameters such as $M$ or $\kappa$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing of alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the MP Framework.
 
 ## DLMTOOL SLOTS
 
