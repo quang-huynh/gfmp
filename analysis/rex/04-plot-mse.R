@@ -1,3 +1,6 @@
+# Don't use this file!
+# Go straight to 05...
+# 2020-02-20
 # Must source `03-run-mse.R` first
 
 # Tigure plots ----------------------------------------------------------------
