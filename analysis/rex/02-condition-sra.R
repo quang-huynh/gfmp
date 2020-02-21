@@ -83,16 +83,12 @@ indexes <- drex$survey_index %>%
   left_join(rename(select(cpue, year, est, se_link), trawl_cpue = est, trawl_sd = se_link), by = "year") %>%
   rename(syn_wcvi = biomass, syn_wcvi_sd = re)
 
-# indexes %>% as.data.frame()
-# plot(all_years, indexes$syn_wcvi, type = "p")
-# plot(all_years, indexes$trawl_cpue, type = "p")
-
 # MSEtool::plot_composition(all_years,
 #   obs = cal_wcvi$cal,
 #   CAL_bins = cal_wcvi$length_bins
 # )
 
-rex_om@nsim <- 55 # 10 extras in case some don't converge
+rex_om@nsim <- 64 # 10 extras in case some don't converge
 cores <- floor(parallel::detectCores() / 2)
 
 rex_om@Cobs <- c(0, 0)
@@ -103,31 +99,41 @@ rex_om@D <- c(0.3, 0.8) # gets replaced
 
 saveRDS(indexes, file = "generated-data/rex-indexes.rds")
 
-fit_sra_rex_cpue <- function(om, c_eq = 1.5, ...) {
+fit_sra_rex_cpue <- function(om,
+  c_eq = 1.5,
+  commercial_vul = c(39, 33, 1),
+  surv_vul = c(35, 24, 1),
+  ...) {
   MSEtool::SRA_scope(om,
     Chist = catch,
     C_eq = c_eq * catch[1],
     Index = cbind(indexes$syn_wcvi, indexes$trawl_cpue),
     I_sd = cbind(indexes$syn_wcvi_sd, indexes$trawl_sd * 1.5),
-    I_type = c("B", "1"),
-    cores = 1,
-    drop_nonconv = TRUE, mean_fit = FALSE, ...
+    I_type = c("est", 1),
+    s_selectivity = c("logistic", "logistic"),
+    cores = cores,
+    drop_nonconv = TRUE,
+    vul_par = matrix(commercial_vul, 3, 1),
+    s_vul_par = matrix(c(surv_vul, commercial_vul), 3, 2),
+    map_vul_par = matrix(NA, 3, 1),
+    map_s_vul_par = matrix(NA, 3, 2),
+    f_name = "Commercial trawl",
+    s_name = c("SYN WCVI", "Commercial CPUE"),
+    ...
   )
 }
 
-rex_om@L5
-rex_om@LFS
-rex_om@L50
-rex_om@Linf
-om <- rex_om
-
-rex_sra_ceq150 <- fit_sra_rex_cpue(om, c_eq = 1.5)
-rex_sra_ceq200 <- fit_sra_rex_cpue(om, c_eq = 2)
+rex_sra_ceq150 <- fit_sra_rex_cpue(rex_om, c_eq = 1.5)
+rex_sra_ceq200 <- fit_sra_rex_cpue(rex_om, c_eq = 2)
 # plot(rex_sra_ceq200)
 # plot(rex_sra_ceq150)
 
 saveRDS(rex_sra_ceq150, file = here("generated-data", "rex-sra-ceq150.rds"))
 saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
+
+# age at fifty percent maturity:
+# om@Linf[1] * (1-exp(-om@K[1] * (3 - om@t0[1])))
+# 37.2 * (1-exp(-0.17 * (7 - -0.57)))
 
 # Alternative Reference Set OMs: M --------------------------------------------
 # Only look at higher M and time-varying M. M in BC unlikely to be lower than GOA.
@@ -142,12 +148,6 @@ saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
 
 # Alternative Reference Set OMs: Steepness (h) --------------------------------
 
-rex_om_low_h <- rex_om
-rex_om@h
-rex_om_low_h@h <- c(0.5, 0.7)
-rex_sra_low_h <- fit_sra_rex_cpue(rex_om_low_h)
-saveRDS(rex_sra_low_h, file = here("generated-data", "rex-sra-low-h.rds"))
-
 rex_om_high_h <- rex_om
 rex_om@h
 rex_om_high_h@h <- c(0.95, 0.95)
@@ -156,26 +156,39 @@ saveRDS(rex_sra_high_h, file = here("generated-data", "rex-sra-high-h.rds"))
 
 # No CPUE ---------------------------------------------------------------------
 
-fit_sra_rex_no_cpue <- function(om, c_eq = 1.5, ...) {
+fit_sra_rex_no_cpue <- function(om,
+  c_eq = 1.5,
+  commercial_vul = c(39, 33, 1),
+  surv_vul = c(35, 24, 1),
+  ...) {
   MSEtool::SRA_scope(om,
     Chist = catch,
     C_eq = c_eq * catch[1],
     Index = cbind(indexes$syn_wcvi),
     I_sd = cbind(indexes$syn_wcvi_sd),
-    I_type = c("B"),
-    cores = 1,
-    drop_nonconv = TRUE, mean_fit = FALSE, ...
+    I_type = c("est"),
+    s_selectivity = c("logistic"),
+    cores = cores,
+    drop_nonconv = TRUE,
+    vul_par = matrix(commercial_vul, 3, 1),
+    s_vul_par = matrix(c(surv_vul, commercial_vul), 3, 1),
+    map_vul_par = matrix(NA, 3, 1),
+    map_s_vul_par = matrix(NA, 3, 1),
+    f_name = "Commercial trawl",
+    s_name = c("SYN WCVI"),
+    ...
   )
 }
+
 rex_sra_no_cpue <- fit_sra_rex_no_cpue(rex_om, c_eq = 2)
 saveRDS(rex_sra_no_cpue, file = here("generated-data", "rex-sra-no-cpue.rds"))
 # plot(rex_sra_no_cpue)
 
 # No CPUE and lightly fished before 1996 --------------------------------------
 
-rex_sra_unfished <- fit_sra_rex_no_cpue(rex_om, c_eq = 1)
-saveRDS(rex_sra_unfished, file = here("generated-data", "rex-sra-no-cpue-light.rds"))
-# plot(rex_sra_unfished)
+rex_sra_light<- fit_sra_rex_no_cpue(rex_om, c_eq = 1)
+saveRDS(rex_sra_light, file = here("generated-data", "rex-sra-no-cpue-light.rds"))
+# plot(rex_sra_light)
 
 # Growth parameters from Oregon @hosie1976 ------------------------------------
 
@@ -183,34 +196,15 @@ om <- rex_om
 om@K <- c(0.17, 0.17)
 om@Linf <- c(37.2, 37.2)
 om@t0 <- c(-0.57, -0.57)
-rex_sra_oregon <- fit_sra_rex_cpue(om, c_eq = 2)
-# rex_sra_oregon <- fit_sra_rex_n(om, c_eq = 2)
+rex_sra_oregon <- fit_sra_rex_cpue(om, c_eq = 1.5)
 saveRDS(rex_sra_oregon, file = here("generated-data", "rex-sra-oregon.rds"))
 # plot(rex_sra_oregon)
 
-# Shift selectivity curve right -----------------------------------------------
+# Shift commercial selectivity curve left -------------------------------------
 
-om <- rex_om
-om@L5
-om@LFS
-om@L50
-om@L5 <- c(22, 22)
-om@LFS <- c(30, 30)
-rex_sra_sel1 <- fit_sra_rex_cpue(om, c_eq = 1.5)
+rex_sra_sel1 <- fit_sra_rex_cpue(rex_om, c_eq = 1.5, commercial_vul = c(35, 24, 1))
 # plot(rex_sra_sel1)
 saveRDS(rex_sra_sel1, file = here("generated-data", "rex-sra-sel1.rds"))
-
-# Shift selectivity curve left -----------------------------------------------
-
-# om <- rex_om
-# om@L5
-# om@LFS
-# om@L50
-# om@L5 <- c(14, 14)
-# om@LFS <- c(23, 23)
-# rex_sra_sel2 <- fit_sra_rex_cpue(om, c_eq = 1.5)
-# plot(rex_sra_sel2)
-# saveRDS(rex_sra_sel2, file = here("generated-data", "rex-sra-sel2.rds"))
 
 # Robustness Set OMs: M increasing over time ----------------------------------
 
@@ -229,17 +223,17 @@ saveRDS(rex_sra_inc_m, file = here("generated-data", "rex-sra-inc-m.rds"))
 # Set up the scenario names ---------------------------------------------------
 
 sc <- tibble::tribble(
-  ~scenario,     ~scenario_human,        ~scenario_type,
-  "ceq150",      "Ceq. 150%",        "Reference",
-  "ceq200",      "Ceq. 200%",        "Reference",
-  "high-m",      "M = 0.35",              "Reference",
-  "low-h",       "h = 0.5-0.7",           "Reference",
-  "high-h",      "h = 0.95",              "Reference",
-  "sel1", "Shifted sel.", "Reference",
+  ~scenario, ~scenario_human, ~scenario_type,
+  "ceq150", "Ceq. 150%", "Reference",
+  "ceq200", "Ceq. 200%", "Reference",
+  "high-m", "M = 0.35", "Reference",
+  "low-h", "h = 0.5-0.7", "Reference",
+  "high-h", "h = 0.95", "Reference",
+  "sel1", "Lower selectivity", "Reference",
   "oregon", "Oregon growth", "Reference",
-  "no-cpue",     "No CPUE",          "Reference",
-  "no-cpue-light","Lightly fished",   "Reference",
-  "inc-m",       "M inc.",          "Robustness"
+  "no-cpue", "No CPUE", "Reference",
+  "no-cpue-light", "Lightly fished", "Reference",
+  "inc-m", "M inc.", "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = "generated-data/rex-scenarios.rds")
