@@ -23,7 +23,7 @@ reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
 #
 catch_breaks <- seq(0, 500000, 100000)
-catch_labels <- seq(0, 500000, 100000)/1000
+catch_labels <- catch_breaks/1000
 
 # Satisficing rules:
 # LT_LRP_thresh <- 0.8
@@ -158,7 +158,7 @@ stopifnot(length(mp_not_sat) > 1)
 custom_pal <- c(RColorBrewer::brewer.pal(8, "Set2")[seq_along(mp_sat)], ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
 
-satisficed_criteria <- c("LT LRP" = LT_LRP_thresh, "STC" = STC_thresh)
+satisficed_criteria <- c("LT LRP" = 0.7, "STC" = 0.5, "LTC" = 0.2)
 
 mp_eg_not_sat <- c(
   "CC_hist20",
@@ -218,8 +218,8 @@ g <- plots$projections_index +
   coord_cartesian(ylim = c(0, 9))
 .ggsave("projections-index", width = 12, height = 8, plot = g)
 
-
 # plots$projections$`no-cpue-light`
+plots$projections$`inc-m`
 # plots$projections$ceq200
 # plots$projections$`high-m`
 
@@ -231,3 +231,34 @@ walk(names(plots$projections), ~{
 .ggsave("projections-not-sat", width = 6.5, height = 20, plot = plots$projections_not_sat)
 .ggsave("projections-scenarios-ref", width = 8, height = 8, plot = plots$projections_scenarios)
 
+x <- purrr::map(scenarios_ref,
+  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)) %>%
+  set_names(scenarios_ref_human)
+
+plot_index(x, type = "AddInd")
+
+g <- c("Ceq. 150%", "Ceq. 200%", "Lightly fished", "No CPUE") %>%
+  set_names() %>%
+  map(~x[[.]]) %>%
+  plot_scenario_projections()
+.ggsave("projections-scenarios-ref1", width = 8, height = 8)
+
+g <- c("Ceq. 150%", "M = 0.35", "h = 0.5-0.7" , "h = 0.95") %>%
+  set_names() %>%
+  map(~x[[.]]) %>%
+  plot_scenario_projections()
+.ggsave("projections-scenarios-ref2", width = 8, height = 8)
+
+g <- c("Ceq. 150%", "Shifted sel.", "Oregon growth" , "Ceq. 200%") %>%
+  set_names() %>%
+  map(~x[[.]]) %>%
+  plot_scenario_projections()
+.ggsave("projections-scenarios-ref2", width = 8, height = 8)
+
+x <- purrr::map("inc-m",
+  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)) %>%
+  set_names("inc-m")
+
+plot_projection_ts(x[[length(x)]])
+# plot_projection_ts(x[[1]])
+plot_main_projections(x[[length(x)]])
