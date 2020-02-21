@@ -2,7 +2,7 @@
 library(here)
 filter_data_rex <- function(d,
                             minimum_year = 1996,
-                            maximum_year = 2018,
+                            maximum_year = 2019,
                             major_stat_area_codes = c("03", "04"),
                             survey_series_descs = c("West Coast Vancouver Island Synoptic Bottom Trawl")) {
   d$commercial_samples <- d$commercial_samples %>%
@@ -30,30 +30,30 @@ load_data_rex <- gfdlm::load_data_factory("rex sole",
   file = here("generated-data", "rex-sole.rds")
 )
 
-all_years <- 1996:2018
+all_years <- 1996:2019
 if (!file.exists(here::here("generated-data", "rex-catch.rds"))) {
   # .d <- readRDS("/Volumes/Extreme-SSD/gfs/report/data-cache/rex-sole.rds")
   # .d <- .d$catch
   .d <- gfdata::get_catch("rex sole")
   table(.d$year)
   .d$area <- gfplot::assign_areas(.d$major_stat_area_name)
-  d_catch <- dplyr::filter(.d, year <= 2019, area == "3CD")
+  d_catch <- dplyr::filter(.d, year >= 1996, year <= 2019, area == "3CD")
   # d_catch <- catch <- d_catch %>%
   #   gfplot::tidy_catch() %>%
   #   group_by(year) %>%
   #   summarize(value = sum(value)) %>%
   #   right_join(tibble(year = all_years), by = "year") %>%
   #   pull(value)
-  saveRDS(d_catch, file = here::here("generated-data", "rex-catch.rds"))
+  saveRDS(d_catch, file = here::here("generated-data", "rex-catch2.rds"))
 } else {
-  d_catch <- readRDS(here::here("generated-data", "rex-catch.rds"))
+  d_catch <- readRDS(here::here("generated-data", "rex-catch2.rds"))
 }
 ```
 
 ```{r}
 science_name <- "Glyptocephalus zachirusadus"
 drex <- load_data_rex() %>% filter_data_rex()
-drex$catch <- dplyr::filter(d_catch, year <= 2018)
+drex$catch <- dplyr::filter(d_catch, year <= 2019)
 saveRDS(drex, here::here("generated-data", "rex-filter-data.rds"))
 ```
 
@@ -185,7 +185,7 @@ stock_rex@AC <- c(0.2, 0.7)
 
 *Maximum length. Uniform distribution lower and upper bounds.*
 
-We do not have ages in our database to fit a von Bertalanffy model, but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
+We do not have enough ages in our database to fit a von Bertalanffy model (and none for 3CD), but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
 
 ```{r rex-length1, echo=TRUE}
 rex_lengths <- dplyr::filter(drex$survey_samples, !is.na(length))
@@ -205,6 +205,8 @@ dplyr::filter(rex_lengths, sex == 2) %>%
 
 However, $L_\mathrm{inf}$ represents the average maximum length, not the maximum observed length. @turnock2005 (their Table 4.12) found the $L_\mathrm{inf}$ for males was 39.5 cm and $L_\mathrm{inf}$ for females was 44.9 cm in the Gulf of Alaska. This looks roughly in line with the length samples in our database. We will use these values to be consistent with their other growth parameters.
 
+We will explore an alternative scenario with $L_\mathrm{Inf} = 37.2$ cm based on female fish from Oregon [@hosie1976].
+
 ```{r desc-stock-linf-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@Linf <- c(39.5, 44.9)
 ```
@@ -217,6 +219,8 @@ stock_rex@Linf <- c(39.5, 44.9)
 
 @turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will use these values.
 
+We will explore an alternative scenario with $k = 0.17$ cm based on female fish from Oregon [@hosie1976].
+
 ```{r desc-stock-k-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@K <- c(0.31, 0.38)
 ```
@@ -228,6 +232,8 @@ stock_rex@K <- c(0.31, 0.38)
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds.*
 
 @turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We assume these should be negative.
+
+We will explore an alternative scenario with $t_0 = -0.57$ cm based on female fish from Oregon [@hosie1976].
 
 ```{r desc-stock-t0-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@t0 <- c(-0.79, -0.69)
