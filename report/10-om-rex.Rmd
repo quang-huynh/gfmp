@@ -31,7 +31,7 @@ load_data_rex <- gfdlm::load_data_factory("rex sole",
 )
 
 all_years <- 1996:2019
-if (!file.exists(here::here("generated-data", "rex-catch.rds"))) {
+if (!file.exists(here::here("generated-data", "rex-catch2.rds"))) {
   # .d <- readRDS("/Volumes/Extreme-SSD/gfs/report/data-cache/rex-sole.rds")
   # .d <- .d$catch
   .d <- gfdata::get_catch("rex sole")
