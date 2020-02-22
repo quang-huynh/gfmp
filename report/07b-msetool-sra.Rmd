@@ -129,7 +129,7 @@ Historical OM parameters that are updated by the SRA scoping function include:
 
 If initial depletion is estimated, then the annual recruitment deviations in the first year `OM@cpars$Perr_y` ($\varepsilon_{R,y}$) are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-numinit)).
 
-If multiple fleets are used for conditioning, then vulnerability-at-age ($v_{a,f}$, Equation \@ref(eq:sra-om-vaf)) will be updated based on the relative fishing mortality among fleets.
+If multiple fleets are used for conditioning, then selectivity-at-age ($v_{a,f}$, Equation \@ref(eq:sra-om-vaf)) will be updated based on the relative fishing mortality among fleets.
 
 *TODO: the sentence above is rather vague. Improve it and refer to equations where necessary (or consider deleting it)*
 
@@ -139,10 +139,10 @@ The default assumption in the projection period of the closed-loop simulation is
 
 ### Vulnerability-at-age and mortality
 
-Fleet-specific vulnerability-at-age ($v_{a,f}$) is length-based and modeled as a double-exponential function (using base 2).
-For fleet $f$ with asymptotic vulnerability, a two-parameter logistic function is used, with parameters defining the length-of-5%-vulnerability ($L^5_f$) and the length-of-full-vulnerability $L^{\textrm{FS}}_f$.
-For dome-shaped vulnerability, a third parameter, the vulnerability at $L_{\infty}$, $v^{L_{\infty}}_f$ is also used.
-Length-based vulnerability is converted to age-based vulnerability in the age-structured model as:
+Fleet-specific selectivity-at-age (or vulnerability-at-age) ($v_{a,f}$) is length-based and modeled in the same way as in the DLMtool OM (Appendix \@ref(app:dlmtool-om)), with the only difference being that multiple fleets ($f$) can be accommodated.
+For fleet $f$ with asymptotic selectivity, a two-parameter logistic function is used, with parameters defining the length-of-5%-selectivity ($L^5_f$) and the length-of-full-selectivity $L^{\textrm{FS}}_f$.
+For dome-shaped selectivity, a third parameter, the selectivity at $L_{\infty}$, $v^{L_{\infty}}_f$ is also used.
+Length-based selectivity is converted to age-based selectivity in the age-structured model as:
 
 $$
 v_{a,f} =
@@ -154,7 +154,9 @@ v_{a,f} =
 (\#eq:sra-om-vaf)
 $$
 
-where $L_{y,a}$ is the mean length-at-age, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(v^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the vulnerability function. In this parameterization, length-based vulnerability is constant over time. The corresponding age-based vulnerability is constant over time if growth is not time-varying.
+where $L_{y,a}$ is the mean length-at-age, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(v^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the selectivity function. In this parameterization, length-based selectivity is constant over time. The corresponding age-based selectivity is constant over time if growth is not time-varying.
+
+<!-- add note about multiple fleets -->
 
 Total mortality $Z$ in year $y$ and for age $a$ is given by
 

@@ -154,11 +154,11 @@ $$
 where $A$ is the maximum age class and the annual total mortality rate $Z_{y,a}$ is given by
 
 $$
-Z_{y,a} = M + F_{y,a}v_{a},
+Z_{y,a} = M + v_{a}F_{y,a},
 (\#eq:dlm-om-zya)
 $$
 
-where $F_{y,a}$ is fishing mortality-at-age, defined in Equation \@ref(eq:dlm-om-Fay)), and $v_{a}$ is vulnerability-at-age, defined in Equation \@ref(eq:dlm-om-va).
+where $F_{y,a}$ is fishing mortality-at-age, defined in Equation \@ref(eq:dlm-om-Fay)), and $v_{a}$ is selectivity-at-age, defined in Equation \@ref(eq:dlm-om-va).
 
 Note that Equation \@ref(eq:dlm-om-nya) treats the maximum age class $A$ as a plus group (i.e., the age class $A$ includes all fish of age $A$ and older). 
 This is not the default in DLMtool, which usually makes the assumption that $A$ is large enough to include all age classes (i.e., $N_{y,a} = N_{y-1,a-1}e^{-Z_{y-1,a-1}}$ is used for all age classes including $a = A$).
@@ -167,6 +167,7 @@ However, when the model is conditioned using the SRA (Appendix \@ref(app:sra)), 
 ## FLEET DYNAMICS {#sec:dlmtool-fleet-dynamics}
 
 <!-- Parameters for the fleet dynamics are included in the `Fleet` object of DLMtool. -->
+
 During the projection period, the rate of fishing mortality-at-age ($F_{y,a}$) is calculated from the TAC prescribed by the MP ($\textrm{TAC}_{\mathrm{MP},y}$).
 To distribute catches over ages it is first necessary to calculate the distribution of vulnerable biomass ($B^V_{y,a}$) across ages:
 
@@ -175,30 +176,48 @@ B^V_{y,a} = N_{y,a} w_{a} v_{a} \dot{R}_{a}
 (\#eq:dlm-om-vulcom)
 $$
 
-where the vulnerability-at-age $v_{a}$ is calculated from a length-based double-normal selectivity curve:
+where the selectivity-at-age $v_{a}$ (or vulnerability-at-age) is calculated according to whether users define selectivity to be asymptotic (logistic) or dome-shaped, using the following length-based function:
 
 $$
-v_{a} = \begin{cases}
-2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sasc}}^{2}}} & L_{a} \leq {{L}}_{\textrm{smax}}, \\
-2^{- \ \frac{{(L_{a} - {{L}}_{\textrm{smax}})}^{2}}{\sigma_{\textrm{sdesc}}^{2}}} & L_{a} > {{L}}_{\textrm{smax}}, \\
+v_{a} =
+\begin{cases}
+2^{-\frac{L_{a} - L^{\textrm{FS}}}{\sigma^{\textrm{asc}}}^2} & \textrm{if } L_{a} < L^{\textrm{FS}},\\
+1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}},\\
+2^{-\frac{L_{a} - L^{\textrm{FS}}}{\sigma^{\textrm{des}}}^2} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}
 \end{cases}
 (\#eq:dlm-om-va)
 $$
 
-and $L_{\textrm{smax}}$ represents the shortest length that is fully vulnerable to fishing.
-The standard deviation parameters of the ascending limb are given by the length at 5% vulnerability ($L_5$):
+where $L^\textrm{FS}$ represents the user-defined length-at-full-selectivity.
+The variance of the ascending limb ($\sigma_{\textrm{sasc}}^{2}$) is given by
 
 $$
-\sigma_{\textrm{sasc}}^{2} = \frac{{{L}}_{5} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{0.05}}}}
+\sigma_{\textrm{sasc}}^{2} = \frac{{{L}}_{5} - L^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 $$
 
-While the standard deviation of the descending limb is given by the vulnerability \({V}_{\overline{L}} \) of fish of mean length \(\overline{L}\):
+where $L_5$ is the user-defined length-at-5%-selectivity
+
+The variance of the descending limb is given by 
 
 $$
-\sigma_{\textrm{sdesc}}^{2} = \frac{\overline{L} - {{L}}_{\textrm{smax}}}{\sqrt{- \log_{2^{{{V}}_{\overline{L}}}}}}
+\sigma_{\textrm{sdesc}}^{2} = \frac{V_{L_\infty} - L^\textrm{FS}}{{\sqrt{- \log_{2^{V_{L_\infty}}}}}},
 (\#eq:dlm-om-sigldes)
 $$
+
+where $V_{L_\infty}$ is the user-defined selectivity-at-maximum-length. Setting this parameter to 1 necessarily fixes selectivity to be logistic (Equation \@ref(eq:dlm-om-sigldes) is undefined when $V_{L_\infty} = 1$). 
+Note that, like many DLMtool parameters, $L_5$, $L_{FS}$ and $V_{L_\infty}$ can be defined as ranges if desired. 
+In this case, each replicate simulation will draw from the distribution of these ranges, resulting in a range of selectivity curves across functions.
+
+<!-- note V_Linfinity is the slot fleet@VmaxLen-->
+
+DLMtool currently models all catch as coming from a single fleet. 
+However, if the OM is calibrated using the SRA model (Appendix \@ref(app:sra)), the SRA can accommodate multiple fleets, and selectivity is fleet-specific, defined by user-defined settings for $L_5$, $L_{FS}$ and $V_{L_\infty}$ for each fleet (or estimated if age- or length-composition data are provided).
+In this case, selectivity in the projection period is replaced in Equation \@ref(eq:dlm-om-zya) with the SRA-calibrated estimate of fishing mortality-at-age in the final year ($t_c$) of the historical period ($\Sigma_f v_{a,f} F_{t_c,f}$), normalized by dividing by apical $F$ in that year. 
+This provides fractions of $F$-at-age consistent with the relative selectivity-at-age across fleets. 
+The closed-loop simulation projections therefore assume that the relative selectivities across fleets remains constant in the projection period.
+Similarly, if the OM is calibrated using the SRA model, users also specify selectivity parameters for the individual indices of abundance.
+The DLMtool OM only accommodates one index (most data-limited MPs rely on only one index). In this case, the SRA passes all of the indices back to DLMtool, preserving the estimated or fixed selectivity-at-age for each index. Users must select which index to use for the projection period.
 
 The realized projected catches $C_{y,a}$ are the TAC recommendations across ages (with possible implementation error).
 Projected catches may account for retention rate ($\dot{R}_{y,a}$) and post-release discard mortality rate $\theta_{M{\textrm{disc}}}$ in the presence of discarding.
@@ -286,7 +305,7 @@ When the observed index is calculated, it is normalised to have a mean value of 
 The term $\omega_{I,y}$ represents imprecision in observations via $\sigma_I$:
 
 $$
-\omega_{I,y} = \exp \left( \varepsilon_{I,y} - \frac{{{\sigma}}_{I}}{2} \right),
+\omega_{I,y} = \exp \left( \varepsilon_{I,y} - \frac{{{\sigma}}_{I}^2}{2} \right),
 (\#eq:dlm-om-omegai)
 $$
 
@@ -485,7 +504,7 @@ The case-studies presented in this MP Framework assume model parameters represen
 
 DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters. 
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
-This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and vulnerability-age (Equation \@ref(eq:dlm-om-va).
+This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va).
 
 Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
@@ -503,7 +522,7 @@ which is the average unfished spawning biomass over the first $\theta_{a50}$ yea
 
 Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
 
-How to treat reference points when parameters, particularly productivity parameters such as $M$ or $\kappa$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing of alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the MP Framework.
+How to treat reference points when parameters, particularly productivity parameters such as $M$ or $\kappa$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the Framework.
 
 ## DLMTOOL SLOTS
 
