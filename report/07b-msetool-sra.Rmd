@@ -104,8 +104,6 @@ OM@LFS
 
 - Unfished recruitment `OM@R0` as the starting value [$R_0$].
 
-*TODO: We have not talked about time-varying scenarios. Add a section in the DLMtool OM documentation*
-
 If growth, natural mortality, or maturity are set to be time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well.
 Selectivity is fixed if no age or length compositions are provided.
 Otherwise, the ascending limb of selectivity is estimated with age or length composition data.
@@ -130,10 +128,8 @@ Historical OM parameters that are updated by the SRA scoping function include:
 If initial depletion is estimated, then the annual recruitment deviations in the first year `OM@cpars$Perr_y` ($\varepsilon_{R,y}$) are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-numinit)).
 
 If multiple fleets are used for conditioning, then selectivity-at-age ($v_{a,f}$, Equation \@ref(eq:sra-om-vaf)) will be updated based on the relative fishing mortality among fleets.
-
-*TODO: the sentence above is rather vague. Improve it and refer to equations where necessary (or consider deleting it)*
-
 The default assumption in the projection period of the closed-loop simulation is that the selectivity and relative fishing mortality among fleets are identical to those in the last historical year $t_c$.
+See Section \@ref(sec:dlmtool-fleet-dynamics).
 
 ## DESCRIPTION OF THE SRA MODEL
 
