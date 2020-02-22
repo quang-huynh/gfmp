@@ -142,7 +142,7 @@ The default assumption in the projection period of the closed-loop simulation is
 Fleet-specific selectivity-at-age (or vulnerability-at-age) ($v_{a,f}$) is length-based and modeled in the same way as in the DLMtool OM (Appendix \@ref(app:dlmtool-om)), with the only difference being that multiple fleets ($f$) can be accommodated.
 For fleet $f$ with asymptotic selectivity, a two-parameter logistic function is used, with parameters defining the length-of-5%-selectivity ($L^5_f$) and the length-of-full-selectivity $L^{\textrm{FS}}_f$.
 For dome-shaped selectivity, a third parameter, the selectivity at $L_{\infty}$, $v^{L_{\infty}}_f$ is also used.
-Length-based selectivity is converted to age-based selectivity in the age-structured model as:
+Length-based selectivity is converted to age-based selectivity as:
 
 $$
 v_{a,f} =
@@ -156,7 +156,7 @@ $$
 
 where $L_{y,a}$ is the mean length-at-age, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(v^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the selectivity function. In this parameterization, length-based selectivity is constant over time. The corresponding age-based selectivity is constant over time if growth is not time-varying.
 
-<!-- add note about multiple fleets -->
+See Appendix \@ref(app:dlm-om), Section \@ref(sec:dlmtool-fleet-dynamics) for description of handling of multiple fleets in the DLMtool OM during the projection period.
 
 Total mortality $Z$ in year $y$ and for age $a$ is given by
 
