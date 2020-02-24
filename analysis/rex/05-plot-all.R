@@ -158,8 +158,8 @@ fit_scenario <- function(scenario) {
 DLMtool::setup(cpus = cores)
 mse <- map(scenarios, fit_scenario)
 snowfall::sfStop()
-plot_main_projections(mse[[1]])
-plot_index(mse, type = "AddInd", omit_index_fn = oddify)
+# plot_main_projections(mse[[1]])
+# plot_index(mse, type = "AddInd", omit_index_fn = oddify)
 
 ref_catch <- min(catch[(yrs-5+1):yrs])
 for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch
