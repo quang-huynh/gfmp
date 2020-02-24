@@ -80,14 +80,60 @@ om <- map(scenarios, ~ {
   om@nsim <- nsim
   om@interval <- interval
   om@TACSD <- c(0, 0)
+  om@CurrentYr <- 2019
+  nsim_cpars <- length(om@cpars$R0)
+  n.ind <- dim(om@cpars$Data@AddInd)[2]
+  om@cpars$AddIbeta <- matrix(1, nrow = nsim_cpars, ncol = n.ind)
+  .n <- nsim_cpars * (om@nyears + om@proyears)
+  set.seed(om@seed)
+  .e <- DLMtool::trlnorm(.n, 1,
+    cv = runif(.n, min = min(om@Iobs), max = max(om@Iobs)))
+  om@cpars$AddIerr <- array(.e,
+    dim = c(nsim_cpars, n.ind, om@nyears + om@proyears))
   om
 })
 
 # Fit MPs to all OMs ----------------------------------------------------------
 
-.SP6040_prior <- add_SP_prior(.SP6040_gf, r_prior = c(0.3, 0.1))
-.SP8040_prior <- add_SP_prior(.SP8040_gf, r_prior = c(0.3, 0.1))
-.SP4010_prior <- add_SP_prior(.SP4010_gf, r_prior = c(0.3, 0.1))
+oddify <- function(x) seq(2, x, by = 2)
+.Iratio2 <- use_AddInd(reduce_survey(Iratio2, index = oddify))
+.GB_slope6_0.66 <- use_AddInd(reduce_survey(GB_slope6_0.66, index = oddify))
+.GB_slope6_1 <- use_AddInd(reduce_survey(GB_slope6_1, index = oddify))
+.GB_slope8_0.66 <- use_AddInd(reduce_survey(GB_slope8_0.66, index = oddify))
+.GB_slope8_1 <- use_AddInd(reduce_survey(GB_slope8_1, index = oddify))
+
+.Islope0.2_80 <- use_AddInd(reduce_survey(Islope0.2_80, index = oddify))
+.Islope0.2_100 <- use_AddInd(reduce_survey(Islope0.2_100, index = oddify))
+.Islope0.4_80 <- use_AddInd(reduce_survey(Islope0.4_80, index = oddify))
+.Islope0.4_100 <- use_AddInd(reduce_survey(Islope0.4_100, index = oddify))
+
+.IDX <- use_AddInd(reduce_survey(IDX, index = oddify))
+.IDX_smooth <- use_AddInd(reduce_survey(IDX_smooth, index = oddify))
+
+.IT10_hist <- use_AddInd(reduce_survey(IT10_hist, index = oddify))
+.IT5_hist <- use_AddInd(reduce_survey(IT5_hist, index = oddify))
+
+.Itarget_base <- use_AddInd(reduce_survey(Itarget_base, index = oddify))
+.Itarget_w0.8 <- use_AddInd(reduce_survey(Itarget_w0.8, index = oddify))
+.Itarget_x0.2 <- use_AddInd(reduce_survey(Itarget_x0.2, index = oddify))
+.Itarget_x0.8 <- use_AddInd(reduce_survey(Itarget_x0.8, index = oddify))
+.Itarget_d1.2 <- use_AddInd(reduce_survey(Itarget_d1.2, index = oddify))
+.Itarget_d0.8 <- use_AddInd(reduce_survey(Itarget_d0.8, index = oddify))
+
+.ITM_hist <- use_AddInd(reduce_survey(ITM_hist, index = oddify))
+
+.SP4010_prior <- SP4010_gf %>%
+  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+.SP6040_prior <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+.SP8040_prior <- SP8040_gf %>%
+  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
 
 missing <- mp$mp[!map_lgl(mp$mp, exists)]
 assert_that(length(missing) == 0,
@@ -95,39 +141,27 @@ assert_that(length(missing) == 0,
     "{paste(missing, collapse = ', ')} do not exist in the current environment."
   ))
 
-# # testing:
-# .mp <- c(
-#   # "CC_hist20", "CC1.2", "CC1.1", "CC1.0", "CC0.9", "CC0.8", "CC0.7", "CC0.6",
-#   # ".Iratio2"
-#   # ".GB_slope6_0.66", ".GB_slope6_1", ".GB_slope8_0.66", ".GB_slope8_1",
-#   # ".Islope0.2_80", ".Islope0.2_100", ".Islope0.4_80", ".Islope0.4_100",
-#   # ".IDX", ".IDX_smooth",
-#   # ".IT10_hist", ".IT5_hist",
-#   ".Itarget_base", ".Itarget_w0.8", ".Itarget_x0.2", ".Itarget_x0.8", ".Itarget_d1.2", ".Itarget_d0.8"
-#   # ".ITM_hist",
-#   # ".SP4010_prior", ".SP6040_prior", ".SP8040_prior",
-#   # "NFref", "FMSYref", "FMSYref75"
-# )
-
-# .mp <- "CC1.0"
 fit_scenario <- function(scenario) {
   file_name <- here("generated-data", paste0(sp, "-mse-", scenario, ".rds"))
   if (!file.exists(file_name)) {
     message("Running closed-loop-simulation for ", scenario, " OM")
-    mse <- runMSE(OM = om[[scenario]], MPs = mp$mp, parallel = TRUE)
+    o <- om[[scenario]]
+    # o@nsim <- 48
+    mse <- runMSE(OM = o, MPs = mp$mp, parallel = TRUE)
     saveRDS(mse, file = file_name)
   } else {
     message("Loading closed-loop-simulation for ", scenario, " OM")
     mse <- readRDS(file_name)
   }
-  mse@OM$CurrentYr <- om[[1]]@CurrentYr # fixed in latest DLMtool
   mse
 }
 DLMtool::setup(cpus = cores)
 mse <- map(scenarios, fit_scenario)
 snowfall::sfStop()
+plot_main_projections(mse[[1]])
+plot_index(mse, type = "AddInd", omit_index_fn = oddify)
 
-ref_catch <- mean(catch[(yrs-5+1):yrs])
+ref_catch <- min(catch[(yrs-5+1):yrs])
 for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch
 
 # plot_main_projections(mse[[2]])
