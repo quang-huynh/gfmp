@@ -212,7 +212,7 @@ saveRDS(rex_sra_no_cpue, file = here("generated-data", "rex-sra-no-cpue.rds"))
 
 rex_sra_light<- fit_sra_rex_no_cpue(rex_om, c_eq = .5)
 saveRDS(rex_sra_light, file = here("generated-data", "rex-sra-no-cpue-light.rds"))
-plot(rex_sra_light)
+# plot(rex_sra_light)
 
 # Growth parameters from Oregon @hosie1976 ------------------------------------
 
@@ -332,3 +332,6 @@ sel %>%
   ylab("Selectivity") + xlab("Length") +
   coord_cartesian(expand = FALSE, ylim = c(-0.01, 1.01))
 ggsave(here::here("report/figure/rex-selectivity.png"), width = 5, height = 3)
+
+# sra_rex[[1]]@Misc[[1]]$s_vul[1,,1]
+# sra_rex[[1]]@Misc[[1]]$s_vul[1,,2]
