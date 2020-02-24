@@ -19,6 +19,20 @@ drex <- readRDS(here("generated-data", "rex-filter-data.rds"))
 d_catch <- readRDS(here::here("generated-data", "rex-catch2.rds"))
 drex$catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
 
+# msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
+# saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
+msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
+
+msa <- filter(msa, !is.na(age))
+m <- gfplot::fit_vb(msa, sex = "all")
+m2 <- gfplot::fit_vb(msa, sex = "all", method = "mcmc", iter = 8000)
+
+gfplot::plot_vb(object_all = m2, type = "vb")
+gfplot::plot_vb(object_all = m, type = "vb")
+
+# .d <- readRDS("../../gfs/report/data-cache/rex-sole.rds")
+# .d$survey_samples %>% dplyr::filter(!is.na(age)) %>% select(survey_series_desc)
+
 rex_om <- readRDS(here("generated-data", "rex-om.rds"))
 rex_om@M
 rex_om@Linf
@@ -100,7 +114,7 @@ rex_om@D <- c(0.3, 0.8) # gets replaced
 saveRDS(indexes, file = "generated-data/rex-indexes.rds")
 
 fit_sra_rex_cpue <- function(om,
-  c_eq = 1.5,
+  c_eq = 2,
   commercial_vul = c(39, 33, 1),
   surv_vul = c(35, 24, 1),
   ...) {
@@ -135,16 +149,17 @@ saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
 # om@Linf[1] * (1-exp(-om@K[1] * (3 - om@t0[1])))
 # 37.2 * (1-exp(-0.17 * (7 - -0.57)))
 
+32.67298 * (1-exp(-0.4258144 * (4 - -0.5972734)))
+
 # Alternative Reference Set OMs: M --------------------------------------------
 # Only look at higher M and time-varying M. M in BC unlikely to be lower than GOA.
 
 rex_om@M
 rex_om_high_m <- rex_om
-rex_om_high_m@M <- c(0.35, 0.35)
-rex_sra_high_m <- fit_sra_rex_cpue(rex_om_high_m, c_eq = 1.5)
-
-saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
+rex_om_high_m@M <- c(0.30, 0.35)
+rex_sra_high_m <- fit_sra_rex_cpue(rex_om_high_m, c_eq = 2)
 # plot(rex_sra_high_m)
+saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
 
 # Alternative Reference Set OMs: Steepness (h) --------------------------------
 
@@ -171,7 +186,7 @@ fit_sra_rex_no_cpue <- function(om,
     cores = cores,
     drop_nonconv = TRUE,
     vul_par = matrix(commercial_vul, 3, 1),
-    s_vul_par = matrix(c(surv_vul, commercial_vul), 3, 1),
+    s_vul_par = matrix(c(surv_vul), 3, 1),
     map_vul_par = matrix(NA, 3, 1),
     map_s_vul_par = matrix(NA, 3, 1),
     f_name = "Commercial trawl",
@@ -196,14 +211,19 @@ om <- rex_om
 om@K <- c(0.17, 0.17)
 om@Linf <- c(37.2, 37.2)
 om@t0 <- c(-0.57, -0.57)
-rex_sra_oregon <- fit_sra_rex_cpue(om, c_eq = 1.5)
-saveRDS(rex_sra_oregon, file = here("generated-data", "rex-sra-oregon.rds"))
+rex_sra_oregon <- fit_sra_rex_cpue(
+  om,
+  c_eq = 2,
+  commercial_vul = c(25, 15, 1),
+  surv_vul = c(24, 12, 1)
+)
 # plot(rex_sra_oregon)
+saveRDS(rex_sra_oregon, file = here("generated-data", "rex-sra-oregon.rds"))
 
 # Shift commercial selectivity curve left -------------------------------------
 
-rex_sra_sel1 <- fit_sra_rex_cpue(rex_om, c_eq = 1.5, commercial_vul = c(35, 24, 1))
-# plot(rex_sra_sel1)
+rex_sra_sel1 <- fit_sra_rex_cpue(rex_om, c_eq = 2, commercial_vul = c(35, 24, 1))
+plot(rex_sra_sel1)
 saveRDS(rex_sra_sel1, file = here("generated-data", "rex-sra-sel1.rds"))
 
 # Robustness Set OMs: M increasing over time ----------------------------------
@@ -217,7 +237,7 @@ m <- seq(0.2, 0.4, length.out = rex_om_inc_m@proyears)
 for (i in seq_along(m)) M_age[, , rex_om_inc_m@nyears + i] <- m[i]
 plot(M_age[1,1,]) # one sim; one age
 rex_om_inc_m@cpars$M_ageArray <- M_age
-rex_sra_inc_m <- fit_sra_rex_cpue(rex_om_inc_m)
+rex_sra_inc_m <- fit_sra_rex_cpue(rex_om_inc_m, c_eq = 2)
 saveRDS(rex_sra_inc_m, file = here("generated-data", "rex-sra-inc-m.rds"))
 
 # Set up the scenario names ---------------------------------------------------
@@ -227,7 +247,6 @@ sc <- tibble::tribble(
   "ceq150", "Ceq. 150%", "Reference",
   "ceq200", "Ceq. 200%", "Reference",
   "high-m", "M = 0.35", "Reference",
-  "low-h", "h = 0.5-0.7", "Reference",
   "high-h", "h = 0.95", "Reference",
   "sel1", "Lower selectivity", "Reference",
   "oregon", "Oregon growth", "Reference",
@@ -283,7 +302,8 @@ ggsave(file.path(fig_dir, paste0("rex-compare-SRA-depletion-panel.png")),
 )
 
 sra_rex %>% set_names(sc$scenario_human) %>%
-  gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE"))
+  gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE")) +
+  ylim(0, 2.5)
 ggsave(here::here("report/figure/rex-index-fits.png"), width = 5.5, height = 9.5)
 
 # FIXME: get this into gfdlm:
