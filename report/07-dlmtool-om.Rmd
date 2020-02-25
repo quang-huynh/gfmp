@@ -327,22 +327,23 @@ $$
 
 The DLMtool OM can also be set up to reflect one or more real observed indices of biomass or abundance in the historical period and apply the specified survey selectivity-at-age to the projected period.
 We recommend this approach for the MP Framework assuming that the OM has been condition via an SRA model (Appendix \@ref(app:sra)).
-In this case, the index in years $t_1$ to $t_c$ is specified as data and the index $I$ (without observation error) in year $y$ (for $y > t_c$) and for survey $s$ is calculated as:
+In this case, the index values in years $t_1$ to $t_c$ are specified as data and the index values $I$ (without observation error) in year $y$ (for $y > t_c$) and for survey $s$ are calculated as:
 
 $$
-I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a},
+I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a},
 (\#eq:sra-om-iysn-addind)
 $$
 
 for a biomass-based index and:
 
 $$
-I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a},
+I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a},
 (\#eq:sra-om-iysb-addind)
 $$
 
 for an abundance-based index.
-The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equations \@ref(eq:dlm-om-va)--\@ref(eq:dlm-om-sigldes)) but with its own shape as specified by the user or estimated via the SRA.
+The symbol $q_s$ represents catchability as estimated via the SRA (Equation \@ref(eq:sra-om-iysb) or \@ref(eq:sra-om-iysn)).
+The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equations \@ref(eq:dlm-om-va)--\@ref(eq:dlm-om-sigldes)) but with its own shape as specified by the user or estimated via the SRA (Equations \@ref(eq:sra-om-vaf)).
 
 <!-- where $q_s$ the catchability for survey $s$ is TODO. -->
 
@@ -569,7 +570,7 @@ B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}}
 (\#eq:dlm-om-dyn-bo)
 $$
 
-which is the average unfished spawning biomass over the first $\theta_{a50}$ years of the historical period, where age-at-50%-maturity ($\theta_{a50}$), rounded up to the nearest integer, is used as an approximation of generation time and $B_{unfished}^y$ is calculated $B_0$ (Equation \@ref(eq:dlm-om-bo)). Other alternative interpretations of $B_0$ could also be programmed (e.g., average $B_0$ across the whole historical period, or at the end of the historical period), depending on the desired benchmark or target.
+which is the average unfished spawning biomass over the first $\theta_{a50}$ years of the historical period, where age-at-50%-maturity ($\theta_{a50}$), rounded up to the nearest integer, is used as an approximation of generation time and $B_\textrm{unfished}^y$ is calculated $B_0$ (Equation \@ref(eq:dlm-om-bo)). Other alternative interpretations of $B_0$ could also be programmed (e.g., average $B_0$ across the whole historical period, or at the end of the historical period), depending on the desired benchmark or target.
 
 Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
 

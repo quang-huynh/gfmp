@@ -159,7 +159,7 @@ See Appendix \@ref(app:dlm-om), Section \@ref(sec:dlmtool-fleet-dynamics) for de
 Total mortality $Z$ in year $y$ and for age $a$ is given by
 
 $$
-Z_{y,a} = M + \Sigma_f v_{a,f} F_{y,f}
+Z_{y,a} = M + \Sigma_f v_{a,f} F_{y,f},
 (\#eq:sra-om-zya)
 $$
 
@@ -181,7 +181,7 @@ $$
 where the $R^{\textrm{eq}}$ is the equilibrium recruitment (Equation \@ref(eq:sra-om-recinit)) and $Z^{\textrm{eq}}_a$ is the equilibrium total mortality rate:
 
 $$
-Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f
+Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f,
 (\#eq:sra-om-zeq)
 $$
 
@@ -195,7 +195,7 @@ $$
 R^{\textrm{eq}} =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
-      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker}
+      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker},
 \end{cases}
 (\#eq:sra-om-recinit)
 $$
@@ -337,7 +337,7 @@ $$
 (\#eq:sra-om-like-catch)
 $$
 
-where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a very small standard deviation for the catch likelihood relative to the variance in other likelihood components, the predicted catch should match the observed catch almost perfectly.
+where $\textrm{obs}$ and $\textrm{pred}$ indicate observed and predicted quantities, respectively, and $\lambda$ are likelihood weights. With a very small standard deviation for the catch likelihood (0.01) relative to the variance in other likelihood components, the predicted catch should match the observed catch almost perfectly.
 
 The log-likelihood component $\Lambda_2$ of survey data is
 
@@ -392,7 +392,7 @@ $$
 The total log-likelihood $\textrm{LL}$ to be maximized is
 
 $$
-\textrm{LL} = \sum_{i=1}^7\Lambda_i
+\textrm{LL} = \sum_{i=1}^7\Lambda_i.
 (\#eq:sra-om-like-tot)
 $$
 
