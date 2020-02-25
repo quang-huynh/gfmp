@@ -4,4 +4,4 @@ _book/resdoc.pdf: 01-introduction.Rmd 02-best-practices.Rmd 03-summary-shortrake
 	Rscript -e "bookdown::render_book('index.Rmd')"
 
 continuous:
-	while true; do make --silent; sleep 5; done
+	while true; do make --silent; sleep 0.5; done

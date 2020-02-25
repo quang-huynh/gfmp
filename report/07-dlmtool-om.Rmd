@@ -36,7 +36,7 @@ Equations for the SRA model are provided in Appendix \@ref(app:sra).
 The operating model assumes that growth follows a von Bertalanffy model:
 
 $$
-L_{a} = L_{\infty}\left( 1 - \exp( - \kappa(a - a_{0} \right))
+L_{a} = L_{\infty}\left( 1 - \exp( - \kappa(a - a_{0} \right)),
 (\#eq:dlm-om-vonb)
 $$
 
@@ -68,7 +68,7 @@ plot(x, f(x, 50, 25))
 where maturity ($m_a$) at age is calculated from the length-at-age:
 
 $$
-m_{a} = \frac{1}{1 + e^{{- \ln}19\left( \frac{a - \theta_{a50}}{\theta_{a95} - \theta_{a50}} \right)}}
+m_{a} = \frac{1}{1 + e^{{- \ln}19\left( \frac{a - \theta_{a50}}{\theta_{a95} - \theta_{a50}} \right)}},
 (\#eq:dlm-om-mata)
 $$
 
@@ -76,12 +76,12 @@ where \(\theta_{a50}\) and \(\theta_{a95}\) represent the age at 50% and 95% mat
 
 <!-- TODO: check these! -->
 $$
-\theta_{a50} = \frac{- \ln\left( 1 - \theta_{l50} / L_{\infty} \right)}{\kappa} + t_{0}
+\theta_{a50} = \frac{- \ln\left( 1 - \theta_{l50} / L_{\infty} \right)}{\kappa} + t_{0},
 (\#eq:dlm-om-invonb)
 $$
 
 $$
-\theta_{a95} = \frac{- \ln\left( 1 - \left( \theta_{l50} / L_{\infty} + {{\theta}}_{l50\_ 95} / L_{\infty} \right) \right)}{\kappa} + t_{0}
+\theta_{a95} = \frac{- \ln\left( 1 - \left( \theta_{l50} / L_{\infty} + {{\theta}}_{l50\_ 95} / L_{\infty} \right) \right)}{\kappa} + t_{0}.
 (\#eq:dlm-om-theta95)
 $$
 
@@ -110,14 +110,14 @@ $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
 $\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
 
 $$
-B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ {R}_{0}e^{-M{(a-1)}}}
+B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ {R}_{0}e^{-M{(a-1)}}},
 (\#eq:dlm-om-bo)
 $$
 
 where $A$ is the user-defined maximum age, ${R}_{0}e^{M{(a-1)}}$ gives unfished numbers-at-age, and spawning biomass $B_y$ in a given year is calculated as
 
 $$
-B_{y} = \sum_{a = 1}^{A}{w_{a}m_{a}N_{y,a}}
+B_{y} = \sum_{a = 1}^{A}{w_{a}m_{a}N_{y,a}},
 (\#eq:dlm-om-sy)
 $$
 
@@ -152,7 +152,7 @@ N_{y,a} =
 \begin{cases}
       R_y & a = 1\\
       N_{y-1,a-1}\  e^{-Z_{y-1,a-1}} & 1<a<A\\
-      N_{y-1,a-1}\  e^{-Z_{y-1,a-1}} + N_{y-1,a}\ e^{-Z_{y-1,a}} & a = A
+      N_{y-1,a-1}\  e^{-Z_{y-1,a-1}} + N_{y-1,a}\ e^{-Z_{y-1,a}} & a = A,
 \end{cases}
 (\#eq:dlm-om-nya)
 $$
@@ -183,7 +183,7 @@ B^V_{y,a} = N_{y,a} w_{a} v_{a} \dot{R}_{a}
 (\#eq:dlm-om-vulcom)
 $$
 
-where the selectivity-at-age $v_{a}$ (or vulnerability-at-age) is calculated according to whether users define selectivity to be asymptotic (logistic) or dome-shaped, using the following length-based function:
+where $\dot{R_a}$ represents retention rate at age and the selectivity-at-age $v_{a}$ (or vulnerability-at-age) is calculated according to whether users define selectivity to be asymptotic (logistic) or dome-shaped, using the following length-based function:
 
 $$
 v_{a} =
@@ -291,7 +291,7 @@ catches from 1970--2017); and (2) catch composition data (e.g., length or age sa
 ### Time series data
 
 Time series data are simulated with various types of error that would be expected from real-life sampling of fisheries data (e.g., lognormal observation error in indices of abundance).
-Annual observed indices of abundance are calculated by adding observation error and bias to annual relative total biomass ($B^T_{y}$) through a term $\omega_{I,y}$ that includes bias and imprecision in the index observations:
+The standard index of abundance in DLMtool is calculated by adding observation error and bias to annual total biomass ($B^T_{y}$) through a term $\omega_{I,y}$ that includes bias and imprecision in the index observations:
 
 $$
 I_{y}^{\textrm{obs}} = \omega_{I,y}\frac{{B^T_{y}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{B^T_{i}}^{\beta}}
@@ -321,8 +321,49 @@ $$
 where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right)
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
 (\#eq:dlm-om-epsiloni)
+$$
+
+The DLMtool OM can also be set up to reflect one or more real observed indices of biomass or abundance in the historical period and apply the specified survey selectivity-at-age to the projected period.
+In this case, the true underlying index $I$ in year $y$ and for survey $s$ is calculated as:
+
+$$
+I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a},
+(\#eq:sra-om-iysn-addind)
+$$
+
+for a biomass-based index and:
+
+$$
+I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a},
+(\#eq:sra-om-iysb-addind)
+$$
+
+for an abundance-based index.
+The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equation \@ref(eq:dlm-om-va)) but with its own shape as specified by the user or estimated via the SRA.
+
+<!-- where $q_s$ the catchability for survey $s$ is TODO. -->
+
+The OM then scales and adds observation error to each index as:
+
+$$
+I_{y,s}^{\textrm{obs}} = \omega_{I,y,s}\frac{{I_{y,s}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{I_{y,s}}^{\beta}},
+(\#eq:dlm-om-iy-addind)
+$$
+
+with $\omega_{I,y,s}$ calculated as:
+
+$$
+\omega_{I,y,s} = \exp \left( \varepsilon_{I,y,s} - \frac{{{\sigma}}_{I}^2}{2} \right),
+(\#eq:dlm-om-omegai-addind)
+$$
+
+where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
+
+$$
+\varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
+(\#eq:dlm-om-epsiloni-addind)
 $$
 
 <!--
