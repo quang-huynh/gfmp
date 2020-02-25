@@ -52,8 +52,10 @@ A full time series of the conditioning variable (i.e., catch) is required needed
 In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
 In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
+We note that $C^{\textrm{eq}}_f$ need not be the true catch prior to the first year---factors such as recruitment, predator mortality, or any number of catch trends could have caused the estimated initial depletion---but $C^{\textrm{eq}}_f$ represents the corresponding catch in equilibrium.
 The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
-However, initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
+
+Initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
 We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
 An alternative approach is to use catch-reconstruction methods [e.g., @porch2004; @starr2017] to reconstruct the catch time series back to the time when the stock was considered unfished.
 While this approach avoids the uncertainty associated with estimating depletion based on $C^{\textrm{eq}}_f$, it may introduce other sources of uncertainty associated with the reconstruction approach.
@@ -183,9 +185,9 @@ Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f
 (\#eq:sra-om-zeq)
 $$
 
-where unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. 
+where unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$.
 
-To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch (in weight)  prior to the first year of the model $C^{\textrm{eq}}_f$ should be provided. 
+To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch (in weight)  prior to the first year of the model $C^{\textrm{eq}}_f$ should be provided.
 
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 
@@ -219,7 +221,7 @@ N_{y,a} =
 (\#eq:sra-om-nya)
 $$
 
-where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum-age, treated as a plus-group. 
+where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum-age, treated as a plus-group.
 
 <!-- TODO: RF to add note about how plus group is handled in DLMtool if the SRA is used (Issue #94)-->
 
