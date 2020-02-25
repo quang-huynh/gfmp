@@ -165,8 +165,8 @@ saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
 
 rex_om@M
 rex_om_high_m <- rex_om
-rex_om_high_m@M <- c(0.30, 0.35)
-rex_sra_high_m <- fit_sra_rex_cpue(rex_om_high_m, c_eq = 2)
+rex_om_high_m@M <- c(0.30, 0.30)
+rex_sra_high_m <- fit_sra_rex_cpue(rex_om_high_m, c_eq = 1.5)
 # plot(rex_sra_high_m)
 saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
 
@@ -255,12 +255,12 @@ sc <- tibble::tribble(
   ~scenario, ~scenario_human, ~scenario_type,
   "ceq150", "Ceq. 150%", "Reference",
   "ceq200", "Ceq. 200%", "Reference",
-  "high-m", "M = 0.35", "Reference",
-  "high-h", "h = 0.95", "Reference",
+  "high-m", "Higher M", "Reference",
+  "high-h", "Higher steepness", "Reference",
   "sel1", "Lower selectivity", "Reference",
   # "oregon", "Oregon growth", "Reference",
-  "no-cpue", "No CPUE", "Reference",
-  "no-cpue-light", "Lightly fished", "Reference",
+  "no-cpue", "No CPUE Ceq. 200%", "Reference",
+  "no-cpue-light", "No CPUE Ceq. 50%", "Reference",
   "inc-m", "M inc.", "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
