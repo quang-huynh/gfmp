@@ -2,7 +2,7 @@
 
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
-The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model decribed below.
+The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model described below.
 The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time (see Section \@ref(sec:dlmtool-time-varying).
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
 Full documentation of the DLMtool OM, including the range of possible parameterizations, is described in the appendices of @carruthers2018. adapted here for the MP Framework.
@@ -15,7 +15,7 @@ There are two distinct time-periods in the simulation framework:
 (1) The historical period, which includes the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$ (where "c" represents the "current" year); and
 (2) the projection period, which covers the period from the first year after $t_c$ to the final projection year $t_N$.
 The historical period is calibrated to historical observations using an age-structured stock-reduction analysis [SRA; @kimura1982; @walters2006], described in Appendix \@ref(app:sra).
-The closed-loop simulation, with application of the MPs and calculation of performance metricss begins in the first year of the projection period (year $t_{c+1}$).
+The closed-loop simulation, with application of the MPs and calculation of performance metrics begins in the first year of the projection period (year $t_{c+1}$).
 
 Operating model development in the MP Framework follows three steps:
 
@@ -107,7 +107,7 @@ $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
 $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
 and
 $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as 
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
 
 $$
 B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ {R}_{0}e^{-M{(a-1)}}}
@@ -160,7 +160,7 @@ $$
 
 where $F_{y,a}$ is fishing mortality-at-age, defined in Equation \@ref(eq:dlm-om-Fay)), and $v_{a}$ is selectivity-at-age, defined in Equation \@ref(eq:dlm-om-va).
 
-Note that Equation \@ref(eq:dlm-om-nya) treats the maximum age class $A$ as a plus group (i.e., the age class $A$ includes all fish of age $A$ and older). 
+Note that Equation \@ref(eq:dlm-om-nya) treats the maximum age class $A$ as a plus group (i.e., the age class $A$ includes all fish of age $A$ and older).
 This is not the default in DLMtool, which usually makes the assumption that $A$ is large enough to include all age classes (i.e., $N_{y,a} = N_{y-1,a-1}e^{-Z_{y-1,a-1}}$ is used for all age classes including $a = A$).
 However, when the model is conditioned using the SRA (Appendix \@ref(app:sra)), the SRA defaults to treating $A$ as a plus group (Equation \@ref(eq:sra-om-nya)) and, to ensure consistency between the historical and projection periods, the SRA function forces DLMtool to also treat $A$ as a plus group for the closed-loop simulations in the projection period (by setting `OM@cpars$plusgroup` = TRUE). Since we recommend always conditioning OMs for BC groundfish using the SRA, we include the plus group in Equation \@ref(eq:dlm-om-nya).
 
@@ -198,24 +198,24 @@ $$
 
 where $L_5$ is the user-defined length-at-5%-selectivity
 
-The variance of the descending limb is given by 
+The variance of the descending limb is given by
 
 $$
 \sigma_{\textrm{sdesc}}^{2} = \frac{V_{L_\infty} - L^\textrm{FS}}{{\sqrt{- \log_{2^{V_{L_\infty}}}}}},
 (\#eq:dlm-om-sigldes)
 $$
 
-where $V_{L_\infty}$ is the user-defined selectivity-at-maximum-length. Setting this parameter to 1 necessarily fixes selectivity to be logistic (Equation \@ref(eq:dlm-om-sigldes) is undefined when $V_{L_\infty} = 1$). 
-Note that, like many DLMtool parameters, $L_5$, $L_{FS}$ and $V_{L_\infty}$ can be defined as ranges if desired. 
+where $V_{L_\infty}$ is the user-defined selectivity-at-maximum-length. Setting this parameter to 1 necessarily fixes selectivity to be logistic (Equation \@ref(eq:dlm-om-sigldes) is undefined when $V_{L_\infty} = 1$).
+Note that, like many DLMtool parameters, $L_5$, $L_{FS}$ and $V_{L_\infty}$ can be defined as ranges if desired.
 In this case, each replicate simulation will draw from the distribution of these ranges, resulting in a range of selectivity curves across functions.
 
 <!-- note V_Linfinity is the slot fleet@VmaxLen-->
 
-DLMtool currently models all catch as coming from a single fleet. 
+DLMtool currently models all catch as coming from a single fleet.
 However, if the OM is calibrated using the SRA model (Appendix \@ref(app:sra)), the SRA can accommodate multiple fleets, and selectivity is fleet-specific.
 Fleet-specific selectivity in the SRA is calculated using Equation \@ref(eq:sra-om-vaf) with fleet-specific user-defined settings for $L_5$, $L_{FS}$ and $V_{L_\infty}$, or is estimated if age- or length-composition data are provided.
-In this case, selectivity in the DLMtool OM in the projection period is replaced in Equation \@ref(eq:dlm-om-zya) with the SRA-calibrated estimate of fishing mortality-at-age in the final year ($t_c$) of the historical period ($\Sigma_f v_{a,f} F_{t_c,f}$), normalized by dividing by apical $F$ in that year. 
-This provides fractions of $F$-at-age derived from the relative selectivity-at-age across fleets (i.e., catch-weighted selectivity-at-age). 
+In this case, selectivity in the DLMtool OM in the projection period is replaced in Equation \@ref(eq:dlm-om-zya) with the SRA-calibrated estimate of fishing mortality-at-age in the final year ($t_c$) of the historical period ($\Sigma_f v_{a,f} F_{t_c,f}$), normalized by dividing by apical $F$ in that year.
+This provides fractions of $F$-at-age derived from the relative selectivity-at-age across fleets (i.e., catch-weighted selectivity-at-age).
 The closed-loop simulation projections therefore assume that the relative selectivities across fleets remains constant in the projection period.
 
 Similarly, if the OM is calibrated using the SRA model, users also specify selectivity parameters for the individual indices of abundance.
@@ -246,7 +246,7 @@ $$
 r_{y,a} = \begin{cases}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{rmax}}, \\
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rdesc}}^{2}}} & L_{y,a} > {{L}}_{\textrm{rmax}}, \\
-\end{cases} 
+\end{cases}
 (\#eq:dlm-om-ray)
 $$
 
@@ -302,7 +302,7 @@ and where $\beta$ is the hyperstability/hyperdepletion parameter.
 When $\beta$ is 1 the index is linearly related to spawning biomass $S_y$.
 When $\beta$ is greater than 1 the index is hyperdeplete and moves faster than true spawning biomass changes.
 When $\beta$ is lower than 1 the index is hyperstable and moves slower than true spawning biomass changes.
-When the observed index is calculated, it is normalised to have a mean value of 1 over all years.
+When the observed index is calculated, it is normalized to have a mean value of 1 over all years.
 
 The term $\omega_{I,y}$ represents imprecision in observations via $\sigma_I$:
 
@@ -504,7 +504,7 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 
 The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
 
-DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters. 
+DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
 This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va).
 
@@ -513,7 +513,7 @@ Fishery catchability $q$ can also be set to vary through time during the project
 
 Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model.
 
-In the presence of time-varying parameters, $B_0$ is calculated as 
+In the presence of time-varying parameters, $B_0$ is calculated as
 
 $$
 B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}}
