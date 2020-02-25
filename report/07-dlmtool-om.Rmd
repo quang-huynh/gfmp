@@ -318,7 +318,7 @@ $$
 (\#eq:dlm-om-omegai)
 $$
 
-where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
+where the lognormal error term, $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
 \varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
@@ -326,7 +326,8 @@ $$
 $$
 
 The DLMtool OM can also be set up to reflect one or more real observed indices of biomass or abundance in the historical period and apply the specified survey selectivity-at-age to the projected period.
-In this case, the true underlying index $I$ in year $y$ and for survey $s$ is calculated as:
+We recommend this approach for the MP Framework assuming that the OM has been condition via an SRA model (Appendix \@ref(app:sra)).
+In this case, the index in years $t_1$ to $t_c$ is specified as data and the index $I$ (without observation error) in year $y$ (for $y > t_c$) and for survey $s$ is calculated as:
 
 $$
 I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a},
@@ -341,14 +342,14 @@ I_{y,s} = \sum_{a=1}^A v_{a,s} N_{y,a},
 $$
 
 for an abundance-based index.
-The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equation \@ref(eq:dlm-om-va)) but with its own shape as specified by the user or estimated via the SRA.
+The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equations \@ref(eq:dlm-om-va)--\@ref(eq:dlm-om-sigldes)) but with its own shape as specified by the user or estimated via the SRA.
 
 <!-- where $q_s$ the catchability for survey $s$ is TODO. -->
 
 The OM then scales and adds observation error to each index as:
 
 $$
-I_{y,s}^{\textrm{obs}} = \omega_{I,y,s}\frac{{I_{y,s}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{I_{y,s}}^{\beta}},
+I_{y,s}^{\textrm{obs}} = \omega_{I,y,s}\frac{{I_{y,s}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{I_{i,s}}},
 (\#eq:dlm-om-iy-addind)
 $$
 
@@ -359,7 +360,7 @@ $$
 (\#eq:dlm-om-omegai-addind)
 $$
 
-where the lognormal error term $\epsilon$, is drawn from a standard normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
+where the lognormal error term $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
 $$
 \varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
