@@ -8,10 +8,13 @@ library("here")
 library("assertthat")
 # load_all("../gfdlm")
 
+cores <- floor(parallel::detectCores() / 2L)
+# future::plan(future::multiprocess, workers = cores)
+future::plan(future::sequential)
+
 # Settings --------------------------------------------------------------------
 
 sp <- "rex" # Species: used in filenames
-cores <- floor(parallel::detectCores() / 2L)
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
 nsim <- 48
@@ -159,17 +162,17 @@ fit_scenario <- function(scenario, mp_vec, id = "", sp = "rex") {
   if (id != "") id <- paste0(id, "-")
   file_name <- here::here("generated-data", paste0(sp, "-mse-", id, scenario, ".rds"))
   if (!file.exists(file_name)) {
-    message("Running closed-loop-simulation for ", scenario, " OM")
+    cat("Running closed-loop-simulation for", scenario, "OM\n")
     o <- om[[scenario]]
     mse <- DLMtool::runMSE(OM = o, MPs = mp_vec, parallel = FALSE)
     saveRDS(mse, file = file_name)
   } else {
-    message("Loading closed-loop-simulation for ", scenario, " OM")
+    cat("Loading closed-loop-simulation for", scenario, "OM\n")
     mse <- readRDS(file_name)
   }
   mse
 }
-future::plan(future::multiprocess, workers = cores)
+
 fo <- furrr::future_options(
   packages = c("gfdlm", "DLMtool", "MSEtool", "here"),
   globals = c("ref_catch", "om", mp$mp)
@@ -207,7 +210,7 @@ mp_sat <- dplyr::filter(pm_avg, `LT LRP` > satisficed_criteria[1], `STC` > satis
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 
-mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
+# mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
 mp_sat
 
@@ -229,7 +232,8 @@ mp_eg_not_sat <- c(
   ".IDX_smooth",
   ".IT5_hist",
   ".IT10_hist",
-  ".ITM_hist"
+  ".ITM_hist",
+  ".SP6040_0.4"
 )
 
 plots <- gfdlm::plot_factory(
