@@ -16,7 +16,6 @@ sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
 nsim <- 48
 interval <- 2L
-base_om <- "ceq150" # affects some default plots
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
