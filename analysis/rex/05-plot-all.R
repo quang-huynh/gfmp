@@ -12,9 +12,9 @@ library("assertthat")
 
 sp <- "rex" # Species: used in filenames
 cores <- floor(parallel::detectCores() / 2L)
-sc <- readRDS("generated-data/rex-scenarios.rds")
+sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 75L
+nsim <- 48
 interval <- 2L
 base_om <- "ceq150" # affects some default plots
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
@@ -25,22 +25,19 @@ ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
 catch_breaks <- seq(0, 500000, 100000)
 catch_labels <- catch_breaks / 1000
 
-# Satisficing rules:
-# LT_LRP_thresh <- 0.8
-# STC_thresh <- 0.7
-
 # Set up PMs ------------------------------------------------------------------
 
-d_catch <- readRDS(here::here("generated-data", "rex-catch2.rds"))
+d_catch <- readRDS(here("generated-data", "rex-catch2.rds"))
 d_catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
-catch <- d_catch %>%
-  gfplot::tidy_catch() %>%
+catch <- suppressWarnings(gfplot::tidy_catch(d_catch))
+catch <- catch %>%
   group_by(year) %>%
   summarize(value = sum(value)) %>%
   pull(value)
 
 yrs <- length(catch)
 ref_aadc <- gfdlm:::get_aadc(catch[(yrs - 10 + 1):yrs])
+ref_catch <- mean(catch[(yrs - 5 + 1):yrs])
 
 `LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
@@ -81,17 +78,7 @@ om <- map(scenarios, ~ {
   om@interval <- interval
   om@TACSD <- c(0, 0)
   om@CurrentYr <- 2019
-  nsim_cpars <- length(om@cpars$R0)
-  n.ind <- dim(om@cpars$Data@AddInd)[2]
-  om@cpars$AddIbeta <- matrix(1, nrow = nsim_cpars, ncol = n.ind)
-  .n <- nsim_cpars * (om@nyears + om@proyears)
-  set.seed(om@seed)
-  .e <- DLMtool::trlnorm(.n, 1,
-    cv = runif(.n, min = min(om@Iobs), max = max(om@Iobs))
-  )
-  om@cpars$AddIerr <- array(.e,
-    dim = c(nsim_cpars, n.ind, om@nyears + om@proyears)
-  )
+  om <- gfdlm::sample_AddIerr(om)
   om
 })
 
@@ -124,18 +111,43 @@ oddify <- function(x) seq(2, x, by = 2)
 
 .ITM_hist <- use_AddInd(reduce_survey(ITM_hist, index = oddify))
 
-.SP4010_prior <- SP4010_gf %>%
-  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+# stopifnot(round(ref_catch) == 124387) # parallel problem otherwise:
+# .SP4010_0.6 <- SP4010_gf %>%
+#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+# .SP8040_0.6 <- SP8040_gf %>%
+#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+.SP6040_0.6 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-.SP6040_prior <- SP6040_gf %>%
-  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+
+# .SP4010_0.4 <- SP4010_gf %>%
+#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+# .SP8040_0.4 <- SP8040_gf %>%
+#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+
+.SP6040_0.4 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-.SP8040_prior <- SP8040_gf %>%
-  add_SP_prior(r_prior = c(0.3, 0.1)) %>%
+
+.SP6040_0.5 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.5, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
+
+# .SP6040_fox <- SP6040_gf %>%
+#   add_SP_prior(r_prior = .r_prior, initial_tac = ref_catch, start = list(n = 1)) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
 
 missing <- mp$mp[!map_lgl(mp$mp, exists)]
 assert_that(length(missing) == 0,
@@ -144,13 +156,13 @@ assert_that(length(missing) == 0,
   )
 )
 
-fit_scenario <- function(scenario) {
-  file_name <- here("generated-data", paste0(sp, "-mse-", scenario, ".rds"))
+fit_scenario <- function(scenario, mp_vec, id = "", sp = "rex") {
+  if (id != "") id <- paste0(id, "-")
+  file_name <- here::here("generated-data", paste0(sp, "-mse-", id, scenario, ".rds"))
   if (!file.exists(file_name)) {
     message("Running closed-loop-simulation for ", scenario, " OM")
     o <- om[[scenario]]
-    # o@nsim <- 48
-    mse <- runMSE(OM = o, MPs = mp$mp, parallel = TRUE)
+    mse <- DLMtool::runMSE(OM = o, MPs = mp_vec, parallel = FALSE)
     saveRDS(mse, file = file_name)
   } else {
     message("Loading closed-loop-simulation for ", scenario, " OM")
@@ -158,16 +170,24 @@ fit_scenario <- function(scenario) {
   }
   mse
 }
-DLMtool::setup(cpus = cores)
-mse <- map(scenarios, fit_scenario)
-snowfall::sfStop()
-# plot_main_projections(mse[[1]])
-# plot_index(mse, type = "AddInd", omit_index_fn = oddify)
+future::plan(future::multiprocess, workers = cores)
+fo <- furrr::future_options(
+  packages = c("gfdlm", "DLMtool", "MSEtool", "here"),
+  globals = c("ref_catch", "om", mp$mp)
+)
+mse_cc <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Constant", mp$type)], id = "cc", .options = fo)
+mse_ind <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Index", mp$type)], id = "ind", .options = fo)
+mse_sp <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Surplus", mp$type)], id = "sp", .options = fo)
+mse_ref <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Reference", mp$type)], id = "ref", .options = fo)
 
-ref_catch <- mean(catch[(yrs - 5 + 1):yrs])
+source(here("analysis/rex/merge_MSE.R"))
+mse <- pmap(list(mse_cc, mse_ind, mse_sp, mse_ref), merge_MSE)
+
 for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch
-
-# plot_main_projections(mse[[2]])
 
 # Satisficing -----------------------------------------------------------------
 
@@ -178,14 +198,20 @@ pm_avg <- group_by(pm_df, MP) %>% summarise_if(is.numeric, mean)
 pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 saveRDS(pm_df_list, file = here("generated-data", "rex-pm-all.rds"))
 
-plot_tigure(pm_avg, satisficed = c("LT LRP" = 0.7, "STC" = 0.6))
-plot_tigure(pm_min, satisficed = c("LT LRP" = 0.7, "STC" = 0.6))
+satisficed_criteria <- c("LT LRP" = 0.8, "STC" = 0.7)
+plot_tigure(pm_avg, satisficed = satisficed_criteria)
+plot_tigure(pm_min, satisficed = satisficed_criteria)
 
-mp_sat <- dplyr::filter(pm_avg, `LT LRP` > 0.7, `STC` > 0.6) %>%
+mp_sat <- dplyr::filter(pm_avg, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
   # arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`, -AAVC) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
+
+mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
+mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
+mp_sat
+
 stopifnot(length(mp_sat) >= 1)
 stopifnot(length(mp_sat) <= 8) # for RColorBrewer::brewer.pal()
 mp_sat_with_ref <- union(mp_sat, reference_mp)
@@ -195,17 +221,16 @@ stopifnot(length(mp_not_sat) > 1)
 custom_pal <- c(RColorBrewer::brewer.pal(8, "Set2")[seq_along(mp_sat)], ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
 
-satisficed_criteria <- c("LT LRP" = 0.7, "STC" = 0.6)
-
 mp_eg_not_sat <- c(
-  "CC_hist20",
-  "CC0.8",
+  "CC0.6",
+  ".Iratio2",
   ".GB_slope8_0.66",
   ".Islope0.2_80",
   ".IDX",
+  ".IDX_smooth",
   ".IT5_hist",
-  ".ITM_hist",
-  ".SP6040_prior"
+  ".IT10_hist",
+  ".ITM_hist"
 )
 
 plots <- gfdlm::plot_factory(
@@ -290,13 +315,13 @@ x <- purrr::map(
 
 plot_index(x, type = "AddInd", omit_index_fn = oddify)
 
-g <- c("Ceq. 150%", "Ceq. 200%", "Lightly fished", "No CPUE") %>%
+g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
   set_names() %>%
   map(~ x[[.]]) %>%
   plot_scenario_projections()
 .ggsave("projections-scenarios-ref1", width = 8, height = 10)
 
-g <- c("Ceq. 150%", "M = 0.35", "h = 0.95", "Lower selectivity") %>%
+g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
   set_names() %>%
   map(~ x[[.]]) %>%
   plot_scenario_projections()
