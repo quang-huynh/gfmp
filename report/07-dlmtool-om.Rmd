@@ -45,7 +45,7 @@ where $\kappa$ represents the growth rate, $L_{\infty}$ represents the maximum l
 Weight-at-age ($w_a$) is assumed to be related to length-at-age ($L_a$) by:
 
 $$
-w_{a} = \beta_{W}\ {L_{a}}^{\alpha_{W}}.
+w_{a} = \alpha_{W}\ {L_{a}}^{\beta_{W}}.
 (\#eq:dlm-om-wta)
 $$
 
@@ -287,7 +287,7 @@ Time series data are simulated with various types of error that would be expecte
 Annual observed indices of abundance are calculated by adding observation error and bias to annual relative total biomass ($B^T_{y}$) through a term $\omega_{I,y}$ that includes bias and imprecision in the index observations:
 
 $$
-I_{y}^{\textrm{obs}} = \omega_{I,y}\frac{{B^T_{y}}^{\beta}}{\frac{1}{y}\sum_{i = 1}^{y}{B^T_{i}}^{\beta}}
+I_{y}^{\textrm{obs}} = \omega_{I,y}\frac{{B^T_{y}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{B^T_{i}}^{\beta}}
 (\#eq:dlm-om-iy)
 $$
 
