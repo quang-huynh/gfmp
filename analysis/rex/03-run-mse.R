@@ -1,6 +1,3 @@
-# 2020-02-19
-# DO NOTE USE ME!
-# See 05-plot-all.R for now.
 library("DLMtool")
 library("MSEtool")
 library("dplyr")
@@ -9,35 +6,40 @@ library("ggplot2")
 library("gfdlm")
 library("here")
 library("assertthat")
+# load_all("../gfdlm")
+
+cores <- floor(parallel::detectCores() / 2L)
+# future::plan(future::multiprocess, workers = cores)
+future::plan(future::sequential)
 
 # Settings --------------------------------------------------------------------
 
 sp <- "rex" # Species: used in filenames
-cores <- floor(parallel::detectCores() / 2L)
-sc <- readRDS(here("generated-data/rex-scenarios.rds"))
+sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 50
+nsim <- 48
 interval <- 2L
-base_om <- "ceq100" # affects "failed" MP example trajectory plot
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-ref_mp_cols <- c("grey60", "grey20", "grey85") %>% set_names(reference_mp)
-
-catch_breaks <- c(0, 100000, 200000, 300000)
-catch_labels <- c("0", "100", "200", "300")
-
-# Satisficing rules:
-LT_LRP_thresh <- 0.8
-STC_thresh <- 0.7
-this_year <- 2018
+ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
+#
+catch_breaks <- seq(0, 500000, 100000)
+catch_labels <- catch_breaks / 1000
 
 # Set up PMs ------------------------------------------------------------------
 
-catch <- readRDS(here("generated-data", "rex-catch.rds"))
+d_catch <- readRDS(here("generated-data", "rex-catch2.rds"))
+d_catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
+catch <- suppressWarnings(gfplot::tidy_catch(d_catch))
+catch <- catch %>%
+  group_by(year) %>%
+  summarize(value = sum(value)) %>%
+  pull(value)
+
 yrs <- length(catch)
-ref_catch <- mean(catch[(yrs-5+1):yrs])
-ref_aadc <- gfdlm:::get_aadc(catch[(yrs-10+1):yrs])
+ref_aadc <- gfdlm:::get_aadc(catch[(yrs - 10 + 1):yrs])
+ref_catch <- mean(catch[(yrs - 5 + 1):yrs])
 
 `LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
 `LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
@@ -52,9 +54,9 @@ PM <- c("LT LRP", "LT USR", "FMSY", "STC", "LTC", "AADC")
 stopifnot(all(reference_mp %in% mp$mp))
 fig_dir <- here("report", "figure")
 if (!dir.exists(fig_dir)) dir.create(fig_dir)
-.ggsave <- function(filename, width, height) {
+.ggsave <- function(filename, width, height, ...) {
   ggsave(file.path(fig_dir, paste0(sp, "-", filename, ".png")),
-    width = width, height = height
+    width = width, height = height, ...
   )
 }
 
@@ -64,11 +66,8 @@ get_filtered_scenario <- function(type, column) {
     set_names()
 }
 scenarios <- sc$scenario %>% set_names()
-scenarios_human <- sc$scenario_human %>% set_names()
 scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
 scenarios_rob <- get_filtered_scenario("Robustness", "scenario")
-scenarios_rob_human <- get_filtered_scenario("Robustness", "scenario_human")
 
 # Read OMs --------------------------------------------------------------------
 
@@ -79,51 +78,118 @@ om <- map(scenarios, ~ {
   }
   om@nsim <- nsim
   om@interval <- interval
+  om@TACSD <- c(0, 0)
+  om@CurrentYr <- 2019
+  om <- gfdlm::sample_AddIerr(om)
   om
 })
 
 # Fit MPs to all OMs ----------------------------------------------------------
 
-.SP6040_prior <- add_SP_prior(.SP6040_gf, r_prior = c(0.3, 0.1))
-.SP8040_prior <- add_SP_prior(.SP8040_gf, r_prior = c(0.3, 0.1))
-.SP4010_prior <- add_SP_prior(.SP4010_gf, r_prior = c(0.3, 0.1))
+oddify <- function(x) seq(2, x, by = 2)
+.Iratio2 <- use_AddInd(reduce_survey(Iratio2, index = oddify))
+.GB_slope6_0.66 <- use_AddInd(reduce_survey(GB_slope6_0.66, index = oddify))
+.GB_slope6_1 <- use_AddInd(reduce_survey(GB_slope6_1, index = oddify))
+.GB_slope8_0.66 <- use_AddInd(reduce_survey(GB_slope8_0.66, index = oddify))
+.GB_slope8_1 <- use_AddInd(reduce_survey(GB_slope8_1, index = oddify))
+
+.Islope0.2_80 <- use_AddInd(reduce_survey(Islope0.2_80, index = oddify))
+.Islope0.2_100 <- use_AddInd(reduce_survey(Islope0.2_100, index = oddify))
+.Islope0.4_80 <- use_AddInd(reduce_survey(Islope0.4_80, index = oddify))
+.Islope0.4_100 <- use_AddInd(reduce_survey(Islope0.4_100, index = oddify))
+
+.IDX <- use_AddInd(reduce_survey(IDX, index = oddify))
+.IDX_smooth <- use_AddInd(reduce_survey(IDX_smooth, index = oddify))
+
+.IT10_hist <- use_AddInd(reduce_survey(IT10_hist, index = oddify))
+.IT5_hist <- use_AddInd(reduce_survey(IT5_hist, index = oddify))
+
+.Itarget_base <- use_AddInd(reduce_survey(Itarget_base, index = oddify))
+.Itarget_w0.8 <- use_AddInd(reduce_survey(Itarget_w0.8, index = oddify))
+.Itarget_x0.2 <- use_AddInd(reduce_survey(Itarget_x0.2, index = oddify))
+.Itarget_x0.8 <- use_AddInd(reduce_survey(Itarget_x0.8, index = oddify))
+.Itarget_d1.2 <- use_AddInd(reduce_survey(Itarget_d1.2, index = oddify))
+.Itarget_d0.8 <- use_AddInd(reduce_survey(Itarget_d0.8, index = oddify))
+
+.ITM_hist <- use_AddInd(reduce_survey(ITM_hist, index = oddify))
+
+# stopifnot(round(ref_catch) == 124387) # parallel problem otherwise:
+# .SP4010_0.6 <- SP4010_gf %>%
+#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+# .SP8040_0.6 <- SP8040_gf %>%
+#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+.SP6040_0.6 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+
+# .SP4010_0.4 <- SP4010_gf %>%
+#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+# .SP8040_0.4 <- SP8040_gf %>%
+#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
+
+.SP6040_0.4 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+
+.SP6040_0.5 <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.5, 0.1), initial_tac = ref_catch) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+
+# .SP6040_fox <- SP6040_gf %>%
+#   add_SP_prior(r_prior = .r_prior, initial_tac = ref_catch, start = list(n = 1)) %>%
+#   reduce_survey(index = oddify) %>%
+#   use_AddInd()
 
 missing <- mp$mp[!map_lgl(mp$mp, exists)]
 assert_that(length(missing) == 0,
   msg = glue::glue(
     "{paste(missing, collapse = ', ')} do not exist in the current environment."
-  ))
+  )
+)
 
-# testing:
-# .mp <- c(
-#   "CC_hist20", "CC1.2", "CC1.1", "CC1.0", "CC0.9", "CC0.8", "CC0.7", "CC0.6",
-#   ".Iratio2",
-#   ".GB_slope6_0.66", ".GB_slope6_1", ".GB_slope8_0.66", ".GB_slope8_1",
-#   ".Islope0.2_80", ".Islope0.2_100", ".Islope0.4_80", ".Islope0.4_100",
-#   ".IDX", ".IDX_smooth",
-#   ".IT10_hist", ".IT5_hist",
-#   ".Itarget_base", ".Itarget_w0.8", ".Itarget_x0.2", ".Itarget_x0.8", ".Itarget_d1.2", ".Itarget_d0.8",
-#   ".ITM_hist",
-#   ".SP4010_prior", ".SP6040_prior", ".SP8040_prior",
-#   "NFref", "FMSYref", "FMSYref75"
-# )
-
-fit_scenario <- function(scenario) {
-  file_name <- here("generated-data", paste0(sp, "-mse-", scenario, ".rds"))
+fit_scenario <- function(scenario, mp_vec, id = "", sp = "rex") {
+  if (id != "") id <- paste0(id, "-")
+  file_name <- here::here("generated-data", paste0(sp, "-mse-", id, scenario, ".rds"))
   if (!file.exists(file_name)) {
-    message("Running closed-loop-simulation for ", scenario, " OM")
-    mse <- runMSE(OM = om[[scenario]], MPs = mp$mp, parallel = TRUE)
+    cat("Running closed-loop-simulation for", scenario, "OM\n")
+    o <- om[[scenario]]
+    mse <- DLMtool::runMSE(OM = o, MPs = mp_vec, parallel = FALSE)
     saveRDS(mse, file = file_name)
   } else {
-    message("Loading closed-loop-simulation for ", scenario, " OM")
+    cat("Loading closed-loop-simulation for", scenario, "OM\n")
     mse <- readRDS(file_name)
   }
   mse
 }
-DLMtool::setup(cpus = cores)
-mse <- map(scenarios, fit_scenario)
-snowfall::sfStop()
-for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch * 1
+
+fo <- furrr::future_options(
+  packages = c("gfdlm", "DLMtool", "MSEtool", "here"),
+  globals = c("ref_catch", "om", mp$mp)
+)
+mse_cc <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Constant", mp$type)], id = "cc", .options = fo)
+mse_ind <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Index", mp$type)], id = "ind", .options = fo)
+mse_sp <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Surplus", mp$type)], id = "sp", .options = fo)
+mse_ref <- furrr::future_map(scenarios, fit_scenario,
+  mp_vec = mp$mp[grepl("^Reference", mp$type)], id = "ref", .options = fo)
+
+source(here("analysis/rex/merge_MSE.R"))
+mse <- pmap(list(mse_cc, mse_ind, mse_sp, mse_ref), merge_MSE)
+
+for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch
 
 # Satisficing -----------------------------------------------------------------
 
@@ -134,26 +200,136 @@ pm_avg <- group_by(pm_df, MP) %>% summarise_if(is.numeric, mean)
 pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 saveRDS(pm_df_list, file = here("generated-data", "rex-pm-all.rds"))
 
-# plot_tigure_facet(pm_df_list)
-plot_tigure(pm_avg, satisficed = c("LT LRP" = 0.8, "STC" = 0.5))
-plot_tigure(pm_min)
+satisficed_criteria <- c("LT LRP" = 0.8, "STC" = 0.7)
+plot_tigure(pm_avg, satisficed = satisficed_criteria)
+plot_tigure(pm_min, satisficed = satisficed_criteria)
 
-mp_sat <- dplyr::filter(pm_avg, `LT LRP` > 0.8, `STC` > 0.6) %>%
-  # arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`) %>%
+mp_sat <- dplyr::filter(pm_avg, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
+  # arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`, -AAVC) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
+
+# mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
+mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
+mp_sat
+
 stopifnot(length(mp_sat) >= 1)
 stopifnot(length(mp_sat) <= 8) # for RColorBrewer::brewer.pal()
 mp_sat_with_ref <- union(mp_sat, reference_mp)
 mp_not_sat <- mp$mp[!mp$mp %in% mp_sat_with_ref]
 stopifnot(length(mp_not_sat) > 1)
 
-mse_sat <- map(scenarios, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat))
-mse_sat_with_ref <- map(scenarios_ref, ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref))
-
-pm_df_list_sat <- map(pm_df_list, dplyr::filter, MP %in% mp_sat)
-pm_df_list_sat_with_ref <- map(pm_df_list, dplyr::filter, MP %in% mp_sat_with_ref)
-
 custom_pal <- c(RColorBrewer::brewer.pal(8, "Set2")[seq_along(mp_sat)], ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
+
+mp_eg_not_sat <- c(
+  "CC0.6",
+  ".Iratio2",
+  ".GB_slope8_0.66",
+  ".Islope0.2_80",
+  ".IDX",
+  ".IDX_smooth",
+  ".IT5_hist",
+  ".IT10_hist",
+  ".ITM_hist",
+  ".SP6040_0.4"
+)
+
+plots <- gfdlm::plot_factory(
+  mse_list = mse,
+  pm = PM,
+  scenario_df = sc,
+  mp_sat = mp_sat,
+  mp_not_sat = mp_not_sat,
+  mp_not_sat2 = mp_eg_not_sat,
+  mp_ref = reference_mp,
+  custom_pal = custom_pal,
+  eg_scenario = "ceq150",
+  tradeoff = c("LT LRP", "STC"),
+  catch_breaks = catch_breaks,
+  catch_labels = catch_labels,
+  satisficed_criteria = satisficed_criteria,
+  skip_projections = FALSE,
+  survey_type = "AddInd",
+  omit_index_fn = function(x) seq(2, x, by = 2)
+)
+
+# pm_angle <- theme(
+#   axis.text.x.bottom = element_text(angle = 90, hjust = 1),
+#   panel.grid.major.y = element_line(colour = "grey85"),
+#   panel.grid.minor.y = element_line(colour = "grey96")
+# )
+# plots$dot_refset + pm_angle
+
+.ggsave("dot-refset-avg", width = 7.5, height = 4.5, plot = plots$dot_refset_avg)
+
+g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 3)
+.ggsave("tradeoff-refset", width = 7.5, height = 5, plot = g)
+.ggsave("tradeoff-robset", width = 6, height = 3, plot = plots$tradeoff_robset)
+
+.ggsave("tigure-refset", width = 6.5, height = 8, plot = plots$tigure_refset)
+.ggsave("tigure-robset", width = 4, height = 3.5, plot = plots$tigure_robset)
+.ggsave("tigure-refset-min", width = 4, height = 7, plot = plots$tigure_refset_min)
+.ggsave("tigure-refset-avg", width = 4, height = 7, plot = plots$tigure_refset_avg)
+
+.ggsave("radar-refset", width = 10, height = 10, plot = plots$radar_refset)
+.ggsave("radar-refset-avg", width = 6, height = 6, plot = plots$radar_refset_avg)
+
+g <- plots$projections_index +
+  scale_x_continuous(breaks = seq(1980, 2090, 20)) +
+  coord_cartesian(ylim = c(0, 15e6)) +
+  scale_y_continuous(labels = function(x) x / 1e6)
+.ggsave("projections-index", width = 12, height = 10, plot = g)
+
+walk(names(plots$projections), ~ {
+  .ggsave(paste0("projections-", .x),
+    width = 8, height = 10,
+    plot = plots$projections[[.x]]
+  )
+})
+.ggsave("projections-not-sat2",
+  width = 6.5, height = 9,
+  plot = plots$projections_not_sat2
+)
+.ggsave("projections-not-sat",
+  width = 6.5, height = 20,
+  plot = plots$projections_not_sat
+)
+.ggsave("projections-scenarios-ref",
+  width = 8, height = 10,
+  plot = plots$projections_scenarios
+)
+
+get_filtered_scenario <- function(type, column) {
+  dplyr::filter(sc, scenario_type == type) %>%
+    dplyr::pull(!!column) %>%
+    purrr::set_names()
+}
+scenarios <- sc$scenario %>% set_names()
+scenarios_human <- sc$scenario_human %>% set_names()
+scenarios_ref <- get_filtered_scenario("Reference", "scenario")
+scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
+x <- purrr::map(
+  scenarios_ref,
+  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
+) %>%
+  set_names(scenarios_ref_human)
+
+plot_index(x, type = "AddInd", omit_index_fn = oddify)
+
+g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
+  set_names() %>%
+  map(~ x[[.]]) %>%
+  plot_scenario_projections()
+.ggsave("projections-scenarios-ref1", width = 8, height = 10)
+
+g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
+  set_names() %>%
+  map(~ x[[.]]) %>%
+  plot_scenario_projections()
+.ggsave("projections-scenarios-ref2", width = 8, height = 10)
+
+.ggsave("worms-proj", width = 13, height = 8.5, plot = plots$worms_proj)
+.ggsave("worms-hist-proj", width = 13, height = 8.5, plot = plots$worms_hist_proj)
+.ggsave("kobe", width = 13, height = 8.5, plot = plots$kobe)
