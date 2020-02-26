@@ -653,8 +653,8 @@ How to treat reference points when parameters, particularly productivity paramet
 "Stock",    "t0",         "$a_0$",                         "von Bertalanffy theoretical age at length zero.",
 "Stock",    "L50",        "$\\theta_{l50}$",               "Length at 50\\% maturity.",
 "Stock",    "L50\\_95",    "$\\theta_{l50-95}$",           "Length increment from 50\\% to 95\\% maturity.",
-"Stock",    "a",          "$\\alpha_W$",                   "Length-weight parameter alpha.",
-"Stock",    "b",          "$\\beta_W$",                    "Length-weight parameter beta.",
+"Stock",    "a",          "$\\alpha_W$",                   "Length-weight parameter.",
+"Stock",    "b",          "$\\beta_W$",                    "Length-weight parameter.",
 "Fleet",    "L5",         "$L_5$",                         "Shortest length corresponding to 5\\% vulnerability.",
 "Fleet",    "LFS",        "$L^\\textrm{FS}$",              "Shortest length that is fully vulnerable to fishing.",
 "Fleet",    "Vmaxlen",    "$V_{L_\\infty}$",               "The vulnerability of fish at maximum expected length.",
@@ -668,7 +668,7 @@ How to treat reference points when parameters, particularly productivity paramet
 "Obs.",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
 "Obs.",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
 "Imp.",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
-"Imp.",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken error."
+"Imp.",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken."
 )
 
  # retention rate at age?
