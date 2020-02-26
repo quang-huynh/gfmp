@@ -578,5 +578,106 @@ How to treat reference points when parameters, particularly productivity paramet
 
 ## DLMTOOL SLOTS
 
-*TODO. EK is making a table for the slots. Not sure if we need to put this under a heading or whether it is just a table in this appendix*
+*TODO Finish this*
 
+```{r, echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
+# slot_include <- c(
+#   "maxage",
+#   "R0",
+#   "M",
+#   "h",
+#   "Perr",
+#   "AC",
+#   "Linf",
+#   "K",
+#   "t0",
+#   "L50",
+#   "L50\\_95",
+#   "D",
+#   "a",
+#   "b",
+#   "L5",
+#   "LFS",
+#   "Vmaxlen",
+#   "LR5",
+#   "LFR",
+#   "Rmaxlen",
+#   "Cobs",
+#   "Cbiascv",
+#   "CAA\\_nsamp",
+#   "CAA\\_ESS",
+#   "CAL\\_nsamp",
+#   "CAL\\_ESS",
+#   "Iobs",
+#   "Ibiascv",
+#   "beta",
+#   "Irefbiascv",
+#   "Crefbiascv",
+#   "TACFrac",
+#   "TACSD")
+
+# get_first_sentence <- function(x) {
+#   unlist(strsplit(x, '(?<=\\.)\\s+', perl=TRUE))[[1]]
+# }
+
+# p <- readr::read_csv(system.file("alt-slot-descriptions.csv", package = "gfdlm"))
+# p <- dplyr::filter(p, slot %in% slot_include) %>%
+#   dplyr::mutate(first_sentence = purrr::map_chr(.$custom_description, get_first_sentence)) %>%
+#   dplyr::select(slot_type, slot, parameter_symbols, first_sentence)
+
+# mc_tribble <- function(indf, indents = 4, mdformat = TRUE) {
+#   name <- as.character(substitute(indf))
+#   name <- name[length(name)]
+#
+#   meat <- capture.output(write.csv(indf, quote = TRUE, row.names = FALSE))
+#   meat <- paste0(
+#     paste(rep(" ", indents), collapse = ""),
+#     c(paste(sprintf("~%s", names(indf)), collapse = ", "),
+#       meat[-1]))
+#
+#   if (mdformat) meat <- paste0("    ", meat)
+#   obj <- paste(name, " <- tribble(\n", paste(meat, collapse = ",\n"), ")", sep = "")
+#   if (mdformat) cat(paste0("    ", obj)) else cat(obj)
+# }
+
+ p <- tribble(
+~slot_type, ~slot,          ~parameter_symbols,              ~first_sentence,
+"Stock",    "maxage",     "$n_a$",                         "The maximum age of individuals that is simulated.",
+"Stock",    "R0",         "$R_0$",                         "The magnitude of unfished recruitment.",
+"Stock",    "M",          "$M$",                           "Natural mortality rate.",
+"Stock",    "h",          "$h$",                           "Steepness of the stock-recruit relationship.",
+"Stock",    "Perr",       "$\\sigma_R$",                   "Magnitude of lognormal recruitment deviations ($\\sigma_R$ is \\texttt{Perr} transformed from a CV to an SD).",
+"Stock",    "AC",         "$\\theta_{\\textrm{AC}}$",      "Autocorrelation in recruitment deviations.",
+"Stock",    "Linf",       "$L_{\\infty}$",                 "von Bertalanffy maximum expected length.",
+"Stock",    "K",          "$\\kappa$",                     "von Bertalanffy growth parameter.",
+"Stock",    "t0",         "$a_0$",                         "von Bertalanffy theoretical age at length zero.",
+"Stock",    "L50",        "$\\theta_{l50}$",               "Length at 50\\% maturity.",
+"Stock",    "L50\\_95",    "$\\theta_{l50-95}$",           "Length increment from 50\\% to 95\\% maturity.",
+"Stock",    "a",          "$\\alpha_W$",                   "Length-weight parameter alpha.",
+"Stock",    "b",          "$\\beta_W$",                    "Length-weight parameter beta.",
+"Fleet",    "L5",         "$L_5$",                         "Shortest length corresponding to 5\\% vulnerability.",
+"Fleet",    "LFS",        "$L^\\textrm{FS}$",              "Shortest length that is fully vulnerable to fishing.",
+"Fleet",    "Vmaxlen",    "$V_{L_\\infty}$",               "The vulnerability of fish at maximum expected length.",
+"Fleet",    "LR5",        "$r_5$",                         "Shortest length fish corresponding to 5\\% retention.",
+"Fleet",    "LFR",        "$L_\\textrm{rmax}$",            "Shortest length fish that are fully retained.",
+# "Fleet",  "Rmaxlen",    "$r_L$",                         "The retention of fish at Linf.",
+"Obs",      "Cobs",       "$\\sigma_{C}$",                 "Lognormal catch observation error ($\\sigma_C$ is \\texttt{Cobs} transformed from a CV to an SD).",
+#"Obs",      "Cbiascv",    "$b_C$",                         "Lognormal CV controlling the sampling of bias in catch observations for each simulation.",
+"Obs",      "Iobs",       "$\\sigma_I$",                   "Observation error in the relative abundance indices ($\\sigma_I$ is \\texttt{Iobs} transformed from a CV to an SD).",
+"Obs",      "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
+"Obs",      "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
+"Obs",      "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
+"Imp",      "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
+"Imp",      "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken error."
+)
+
+ # retention rate at age?
+
+p %>%
+  mutate(slot = paste0("\\texttt{", slot, "}")) %>%
+  csasdown::csas_table(format = "latex", col_names = c("OM element", "Slot", "Parameter", "Description")) %>%
+  kableExtra::column_spec(1, width = "1.75cm") %>%
+  kableExtra::column_spec(2, width = "1.75cm") %>%
+  kableExtra::column_spec(3, width = "1.75cm") %>%
+  kableExtra::column_spec(4, width = "9.5cm")
+```
