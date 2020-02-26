@@ -278,7 +278,7 @@ g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 3)
 
 g <- plots$projections_index +
   scale_x_continuous(breaks = seq(1980, 2090, 20)) +
-  coord_cartesian(ylim = c(0, 15e6)) +
+  coord_cartesian(ylim = c(0, 16e6)) +
   scale_y_continuous(labels = function(x) x / 1e6)
 .ggsave("projections-index", width = 12, height = 10, plot = g)
 
@@ -306,29 +306,29 @@ get_filtered_scenario <- function(type, column) {
     dplyr::pull(!!column) %>%
     purrr::set_names()
 }
-scenarios <- sc$scenario %>% set_names()
-scenarios_human <- sc$scenario_human %>% set_names()
-scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
-x <- purrr::map(
-  scenarios_ref,
-  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
-) %>%
-  set_names(scenarios_ref_human)
+# scenarios <- sc$scenario %>% set_names()
+# scenarios_human <- sc$scenario_human %>% set_names()
+# scenarios_ref <- get_filtered_scenario("Reference", "scenario")
+# scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
+# x <- purrr::map(
+#   scenarios_ref,
+#   ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
+# ) %>%
+#   set_names(scenarios_ref_human)
+#
+# plot_index(x, type = "AddInd", omit_index_fn = oddify)
 
-plot_index(x, type = "AddInd", omit_index_fn = oddify)
-
-g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
-  set_names() %>%
-  map(~ x[[.]]) %>%
-  plot_scenario_projections()
-.ggsave("projections-scenarios-ref1", width = 8, height = 10)
-
-g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
-  set_names() %>%
-  map(~ x[[.]]) %>%
-  plot_scenario_projections()
-.ggsave("projections-scenarios-ref2", width = 8, height = 10)
+# g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
+#   set_names() %>%
+#   map(~ x[[.]]) %>%
+#   plot_scenario_projections()
+# .ggsave("projections-scenarios-ref1", width = 8, height = 10)
+#
+# g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
+#   set_names() %>%
+#   map(~ x[[.]]) %>%
+#   plot_scenario_projections()
+# .ggsave("projections-scenarios-ref2", width = 8, height = 10)
 
 .ggsave("worms-proj", width = 13, height = 8.5, plot = plots$worms_proj)
 .ggsave("worms-hist-proj", width = 13, height = 8.5, plot = plots$worms_hist_proj)
