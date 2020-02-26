@@ -33,7 +33,8 @@ merge_MSE <- function(...) {
   Misc_identical <- function(x) all(vapply(x[-1], identical, logical(1), x[[1]]))
 
   Data <- do.call(c, lapply(Misc, getElement, "Data"))
-  TryMP <- do.call(cbind, lapply(Misc, getElement, "TryMP"))
+
+  TryMP <- do.call(c, lapply(Misc, getElement, "TryMP"))
 
   Unfished <- lapply(Misc, getElement, "Unfished")
   Unfished_Refs <- lapply(Unfished, getElement, "Refs")
