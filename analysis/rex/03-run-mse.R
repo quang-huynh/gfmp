@@ -17,7 +17,7 @@ future::plan(future::multiprocess, workers = cores)
 sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 150
+nsim <- 95
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
@@ -188,7 +188,6 @@ mse_ref <- furrr::future_map(scenarios, fit_scenario,
 
 source(here("analysis/rex/merge_MSE.R"))
 mse <- pmap(list(mse_cc, mse_ind, mse_sp, mse_ref), merge_MSE)
-
 for (i in seq_along(mse)) mse[[i]]@OM$RefY <- ref_catch
 
 # Satisficing -----------------------------------------------------------------

@@ -85,7 +85,7 @@ knitr_echo <- TRUE
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new("Stock")
-nsim <- 400
+nsim <- 200
 cpars <- list()
 set.seed(282943)
 ```
@@ -204,19 +204,40 @@ cpars$AC[cpars$AC < -1] <- -1
 We do not have enough ages in our database to fit a von Bertalanffy model (and none for 3CD), but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
 
 ```{r rex-length1, echo=TRUE}
-rex_lengths <- dplyr::filter(drex$survey_samples, !is.na(length))
-hist(rex_lengths$length, breaks = 50)
-```
+# msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
+# saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
+msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
+msa <- dplyr::filter(msa, !is.na(age))
+if (!file.exists(here("generated-data", "rex-vb.rds"))) {
+  set.seed(1)
+  vb_model <- gfplot::fit_vb(msa, sex = "all", method = "mcmc", iter = 8000)
+  saveRDS(vb_model, file = here("generated-data", "rex-vb.rds"))
+} else {
+  vb_model <- readRDS(here("generated-data", "rex-vb.rds"))
+}
+# vb_model$model
+vb_post <- rstan::extract(vb_model$model)
+set.seed(3829)
+i <- sample(seq_along(vb_post$k), nsim)
+cpars$K <- as.numeric(vb_post$k[i])
+cpars$t0 <- as.numeric(vb_post$t0[i])
+cpars$Linf <- as.numeric(vb_post$linf[i])
 
-We can look at the 95%, 99%, and 100% quantiles for males and then for females:
-
-```{r rex-length3}
-dplyr::filter(rex_lengths, sex == 1) %>%
-  dplyr::pull(length) %>%
-  quantile(probs = c(0.95, 0.99, 1.00))
-dplyr::filter(rex_lengths, sex == 2) %>%
-  dplyr::pull(length) %>%
-  quantile(probs = c(0.95, 0.99, 1.00))
+ages <- seq(min(vb_model$data$age), max(vb_model$data$age), length.out = 100)
+vb <- function(age, linf, k, t0) {
+  linf * (1 - exp(-k * (age - t0)))
+}
+.dp <- purrr::pmap_df(
+  list(cpars$Linf, cpars$K, cpars$t0, seq_along(cpars$t0)), ~ {
+    data.frame(ages = ages, length = vb(ages, ..1, ..2, ..3), id = ..4)
+  }
+)
+ggplot(.dp, aes(ages, length, group = id)) +
+  geom_point(
+    data = vb_model$data, aes(x = age, y = length), inherit.aes = FALSE
+  ) +
+  geom_line(alpha = 0.1) +
+  gfdlm::theme_pbs()
 ```
 
 However, $L_\mathrm{inf}$ represents the average maximum length, not the maximum observed length. @turnock2005 (their Table 4.12) found the $L_\mathrm{inf}$ for males was 39.5 cm and $L_\mathrm{inf}$ for females was 44.9 cm in the Gulf of Alaska. This looks roughly in line with the length samples in our database. We will use these values to be consistent with their other growth parameters.
@@ -224,7 +245,7 @@ However, $L_\mathrm{inf}$ represents the average maximum length, not the maximum
 We will explore an alternative scenario with $L_\mathrm{Inf} = 37.2$ cm based on female fish from Oregon [@hosie1976].
 
 ```{r desc-stock-linf-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Linf <- c(39.5, 44.9)
+cpars$Linf <- as.numeric(vb_post$linf[i])
 ```
 <!-- slot-chunk-end -->
 
@@ -238,7 +259,7 @@ stock_rex@Linf <- c(39.5, 44.9)
 We will explore an alternative scenario with $k = 0.17$ cm based on female fish from Oregon [@hosie1976].
 
 ```{r desc-stock-k-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@K <- c(0.31, 0.38)
+cpars$K <- as.numeric(vb_post$k[i])
 ```
 <!-- slot-chunk-end -->
 
@@ -252,7 +273,7 @@ stock_rex@K <- c(0.31, 0.38)
 We will explore an alternative scenario with $t_0 = -0.57$ cm based on female fish from Oregon [@hosie1976].
 
 ```{r desc-stock-t0-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@t0 <- c(-0.79, -0.69)
+cpars$t0 <- as.numeric(vb_post$t0[i])
 ```
 <!-- slot-chunk-end -->
 
@@ -265,17 +286,34 @@ We have sufficient maturity and length data to fit a logistic maturity model. @m
 
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
-mat_perc <- gfdlm:::extract_maturity_perc(coef(m_mat$model))
-se_l50 <- gfdlm:::delta_method(~ -(log((1 / 0.5) - 1) + x1 + x3) / (x2 + x4),
-  mean = coef(m_mat$model), cov = vcov(m_mat$model)
-)
 gfplot::plot_mat_ogive(m_mat)
 
-stock_rex@L50 <- round(c(-2, 2) * se_l50 + mat_perc$f.p0.5, 1)
-stock_rex@L50
+.d <- m_mat$data
+.d$sex <- .d$female - mean(.d$female)
+.d$length <- .d$age_or_length
+
+if (!file.exists(here("generated-data", "rex-mat-model.rds"))) {
+  mat_bayes <- rstanarm::stan_glm(mature ~ length * sex,
+  data = .d, family = binomial(link = "logit"),
+  cores = parallel::detectCores(), iter = 2000,
+  prior_intercept = rstanarm::normal(0, scale = 50, autoscale = FALSE),
+  prior = rstanarm::normal(0, scale = 10, autoscale = FALSE),
+  seed = 8983
+)
+  saveRDS(mat_bayes, file = here("generated-data", "rex-mat-model.rds"))
+} else {
+  mat_bayes <- readRDS(here("generated-data", "rex-mat-model.rds"))
+}
+post_mat <- as.data.frame(mat_bayes)
+logit_perc <- function(a, b, perc) -(log((1 / perc) - 1) + a) / b
+L50 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.5)
+hist(L50)
+set.seed(3828)
+i <- sample(seq_along(post_mat$length), nsim)
+cpars$L50 <- L50[i]
 ```
 
-`r round(stock_rex@L50, 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm)  [@abookire2005].
+`r round(mean(L50), 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm)  [@abookire2005].
 
 <!-- slot-chunk-end -->
 
@@ -287,13 +325,11 @@ stock_rex@L50
 We can calculate this as a derived parameter from our logistic maturity model:
 
 ```{r desc-stock-l50_95-rex, results = knitr_results, echo = knitr_echo}
-se_l50_95m <- gfdlm:::delta_method(
-  ~ -(log((1 / 0.95) - 1) + x1 + x3) / (x2 + x4) -
-    -(log((1 / 0.5) - 1) + x1 + x3) / (x2 + x4),
-  mean = coef(m_mat$model), cov = vcov(m_mat$model)
-)
-stock_rex@L50_95 <- round(c(-2, 2) * se_l50_95m + (mat_perc$f.p0.95 - mat_perc$f.p0.5), 1)
-stock_rex@L50_95
+L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
+L50_95 <- L95 - L50
+hist(L95)
+hist(L50_95)
+cpars$L50_95 <- L50_95[i]
 ```
 <!-- slot-chunk-end -->
 
@@ -367,6 +403,7 @@ fleet_rex@LFR <- numeric(0) # fake
 fleet_rex@Rmaxlen <- numeric(0) # fake
 fleet_rex@Vmaxlen <- c(1, 1) # i.e. not domed
 fleet_rex@Name <- "BC Fleet"
+fleet_rex@isRel <- FALSE
 ```
 
 <!-- slot-chunk-begin -->
@@ -398,7 +435,7 @@ drex$commercial_samples %>%
 hist(drex$commercial_samples$length)
 ```
 
-However, we can look at the commercial samples from our entire coast to inform this parameter:
+However, we can look at the commercial samples from our entire coast:
 
 ```{r min-caught-rex2, message=FALSE}
 fi <- here::here("generated-data/rex-coastwide-commercial-samples.rds")
@@ -408,24 +445,9 @@ if (!file.exists(fi)) {
 } else {
   rex_commercial <- readRDS(fi)
 }
-quantile(rex_commercial$length,
-  probs = c(0.000, 0.005, 0.01, 0.025, 0.050, 0.500), na.rm = TRUE
-)
 hist(rex_commercial$length, breaks = 50)
 ```
 
-We can look at the number of fish sampled below various thresholds for length:
-
-```{r min-caught-rex3, echo=TRUE}
-dplyr::filter(rex_commercial, length <= 14) %>% nrow()
-dplyr::filter(rex_commercial, length <= 15) %>% nrow()
-dplyr::filter(rex_commercial, length <= 16) %>% nrow()
-dplyr::filter(rex_commercial, length <= 17) %>% nrow()
-```
-
-Let's pick a range based on those values:
-
-<!-- Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. The 95% CI of size at maturity from this analysis is `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]`. -->
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@L5 <- c(16, 18)
@@ -445,37 +467,23 @@ par(new = TRUE)
 plot(density(na.omit(drex$survey_samples$length)),
   xlim = c(5, 60), main = "", ylab = "", xlab = "", axes = FALSE
 )
-abline(v = stock_rex@L50[[1]], col = "red")
-abline(v = stock_rex@L50[[2]], col = "red")
+abline(v = quantile(L50, probs = 0.025), col = "red")
+abline(v = quantile(L50, probs = 0.975), col = "red")
 ```
-
-<!-- Based on the slot `isRel` below, this slot needs to be converted into a proportion of size at maturity. Size at maturity has been entered as `r stock_rex@L50[[1]]` to `r stock_rex@L50[[2]]` (shown as vertical red lines in the above plot). -->
 
 We will assume that Rex Sole is fully vulnerable to fishing by approximately size at maturity:
 
 ```{r desc-fleet-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@LFS <- c(0.9, 1.1) * stock_rex@L50
+fleet_rex@LFS <- c(0.9, 1.1) * mean(L50)
 round(fleet_rex@LFS, 1)
 ```
 
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
-### isRel {#app:desc-fleet-isrel-rex}
-
-*Are the selectivity parameters in units of size-of-maturity (`TRUE`) (or absolute units, for example, cm) (`FALSE`).*
-
-The size slots have been entered as absolute units (cm).
-
-```{r desc-fleet-isrel-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@isRel <- FALSE
-```
-<!-- slot-chunk-end -->
-
-<!-- slot-chunk-begin -->
 ### CurrentYr {#app:desc-fleet-currentyr-rex}
 
-*The current calendar year (final year) of the historical simulations (e.g., 2019).*
+*The current calendar year (final year) of the historical simulations.*
 
 ```{r desc-fleet-currentyr-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@CurrentYr <- 2019
@@ -503,13 +511,10 @@ obs_rex@Name <- "BC observation model"
 
 *Log-normal catch observation error expressed as a CV. Uniform distribution lower and upper bounds.*
 
-Since 1996, observation error on catch should be very small:
-
-<!-- TODO: does this affect historical build up because there was certainly much larger observation error on catch before 1996. -->
-<!-- RF: No I think the historical catch uncertainty is dealt with in the historical MSE -->
+Since 1996, observation error on catch should be negligible:
 
 ```{r desc-obs-cobs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Cobs <- c(0, 0.05)
+obs_rex@Cobs <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
@@ -532,18 +537,16 @@ obs_rex@Cbiascv <- c(0, 0)
 
 *Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
-This will get replaced by the SRA conditioning model with the actual annual values.
+TODO
 
 ```{r}
-rex_cv_range <- dplyr::filter(drex$survey_index, survey_abbrev == "SYN WCVI") %>%
-  dplyr::pull(re) %>%
-  range() %>%
-  round(2)
-obs_rex@Iobs <- rex_cv_range
+set.seed(2943)
+cpars$Iobs <- sample(drex$survey_index$re, size = nsim, replace = TRUE)
 ```
 
 ```{r desc-obs-iobs-rex, results = knitr_results, echo = knitr_echo}
-obs_rex@Iobs
+round(mean(cpars$Iobs), 2)
+round(sort(unique(cpars$Iobs)), 2)
 ```
 <!-- slot-chunk-end -->
 

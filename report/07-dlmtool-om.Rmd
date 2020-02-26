@@ -646,7 +646,7 @@ How to treat reference points when parameters, particularly productivity paramet
 "Stock",    "R0",         "$R_0$",                         "The magnitude of unfished recruitment.",
 "Stock",    "M",          "$M$",                           "Natural mortality rate.",
 "Stock",    "h",          "$h$",                           "Steepness of the stock-recruit relationship.",
-"Stock",    "Perr",       "$\\sigma_R$",                   "Magnitude of lognormal recruitment deviations ($\\sigma_R$ is \\texttt{Perr} transformed from a CV to an SD).",
+"Stock",    "Perr",       "$\\sigma_R$",                   "SD of recruitment deviations in log space.",
 "Stock",    "AC",         "$\\theta_{\\textrm{AC}}$",      "Autocorrelation in recruitment deviations.",
 "Stock",    "Linf",       "$L_{\\infty}$",                 "von Bertalanffy maximum expected length.",
 "Stock",    "K",          "$\\kappa$",                     "von Bertalanffy growth parameter.",
@@ -661,14 +661,14 @@ How to treat reference points when parameters, particularly productivity paramet
 "Fleet",    "LR5",        "$r_5$",                         "Shortest length fish corresponding to 5\\% retention.",
 "Fleet",    "LFR",        "$L_\\textrm{rmax}$",            "Shortest length fish that are fully retained.",
 # "Fleet",  "Rmaxlen",    "$r_L$",                         "The retention of fish at Linf.",
-"Obs",      "Cobs",       "$\\sigma_{C}$",                 "Observation error SD of the catch in log space.",
-#"Obs",      "Cbiascv",    "$b_C$",                         "Lognormal CV controlling the sampling of bias in catch observations for each simulation.",
-"Obs",      "Iobs",       "$\\sigma_I$",                   "Observation error SD of the relative abundance index in log space.",
-"Obs",      "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
-"Obs",      "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
-"Obs",      "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
-"Imp",      "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
-"Imp",      "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken error."
+"Obs.",     "Cobs",       "$\\sigma_{C}$",                 "Observation error SD of the catch in log space.",
+"Obs",      "Cbiascv",    "$b_C$",                         "CV controlling the sampling of bias in catch observations.",
+"Obs.",     "Iobs",       "$\\sigma_I$",                   "Observation error SD of the relative abundance index in log space.",
+"Obs.",     "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
+"Obs.",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
+"Obs.",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
+"Imp.",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
+"Imp.",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken error."
 )
 
  # retention rate at age?
