@@ -191,7 +191,7 @@ rex_sra_high_m %<-% fit_sra_rex_cpue(rex_om_high_m)
 
 rex_om_high_h <- rex_om
 quantile(rex_om@cpars$h)
-rex_om_high_h@h <- c(0.95, 0.95)
+rex_om_high_h@cpars$h <- rep(0.95, length(rex_om@cpars$h))
 rex_sra_high_h %<-% fit_sra_rex_cpue(rex_om_high_h)
 
 # No CPUE ---------------------------------------------------------------------
