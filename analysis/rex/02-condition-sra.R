@@ -24,46 +24,30 @@ drex$catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
 
 # msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
 # saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
-msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
-
-msa <- dplyr::filter(msa, !is.na(age))
-if (!file.exists(here("generated-data", "rex-vb.rds"))) {
-  set.seed(1)
-  vb_model <- gfplot::fit_vb(msa, sex = "all", method = "mcmc", iter = 8000)
-  saveRDS(vb_model, file = here("generated-data", "rex-vb.rds"))
-} else {
-  vb_model <- readRDS(here("generated-data", "rex-vb.rds"))
-}
-vb_model$model
-vb_post <- rstan::extract(vb_model$model)
-
-plot(vb_model$predictions)
+# msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
+#
+# msa <- dplyr::filter(msa, !is.na(age))
+# if (!file.exists(here("generated-data", "rex-vb.rds"))) {
+#   set.seed(1)
+#   vb_model <- gfplot::fit_vb(msa, sex = "all", method = "mcmc", iter = 8000)
+#   saveRDS(vb_model, file = here("generated-data", "rex-vb.rds"))
+# } else {
+#   vb_model <- readRDS(here("generated-data", "rex-vb.rds"))
+# }
+# vb_model$model
+# vb_post <- rstan::extract(vb_model$model)
+#
+# plot(vb_model$predictions)
 
 rex_om <- readRDS(here("generated-data", "rex-om.rds"))
 nsim <- rex_om@nsim
 
 rex_om@M
-# rex_om@Linf
-# rex_om@K
-# rex_om@t0
-rex_om@a
-rex_om@b
-rex_om@L50
-rex_om@L50_95
-rex_om@LFS
-rex_om@L5
 rex_om@Cobs
-rex_om@Perr
 rex_om@Msd <- c(0, 0)
 rex_om@Linfsd <- c(0, 0)
 rex_om@Ksd <- c(0, 0)
 rex_om@nyears
-rex_om@maxage
-rex_om@M
-rex_om@maxage
-rex_om@h
-rex_om@L5
-rex_om@LFS
 assertthat::assert_that(identical(rex_om@nyears, length(all_years)))
 
 make_cal <- function(dat, survey, yrs, length_bin = 2) {
@@ -121,23 +105,17 @@ rex_om@D <- c(0.3, 0.8) # gets replaced
 
 saveRDS(indexes, file = here("generated-data/rex-indexes.rds"))
 
-.commercial_vul <- c(30, 18, 1)
-.surv_vul <- c(28, 12, 1)
+# .commercial_vul <- c(30, 18, 1)
+# .surv_vul <- c(28, 12, 1)
 
+# matching maturity, approximately:
 .commercial_vul <- c(32, 20, 1)
 .surv_vul <- c(32, 20, 1)
 
-# maturity ogive:
-mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (2 - mean(vb_post$t0))))
-mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (4.5 - mean(vb_post$t0))))
-mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (8 - mean(vb_post$t0))))
-
-set.seed(rex_om@seed)
-i <- sample(seq_along(vb_post$k), rex_om@nsim)
-rex_om@cpars$K <- as.numeric(vb_post$k[i])
-rex_om@cpars$t0 <- as.numeric(vb_post$t0[i])
-rex_om@cpars$Linf <- as.numeric(vb_post$linf[i])
-rex_om@cpars$Iobs <- sample(drex$survey_index$re, size = rex_om@nsim, replace = TRUE)
+# # maturity ogive:
+# mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (2 - mean(vb_post$t0))))
+# mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (4.5 - mean(vb_post$t0))))
+# mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (8 - mean(vb_post$t0))))
 
 fit_sra_rex_cpue <- function(om,
   c_eq = 2,
@@ -184,8 +162,6 @@ rex_om_high_m <- rex_om
 rex_om_high_m@M <- c(0.30, 0.30)
 rex_sra_high_m %<-% fit_sra_rex_cpue(rex_om_high_m)
 # plot(rex_sra_high_m)
-
-
 
 # Alternative Reference Set OMs: Steepness (h) --------------------------------
 
@@ -285,7 +261,7 @@ sc <- tibble::tribble(
   "high-h", "Higher steepness", "Reference",
   "sel1", "Lower selectivity", "Reference",
   # "oregon", "Oregon growth", "Reference",
-  "no-cpue", "No CPUE Ceq. 200%", "Reference",
+  "no-cpue", "No CPUE Ceq. 250%", "Reference",
   "no-cpue-light", "No CPUE Ceq. 50%", "Reference",
   "inc-m", "M inc.", "Robustness"
 )
