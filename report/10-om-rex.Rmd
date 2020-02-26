@@ -204,9 +204,12 @@ cpars$AC[cpars$AC < -1] <- -1
 We do not have enough ages in our database to fit a von Bertalanffy model (and none for 3CD), but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
 
 ```{r rex-length1, echo=TRUE}
-# msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
-# saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
-msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
+if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
+  msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
+  saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
+} else {
+  msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
+}
 msa <- dplyr::filter(msa, !is.na(age))
 if (!file.exists(here("generated-data", "rex-vb.rds"))) {
   set.seed(1)
