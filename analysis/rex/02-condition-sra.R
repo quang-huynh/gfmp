@@ -119,9 +119,13 @@ saveRDS(indexes, file = "generated-data/rex-indexes.rds")
 .commercial_vul <- c(30, 18, 1)
 .surv_vul <- c(28, 12, 1)
 
-rex_om@cpars$K <- as.numeric(vb_post$k[1:rex_om@nsim])
-rex_om@cpars$t0 <- as.numeric(vb_post$t0[1:rex_om@nsim])
-rex_om@cpars$Linf <- as.numeric(vb_post$linf[1:rex_om@nsim])
+set.seed(rex_om@seed)
+i <- sample(seq_along(vb_post$k), rex_om@nsim)
+rex_om@cpars$K <- as.numeric(vb_post$k[i])
+rex_om@cpars$t0 <- as.numeric(vb_post$t0[i])
+rex_om@cpars$Linf <- as.numeric(vb_post$linf[i])
+rex_om@cpars$Iobs <- sample(drex$survey_index$re, size = rex_om@nsim, replace = TRUE)
+
 fit_sra_rex_cpue <- function(om,
   c_eq = 2,
   commercial_vul = .commercial_vul,
@@ -158,7 +162,7 @@ saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
 # om@Linf[1] * (1-exp(-om@K[1] * (3 - om@t0[1])))
 # 37.2 * (1-exp(-0.17 * (7 - -0.57)))
 
-32.67298 * (1-exp(-0.4258144 * (4 - -0.5972734)))
+# 32.67298 * (1-exp(-0.4258144 * (4 - -0.5972734)))
 
 # Alternative Reference Set OMs: M --------------------------------------------
 # Only look at higher M and time-varying M. M in BC unlikely to be lower than GOA.

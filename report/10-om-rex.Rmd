@@ -85,6 +85,8 @@ knitr_echo <- TRUE
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new("Stock")
+nsim <- 260
+cpars <- list()
 ```
 
 ```{r rex-stock-defaults, echo=FALSE}
@@ -154,7 +156,7 @@ stock_rex@M <- c(0.17, 0.25)
 @maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98). Here we will choose a value that approximately encompasses this range. We include alternative steepness scenarios elsewhere.
 
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@h <- c(0.70, 0.95)
+stock_rex@h <- c(0.80, 0.95)
 ```
 <!-- slot-chunk-end -->
 
@@ -163,10 +165,12 @@ stock_rex@h <- c(0.70, 0.95)
 
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds.*
 
-@thorson2014 found the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64 with a standard deviation of about 0.26. We will set our uniform distribution to be approximately plus or minus one standard deviation. @mcgilliard2017 used 0.6 for Gulf of Alaska stocks.
+@thorson2014 found the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64. @mcgilliard2017 used 0.6 for Gulf of Alaska stocks.
+
+<!-- stock_rex@Perr <- c(0.4, 0.9) -->
 
 ```{r desc-stock-perr-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@Perr <- c(0.4, 0.9)
+cpars$Perr <- rnorm(nsim, 0.6, 0.1)
 ```
 <!-- slot-chunk-end -->
 
@@ -175,10 +179,14 @@ stock_rex@Perr <- c(0.4, 0.9)
 
 *Autocorrelation in recruitment deviations. Uniform distribution lower and upper bounds.*
 
-@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will set our uniform distribution to be approximately plus or minus one standard deviation.
+@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27.
+
+<!-- stock_rex@AC <- c(0.2, 0.7) -->
 
 ```{r desc-stock-ac-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@AC <- c(0.2, 0.7)
+cpars$AC <- rnorm(nsim, 0.44, 0.27)
+cpars$AC[cpars$AC > 1] <- 1
+cpars$AC[cpars$AC < -1] <- -1
 ```
 <!-- slot-chunk-end -->
 
@@ -572,7 +580,7 @@ imp_rex@TACFrac <- c(1.0, 1.0)
 We will allow for a small amount of variation in fraction of TAC taken from year to year.
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
-imp_rex@TACSD <- c(0.05, 0.05)
+imp_rex@TACSD <- c(0, 0)
 ```
 <!-- slot-chunk-end -->
 
