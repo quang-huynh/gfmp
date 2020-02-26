@@ -210,6 +210,7 @@ mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 
 # mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
+mp_sat <- mp_sat[!mp_sat %in% c(".SP6040_0.5", ".SP6040_0.4")] # dominated by .6
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
 mp_sat
 
@@ -231,8 +232,7 @@ mp_eg_not_sat <- c(
   ".IDX_smooth",
   ".IT5_hist",
   ".IT10_hist",
-  ".ITM_hist",
-  ".SP6040_0.4"
+  ".ITM_hist"
 )
 
 plots <- gfdlm::plot_factory(
