@@ -85,8 +85,9 @@ knitr_echo <- TRUE
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new("Stock")
-nsim <- 260
+nsim <- 400
 cpars <- list()
+set.seed(282943)
 ```
 
 ```{r rex-stock-defaults, echo=FALSE}
@@ -155,8 +156,13 @@ stock_rex@M <- c(0.17, 0.25)
 
 @maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98). Here we will choose a value that approximately encompasses this range. We include alternative steepness scenarios elsewhere.
 
+TODO
+
+<!-- quantile(rbeta(1e6, shape1 = 13.4, shape2 = 2.4), probs = c(0.025, 0.5, 0.975)) -->
+<!-- stock_rex@h <- c(0.80, 0.95) -->
+
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
-stock_rex@h <- c(0.80, 0.95)
+cpars$h <- rbeta(nsim, 13.4, 2.4)
 ```
 <!-- slot-chunk-end -->
 
@@ -586,5 +592,7 @@ imp_rex@TACSD <- c(0, 0)
 
 ```{r output-rex}
 rex_om <- new("OM", stock_rex, fleet_rex, obs_rex, imp_rex)
+rex_om@cpars <- cpars
+rex_om@nsim <- nsim
 saveRDS(rex_om, file = here::here("generated-data", "rex-om.rds"))
 ```
