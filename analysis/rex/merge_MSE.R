@@ -1,10 +1,9 @@
-merge_MSE <- function(..., check_slots = TRUE) {
+merge_MSE <- function(...) {
   dots <- list(...)
   if(length(dots) == 1) dots <- dots[[1]]
 
   slots_identical <- function(slotname, x = dots, is_logical = FALSE) {
     res <- lapply(x, getElement, slotname)
-    # res <- lapply(res, function(x) {row.names(x) <- NULL;x})
     is_identical <- all(vapply(res[-1], identical, logical(1), res[[1]]))
     if(is_logical) {
       return(is_identical)
@@ -16,26 +15,20 @@ merge_MSE <- function(..., check_slots = TRUE) {
   slots_identical("proyears")
   slots_identical("nsim")
 
-  if (isTRUE(check_slots)) {
   stopifnot(slots_identical("OM", is_logical = TRUE))
   stopifnot(slots_identical("Obs", is_logical = TRUE))
   stopifnot(slots_identical("SSB_hist", is_logical = TRUE))
   stopifnot(slots_identical("CB_hist", is_logical = TRUE))
   stopifnot(slots_identical("FM_hist", is_logical = TRUE))
-  }
 
-  nMPs <- vapply(dots, getElement, numeric(1), "nMPs")
+  #nMPs <- vapply(dots, getElement, numeric(1), "nMPs")
 
   slotvec <- c("B_BMSY", "F_FMSY", "B", "SSB", "VB", "FM", "C", "TAC", "Effort", "PAA", "CAA", "CAL")
-  res <- list()
-  for(i in 1:length(slotvec)) {
-    mm <- c(lapply(dots, getElement, slotvec[i]), along = 2)
-    res[[i]] <- do.call(abind::abind, mm)
-  }
+  res <- lapply(slotvec, function(x) do.call(abind::abind, c(lapply(dots, getElement, x), along = 2)))
   names(res) <- slotvec
 
   Misc <- lapply(dots, slot, "Misc")
-  names(Misc[[1]])
+  #names(Misc[[1]])
 
   Misc_identical <- function(x) all(vapply(x[-1], identical, logical(1), x[[1]]))
 
@@ -43,18 +36,26 @@ merge_MSE <- function(..., check_slots = TRUE) {
   TryMP <- do.call(cbind, lapply(Misc, getElement, "TryMP"))
 
   Unfished <- lapply(Misc, getElement, "Unfished")
-  if (isTRUE(check_slots)) stopifnot(Misc_identical(Unfished))
+  Unfished_Refs <- lapply(Unfished, getElement, "Refs")
+  stopifnot(Misc_identical(Unfished_Refs))
+
+  Unfished_ByYear <- lapply(Unfished, getElement, "ByYear")
+  stopifnot(Misc_identical(Unfished_ByYear))
 
   MSYRefs <- lapply(Misc, getElement, "MSYRefs")
-  if (isTRUE(check_slots)) stopifnot(Misc_identical(Unfished))
+  MSYRefs_Refs <- lapply(MSYRefs, getElement, "Refs")
+  stopifnot(Misc_identical(MSYRefs_Refs))
+
+  MSYRefs_ByYear <- lapply(MSYRefs, getElement, "ByYear")
+  MSYRefs_ByYear2 <- lapply(c("MSY", "FMSY", "SSBMSY", "BMSY", "VBMSY"),
+    function(x) do.call(abind::abind, c(lapply(MSYRefs_ByYear, getElement, x), along = 2)))
+
+  Misc_new <- list(Data = Data, TryMP = TryMP,
+    Unfished = list(Refs = Unfished_Refs[[1]], ByYear = Unfished_ByYear[[1]]),
+    MSYRefs = list(Refs = MSYRefs_Refs[[1]], ByYear = MSYRefs_ByYear2))
 
   slotvec_Misc <- c("LatEffort", "Revenue", "Cost", "TAE")
-  Misc_new <- list(Data = Data, TryMP = TryMP, Unfished = Unfished, MSYRefs = MSYRefs)
-  Misc2 <- list()
-  for(i in 1:length(slotvec_Misc)) {
-    mm <- c(lapply(Misc, getElement, slotvec_Misc[i]), along = 2)
-    Misc2[[i]] <- do.call(abind::abind, mm)
-  }
+  Misc2 <- lapply(slotvec_Misc, function(x) do.call(abind::abind, c(lapply(Misc, getElement, x), along = 2)))
   names(Misc2) <- slotvec_Misc
 
   ## Create MSE Object ####
