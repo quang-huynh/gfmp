@@ -9,15 +9,15 @@ library("assertthat")
 # load_all("../gfdlm")
 
 cores <- floor(parallel::detectCores() / 2L)
-# future::plan(future::multiprocess, workers = cores)
-future::plan(future::sequential)
+future::plan(future::multiprocess, workers = cores)
+# future::plan(future::sequential)
 
 # Settings --------------------------------------------------------------------
 
 sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 48
+nsim <- 150
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
