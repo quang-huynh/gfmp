@@ -125,6 +125,8 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 The maximum recorded age for a Rex Sole in BC waters is 15 in the Hecate Strait Multispecies Assemblage survey in 1998. We do not have ages in our database for 3CD to inform the maximum age for this region. @munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years.
 
+TODO: this gets overwitten by SRA
+
 <!-- M = 5.4/15 = 0.36.  -->
 
 ```{r desc-stock-maxage-rex, results = knitr_results, echo = knitr_echo}
