@@ -46,7 +46,7 @@ The SRA model can be conditioned on catch or fishing effort.
 For BC groundfish species, we recommend conditioning the model on catch.
 If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed catches.
 <!--If conditioned on effort, the estimated fishing mortality in the model will be proportional to the observed effort.-->
-A full time series of the conditioning variable (i.e., catch) is required needed.
+A full time series of the conditioning variable (i.e., catch) is required.
 <!--, and length of the historical period `OM@nyears` will be the length of the conditioned time series.-->
 
 In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).

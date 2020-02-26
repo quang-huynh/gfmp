@@ -226,7 +226,7 @@ This provides fractions of $F$-at-age derived from the relative selectivity-at-a
 The closed-loop simulation projections therefore assume that the relative selectivities across fleets remains constant in the projection period.
 
 Similarly, if the OM is calibrated using the SRA model, users also specify selectivity parameters for the individual indices of abundance.
-The DLMtool OM only accommodates one index of abundance (most data-limited MPs rely on only one index). In this case, the SRA passes all of the indices back to DLMtool, preserving the estimated or user-defined selectivities-at-age for each index. Users must select which index to use for the projection period.
+The DLMtool OM only accommodates one index of abundance (most data-limited MPs rely on only one index). In this case, the SRA passes all of the indices back to DLMtool, preserving the estimated or user-defined selectivities-at-age for each index. Users must select which index is most appropriate to use in the MPs during the projection period.
 
 The realized projected catches $C_{y,a}$ are the TAC recommendations across ages (with possible implementation error).
 Projected catches may account for retention rate ($\dot{R}_{y,a}$) and post-release discard mortality rate $\theta_{M{\textrm{disc}}}$ in the presence of discarding.
