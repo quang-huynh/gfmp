@@ -2,6 +2,8 @@
 
 *Final discussion may include other topics. Below is a rough start.*
 
+* re-sample data | `rnorm` etc. > `runif`
+
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
 * How this is compliant with the DFO precautionary framework and Bill C68
