@@ -1,17 +1,12 @@
 # METHODS: THE PROPOSED FRAMEWORK {#sec:approach}
 
-We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated for two case-study fish stocks: Rex Sole (*Glyptocephalus zachirus*) and Shortraker Rockfish (*Sebastes borealis*) in Area 3CD (West Coast Vancouver Island). These stocks were selected because they are both considered data-limited and lack current assessment advice, and have contrasting life histories and data-availability. See Appendices \@ref(app:mse-rex) and TODO for more details on each stock. The two case-studies are presented to illustrate the framework and its outputs. *They are not intended for the provision of catch advice for these stocks at this time.*
-Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organised according to the six best-practice steps described in Section \@ref(best-practices-for-implementing-a-management-procedure-approach).
-
-<!-- TO DO: Need a map ... maybe later in the species summary sections -->
+We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated via a case-study fish with Rex Sole (*Glyptocephalus zachirus*) in Area 3CD (West Coast Vancouver Island). This stock was selected because it lacks recent ageing data, lacks current assessment advice, and contrasts with the life-history of Yelloweye Rockfish, to which this framework has been applied concurrently. The case-study is presented to illustrate the framework and its outputs but *is not intended for the provision of catch advice for these stocks at this time.* Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organized according to the six best-practice steps described in Section \@ref(sec:best-practices).
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:approach1}
 
-For quota-managed species, the decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision should be stated in the request for science advice.
+For quota-managed groundfish species in BC, the decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision should be stated in the request for science advice. The boundaries on the project should be decided by a "technical committee", convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required. Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered. These will be discussed in more detail in the following sections.
 
-The boundaries on the project should be decided by a technical committee, convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required. Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered. These will be discussed in more detail in the following sections.
-
-The final decision on which MP to use to determine catch limits should be made based on a consensus by the Regional Peer Review (RPR) committee, after review of the scientific content of the advice (including the structure and content of the OMs), and consideration of the relative performance of the MPs with respect to meeting stated objectives and trade-offs among performance metrics. The RPR committee will typically be comprised of the technical committee plus a much broader range of interested parties representing DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties.
+The final decision on which MP to use to determine catch limits should be made based on a consensus by the Regional Peer Review committee, after review of the scientific content of the advice (including the structure and content of the OMs), and consideration of the relative performance of the MPs with respect to meeting stated objectives and trade-offs among performance metrics. The Regional Peer Review committee will typically be comprised of the technical committee plus a much broader range of interested parties representing DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties.
 
 The simulation framework tests the performance of specific MPs and will recommend a single catch limit from the final selected MP. The framework does not test posthoc adjustments to the catch limit recommended by an MP. This is in contrast to the decision tables presented in most Pacific Region groundfish stock assessments, where a range of possible catch limits with forecast of future stock status under each catch limit is provided for decision-making. Regardless of the framework used for advice, we note that it remains the purview of the Fisheries Minister to make posthoc adjustments to catch limits, based on cultural, social or economic considerations, in accordance with the *Fisheries Act* (Sections 6.1 (2) and 6.2(2))
 
@@ -19,15 +14,15 @@ The simulation framework tests the performance of specific MPs and will recommen
 
 Here we describe a set of provisional objectives and associated performance metrics. In real applications of the framework, objectives should be refined on a stock-by-stock basis, with advice from Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other affected parties. Other objectives could be added (e.g., cultural objectives), decided on a stock-by-stock basis.
 
-Key provisional conservation objectives are guided by the PA Framework [@dfo2006; @dfo2009], elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act* (see Section \@ref(motivation)). Additional objectives related to fisheries yield and variability in annual fisheries yield are based on precedents in other DFO Pacific Region analyses [e.g., @cox2008a; @forrest2018; @cox2019].
+Key provisional conservation objectives are guided by the PA Framework [@dfo2006; @dfo2009], elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act* (see Section \@ref(motivation)). Additional objectives related to fisheries catch and variability in annual fisheries catch are based on precedents in other DFO Pacific Region analyses [e.g., @cox2008a; @forrest2018; @cox2019].
 
 We propose the following provisional tactical conservation and fisheries objectives:
 
 1. Maintain stock status above the LRP in the long term with high probability.
-2. Maintain stock status above the USR with some probability
-3. Avoid overfishing with some probability
-4. Given the conservation objectives are achieved, maximize short- and long-term fisheries yield.
-5. Given the conservation objectives are achieved, minimize variability in fisheries yield from year to year.
+2. Maintain stock status above the USR in the long term with some probability.
+3. Maintain a fishing exploitation rate below the rate at maximum sustainable yield with some probability.
+4. Given the above conservation objectives are achieved, maximize short- and long-term fisheries catch.
+5. Given the above conservation objectives are achieved, minimize variability in fisheries catch from year to year.
 
 Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *SB*~MSY~ and USR = 0.8 *SB*~MSY~, suggested under the PA Framework [@dfo2009].
 
@@ -269,7 +264,7 @@ TODO: For discussion?
 Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:mse-chart-basic) and \@ref(fig:mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
 
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
-For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of yield above 50% MSY (STY $\geq$ 0.75).
+For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT P40 $\geq$ 0.9) and a short-term 75% probability of catch above 50% MSY (STY $\geq$ 0.75).
 This resulted in 5 final MPs (out of an initial 30 MPs), plus the four reference MPs.
 We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
 Criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs.
