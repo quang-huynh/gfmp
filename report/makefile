@@ -1,6 +1,6 @@
 all: _book/resdoc.pdf
 
-_book/resdoc.pdf: 01-introduction.Rmd 02-best-practices.Rmd 03-summary-shortraker.Rmd 04-summary-rex.Rmd 05-discussion.Rmd 06-mp-descriptions.Rmd 07-dlmtool-om.Rmd 09-default-slots.Rmd 10-om-rex.Rmd 11-mse-results-rex.Rmd 99-references.Rmd index.Rmd bib/refs.bib csl/csas.csl 07b-msetool-sra.Rmd
+_book/resdoc.pdf: 01-introduction.Rmd 02-best-practices.Rmd 99-references.Rmd index.Rmd bib/refs.bib csl/csas.csl _bookdown.yml 03-framework.Rmd 04-case-study.Rmd 05-discussion.Rmd 06-dlmtool-om.Rmd 07-msetool-sra.Rmd 08-default-slots.Rmd 09-mps.Rmd 10-om-rex.Rmd 11-mse-rex.Rmd 12-gfdlm.Rmd
 	Rscript -e "bookdown::render_book('index.Rmd')"
 
 continuous:

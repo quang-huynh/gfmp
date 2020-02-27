@@ -1,3 +1,5 @@
+\clearpage
+
 ```{r, echo=FALSE}
 library(here)
 filter_data_rex <- function(d,
@@ -58,8 +60,6 @@ saveRDS(drex, here::here("generated-data", "rex-filter-data.rds"))
 ```
 
 # REX SOLE OPERATING MODEL DEFINITION {#app:desc-om-rex}
-
-**The following is effectively an appendix to the next appendix; order may change. Background on the fishery and data are in the following appendix.**
 
 (ref:fig-rex-synopsis1) PLACEHOLDER: The first page for Rex Sole from @anderson2019synopsis.
 
