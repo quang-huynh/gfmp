@@ -305,17 +305,17 @@ get_filtered_scenario <- function(type, column) {
     dplyr::pull(!!column) %>%
     purrr::set_names()
 }
-# scenarios <- sc$scenario %>% set_names()
-# scenarios_human <- sc$scenario_human %>% set_names()
-# scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-# scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
-# x <- purrr::map(
-#   scenarios_ref,
-#   ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
-# ) %>%
-#   set_names(scenarios_ref_human)
-#
-# plot_index(x, type = "AddInd", omit_index_fn = oddify)
+scenarios <- sc$scenario %>% set_names()
+scenarios_human <- sc$scenario_human %>% set_names()
+scenarios_ref <- get_filtered_scenario("Reference", "scenario")
+scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
+x <- purrr::map(
+  scenarios_ref,
+  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
+) %>%
+  set_names(scenarios_ref_human)
+
+plot_index(x, type = "AddInd", omit_index_fn = oddify)
 
 # g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
 #   set_names() %>%
