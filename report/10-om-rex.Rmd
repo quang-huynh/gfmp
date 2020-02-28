@@ -126,9 +126,7 @@ stock_rex@Species <- "Glyptocephalus zachirus"
 
 *The maximum age of individuals that is simulated. Positive integer.*
 
-The maximum recorded age for a Rex Sole in BC waters is 15 in the Hecate Strait Multispecies Assemblage survey in 1998. We do not have ages in our database for 3CD to inform the maximum age for this region. @munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years.
-
-TODO: this gets overwitten by SRA
+The maximum recorded age for a Rex Sole in BC waters is 15 in the Hecate Strait Multispecies Assemblage survey in 1998. We do not have ages in our database for 3CD to inform the maximum age for this region. @munk2001 note the maximum age observed for Rex Sole in the Gulf of Alaska is 27 years. This maximum age becomes the plus group when the SRA is run.
 
 <!-- M = 5.4/15 = 0.36.  -->
 
@@ -142,7 +140,7 @@ stock_rex@maxage <- 27
 
 *Natural mortality rate. Uniform distribution lower and upper bounds.*
 
-@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value elsewhere.
+@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add a range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value.
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@M <- c(0.17, 0.25)
@@ -154,9 +152,7 @@ stock_rex@M <- c(0.17, 0.25)
 
 *Steepness of the stock-recruit relationship. Uniform distribution lower and upper bounds with values from 1/5 to 1.*
 
-@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98). Here we will choose a value that approximately encompasses this range. We include alternative steepness scenarios elsewhere.
-
-TODO
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth but we also include an alternative scenario with higher steepness.
 
 <!-- quantile(rbeta(1e6, shape1 = 13.4, shape2 = 2.4), probs = c(0.025, 0.5, 0.975)) -->
 <!-- stock_rex@h <- c(0.80, 0.95) -->
@@ -164,6 +160,15 @@ TODO
 ```{r desc-stock-h-rex, results = knitr_results, echo = knitr_echo}
 cpars$h <- rbeta(nsim, 13.4, 2.4)
 ```
+
+```{r, fig.cap="Density of h prior."}
+h <- seq(0, 1, length.out = 200)
+hd <- dbeta(h, 13.4, 2.4)
+ggplot(data.frame(h = h, Density = hd), aes(h, Density)) +
+  geom_line() +
+  theme_pbs()
+```
+
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
@@ -172,6 +177,7 @@ cpars$h <- rbeta(nsim, 13.4, 2.4)
 *Process error, the CV of lognormal recruitment deviations. Uniform distribution lower and upper bounds.*
 
 @thorson2014 found the mean standard deviation of log recruitment deviations for Pleuronectiformes to be about 0.64. @mcgilliard2017 used 0.6 for Gulf of Alaska stocks.
+We will use a normal distribution centred around this value of 0.6 with a bit of variation represented by an SD of 0.1:
 
 <!-- stock_rex@Perr <- c(0.4, 0.9) -->
 
@@ -185,7 +191,7 @@ cpars$Perr <- rnorm(nsim, 0.6, 0.1)
 
 *Autocorrelation in recruitment deviations. Uniform distribution lower and upper bounds.*
 
-@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27.
+@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will use these values.
 
 <!-- stock_rex@AC <- c(0.2, 0.7) -->
 
@@ -201,9 +207,9 @@ cpars$AC[cpars$AC < -1] <- -1
 
 *Maximum length. Uniform distribution lower and upper bounds.*
 
-We do not have enough ages in our database to fit a von Bertalanffy model (and none for 3CD), but we can look at the distribution of lengths from our survey samples. This is the distribution across all fish sampled across the WCVI synoptic survey.
+Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well. We will extract samples from the model posterior and save them as custom parameters.
 
-```{r rex-length1, echo=TRUE}
+```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent samples from the posterior."}
 if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
   msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
   saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
@@ -240,12 +246,9 @@ ggplot(.dp, aes(ages, length, group = id)) +
     data = vb_model$data, aes(x = age, y = length), inherit.aes = FALSE
   ) +
   geom_line(alpha = 0.1) +
-  gfdlm::theme_pbs()
+  gfdlm::theme_pbs() +
+  xlab("Age (years)") + ylab("Length (cm)")
 ```
-
-However, $L_\mathrm{inf}$ represents the average maximum length, not the maximum observed length. @turnock2005 (their Table 4.12) found the $L_\mathrm{inf}$ for males was 39.5 cm and $L_\mathrm{inf}$ for females was 44.9 cm in the Gulf of Alaska. This looks roughly in line with the length samples in our database. We will use these values to be consistent with their other growth parameters.
-
-We will explore an alternative scenario with $L_\mathrm{Inf} = 37.2$ cm based on female fish from Oregon [@hosie1976].
 
 ```{r desc-stock-linf-rex, results = knitr_results, echo = knitr_echo}
 cpars$Linf <- as.numeric(vb_post$linf[i])
@@ -257,9 +260,9 @@ cpars$Linf <- as.numeric(vb_post$linf[i])
 
 *von Bertalanffy growth parameter k. Uniform distribution lower and upper bounds.*
 
-@turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will use these values.
+<!-- @turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $k$ to be 0.38 and 0.31 for males and females, respectively. We will use these values. -->
 
-We will explore an alternative scenario with $k = 0.17$ cm based on female fish from Oregon [@hosie1976].
+<!-- We will explore an alternative scenario with $k = 0.17$ cm based on female fish from Oregon [@hosie1976]. -->
 
 ```{r desc-stock-k-rex, results = knitr_results, echo = knitr_echo}
 cpars$K <- as.numeric(vb_post$k[i])
@@ -271,13 +274,25 @@ cpars$K <- as.numeric(vb_post$k[i])
 
 *von Bertalanffy theoretical age at length zero. Uniform distribution lower and upper bounds.*
 
-@turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We assume these should be negative.
+<!-- @turnock2005 (their Table 4.12) in the Gulf of Alaska estimated $t_0$ to be 0.79 and 0.69 for males and females, respectively. We assume these should be negative. -->
 
-We will explore an alternative scenario with $t_0 = -0.57$ cm based on female fish from Oregon [@hosie1976].
+<!-- We will explore an alternative scenario with $t_0 = -0.57$ cm based on female fish from Oregon [@hosie1976]. -->
+
+The $t_0$ parameter estimated in our model is slightly positive, although there are very few fish under the age of 4 in this data set to inform the model.
 
 ```{r desc-stock-t0-rex, results = knitr_results, echo = knitr_echo}
 cpars$t0 <- as.numeric(vb_post$t0[i])
 ```
+
+```{r desc-vb-parameters, fig.cap="von Bertalanffy parameter posteriors."}
+vbd <- data.frame(t0 = vb_post$t0, k = vb_post$k, linf = vb_post$linf) %>%
+  reshape2::melt()
+ggplot(vbd, aes(value)) + geom_histogram() +
+  facet_wrap(~variable, scales = "free_x", ncol = 3) +
+  theme_pbs() + xlab("Parameter value") + ylab("Samples") +
+  coord_cartesian(expand = FALSE)
+```
+
 <!-- slot-chunk-end -->
 
 <!-- slot-chunk-begin -->
@@ -286,6 +301,8 @@ cpars$t0 <- as.numeric(vb_post$t0[i])
 *Length at 50% maturity. Uniform distribution lower and upper bounds.*
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
+
+Although we visualize the relationship for male and female fish separately, we fit a Bayesian model to sample parameter values from a model that estimates maturity for an average male/female fish from our samples.
 
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
@@ -310,13 +327,23 @@ if (!file.exists(here("generated-data", "rex-mat-model.rds"))) {
 post_mat <- as.data.frame(mat_bayes)
 logit_perc <- function(a, b, perc) -(log((1 / perc) - 1) + a) / b
 L50 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.5)
-hist(L50)
-set.seed(3828)
 i <- sample(seq_along(post_mat$length), nsim)
 cpars$L50 <- L50[i]
 ```
 
-`r round(mean(L50), 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm)  [@abookire2005].
+```{r desc-lw-fits, fig.cap="Posterior samples of length at maturity parameters."}
+L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
+L50_95 <- L95 - L50
+set.seed(3828)
+lwd <- data.frame(L50 = L50, L95=L95, L50_95=L50_95) %>%
+  reshape2::melt()
+ggplot(lwd, aes(value)) + geom_histogram() +
+  facet_wrap(~variable, scales = "free_x", ncol = 3) +
+  theme_pbs() + xlab("Parameter value") + ylab("Samples") +
+  coord_cartesian(expand = FALSE)
+```
+
+`r round(mean(L50), 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2005].
 
 <!-- slot-chunk-end -->
 
@@ -355,7 +382,7 @@ stock_rex@D
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined."}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 stock_rex@a <- exp(mlw$pars[["log_a"]])
@@ -438,22 +465,10 @@ drex$commercial_samples %>%
 hist(drex$commercial_samples$length)
 ```
 
-However, we can look at the commercial samples from our entire coast:
-
-```{r min-caught-rex2, message=FALSE}
-fi <- here::here("generated-data/rex-coastwide-commercial-samples.rds")
-if (!file.exists(fi)) {
-  rex_commercial <- gfdata::get_commercial_samples("rex sole", unsorted_only = FALSE)
-  saveRDS(rex_commercial, file = fi)
-} else {
-  rex_commercial <- readRDS(fi)
-}
-hist(rex_commercial$length, breaks = 50)
-```
-
+We will leave this parameter blank here... TODO
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@L5 <- c(16, 18)
+fleet_rex@L5
 ```
 <!-- slot-chunk-end -->
 
