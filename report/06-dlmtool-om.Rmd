@@ -91,30 +91,32 @@ Leading parameters of the population dynamics model, defined as fixed values or 
 
 Recruitment and numbers-at-age are initialized in the first historical year using the SRA model (Appendix \@ref(app:sra), Equations \@ref(eq:sra-om-numinit) to \@ref(eq:sra-om-recinit)).
 
-During the projection period (years $y = t_{c+1}$ to $y = t_N$), the number of fish recruited to the first age group in each year $N_{y,a=1}$ is calculated as a function of previous year's spawning biomass $B_{y-1}$. The framework assumes a Beverton-Holt stock-recruit relationship [@beverton1957] with annual lognormal recruitment deviations $\varepsilon_{R,y-1}$, but users can alternatively choose a Ricker function [@ricker1954]:
+During the projection period (years $y = t_{c+1}$ to $y = t_N$), the number of fish recruited to the first age group in each year $N_{y,a=1}$ is calculated as a function of the previous year's spawning biomass $B_{y-1}$. The framework assumes a Beverton-Holt stock-recruit relationship [@beverton1957] with annual lognormal recruitment deviations $\varepsilon_{R,y-1}$, but analysts can alternatively choose a Ricker function [@ricker1954]:
 
 $$
 N_{y, a = 1} = R_y =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \varepsilon_{R,y-1} & \textrm{Beverton-Holt}\\
       \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\varepsilon_{R,y-1} & \textrm{Ricker},
-\end{cases},
+\end{cases}
 (\#eq:sra-om-rya)
 $$
 
-where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
+where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock-recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock-recruit relationship, derived from user-defined parameters steepness ($h$) and $R_0$, where
 $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
 $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
 and
 $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$.
+The parameter $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
 
 $$
 B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ {R}_{0}e^{-M{(a-1)}}},
 (\#eq:dlm-om-bo)
 $$
 
-where $A$ is the user-defined maximum age, ${R}_{0}e^{M{(a-1)}}$ gives unfished numbers-at-age, and spawning biomass $B_y$ in a given year is calculated as
+where $A$ is the user-defined maximum age and ${R}_{0}e^{M{(a-1)}}$ gives unfished numbers-at-age.
+Spawning biomass $B_y$ in a given year is calculated as
 
 $$
 B_{y} = \sum_{a = 1}^{A}{w_{a}m_{a}N_{y,a}},
@@ -413,14 +415,14 @@ For each year, the frequency of samples at age is inflated to match the
 total sample size $n_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
 
 $$
-C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right)
+C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right).
 (\#eq:dlm-om-cataobs-freq)
 $$
 
 Due to rounding, this model generates frequency-at-age data that are approximately equal to the average annual sample size:
 
 $$
-\sum_{a}^{A}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}
+\sum_{a}^{A}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}.
 (\#eq:dlm-om-cataobs-equality)
 $$
 
@@ -429,7 +431,7 @@ $$
 <!-- Parameters for implementation dynamics are included in the `Imp` object of DLMtool.-->
 <!--The OM includes three types of implementation error-->
 <!--, which relate to MPs that provide management advice in terms of Total Allowable Catch (TAC), Total Allowable Effort (TAE) and size limits (SL).-->
-This Framework only considers MPs that provide TAC advice for quota-managed groundfish fisheries.
+This framework only considers MPs that provide TAC advice for quota-managed groundfish fisheries.
 Given that BC groundfish fisheries are subject to 100% at-sea and dockside observer coverage, we make the assumption that under-reporting of catch will be negligible in projection years.
 However, for non-target species, there is a possibility that TACs will not be fully used.
 The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-cata).
@@ -438,14 +440,14 @@ The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a c
 variability controlled by ${{\sigma}}_{\textrm{TAC}}$.
 
 $$
-I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right)
+I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right),
 (\#eq:dlm-om-itac)
 $$
 
 where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}}^2 \right)
+\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}}^2 \right).
 (\#eq:dlm-om-epsilontac)
 $$
 
@@ -453,7 +455,7 @@ By default the OM samples simulation-specific variability
 ${{\sigma}}_{\textrm{TAC}}$ from a uniform distribution.
 
 $$
-\sigma_{\textrm{TAC}}\sim \textrm{Uniform}\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right)
+\sigma_{\textrm{TAC}}\sim \textrm{Uniform}\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right),
 (\#eq:dlm-om-sigmatac)
 $$
 
@@ -467,7 +469,7 @@ $$
 
 $$
 \varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}}^2 \right)
-(\#eq:dlm-om-epsilonbtac)
+(\#eq:dlm-om-epsilonbtac).
 $$
 
 ## CALCULATION OF MSY-BASED REFERENCE POINTS {#sec:dlmtool-msy-refpts}
@@ -553,20 +555,18 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 ## TIME-VARYING PARAMETERS {#sec:dlmtool-time-varying}
 
 The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
-
 DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
 This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va).
 
 Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
-
 Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model.
 
 In the presence of time-varying parameters, $B_0$ is calculated as
 
 $$
-B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}}
+B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}},
 (\#eq:dlm-om-dyn-bo)
 $$
 
