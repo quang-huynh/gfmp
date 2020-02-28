@@ -1,21 +1,17 @@
 \clearpage
 
-# MSETOOL STOCK REDUCTION ANALYSIS {#app:sra}
-
-<!--
-**The following is preliminary and largely reproduced from an MSEtool vignette (written by Quang Huynh) for completeness with some modifications. Updated by QH and imported by RF Feb 14 2020**
-
-**The text before the equations will be rewritten for the purposes of this document.**
--->
+# STOCK REDUCTION ANALYSIS FOR CONDITIONING OPERATING MODELS {#app:sra}
 
 ## A BACKGROUND ON STOCK REDUCTION ANALYSIS {#sec:sra-background}
+
+<!-- TODO: need to emphasize that although it is an age structured model it does not require age data!! -->
 
 The operating model (OM) defined in Appendix \@ref(app:dlmtool-om) is conditioned  by fitting an age-structured stock-reduction analysis (SRA) [@kimura1982; @walters2006] to historical observed catches and indices of abundance (and to age- and length-composition data if available).
 This step produces estimates of parameters that are conditioned to produce time-series trajectories consistent with historical observations.
 This is especially important in data-limited or data-moderate situations, where the lack of an accepted assessment makes it difficult to parameterize historical depletion and fishing mortality $F$.
 
 In the literature, the term "stock reduction analysis" has been used to describe a model in which the predicted total catch matches the observed catch.
-@kimura1982 presented SRA as an alternative to a virtual production analysis (VPA) or surplus production model.
+@kimura1982 presented SRA as an alternative to a virtual production analysis (VPA) or surplus production models.
 The SRA approach is more applicable to data-limited species than, for example, a VPA when annual catch-at-age data are not available, while also using an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history, rather than taking a pooled biomass-dynamics approach (e.g., surplus production model).
 Another advantage of the SRA approach for BC groundfish fisheries is it accommodates conditioning on multiple indices of abundance (e.g., accommodating indices from multiple fishery-independent surveys and/or commercial CPUE series).
 
@@ -232,7 +228,7 @@ R_y =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{Beverton-Holt}\\
       \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{Ricker},
-\end{cases},
+\end{cases}
 (\#eq:sra-om-rya)
 $$
 

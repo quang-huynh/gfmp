@@ -493,7 +493,7 @@ $$
 R^e =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
-      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker}
+      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker},
 \end{cases}
 (\#eq:dlm-om-req)
 $$
@@ -509,7 +509,7 @@ where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:
 Following the approach of @botsford1981, equilibrium spawning biomass-per-recruit is calculated
 
 $$
-\phi_f = \sum_{a=1}^A \iota_a w_a m_a
+\phi_f = \sum_{a=1}^A \iota_a w_a m_a,
 (\#eq:dlm-om-phif)
 $$
 
@@ -520,31 +520,29 @@ $$
       \begin{cases}
             1, & a=1 \\
             \iota_{a-1}e^{-Z^e_{a-1}}, & 1<a<A \\
-            \dfrac{\iota_{a-1}e^{-Z^e_{a-1}}}{1-e^{-Z^e_{a}}} , & a=A\\
+            \dfrac{\iota_{a-1}e^{-Z^e_{a-1}}}{1-e^{-Z^e_{a}}} , & a=A,
       \end{cases}
 (\#eq:dlm-om-survivorship)
 $$
 
-where $Z^e_{a}$ is equilibrium total mortality-at-age:
+and $Z^e_{a}$ is equilibrium total mortality-at-age:
 
 $$
-Z^e_{a} = M +  F^e_{a}v_{a}
+Z^e_{a} = M +  F^e_{a}v_{a}.
 (\#eq:dlm-om-zeq)
 $$
 
 Finally, using the same approach, $\phi_b$ is calculated
 
 $$
-\phi_b = \sum_{a=1}^A \iota_a w_a v_a
+\phi_b = \sum_{a=1}^A \iota_a w_a v_a.
 (\#eq:dlm-om-phib)
 $$
-
-<!--TODO: do we want to explain how DLMtool numerically solves for FMSY (e.g., Newton-Raphson algorithm or just leave it vague)? My preference is to leave it vague. there are lots of ways to do it and the details aren't really important as long as it works.-->
 
 After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is calculated:
 
 $$
-B_{\textrm{MSY}} = \phi_f^\textrm{MSY} R^e
+B_{\textrm{MSY}} = \phi_f^\textrm{MSY} R^e,
 (\#eq:dlm-om-bmsy)
 $$
 
@@ -555,9 +553,9 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 ## TIME-VARYING PARAMETERS {#sec:dlmtool-time-varying}
 
 The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
-DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope parameters.
+DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope and variation parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
-This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va).
+This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va)).
 
 Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
