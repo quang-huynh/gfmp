@@ -553,7 +553,7 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 
 ## TIME-VARYING PARAMETERS {#sec:dlmtool-time-varying}
 
-The case-studies presented in this MP Framework assume model parameters representing growth, selectivity and fishery catchability are time-invariant. Most model scenarios also assume time-invariant $M$.
+The OM as described above assumes that model parameters representing growth, selectivity, and fishery catchability are time-invariant.
 DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope and variation parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
 This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va)).
