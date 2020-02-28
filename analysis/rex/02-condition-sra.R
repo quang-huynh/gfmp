@@ -138,12 +138,22 @@ fit_sra_rex_cpue <- function(om,
     f_name = "Commercial trawl",
     drop_highF = TRUE,
     s_name = c("SYN WCVI", "Commercial CPUE"),
+    mean_fit = TRUE,
     ...
   )
 }
 
 rex_sra_ceq150 %<-% fit_sra_rex_cpue(rex_om, c_eq = 1.5)
 rex_sra_ceq200 %<-% fit_sra_rex_cpue(rex_om, c_eq = 2)
+
+# rex_sra_ceq125 %<-% fit_sra_rex_cpue(rex_om, c_eq = 1.25)
+# saveRDS(rex_sra_ceq125, file = here("generated-data", "rex-sra-ceq125.rds"))
+#
+# rex_sra_ceq250 %<-% fit_sra_rex_cpue(rex_om, c_eq = 2.5)
+# saveRDS(rex_sra_ceq250, file = here("generated-data", "rex-sra-ceq250.rds"))
+#
+# rex_sra_ceq300 %<-% fit_sra_rex_cpue(rex_om, c_eq = 3)
+# saveRDS(rex_sra_ceq300, file = here("generated-data", "rex-sra-ceq300.rds"))
 
 # plot(rex_sra_ceq200)
 # plot(rex_sra_ceq150)
@@ -193,6 +203,7 @@ fit_sra_rex_no_cpue <- function(om,
     f_name = "Commercial trawl",
     drop_highF = TRUE,
     s_name = c("SYN WCVI"),
+    mean_fit = TRUE,
     ...
   )
 }
