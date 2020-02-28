@@ -43,17 +43,6 @@ ceqsc <- c(1,2,9:10) #only want the 4 ceq scenarios with cpue
 
 nSim <- sra_rex[[1]]@OM@nsim
 
-#This is also a list
-ceq150misc <- sra_rex[[1]]@Misc
-
-#names(ceq150misc[[1]])
-#ceq150misc[[1]]$q[1] #WCVI survey q
-#ceq150misc[[2]]$q[1] #WCVI survey q
-
-#Put all the survey q estimates into a dataframe
-# ncol= number of scenarios nsc
-# nrow = number of replicates (nsim) ... this varies by scenario
-
 # Get a list of all the nsim values (different for each scenario)
 nsc <- length(sra_rex)
 nSims <- NULL
@@ -79,6 +68,7 @@ for(i in 1:length(sra_rex)) {
       as.vector()
   }
 
+  #These ones only have survey (no cpue)
   if(i %in% 6:7){
     qvec <- data.frame(matrix(unlist(qsc), nrow=length(qsc), byrow=T)) %>%
       unlist() %>%
@@ -103,7 +93,7 @@ colnames(R0mean) <- c("Scenario", "R0")
 for(i in 1:length(sra_rex)) {
   sramisc <- sra_rex[[i]]@Misc  #get the misc object from sra scenario
 
-  R0sc <- sramisc %>%  #get R0 from all the replicates (returns 2, only want the 1st)
+  R0sc <- sramisc %>%  #get R0 from all the replicates
     purrr::map("R0")
 
    R0vec <- data.frame(matrix(unlist(R0sc), nrow=length(R0sc), byrow=T)) %>%
@@ -128,7 +118,7 @@ colnames(B1mean) <- c("Scenario", "B1")
 for(i in 1:length(sra_rex)) {
   sramisc <- sra_rex[[i]]@Misc  #get the misc object from sra scenario
 
-  B1sc <- sramisc %>%  #get Biomass from all the replicates (returns 2, only want the 1st)
+  B1sc <- sramisc %>%  #get Biomass from all the replicates
     purrr::map("B") %>%
     map(~ .x[[1]]) #Get the first year of the hist period
 
@@ -145,7 +135,7 @@ for(i in 1:length(sra_rex)) {
 
 }
 
-#### Steepness
+#### Steepness ... don't need this really, not estimated
 h.all <- data.frame(matrix(ncol=nsc, nrow=max(nSims)))
 colnames(h.all) <- sc$scenario
 hmean <- data.frame(matrix(nrow=nsc, ncol=2))
@@ -155,7 +145,7 @@ colnames(hmean) <- c("Scenario", "Steepness")
 for(i in 1:length(sra_rex)) {
   sramisc <- sra_rex[[i]]@Misc  #get the misc object from sra scenario
 
-  hsc <- sramisc %>%  #get h from all the replicates (returns 2, only want the 1st)
+  hsc <- sramisc %>%  #get h from all the replicates
     purrr::map("h")
 
   hvec <- data.frame(matrix(unlist(hsc), nrow=length(hsc), byrow=T)) %>%
@@ -180,7 +170,7 @@ colnames(Femean) <- c("Scenario", "F_equilibrium")
 for(i in 1:length(sra_rex)) {
   sramisc <- sra_rex[[i]]@Misc  #get the misc object from sra scenario
 
-  Fesc <- sramisc %>%  #get log_f_eq from all the replicates (returns 2, only want the 1st)
+  Fesc <- sramisc %>%  #get log_f_eq from all the replicates
     purrr::map("log_F_equilibrium")
 
   Fevec <- data.frame(matrix(unlist(Fesc), nrow=length(Fesc), byrow=T)) %>%
@@ -277,18 +267,18 @@ corr_R0_Feq <- corr_R0_q <- vector(length=length(ceqsc))
 for(i in 1:length(ceqsc)) {
   scen <- ceqsc[i]
 
-  print(scen)
-
+  #Get correlation of all parameters
   corr[[i]] <- cov2cor(sra_rex[[scen]]@mean_fit$SD$cov.fixed) %>% round(3) %>%
     structure(dimnames = list(names(sra_rex[[scen]]@mean_fit$SD$par.fixed),
                               names(sra_rex[[scen]]@mean_fit$SD$par.fixed)))
 
+  #Extract correlation between R0 and log_F_eq
   corr_R0_Feq[i] <- corr[[i]]["log_R0","log_F_equilibrium"]
 
+  # Correlation between R0 and q (steepness is fixed so corr = 0)
   SD_full <- TMB::sdreport(sra_rex[[scen]]@mean_fit$obj, sra_rex[[scen]]@mean_fit$opt$par,
                            getJointPrecision = TRUE) # Get correlation of derived parameters, by default joint precision = FALSE
 
-  # Correlation between R0 and q = 0.69 (steepness is fixed so corr = 0)
   corr_derived_par[[i]] <- cov2cor(SD_full$cov) %>% round(3) %>%
     structure(dimnames = list(names(SD_full$value),
                               names(SD_full$value)))
@@ -300,6 +290,7 @@ for(i in 1:length(ceqsc)) {
 corr_R0_Feq
 corr_R0_q
 
+#plot
 corr <- data.frame(cbind(sc$scenario[ceqsc],corr_R0_Feq,corr_R0_q)) %>%
   rename(Scenario=V1,"R0 vs Feq"=corr_R0_Feq, "R0 vs Survey q" = corr_R0_q) %>%
   melt(id.vars="Scenario") %>%
