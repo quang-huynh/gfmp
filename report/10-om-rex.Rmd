@@ -81,6 +81,10 @@ knitr_results <- TRUE
 knitr_echo <- TRUE
 ```
 
+This section describes the specification of the Rex Sole operating model.
+Some scenarios in the reference and robustness sets assign alternative options for some of the parameters.
+We note this below where that occurs.
+
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
 
 ```{r warnings = FALSE}
@@ -140,7 +144,7 @@ stock_rex@maxage <- 27
 
 *Natural mortality rate. Uniform distribution lower and upper bounds.*
 
-@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add a range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value.
+@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add a range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value (M = 0.3).
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@M <- c(0.17, 0.25)
@@ -152,7 +156,7 @@ stock_rex@M <- c(0.17, 0.25)
 
 *Steepness of the stock-recruit relationship. Uniform distribution lower and upper bounds with values from 1/5 to 1.*
 
-@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth but we also include an alternative scenario with higher steepness.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth (Figure \@ref(fig:desc-rex-h)) but we also include an alternative scenario with steepness fixed to a value of 0.95.
 
 <!-- quantile(rbeta(1e6, shape1 = 13.4, shape2 = 2.4), probs = c(0.025, 0.5, 0.975)) -->
 <!-- stock_rex@h <- c(0.80, 0.95) -->
@@ -161,7 +165,7 @@ stock_rex@M <- c(0.17, 0.25)
 cpars$h <- rbeta(nsim, 13.4, 2.4)
 ```
 
-```{r, fig.cap="Density of h prior."}
+```{r desc-rex-h, fig.cap="Density of h prior.", fig.width=6, out.width="4in"}
 h <- seq(0, 1, length.out = 200)
 hd <- dbeta(h, 13.4, 2.4)
 ggplot(data.frame(h = h, Density = hd), aes(h, Density)) +
@@ -191,7 +195,7 @@ cpars$Perr <- rnorm(nsim, 0.6, 0.1)
 
 *Autocorrelation in recruitment deviations. Uniform distribution lower and upper bounds.*
 
-@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will use these values.
+@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will use these values but ensure that all samples are between -1 and 1:
 
 <!-- stock_rex@AC <- c(0.2, 0.7) -->
 
@@ -207,9 +211,9 @@ cpars$AC[cpars$AC < -1] <- -1
 
 *Maximum length. Uniform distribution lower and upper bounds.*
 
-Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well. We will extract samples from the model posterior and save them as custom parameters.
+Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well (Figure \@ref(fig:rex-length1)). We will extract samples from the model posterior (Figure \@ref(fig:desc-vb-parameters)) and save them as custom parameters.
 
-```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent samples from the posterior."}
+```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent samples from the posterior.", fig.width=6, out.width='4in'}
 if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
   msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
   saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
@@ -284,7 +288,7 @@ The $t_0$ parameter estimated in our model is slightly positive, although there 
 cpars$t0 <- as.numeric(vb_post$t0[i])
 ```
 
-```{r desc-vb-parameters, fig.cap="von Bertalanffy parameter posteriors."}
+```{r desc-vb-parameters, fig.cap="von Bertalanffy parameter posteriors.", fig.width=6, out.width="4in", fig.asp=0.5}
 vbd <- data.frame(t0 = vb_post$t0, k = vb_post$k, linf = vb_post$linf) %>%
   reshape2::melt()
 ggplot(vbd, aes(value)) + geom_histogram() +
@@ -302,9 +306,11 @@ ggplot(vbd, aes(value)) + geom_histogram() +
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
-Although we visualize the relationship for male and female fish separately, we fit a Bayesian model to sample parameter values from a model that estimates maturity for an average male/female fish from our samples.
+Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)). We use priors of Normal(0, 50^2^) for the intercept and Normal(0, 10^2^) for the effect of length and male/female. We sample 2000 iterations across 4 separate chains from the posterior.
 
-```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
+TODO expand a bit
+
+```{r desc-stock-mat-plot, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length. \"Rug lines\" along the top and bottom indicate individual sampled fish was some overlap. Curved lines represent predictions from a logistic regression. Vertical line represents the length at 50\\% maturity."}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
 gfplot::plot_mat_ogive(m_mat)
 
@@ -328,10 +334,13 @@ post_mat <- as.data.frame(mat_bayes)
 logit_perc <- function(a, b, perc) -(log((1 / perc) - 1) + a) / b
 L50 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.5)
 i <- sample(seq_along(post_mat$length), nsim)
+```
+
+```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 cpars$L50 <- L50[i]
 ```
 
-```{r desc-lw-fits, fig.cap="Posterior samples of length at maturity parameters."}
+```{r desc-lw-fits, fig.cap="Posterior samples of length at maturity parameters. L50 represents length at 50\\% maturity, L90 represents link that 95\\% maturity, and L50\\_95 represents the length difference between L50 and L95.", fig.width=6, out.width="4in", fig.asp=0.5}
 L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 L50_95 <- L95 - L50
 set.seed(3828)
@@ -341,6 +350,7 @@ ggplot(lwd, aes(value)) + geom_histogram() +
   facet_wrap(~variable, scales = "free_x", ncol = 3) +
   theme_pbs() + xlab("Parameter value") + ylab("Samples") +
   coord_cartesian(expand = FALSE)
+L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 ```
 
 `r round(mean(L50), 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2005].
@@ -355,10 +365,7 @@ ggplot(lwd, aes(value)) + geom_histogram() +
 We can calculate this as a derived parameter from our logistic maturity model:
 
 ```{r desc-stock-l50_95-rex, results = knitr_results, echo = knitr_echo}
-L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 L50_95 <- L95 - L50
-hist(L95)
-hist(L50_95)
 cpars$L50_95 <- L50_95[i]
 ```
 <!-- slot-chunk-end -->
@@ -382,7 +389,7 @@ stock_rex@D
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined."}
+```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined.", fig.width=6, out.width="4in", message=FALSE}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 stock_rex@a <- exp(mlw$pars[["log_a"]])
@@ -456,14 +463,13 @@ fleet_rex@nyears
 
 *Shortest length corresponding to 5% vulnerability. Uniform distribution lower and upper bounds.*
 
-There are very few commercial length samples to inform this parameter for our commercial WCVI samples:
-
 ```{r min-caught-rex1}
-drex$commercial_samples %>%
+n_caught <- drex$commercial_samples %>%
   dplyr::filter(!is.na(length)) %>%
   nrow()
-hist(drex$commercial_samples$length)
 ```
+
+There are only `r n_caught` fish with measured lengths in the WCVI commercial data.
 
 We will leave this parameter blank here... TODO
 
@@ -477,19 +483,6 @@ fleet_rex@L5
 
 *Shortest length that is fully vulnerable to fishing. Uniform distribution lower and upper bounds.*
 
-We can look at a comparison of the commercial (from the entire coast) and survey samples (from WCVI) with the commercial samples shown is a histogram in the survey samples shown as line density. We will indicate the lower and upper bounds of the `L50` (length at 50% maturity) slot with red lines.
-
-```{r}
-hist(rex_commercial$length, xlim = c(5, 60), breaks = 50)
-par(new = TRUE)
-plot(density(na.omit(drex$survey_samples$length)),
-  xlim = c(5, 60), main = "", ylab = "", xlab = "", axes = FALSE
-)
-abline(v = quantile(L50, probs = 0.025), col = "red")
-abline(v = quantile(L50, probs = 0.975), col = "red")
-```
-
-We will assume that Rex Sole is fully vulnerable to fishing by approximately size at maturity:
 
 ```{r desc-fleet-lfs-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@LFS <- c(0.9, 1.1) * mean(L50)
@@ -555,7 +548,7 @@ obs_rex@Cbiascv <- c(0, 0)
 
 *Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
-TODO
+We will sample with replacement from the CVs of the observed WCVI Synoptic trawl survey index values for Rex Sole:
 
 ```{r}
 set.seed(2943)
@@ -604,7 +597,7 @@ imp_rex@TACFrac <- c(1.0, 1.0)
 
 *Log-normal CV in the fraction of TAC taken. Uniform distribution lower and upper bounds.*
 
-We will allow for a small amount of variation in fraction of TAC taken from year to year.
+We will assume there is no variation in the fraction of TAC taken from year to year.
 
 ```{r desc-imp-tacsd-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACSD <- c(0, 0)
@@ -617,3 +610,4 @@ rex_om@cpars <- cpars
 rex_om@nsim <- nsim
 saveRDS(rex_om, file = here::here("generated-data", "rex-om.rds"))
 ```
+
