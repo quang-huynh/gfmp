@@ -310,7 +310,7 @@ B^T_{y} = \sum_{a = 1}^{A}{w_{a}N_{y,a}}
 $$
 
 and where $\beta$ is the hyperstability/hyperdepletion parameter.
-When $\beta$ is 1 the index is linearly related to spawning biomass $S_y$.
+When $\beta$ is 1 the index is linearly related to spawning biomass $B_y$.
 When $\beta$ is greater than 1 the index is hyperdeplete and moves faster than true spawning biomass changes.
 When $\beta$ is lower than 1 the index is hyperstable and moves slower than true spawning biomass changes.
 When the observed index is calculated, it is normalized to have a mean value of 1 over all years.
@@ -324,8 +324,10 @@ $$
 
 where the lognormal error term, $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
+<!-- TODO: Shouldn't the epsiloni equation use SD instead of variance?? RF changed to sd-->
+
 $$
-\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right).
 (\#eq:dlm-om-epsiloni)
 $$
 
@@ -349,8 +351,6 @@ for an abundance-based index.
 The symbol $q_s$ represents catchability as estimated via the SRA (Equation \@ref(eq:sra-om-iysb) or \@ref(eq:sra-om-iysn)).
 The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as for the commercial fleet (Equations \@ref(eq:dlm-om-va)--\@ref(eq:dlm-om-sigldes)) but with its own shape as specified by the user or estimated via the SRA (Equations \@ref(eq:sra-om-vaf)).
 
-<!-- where $q_s$ the catchability for survey $s$ is TODO. -->
-
 The OM then scales and adds observation error to each index as:
 
 $$
@@ -360,6 +360,7 @@ $$
 
 with $\omega_{I,y,s}$ calculated as:
 
+
 $$
 \omega_{I,y,s} = \exp \left( \varepsilon_{I,y,s} - \frac{{{\sigma}}_{I}^2}{2} \right),
 (\#eq:dlm-om-omegai-addind)
@@ -367,8 +368,10 @@ $$
 
 where the lognormal error term $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
+<!-- TODO: Shouldn't the epsiloni equation use SD instead of variance?? RF changed to sd-->
+
 $$
-\varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I}^2 \right).
+\varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right).
 (\#eq:dlm-om-epsiloni-addind)
 $$
 
