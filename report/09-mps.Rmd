@@ -1,6 +1,3 @@
-`r if(knitr:::is_latex_output()) '\\Appendices'`
-`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
-
 # DATA-LIMITED MANAGEMENT PROCEDURES {#app:MPs}
 
 Here we include an overview of MPs that may be used as part of this framework.

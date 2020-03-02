@@ -685,12 +685,11 @@ How to treat reference points when parameters, particularly productivity paramet
 "Obs",     "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
 "Obs",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{LB}{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
 "Obs",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
-"Imp",     "TACFrac[1]",    "$\\textrm{LB}_\\textrm{TAC}$",       "Lower bound of Uniform distribution of TAC fraction",
-"Imp",     "TACFrac[2]",    "$\\textrm{UB}_\\textrm{TAC}$",       "Upper bound of Uniform distribution of TAC fraction",
-"Imp",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",   "SD in lognormal fraction of TAC taken"
+"Imp.",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
+"Imp.",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken."
 )
 
-#(\\textrm{LB}_{\\textrm{TAC})
+
 
 p %>%
   mutate(slot = paste0("\\texttt{", slot, "}")) %>%

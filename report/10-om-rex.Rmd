@@ -336,6 +336,27 @@ L50 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.5)
 i <- sample(seq_along(post_mat$length), nsim)
 ```
 
+```{r desc-stock-rex-mat2, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length from the Bayesian model for a fish of average male/female sex. Individual thin translucent lines represent independent draws from the posterior."}
+La <- seq(0, max(m_mat$pred_data$age_or_length), length.out = 300)
+mat_prob <- function(x, intercept, slope) {
+  plogis(intercept + x * slope)
+}
+.i <- sample(seq_along(post_mat$length), size = 100)
+.dm <- purrr::pmap_df(
+  list(post_mat$`(Intercept)`[.i], post_mat$length[.i], seq_along(post_mat$length[.i])), ~ {
+    data.frame(length = La, prob = mat_prob(La, ..1, ..2), id = ..3)
+  }
+) %>% mutate(type = "Maturity")
+
+.dm %>% 
+  ggplot(aes(length, prob, group = id)) + 
+  geom_line(alpha = 0.04) +
+  labs(colour = "Type", y = "Probability", x = "Length (cm)") +
+  theme_pbs() +
+  coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005))
+```
+
+
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 cpars$L50 <- L50[i]
 ```
@@ -469,25 +490,42 @@ n_caught <- drex$commercial_samples %>%
   nrow()
 ```
 
-There are only `r n_caught` fish with measured lengths in the WCVI commercial data.
+There are only `r n_caught` fish with measured lengths in the WCVI commercial data, which is insufficient to estimate selectivity in the SRA.
+We will make the assumption that commercial and survey selectivity approximately match the maturity ogive, similar to the assumption made in a delay difference model that maturity and vulnerability to the fishery occur at the same age.
+We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery. 
+These curves will be specified in the SRA.
 
-We will leave this parameter blank here... TODO
-
-```{r desc-selectivity-function, eval=FALSE, include=FALSE}
+```{r desc-selectivity-function, fig.cap="Maturity-at-length and 2 selectivity curves used in the operating models. Maturity ogive represents 100 draws from the posterior.", fig.width=6, out.width='4in'}
 v <- function(La, LFS, L5) {
   ifelse(La < LFS,{
     sigma_asc <- (L5 - LFS)^2 / sqrt(-log(0.05, base = 2))
     2 ^ (-1 * (La - LFS)^2 / sigma_asc)
   }, 1)
 }
-La <- seq(0, 38, length.out = 300)
-plot(La, v(La, L5 = 20, LFS = 32), type = "l", lty = 1)
-lines(La, v(La, L5 = 28, LFS = 12), lty = 2)
+La <- seq(0, max(m_mat$pred_data$age_or_length), length.out = 300)
+# plot(La, v(La, L5 = 20, LFS = 32), type = "l", lty = 1)
+# lines(La, v(La, L5 = 28, LFS = 12), lty = 2)
+
+vulnerable1 <- data.frame(length = La, prob = v(La, L5 = 22, LFS = 34)) %>% 
+  mutate(type = "Selectivity 1", id = 9999)
+
+vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 15, LFS = 30)) %>% 
+  mutate(type = "Selectivity 2", id = 99999)
+
+bind_rows(.dm, vulnerable1) %>%
+  bind_rows(vulnerable2) %>% 
+  ggplot(aes(length, prob, colour = type, group = id)) + 
+  geom_line(lwd = 1) +
+  labs(colour = "Type", y = "Probability", x = "Length (cm)") +
+  theme_pbs() +
+  coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005)) +
+  scale_color_manual(values = c("#00000006", RColorBrewer::brewer.pal(3, "Dark2")[1:2])) +
+  guides(colour = guide_legend(override.aes = list(alpha=1)))
 ```
 
 
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@L5
+fleet_rex@L5 <- c(22, 22)
 ```
 <!-- slot-chunk-end -->
 
@@ -498,8 +536,7 @@ fleet_rex@L5
 
 
 ```{r desc-fleet-lfs-rex, results = knitr_results, echo = knitr_echo}
-fleet_rex@LFS <- c(0.9, 1.1) * mean(L50)
-round(fleet_rex@LFS, 1)
+fleet_rex@LFS <- c(34, 34)
 ```
 
 <!-- slot-chunk-end -->
