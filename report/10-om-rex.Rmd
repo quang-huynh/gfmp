@@ -473,6 +473,19 @@ There are only `r n_caught` fish with measured lengths in the WCVI commercial da
 
 We will leave this parameter blank here... TODO
 
+```{r desc-selectivity-function, eval=FALSE, include=FALSE}
+v <- function(La, LFS, L5) {
+  ifelse(La < LFS,{
+    sigma_asc <- (L5 - LFS)^2 / sqrt(-log(0.05, base = 2))
+    2 ^ (-1 * (La - LFS)^2 / sigma_asc)
+  }, 1)
+}
+La <- seq(0, 38, length.out = 300)
+plot(La, v(La, L5 = 20, LFS = 32), type = "l", lty = 1)
+lines(La, v(La, L5 = 28, LFS = 12), lty = 2)
+```
+
+
 ```{r desc-fleet-l5-rex, results = knitr_results, echo = knitr_echo}
 fleet_rex@L5
 ```
