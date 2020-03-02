@@ -198,7 +198,7 @@ v_{a} =
 $$
 
 where $L^\textrm{FS}$ represents the user-defined length-at-full-selectivity.
-The variance of the ascending limb ($\sigma_{\textrm{sasc}}^{2}$) is given by
+The standard deviation of the ascending limb ($\sigma_{\textrm{sasc}}^{2}$) is given by
 
 $$
 \sigma_{\textrm{sasc}} = \frac{{{L}}_{5} - L^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
@@ -207,10 +207,10 @@ $$
 
 where $L_5$ is the user-defined length-at-5%-selectivity
 
-The variance of the descending limb is given by
+The standard deviation of the descending limb is given by
 
 $$
-\sigma_{\textrm{sdesc}}^{2} = \frac{V_{L_\infty} - L^\textrm{FS}}{{\sqrt{- \log_{2^{V_{L_\infty}}}}}},
+\sigma_{\textrm{sdesc}} = \frac{V_{L_\infty} - L^\textrm{FS}}{{\sqrt{- \log_{2^{V_{L_\infty}}}}}},
 (\#eq:dlm-om-sigldes)
 $$
 
