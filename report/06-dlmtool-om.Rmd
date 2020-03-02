@@ -402,19 +402,10 @@ Although we do not propose any provisional MPs that use CAA or CAL, future appli
 Therefore, we describe the observation model component of CAA.
 We do not describe the observation model of CAL at this time.
 
-<!--TODO: Check this. RF cleaned it up, it was very hard to follow and I think some terms were mixed up in the text. Removed summation over r ... assume this was areas -->
-
-The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\textrm{ESS}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_{CAA}$, number of individuals aged). 
+The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\textrm{ESS}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_\textrm{CAA}$, number of individuals aged).
 For example, $\textrm{ESS}_\textrm{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p_a$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
-
-<!-- Delete this
-$$
-C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a} \right)
-(\#eq:dlm-om-cataobs)
-$$
--->
 
 $$
 C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right)
@@ -424,10 +415,9 @@ $$
 For each year, the proportion of samples at age is then inflated to match the
 total sample size $n_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
 
-<!-- is this equation correct?-->
 
 $$
-C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right).
+C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}} \cdot n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right).
 (\#eq:dlm-om-cataobs-freq)
 $$
 
@@ -456,7 +446,7 @@ I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{exp}\left( \varepsilon_{\textrm
 (\#eq:dlm-om-itac)
 $$
 
-where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
+where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ can be sampled at random in each simulation:
 
 $$
 \varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}} \right).
