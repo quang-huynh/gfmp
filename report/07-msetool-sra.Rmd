@@ -4,8 +4,6 @@
 
 ## A BACKGROUND ON STOCK REDUCTION ANALYSIS {#sec:sra-background}
 
-<!-- TODO: need to emphasize that although it is an age structured model it does not require age data!! -->
-
 The operating model (OM) defined in Appendix \@ref(app:dlmtool-om) is conditioned  by fitting an age-structured stock-reduction analysis (SRA) [@kimura1982; @walters2006] to historical observed catches and indices of abundance (and to age- and length-composition data if available).
 This step produces estimates of parameters that are conditioned to produce time-series trajectories consistent with historical observations.
 This is especially important in data-limited or data-moderate situations, where the lack of an accepted assessment makes it difficult to parameterize historical depletion and fishing mortality $F$.
@@ -18,6 +16,8 @@ Another advantage of the SRA approach for BC groundfish fisheries is it accommod
 For data-limited species, where it may only be possible to provide ranges of values for key parameters, the SRA approach tries to reduce the range of plausible parameters to be consistent with historical observations.
 In other words, it helps address the broader question:
 What combinations of historical fishing mortality and recruitment could have generated the observed data [@walters2006]?
+
+We make the important note that an SRA does not necessarily require age-composition data, as long as credible estimates of maturity-at-length or age and vulnerability-at-length or age can be provided. However, if age- or length-composition data
 
 ## STOCK REDUCTION ANALYSIS IN THE CONTEXT OF DLMTOOL {#sec:sra-dlmtool}
 
