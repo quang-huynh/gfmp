@@ -1,18 +1,20 @@
+# Plan:
+# - drop 150 ceq scenario
+# - move the 50 ceq noncpue scenario to the robustness set
+# - add a scenario with 250% ceq
+
 library("dplyr")
 library("DLMtool")
 library("MSEtool")
 library("here")
 library("purrr")
 library("ggplot2")
-
 library("future")
 cores <- floor(future::availableCores()/2)
 plan(multisession, workers = cores)
 
-species_name <- "Rex Sole"
-starting_year <- 1996
-ending_year <- 2019
-all_years <- seq(starting_year, ending_year)
+rex_om <- readRDS(here("generated-data", "rex-om.rds"))
+all_years <- seq(1996, 2019)
 nyear <- length(all_years)
 
 fig_dir <- here("report", "figure")
@@ -22,33 +24,17 @@ drex <- readRDS(here("generated-data", "rex-filter-data.rds"))
 d_catch <- readRDS(here::here("generated-data", "rex-catch2.rds"))
 drex$catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
 
-# msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
-# saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
-# msa <- readRDS(here("generated-data", "msa-ages-rex.rds"))
-#
-# msa <- dplyr::filter(msa, !is.na(age))
-# if (!file.exists(here("generated-data", "rex-vb.rds"))) {
-#   set.seed(1)
-#   vb_model <- gfplot::fit_vb(msa, sex = "all", method = "mcmc", iter = 8000)
-#   saveRDS(vb_model, file = here("generated-data", "rex-vb.rds"))
-# } else {
-#   vb_model <- readRDS(here("generated-data", "rex-vb.rds"))
-# }
-# vb_model$model
-# vb_post <- rstan::extract(vb_model$model)
-#
-# plot(vb_model$predictions)
-
-rex_om <- readRDS(here("generated-data", "rex-om.rds"))
 nsim <- rex_om@nsim
 
-rex_om@M
-rex_om@Cobs
+# Just in case:
 rex_om@Msd <- c(0, 0)
 rex_om@Linfsd <- c(0, 0)
 rex_om@Ksd <- c(0, 0)
-rex_om@nyears
-assertthat::assert_that(identical(rex_om@nyears, length(all_years)))
+rex_om@Cobs <- c(0, 0)
+rex_om@Cbiascv <- c(0, 0)
+rex_om@D <- c(0.3, 0.8) # gets replaced
+
+stopifnot(identical(rex_om@nyears, length(all_years)))
 
 make_cal <- function(dat, survey, yrs, length_bin = 2) {
   cal <- dat %>%
@@ -60,6 +46,10 @@ make_cal <- function(dat, survey, yrs, length_bin = 2) {
 }
 
 cal_wcvi <- make_cal(drex$survey_samples, "SYN WCVI", yrs = all_years)
+# MSEtool::plot_composition(all_years,
+#   obs = cal_wcvi$cal,
+#   CAL_bins = cal_wcvi$length_bins
+# )
 
 catch <- drex$catch %>%
   gfplot::tidy_catch() %>%
@@ -67,7 +57,7 @@ catch <- drex$catch %>%
   summarize(value = sum(value)) %>%
   right_join(tibble(year = all_years), by = "year") %>%
   pull(value)
-plot(all_years, catch, type = "o")
+# plot(all_years, catch, type = "o")
 
 # d_cpue <- readRDS("/Volumes/Extreme-SSD/gfs/report/data-cache/cpue-index-dat.rds")
 # d_cpue <- gfdata::get_cpue_index()
@@ -79,8 +69,8 @@ plot(all_years, catch, type = "o")
 #   save_model = TRUE)
 # saveRDS(ind, file =  here::here("generated-data", "rex-cpue-index.rds"))
 cpue <- readRDS(here::here("generated-data", "rex-cpue-index.rds"))
-ggplot(cpue, aes(year, est)) + geom_line() + facet_wrap(~model) +
-  geom_ribbon(aes(ymin = lwr, ymax = upr), alpha = 0.5)
+# ggplot(cpue, aes(year, est)) + geom_line() + facet_wrap(~model) +
+  # geom_ribbon(aes(ymin = lwr, ymax = upr), alpha = 0.5)
 
 indexes <- drex$survey_index %>%
   dplyr::filter(survey_abbrev %in% c("SYN WCVI")) %>%
@@ -89,24 +79,9 @@ indexes <- drex$survey_index %>%
   left_join(rename(select(cpue, year, est, se_link), trawl_cpue = est, trawl_sd = se_link), by = "year") %>%
   rename(syn_wcvi = biomass, syn_wcvi_sd = re)
 
-# MSEtool::plot_composition(all_years,
-#   obs = cal_wcvi$cal,
-#   CAL_bins = cal_wcvi$length_bins
-# )
-
-rex_om@nsim <- nsim # 10 extras in case some don't converge
-cores <- floor(parallel::detectCores() / 2)
-
-rex_om@Cobs <- c(0, 0)
-rex_om@Cbiascv <- c(0, 0)
-rex_om@D <- c(0.3, 0.8) # gets replaced
-
 # Set up alternative OMs for reference set and robustness set -----------------
 
 saveRDS(indexes, file = here("generated-data/rex-indexes.rds"))
-
-# .commercial_vul <- c(30, 18, 1)
-# .surv_vul <- c(28, 12, 1)
 
 # matching maturity, approximately:
 .commercial_vul <- c(32, 20, 1)
@@ -143,26 +118,10 @@ fit_sra_rex_cpue <- function(om,
   )
 }
 
-rex_sra_ceq150 %<-% fit_sra_rex_cpue(rex_om, c_eq = 1.5)
 rex_sra_ceq200 %<-% fit_sra_rex_cpue(rex_om, c_eq = 2)
-
-# rex_sra_ceq125 %<-% fit_sra_rex_cpue(rex_om, c_eq = 1.25)
-# saveRDS(rex_sra_ceq125, file = here("generated-data", "rex-sra-ceq125.rds"))
-#
-# rex_sra_ceq250 %<-% fit_sra_rex_cpue(rex_om, c_eq = 2.5)
-# saveRDS(rex_sra_ceq250, file = here("generated-data", "rex-sra-ceq250.rds"))
-#
-# rex_sra_ceq300 %<-% fit_sra_rex_cpue(rex_om, c_eq = 3)
-# saveRDS(rex_sra_ceq300, file = here("generated-data", "rex-sra-ceq300.rds"))
-
+rex_sra_ceq250 %<-% fit_sra_rex_cpue(rex_om, c_eq = 2.5)
 # plot(rex_sra_ceq200)
-# plot(rex_sra_ceq150)
-
-# age at fifty percent maturity:
-# om@Linf[1] * (1-exp(-om@K[1] * (3 - om@t0[1])))
-# 37.2 * (1-exp(-0.17 * (7 - -0.57)))
-
-# 32.67298 * (1-exp(-0.4258144 * (4 - -0.5972734)))
+# plot(rex_sra_ceq250)
 
 # Alternative Reference Set OMs: M --------------------------------------------
 # Only look at higher M and time-varying M. M in BC unlikely to be lower than GOA.
@@ -209,33 +168,17 @@ fit_sra_rex_no_cpue <- function(om,
 }
 
 rex_sra_no_cpue %<-% fit_sra_rex_no_cpue(rex_om, c_eq = 3)
-
 # plot(rex_sra_no_cpue)
 
 # No CPUE and lightly fished before 1996 --------------------------------------
 
 rex_sra_light %<-% fit_sra_rex_no_cpue(rex_om, c_eq = .5)
-
 # plot(rex_sra_light)
-
-# Growth parameters from Oregon @hosie1976 ------------------------------------
-
-# om <- rex_om
-# om@K <- c(0.17, 0.17)
-# om@Linf <- c(37.2, 37.2)
-# om@t0 <- c(-0.57, -0.57)
-# rex_sra_oregon <- fit_sra_rex_cpue(
-#   om,
-#   c_eq = 2,
-#   commercial_vul = c(25, 15, 1),
-#   surv_vul = c(24, 12, 1)
-# )
-# # plot(rex_sra_oregon)
-# saveRDS(rex_sra_oregon, file = here("generated-data", "rex-sra-oregon.rds"))
 
 # Shift commercial selectivity curve left -------------------------------------
 
-rex_sra_sel1 %<-% fit_sra_rex_cpue(rex_om, commercial_vul = c(28, 12, 1), surv_vul = c(28, 12, 1))
+rex_sra_sel1 %<-%
+  fit_sra_rex_cpue(rex_om, commercial_vul = c(28, 12, 1), surv_vul = c(28, 12, 1))
 # plot(rex_sra_sel1)
 
 # Robustness Set OMs: M increasing over time ----------------------------------
@@ -247,7 +190,7 @@ M_age <- array(0.2,
   c(rex_om_inc_m@nsim, rex_om_inc_m@maxage, rex_om_inc_m@nyears + rex_om_inc_m@proyears))
 m <- seq(0.2, 0.4, length.out = rex_om_inc_m@proyears)
 for (i in seq_along(m)) M_age[, , rex_om_inc_m@nyears + i] <- m[i]
-plot(M_age[1,1,]) # one sim; one age
+# plot(M_age[1,1,]) # one sim; one age
 rex_om_inc_m@cpars$M_ageArray <- M_age
 rex_sra_inc_m %<-% fit_sra_rex_cpue(rex_om_inc_m)
 
@@ -255,8 +198,8 @@ rex_sra_inc_m %<-% fit_sra_rex_cpue(rex_om_inc_m)
 
 saveRDS(rex_sra_inc_m, file = here("generated-data", "rex-sra-inc-m.rds"))
 saveRDS(rex_sra_sel1, file = here("generated-data", "rex-sra-sel1.rds"))
-saveRDS(rex_sra_ceq150, file = here("generated-data", "rex-sra-ceq150.rds"))
 saveRDS(rex_sra_ceq200, file = here("generated-data", "rex-sra-ceq200.rds"))
+saveRDS(rex_sra_ceq250, file = here("generated-data", "rex-sra-ceq250.rds"))
 saveRDS(rex_sra_high_m, file = here("generated-data", "rex-sra-high-m.rds"))
 saveRDS(rex_sra_high_h, file = here("generated-data", "rex-sra-high-h.rds"))
 saveRDS(rex_sra_no_cpue, file = here("generated-data", "rex-sra-no-cpue.rds"))
@@ -266,14 +209,13 @@ saveRDS(rex_sra_light, file = here("generated-data", "rex-sra-no-cpue-light.rds"
 
 sc <- tibble::tribble(
   ~scenario, ~scenario_human, ~scenario_type,
-  "ceq150", "Ceq. 150%", "Reference",
   "ceq200", "Ceq. 200%", "Reference",
+  "ceq250", "Ceq. 250%", "Reference",
   "high-m", "Higher M", "Reference",
   "high-h", "Higher steepness", "Reference",
   "sel1", "Lower selectivity", "Reference",
-  # "oregon", "Oregon growth", "Reference",
   "no-cpue", "No CPUE Ceq. 250%", "Reference",
-  "no-cpue-light", "No CPUE Ceq. 50%", "Reference",
+  "no-cpue-light", "No CPUE Ceq. 50%", "Robustness",
   "inc-m", "M inc.", "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
