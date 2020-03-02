@@ -7,9 +7,13 @@ The OM is flexible, with options to allow a number of parameters (e.g., natural 
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
 Full documentation of the DLMtool OM, including the range of possible parameterizations, is described in the appendices of @carruthers2018. adapted here for the MP Framework.
 Here, we adapt the documentation in @carruthers2018, following their notation conventions where possible for consistency.
-We present the simplest version of the OM, without time-varying parameters, multiple sub-areas, or implementation bias.
+We present the simplest version of the OM, without time-varying parameters or multiple sub-areas.
 This simple OM structure should be suitable as a base OM for most species intended to be assessed within the framework.
 More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
+
+Following the lead of @carruthers2018, we denote parameters that are user-defined and sampled stochastically across simulations with a tilde (e.g. $\widetilde{M}$).
+For example, $\widetilde{M_i} \sim f \left( \theta \right)$ represents the $i^\textrm{th}$ simulation draw of parameter $M$ being sampled from the distribution function $f$ and parameters $\theta$.
+In most cases, the stochastic parameters could be sampled from a uniform distribution or specified directly after sampling from any distribution or model.
 
 There are two distinct time-periods in the simulation framework:
 (1) The historical period, which includes the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$ (where "c" represents the "current" year); and
@@ -36,23 +40,23 @@ Equations for the SRA model are provided in Appendix \@ref(app:sra).
 The operating model assumes that growth follows a von Bertalanffy model:
 
 $$
-L_{a} = L_{\infty}\left( 1 - \exp( - \kappa(a - a_{0} \right)),
+L_{a} = \widetilde{L}_{\infty}\left( 1 - \exp( - \widetilde{\kappa}(a - \widetilde{t}_{0} \right)),
 (\#eq:dlm-om-vonb)
 $$
 
-where $\kappa$ represents the growth rate, $L_{\infty}$ represents the maximum length and $a_0$ represents the theoretical age where length is zero.
+where $\widetilde{\kappa}$ represents the growth rate, $\widetilde{L}_{\infty}$ represents the maximum length and $\widetilde{t}_0$ represents the theoretical age where length is zero.
 
 Weight-at-age ($w_a$) is assumed to be related to length-at-age ($L_a$) by:
 
 $$
-w_{a} = \alpha_{W}\ {L_{a}}^{\beta_{W}}.
+w_{a} = \widetilde{\alpha}_{W}\ {L_{a}}^{\widetilde{\beta}_{W}}.
 (\#eq:dlm-om-wta)
 $$
 
-Maturity is specified according to length, using a logistic model with parameters describing length-at-50% maturity ($\theta_{l50}$) and the length increment from 50% to 95% maturity ($\theta_{l50-95}$). Maturity ($m$) at length ($l$) is then calculated as:
+Maturity is specified according to length, using a logistic model with parameters describing length-at-50% maturity ($\widetilde{\theta}_{l50}$) and the length increment from 50% to 95% maturity ($\widetilde{\theta}_{l50-95}$). Maturity ($m$) at length ($l$) is then calculated as:
 
 $$
-m_{l} = \frac{1}{1 + e^{{- \ln}19\left( \frac{l - \theta_{l50}}{{{\theta}}_{l50-95}} \right)}},
+m_{l} = \frac{1}{1 + e^{{- \ln}19\left( \frac{l - \widetilde{\theta}_{l50}}{{\widetilde{\theta}}_{l50-95}} \right)}},
 (\#eq:dlm-om-matl)
 $$
 
@@ -76,12 +80,12 @@ where \(\theta_{a50}\) and \(\theta_{a95}\) represent the age at 50% and 95% mat
 
 <!-- TODO: check these! -->
 $$
-\theta_{a50} = \frac{- \ln\left( 1 - \theta_{l50} / L_{\infty} \right)}{\kappa} + t_{0},
+\theta_{a50} = \frac{- \ln\left( 1 - \widetilde{\theta}_{l50} / \widetilde{L}_{\infty} \right)}{\widetilde{\kappa}} + t_{0},
 (\#eq:dlm-om-invonb)
 $$
 
 $$
-\theta_{a95} = \frac{- \ln\left( 1 - \left( \theta_{l50} / L_{\infty} + {{\theta}}_{l50\_ 95} / L_{\infty} \right) \right)}{\kappa} + t_{0}.
+\theta_{a95} = \frac{- \ln\left( 1 - \left( \widetilde{\theta}_{l50} / \widetilde{L}_{\infty} + {\widetilde{\theta}}_{l50\_ 95} / \widetilde{L}_{\infty} \right) \right)}{\widetilde{\kappa}} + \widetilde{t}_{0}.
 (\#eq:dlm-om-theta95)
 $$
 
@@ -102,20 +106,20 @@ N_{y, a = 1} = R_y =
 (\#eq:sra-om-rya)
 $$
 
-where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock-recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock-recruit relationship, derived from user-defined parameters steepness ($h$) and $R_0$, where
-$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
-$\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
+where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock-recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock-recruit relationship, derived from user-defined parameters steepness ($\widetilde{h}$) and $\widetilde{R}_0$, where
+$\alpha^{\textrm{B}} = \frac{4\tilde{h}}{(1-\tilde{h})\phi_f^0}$,
+$\beta^{\textrm{B}} = \frac{5\tilde{h}-1}{(1-\tilde{h})B_0}$
 and
-$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$.
+$\alpha^{\textrm{R}} = \frac{(5\tilde{h})^{1.25}}{\phi_f^0}$,
+$\beta^{\textrm{R}} = \frac{\log(5\tilde{h})}{B_0}$.
 The parameter $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
 
 $$
-B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ {R}_{0}e^{-M{(a-1)}}},
+B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ \widetilde{R}_{0}e^{-\widetilde{M}{(a-1)}}},
 (\#eq:dlm-om-bo)
 $$
 
-where $A$ is the user-defined maximum age and ${R}_{0}e^{M{(a-1)}}$ gives unfished numbers-at-age.
+where $A$ is the user-defined maximum age and $\widetilde{R}_{0}e^{\widetilde{M}{(a-1)}}$ gives unfished numbers-at-age.
 Spawning biomass $B_y$ in a given year is calculated as
 
 $$
@@ -125,12 +129,12 @@ $$
 
 where $N_{y,a}$ is annual numbers-at-age, given in Equation \@ref(eq:dlm-om-nya)
 
-Annual log recruitment deviations ($\log \varepsilon_{R,y}$) are generated by first sampling from a normal distribution with standard deviation $\sigma_R$:
+Annual log recruitment deviations ($\log \varepsilon_{R,y}$) are generated by first sampling from a normal distribution with standard deviation $\widetilde{\sigma}_R$:
 
 $$
 \log \varepsilon_{R,y}\sim \mathrm{Normal}\left(
-\frac{-0.5 \sigma_R^2 (1 - \theta_\textrm{AC})}{\sqrt{1 - \theta_\textrm{AC}^2}},
-\sigma_R^2 \right),
+\frac{-0.5 \widetilde{\sigma}_R^2 (1 - \widetilde{\theta}_\textrm{AC})}{\sqrt{1 - \widetilde{\theta}_\textrm{AC}^2}},
+\widetilde{\sigma}_R^2 \right),
 (\#eq:dlm-om-recdev)
 $$
 
@@ -138,12 +142,12 @@ where the mean term includes a mean-bias correction for autocorrelated lognormal
 Temporal autocorrelation $\theta_\textrm{AC}$ is added to these initial draws as:
 
 $$
-\log \varepsilon_{R,y} = {{\theta}}_{\textrm{AC}}\log \varepsilon_{R,y - 1} + \varepsilon_{R,y}\sqrt{\left( 1 - {{{\theta}}_{\textrm{AC}}}^{2} \right)},
+\log \varepsilon_{R,y} = {\widetilde{\theta}}_{\textrm{AC}}\log \varepsilon_{R,y - 1} + \varepsilon_{R,y}\sqrt{\left( 1 - {{\widetilde{\theta}}_{\textrm{AC}}}^{2} \right)},
 (\#eq:dlm-om-auto)
 $$
 
 $$
-\varepsilon_{R,y} = e^{\log \varepsilon_{R,y}}.
+\varepsilon_{R,y} = \exp \left( \log \varepsilon_{R,y} \right).
 (\#eq:dlm-om-recdev-exp)
 $$
 
@@ -162,7 +166,7 @@ $$
 where $A$ is the maximum age class and the annual total mortality rate $Z_{y,a}$ is given by
 
 $$
-Z_{y,a} = M + v_{a}F_{y,a},
+Z_{y,a} = \widetilde{M} + v_{a}F_{y,a},
 (\#eq:dlm-om-zya)
 $$
 
@@ -190,37 +194,35 @@ where $\dot{R_a}$ represents retention rate at age and the selectivity-at-age $v
 $$
 v_{a} =
 \begin{cases}
-2^{-\frac{(L_{a} - L^{\textrm{FS}})^2}{\sigma^2_{\textrm{asc}}}} & \textrm{if } L_{a} < L^{\textrm{FS}},\\
+2^{-\frac{(\widetilde{L}_{a} - \widetilde{L}^{\textrm{FS}})^2}{\widetilde{\sigma}^2_{\textrm{asc}}}} & \textrm{if } L_{a} < L^{\textrm{FS}},\\
 1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}},\\
-2^{-\frac{(L_{a} - L^{\textrm{FS}})^2}{\sigma^2_{\textrm{des}}}} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}
+2^{-\frac{(\widetilde{L}_{a} - \widetilde{L}^{\textrm{FS}})^2}{\widetilde{\sigma}^2_{\textrm{des}}}} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}
 \end{cases}
 (\#eq:dlm-om-va)
 $$
 
-where $L^\textrm{FS}$ represents the user-defined length-at-full-selectivity.
-The standard deviation of the ascending limb ($\sigma_{\textrm{sasc}}^{2}$) is given by
+where $\widetilde{L}^\textrm{FS}$ represents the user-defined length-at-full-selectivity.
+The standard deviation of the ascending limb ($\widetilde{\sigma}_{\textrm{sasc}}^{2}$) is given by
 
 $$
-\sigma_{\textrm{sasc}} = \frac{{{L}}_{5} - L^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
+\sigma_{\textrm{sasc}} = \frac{{\widetilde{L}}_{5} - \widetilde{L}^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 $$
 
-where $L_5$ is the user-defined length-at-5%-selectivity
+where $\widetilde{L}_5$ is the user-defined length-at-5%-selectivity
 
 The standard deviation of the descending limb is given by
 
 $$
-\sigma_{\textrm{sdesc}} = \frac{V_{L_\infty} - L^\textrm{FS}}{{\sqrt{- \log_{2^{V_{L_\infty}}}}}},
+\sigma_{\textrm{sdesc}} = \frac{\widetilde{L}_\infty - \widetilde{L}^\textrm{FS}}{{\sqrt{- \log_{2^{\widetilde{V}_{L_\infty}}}}}},
 (\#eq:dlm-om-sigldes)
 $$
 
-where $V_{L_\infty}$ is the user-defined selectivity-at-maximum-length. Setting this parameter to 1 necessarily fixes selectivity to be logistic (Equation \@ref(eq:dlm-om-sigldes) is undefined when $V_{L_\infty} = 1$).
-Note that, like many DLMtool parameters, $L_5$, $L_{FS}$ and $V_{L_\infty}$ can be defined as ranges if desired.
-In this case, each replicate simulation will draw from the distribution of these ranges, resulting in a range of selectivity curves across functions.
+where $\widetilde{V}_{L_\infty}$ is the user-defined selectivity-at-maximum-length. Setting this parameter to 1 necessarily fixes selectivity to be logistic (Equation \@ref(eq:dlm-om-sigldes) is undefined when $\widetilde{V}_{L_\infty} = 1$).
 
 DLMtool currently models all catch as coming from a single fleet.
 However, if the OM is calibrated using the SRA model (Appendix \@ref(app:sra)), the SRA can accommodate multiple fleets, and selectivity is fleet-specific.
-Fleet-specific selectivity in the SRA is calculated using Equation \@ref(eq:sra-om-vaf) with fleet-specific user-defined settings for $L_5$, $L_{FS}$ and $V_{L_\infty}$, or is estimated if age- or length-composition data are provided.
+Fleet-specific selectivity in the SRA is calculated using Equation \@ref(eq:sra-om-vaf) with fleet-specific user-defined settings for $\widetilde{L}_5$, $\widetilde{L}_{FS}$ and $\widetilde{V}_{L_\infty}$, or is estimated if age- or length-composition data are provided.
 In this case, selectivity in the DLMtool OM in the projection period is replaced in Equation \@ref(eq:dlm-om-zya) with the SRA-calibrated estimate of fishing mortality-at-age in the final year ($t_c$) of the historical period ($\Sigma_f v_{a,f} F_{t_c,f}$), normalized by dividing by apical $F$ in that year.
 This provides fractions of $F$-at-age derived from the relative selectivity-at-age across fleets (i.e., catch-weighted selectivity-at-age).
 The closed-loop simulation projections therefore assume that the relative selectivities across fleets remains constant in the projection period.
@@ -230,21 +232,21 @@ In this case, the SRA passes all of the indices back to DLMtool, preserving the 
 It is the coding of specific MPs that determines which index is used in the MPs during the projection period.
 
 The realized projected catches $C_{y,a}$ are the TAC recommendations across ages (with possible implementation error).
-Projected catches may account for retention rate ($\dot{R}_{y,a}$) and post-release discard mortality rate $\theta_{M{\textrm{disc}}}$ in the presence of discarding.
+Projected catches may account for retention rate ($\dot{R}_{y,a}$) and post-release discard mortality rate $\widetilde{\theta}_{M{\textrm{disc}}}$ in the presence of discarding.
 Implementation uncertainty ($I_\textrm{TAC}$, Equation \@ref(eq:dlm-om-itac)) may also be accounted for, e.g., in the presence of consistent under-utilization of TACs.
 
 $$
 C_{y,a} = \frac{B^V_{y,a}} {\sum_{a}^{A}B^V_{y,a}}
 \textrm{TAC}_{\mathrm{MP},y}\ I_{\mathrm{TAC},y}\
 \frac{\dot{R}_{y,a} + \left( 1 - \dot{R}_{y,a} \right)
-{{\theta}}_{\textrm{Mdisc}}}{\dot{R}_{y,a}}
+{\widetilde{\theta}}_{\textrm{Mdisc}}}{\dot{R}_{y,a}}
 (\#eq:dlm-om-cata)
 $$
 
-where ($I_\textrm{TAC}$) is user-defined, and the overall retention rate-at-age $\dot{R}_{y,a}$, is a combination of an age-specific retention $r_{y,a}$ with a maximum value of $1$ (Equation \@ref(eq:dlm-om-ray)), and a constant rate of discarding \(\gamma\):
+where ($I_\textrm{TAC}$) is user-defined (according to other parameters; Equation \@ref(eq:dlm-om-itac)), and the overall retention rate-at-age $\dot{R}_{y,a}$, is a combination of an age-specific retention $r_{y,a}$ with a maximum value of $1$ (Equation \@ref(eq:dlm-om-ray)), and a constant rate of discarding $\widetilde{\gamma}$:
 
 $$
-\dot{R}_{y,a} = r_{y,a}\ (1 - \gamma).
+\dot{R}_{y,a} = r_{y,a}\ (1 - \widetilde{\gamma}).
 (\#eq:dlm-om-retention)
 $$
 
@@ -258,27 +260,27 @@ r_{y,a} = \begin{cases}
 (\#eq:dlm-om-ray)
 $$
 
-where $L_\textrm{rmax}$ is the length at maximum retention.
-The standard deviation parameters of the ascending limb is given by the length at 5% retention $r_5$:
+where $\widetilde{L}_\textrm{rmax}$ is the length at maximum retention.
+The standard deviation parameters of the ascending limb is given by the length at 5% retention $\widetilde{L}_{r5}$:
 
 $$
-\sigma_{\textrm{rasc}} = \frac{{{L}}_{r5} - {L}_{\textrm{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
+\sigma_{\textrm{rasc}} = \frac{{\widetilde{L}}_{r5} - \widetilde{L}_{\textrm{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-sigrasc)
 $$
 
-While the standard deviation of the descending limb is given by retention $r_{L_\infty}$ of fish of length $L_\infty$:
+While the standard deviation of the descending limb is given by retention $\widetilde{r}_{L_\infty}$ of fish of length $\widetilde{L}_\infty$:
 
 $$
-\sigma_{\textrm{rdesc}} = \frac{L_\infty - {{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{{{r}}_{L_\infty}}}}}.
+\sigma_{\textrm{rdesc}} = \frac{\widetilde{L}_\infty - \widetilde{{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{\widetilde{{r}}_{L_\infty}}}}}.
 (\#eq:dlm-om-sigrdec)
 $$
 
-The retention curve approaches an asymptotic curve as $r_{L_\infty} \to 1$.
+The retention curve approaches an asymptotic curve as $\widetilde{r}_{L_\infty} \to 1$.
 
 Fishing mortality rates are then calculated from the realized catches $C_{y,a}$ subject to the constraint that they do not exceed ${F_\textrm{max}}$:
 
 $$
-F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{w}_{a}} \right),F_{\max} \right).
+F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{w}_{a}} \right),\widetilde{F}_{\max} \right).
 (\#eq:dlm-om-Fay)
 $$
 
@@ -297,7 +299,7 @@ Time series data are simulated with various types of error that would be expecte
 The standard index of abundance in DLMtool is calculated by adding observation error and bias to annual total biomass ($B^T_{y}$) through a term $\omega_{I,y}$ that includes bias and imprecision in the index observations:
 
 $$
-I_{y}^{\textrm{obs}} = \omega_{I,y}\frac{{B^T_{y}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{B^T_{i}}^{\beta}}
+I_{y}^{\textrm{obs}} = \omega_{I,y}\frac{{B^T_{y}}^{\widetilde{\beta}}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{B^T_{i}}^{\widetilde{\beta}}}
 (\#eq:dlm-om-iy)
 $$
 
@@ -308,16 +310,16 @@ B^T_{y} = \sum_{a = 1}^{A}{w_{a}N_{y,a}}
 (\#eq:dlm-om-by)
 $$
 
-and where $\beta$ is the hyperstability/hyperdepletion parameter.
-When $\beta$ is 1 the index is linearly related to spawning biomass $B_y$.
-When $\beta$ is greater than 1 the index is hyperdeplete and moves faster than true spawning biomass changes.
-When $\beta$ is lower than 1 the index is hyperstable and moves slower than true spawning biomass changes.
+and where $\widetilde{\beta}$ is the hyperstability/hyperdepletion parameter.
+When $\widetilde{\beta}$ is 1 the index is linearly related to spawning biomass $B_y$.
+When $\widetilde{\beta}$ is greater than 1 the index is hyperdeplete and moves faster than true spawning biomass changes.
+When $\widetilde{\beta}$ is lower than 1 the index is hyperstable and moves slower than true spawning biomass changes.
 When the observed index is calculated, it is normalized to have a mean value of 1 over all years.
 
 The term $\omega_{I,y}$ represents imprecision in observations via $\sigma_I$:
 
 $$
-\omega_{I,y} = \exp \left( \varepsilon_{I,y} - \frac{{{\sigma}}_{I}^2}{2} \right),
+\omega_{I,y} = \exp \left( \varepsilon_{I,y} - \frac{{\widetilde{\sigma}}_{I}^2}{2} \right),
 (\#eq:dlm-om-omegai)
 $$
 
@@ -326,7 +328,7 @@ where the lognormal error term, $\varepsilon$, is drawn from a normal distributi
 <!-- TODO: Shouldn't the epsiloni equation use SD instead of variance?? RF changed to sd-->
 
 $$
-\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right).
+\varepsilon_{I,y}\sim \textrm{Normal}\left( 0,\widetilde{{\sigma}}_{I} \right).
 (\#eq:dlm-om-epsiloni)
 $$
 
@@ -353,7 +355,7 @@ The selectivity-at-age ($v_{a,s}$) is modelled using the same logistic form as f
 The OM then scales and adds observation error to each index as:
 
 $$
-I_{y,s}^{\textrm{obs}} = \omega_{I,y,s}\frac{{I_{y,s}}^{\beta}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{I_{i,s}}},
+I_{y,s}^{\textrm{obs}} = \omega_{I,y,s}\frac{{I_{y,s}}^{\widetilde{\beta}}}{\frac{1}{t_c}\sum_{i = 1}^{t_c}{I_{i,s}}},
 (\#eq:dlm-om-iy-addind)
 $$
 
@@ -361,16 +363,16 @@ with $\omega_{I,y,s}$ calculated as:
 
 
 $$
-\omega_{I,y,s} = \exp \left( \varepsilon_{I,y,s} - \frac{{{\sigma}}_{I}^2}{2} \right),
+\omega_{I,y,s} = \exp \left( \varepsilon_{I,y,s} - \frac{{{\widetilde{\sigma}}_{I}}^2}{2} \right),
 (\#eq:dlm-om-omegai-addind)
 $$
 
-where the lognormal error term $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
+where the lognormal error term $\varepsilon$, is drawn from a normal distribution whose standard deviation $\widetilde{\sigma_I}$ is sampled at random in each simulation:
 
 <!-- TODO: Shouldn't the epsiloni equation use SD instead of variance?? RF changed to sd-->
 
 $$
-\varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\sigma}}_{I} \right).
+\varepsilon_{I,y,s}\sim \textrm{Normal}\left( 0,{{\widetilde{\sigma}}}_{I} \right).
 (\#eq:dlm-om-epsiloni-addind)
 $$
 
@@ -403,8 +405,8 @@ We do not describe the observation model of CAL at this time.
 
 <!--TODO: Check this. RF cleaned it up, it was very hard to follow and I think some terms were mixed up in the text. Removed summation over r ... assume this was areas -->
 
-The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\textrm{ESS}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_{CAA}$, number of individuals aged). 
-For example, $\textrm{ESS}_\textrm{CAA}$ independent catch
+The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\widetilde{\textrm{ESS}}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_{CAA}$, number of individuals aged). 
+For example, $\widetilde{\textrm{ESS}}_\textrm{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p_a$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
 
@@ -416,24 +418,24 @@ $$
 -->
 
 $$
-C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right)
+C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \widetilde{\textrm{ESS}}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right)
 (\#eq:dlm-om-cataobs)
 $$
 
 For each year, the proportion of samples at age is then inflated to match the
-total sample size $n_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
+total sample size $\widetilde{n}_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
 
 <!-- is this equation correct?-->
 
 $$
-C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ n_{\textrm{CAA}}}{\textrm{ESS}_{\textrm{CAA}}} \right).
+C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ \widetilde{n}_{\textrm{CAA}}}{\widetilde{\textrm{ESS}}_{\textrm{CAA}}} \right).
 (\#eq:dlm-om-cataobs-freq)
 $$
 
 Due to rounding, this model generates frequency-at-age data that are approximately equal to the average annual sample size:
 
 $$
-\sum_{a}^{A}{C_{y,a}^{\textrm{obs}}\ } \approx n_{\textrm{CAA}}.
+\sum_{a}^{A}{C_{y,a}^{\textrm{obs}}\ } \approx \widetilde{n}_{\textrm{CAA}}.
 (\#eq:dlm-om-cataobs-equality)
 $$
 
@@ -447,48 +449,19 @@ Given that BC groundfish fisheries are subject to 100% at-sea and dockside obser
 However, for non-target species, there is a possibility that TACs will not be fully used.
 The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-cata).
 
-The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined constant fraction of the TAC taken ${{b}}_{\textrm{TAC}}$ and a degree of inter-annual
-variability controlled by ${{\sigma}}_{\textrm{TAC}}$.
+The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined fraction of the TAC taken $\widetilde{b}_\textrm{TAC}$ and a degree of inter-annual variability controlled by $\widetilde{\sigma}_\textrm{TAC}$.
 
 $$
-I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right),
+I_{\textrm{TAC},y} = \widetilde{b}_\textrm{TAC} \cdot \exp \left( \varepsilon_{\textrm{TAC},y} - \frac{{{\widetilde{\sigma}}}_{\textrm{TAC}}^2}{2} \right),
 (\#eq:dlm-om-itac)
 $$
 
-where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
+For example, $b_\textrm{TAC} = 0.7$ is equivalent to 30% catch underages.
+The error term $\varepsilon_{\textrm{TAC},y}$ is drawn from a normal distribution whose standard deviation $\widetilde{\sigma}_\textrm{TAC}$ is user-defined and can be sampled at random in each simulation:
 
 $$
-\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}} \right).
+\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,\widetilde{\sigma}_{\textrm{TAC}} \right).
 (\#eq:dlm-om-epsilontac)
-$$
-
-By default the OM samples simulation-specific variability
-${{\sigma}}_{\textrm{TAC}}$ from a uniform distribution.
-
-$$
-\sigma_{\textrm{TAC}}\sim \textrm{Uniform}\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right),
-(\#eq:dlm-om-sigmatac)
-$$
-
-and where $b_{\textrm{TAC}}$ is drawn from
-a lognormal distribution:
-
-$$
-b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}^2}{2} \right)
-(\#eq:dlm-om-btac)
-$$
-<!-- This might be wrong
-$$
-\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
-(\#eq:dlm-om-epsilonbtac).
-$$
--->
-
-<!-- TODO: Check this is correct, see RF's correspondence with QH-->
-
-$$
-\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
-(\#eq:dlm-om-epsilonbtac).
 $$
 
 ## CALCULATION OF MSY-BASED REFERENCE POINTS {#sec:dlmtool-msy-refpts}
@@ -518,12 +491,12 @@ R^e =
 $$
 
 where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
-$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
-$\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
+$\alpha^{\textrm{B}} = \frac{4\widetilde{h}}{(1-\widetilde{h})\phi_f^0}$,
+$\beta^{\textrm{B}} = \frac{5\widetilde{h}-1}{(1-\widetilde{h})B_0}$
 and
-$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$,
-where $B_0$ is unfished spawning biomass, derived from $R_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_f^0$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
+$\alpha^{\textrm{R}} = \frac{(5\widetilde{h})^{1.25}}{\phi_f^0}$,
+$\beta^{\textrm{R}} = \frac{\log(5\widetilde{h})}{B_0}$,
+where $B_0$ is unfished spawning biomass, derived from $\widetilde{R}_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_f^0$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
 
 Following the approach of @botsford1981, equilibrium spawning biomass-per-recruit is calculated
 
@@ -547,7 +520,7 @@ $$
 and $Z^e_{a}$ is equilibrium total mortality-at-age:
 
 $$
-Z^e_{a} = M +  F^e_{a}v_{a}.
+Z^e_{a} = \widetilde{M} +  F^e_{a}v_{a}.
 (\#eq:dlm-om-zeq)
 $$
 
@@ -591,7 +564,7 @@ which is the average unfished spawning biomass over the first $\theta_{a50}$ yea
 
 Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
 
-How to treat reference points when parameters, particularly productivity parameters such as $M$ or $\kappa$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the Framework.
+How to treat reference points when parameters, particularly productivity parameters such as $\widetilde{M}$ or $\widetilde{\kappa}$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the Framework.
 
 ## DLMTOOL SLOTS
 
@@ -667,7 +640,7 @@ How to treat reference points when parameters, particularly productivity paramet
 "Stock",    "AC",         "$\\theta_{\\textrm{AC}}$",      "Autocorrelation in recruitment deviations.",
 "Stock",    "Linf",       "$L_{\\infty}$",                 "von Bertalanffy maximum expected length.",
 "Stock",    "K",          "$\\kappa$",                     "von Bertalanffy growth parameter.",
-"Stock",    "t0",         "$a_0$",                         "von Bertalanffy theoretical age at length zero.",
+"Stock",    "t0",         "$t_0$",                         "von Bertalanffy theoretical age at length zero.",
 "Stock",    "L50",        "$\\theta_{l50}$",               "Length at 50\\% maturity.",
 "Stock",    "L50\\_95",    "$\\theta_{l50-95}$",           "Length increment from 50\\% to 95\\% maturity.",
 "Stock",    "a",          "$\\alpha_W$",                   "Length-weight parameter.",
@@ -678,12 +651,12 @@ How to treat reference points when parameters, particularly productivity paramet
 "Fleet",    "LR5",        "${L}_{r5}$",                         "Shortest length fish corresponding to 5\\% retention.",
 "Fleet",    "LFR",        "$L_\\textrm{rmax}$",            "Shortest length fish that are fully retained.",
  "Fleet",  "Rmaxlen",    "$r_{L_\\infty}$",             "The retention of fish at ${L}_\\infty$.",
-"Obs",     "Iobs",       "$\\sigma_I$",                   "Observation error SD of the relative abundance index in log space.",
-"Obs",     "Cobs",       "$\\sigma_{C}$",                 "Observation error SD of the catch in log space.",
-"Obs",      "Cbiascv",    "$b_C$",                         "CV controlling the sampling of bias in catch observations.",
-"Obs",     "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
-"Obs",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{LB}{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
-"Obs",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
+"Obs.",     "Iobs",       "$\\sigma_I$",                   "Observation error SD of the relative abundance index in log space.",
+"Obs.",     "Cobs",       "$\\sigma_{C}$",                 "Observation error SD of the catch in log space.",
+"Obs.",      "Cbiascv",    "$b_C$",                         "CV controlling the sampling of bias in catch observations.",
+"Obs.",     "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
+"Obs.",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{LB}{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
+"Obs.",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
 "Imp.",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
 "Imp.",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken."
 )
