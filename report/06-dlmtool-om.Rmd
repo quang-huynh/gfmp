@@ -250,9 +250,6 @@ $$
 
 where age-specific retention $r_{y,a}$, is modelled using the same form of double-normal curve as selectivity:
 
-<!-- TODO: Does this have a logistic form as well (like selectivity?)
-Do we need a case for logistic where L > rmax -->
-
 $$
 r_{y,a} = \begin{cases}
 2^{- \ \frac{{(L_{y,a} - {{L}}_{\textrm{rmax}})}^{2}}{\sigma_{\textrm{rasc}}^{2}}} & L_{y,a} \leq {{L}}_{\textrm{rmax}}, \\
@@ -269,12 +266,14 @@ $$
 (\#eq:dlm-om-sigrasc)
 $$
 
-While the standard deviation of the descending limb is given by retention \({{r}}_{{L_\infty}} \) of fish of length $L_\infty$:
+While the standard deviation of the descending limb is given by retention $r_{L_\infty} $ of fish of length $L_\infty$:
 
 $$
-\sigma_{\textrm{rdesc}} = \frac{L_\infty - {{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{{{r}}_{L_\infty}}}}}
+\sigma_{\textrm{rdesc}} = \frac{L_\infty - {{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{{{r}}_{L_\infty}}}}}.
 (\#eq:dlm-om-sigrdec)
 $$
+
+The retention curve approaches an asymptotic curve as $r_{L_\infty} \to1$.
 
 Fishing mortality rates are then calculated from the realized catches $C_{y,a}$ subject to the constraint that they do not exceed ${F_\textrm{max}}$:
 
@@ -693,7 +692,7 @@ How to treat reference points when parameters, particularly productivity paramet
 
 p %>%
   mutate(slot = paste0("\\texttt{", slot, "}")) %>%
-  csasdown::csas_table(format = "latex", col_names = c("OM element", "Slot", "Parameter", "Description")) %>%
+  csasdown::csas_table(format = "latex", col_names = c("OM element", "Slot", "Parameter", "Description"), caption = "DLMtool operating model (OM) `slots', parameter symbols, and brief descriptions. In the `OM elements' column, `Obs.' and `Imp.' refer to the observation and implementation components, respectively. `Slots' is the technical name for the parameter elements within the DLMtool R package. All parameters in this table can be defined as stochastic with different draws from a distribution for each simulation iteration.") %>%
   kableExtra::column_spec(1, width = "1.75cm") %>%
   kableExtra::column_spec(2, width = "1.75cm") %>%
   kableExtra::column_spec(3, width = "1.75cm") %>%
