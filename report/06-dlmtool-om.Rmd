@@ -448,18 +448,18 @@ Given that BC groundfish fisheries are subject to 100% at-sea and dockside obser
 However, for non-target species, there is a possibility that TACs will not be fully used.
 The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-cata).
 
-The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a constant fraction of the TAC taken ${{b}}_{\textrm{TAC}}$ and a degree of inter-annual
+The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined constant fraction of the TAC taken ${{b}}_{\textrm{TAC}}$ and a degree of inter-annual
 variability controlled by ${{\sigma}}_{\textrm{TAC}}$.
 
 $$
-I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{\ exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right),
+I_{\textrm{TAC},y} = {{b}}_{\textrm{TAC}}\textrm{exp}\left( \varepsilon_{\textrm{TAC},y} - \frac{{{\sigma}}_{\textrm{TAC}}^2}{2} \right),
 (\#eq:dlm-om-itac)
 $$
 
 where ${{b}}_{\textrm{TAC}}$ is an improper fraction (e.g. ${{b}}_{\textrm{TAC}}$ = 0.7 is equivalent to 30% catch underages) and the lognormal error term $\varepsilon_{\textrm{TAC},y}$, is drawn from a standard normal distribution whose standard deviation ${\sigma}_{\textrm{TAC}}$ is sampled at random in each simulation:
 
 $$
-\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}}^2 \right).
+\varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,{{\sigma}}_{\textrm{TAC}} \right).
 (\#eq:dlm-om-epsilontac)
 $$
 
@@ -471,8 +471,8 @@ $$
 (\#eq:dlm-om-sigmatac)
 $$
 
-and mean fraction of recommendation $b_{\textrm{TAC}}$ from
-a lognormal distribution:
+and where $b_{\textrm{TAC}}$ is drawn from
+a lognormal distribution with user-specified standard deviation $\sigma_{\textrm{bTAC}}$:
 
 $$
 b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}^2}{2} \right)
@@ -480,7 +480,7 @@ b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textr
 $$
 
 $$
-\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}}^2 \right)
+\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
 (\#eq:dlm-om-epsilonbtac).
 $$
 
@@ -588,7 +588,7 @@ How to treat reference points when parameters, particularly productivity paramet
 
 ## DLMTOOL SLOTS
 
-*TODO Finish this*
+<!--TODO RF is checking the slot names for LBTAC and UBTAC-->
 
 ```{r, echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
 # slot_include <- c(
@@ -678,10 +678,11 @@ How to treat reference points when parameters, particularly productivity paramet
 "Obs",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
 "Obs",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
 "Imp",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
+"Imp",     "??",         "$LB_TAC$",                      "Lower bound of annual TAC fraction taken",
+"Imp",     "??",         "$UB_TAC$",                      "Upper bound of annual TAC fraction taken",
 "Imp",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken."
 )
 
- # retention rate at age? These are covered by LR5 Rmaxlen and LR5
 
 p %>%
   mutate(slot = paste0("\\texttt{", slot, "}")) %>%
