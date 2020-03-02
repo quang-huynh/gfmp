@@ -89,7 +89,7 @@ We note this below where that occurs.
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new("Stock")
-nsim <- 200
+nsim <- 600
 cpars <- list()
 set.seed(282943)
 ```
