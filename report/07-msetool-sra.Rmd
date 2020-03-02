@@ -17,7 +17,7 @@ For data-limited species, where it may only be possible to provide ranges of val
 In other words, it helps address the broader question:
 What combinations of historical fishing mortality and recruitment could have generated the observed data [@walters2006]?
 
-We make the important note that an SRA does not necessarily require age-composition data, as long as credible estimates of maturity-at-length or age and vulnerability-at-length or age can be provided. However, if age- or length-composition data
+We make the important note that an SRA does not necessarily require age-composition data, as long as credible estimates of maturity-at-length or age and vulnerability-at-length or age can be provided. However, if age- or length-composition data are available, even for one or a few years, these can be used to inform vulnerability-at-age in the model.
 
 ## STOCK REDUCTION ANALYSIS IN THE CONTEXT OF DLMTOOL {#sec:sra-dlmtool}
 

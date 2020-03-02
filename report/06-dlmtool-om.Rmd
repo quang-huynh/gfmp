@@ -190,9 +190,9 @@ where $\dot{R_a}$ represents retention rate at age and the selectivity-at-age $v
 $$
 v_{a} =
 \begin{cases}
-2^{-\frac{L_{a} - L^{\textrm{FS}}}{\sigma^{\textrm{asc}}}^2} & \textrm{if } L_{a} < L^{\textrm{FS}},\\
+2^{-\frac{(L_{a} - L^{\textrm{FS}})^2}{\sigma^2_{\textrm{asc}}}} & \textrm{if } L_{a} < L^{\textrm{FS}},\\
 1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}},\\
-2^{-\frac{L_{a} - L^{\textrm{FS}}}{\sigma^{\textrm{des}}}^2} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}
+2^{-\frac{(L_{a} - L^{\textrm{FS}})^2}{\sigma^2_{\textrm{des}}}} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}
 \end{cases}
 (\#eq:dlm-om-va)
 $$
@@ -201,7 +201,7 @@ where $L^\textrm{FS}$ represents the user-defined length-at-full-selectivity.
 The variance of the ascending limb ($\sigma_{\textrm{sasc}}^{2}$) is given by
 
 $$
-\sigma_{\textrm{sasc}}^{2} = \frac{{{L}}_{5} - L^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
+\sigma_{\textrm{sasc}} = \frac{{{L}}_{5} - L^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 $$
 
