@@ -39,17 +39,17 @@ The sampled values of $h$ (as well as all other input parameters to the SRA) are
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
 
 The SRA model can be conditioned on catch or fishing effort.
-For BC groundfish species, we recommend conditioning the model on catch.
+For BC groundfish species, we recommend conditioning the model on catch. 
+Catch data since the introduction of 100% at-sea and dockside observer coverage are known with very little error.
+Effort data in multispecies fisheries is more difficult to interpret.
 If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed catches.
-<!--If conditioned on effort, the estimated fishing mortality in the model will be proportional to the observed effort.-->
 A full time series of the conditioning variable (i.e., catch) is required.
-<!--, and length of the historical period `OM@nyears` will be the length of the conditioned time series.-->
 
-In many cases, the time series can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).
+If the time series is long enough, the historical period can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
 In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
 We note that $C^{\textrm{eq}}_f$ need not be the true catch prior to the first year---factors such as recruitment, predator mortality, or any number of catch trends could have caused the estimated initial depletion---but $C^{\textrm{eq}}_f$ represents the corresponding catch in equilibrium.
-The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
+The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period (see Equation \@ref.
 
 Initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
 We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
@@ -168,22 +168,32 @@ Numbers-at-age in the first year of the model $y=1$ are assumed to be in an equi
 $$
 N_{1,a} =
 \begin{cases}
-      R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i) & a = 1, \ldots, A-1\\
-      \dfrac{R^{\textrm{eq}} \exp(-\Sigma_{i=1}^{a-1}Z^{\textrm{eq}}_i)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
+      R^{\textrm{eq}} & a = 1 \\
+      N_{1,a-1} \exp(-Z^{\textrm{eq}}_a) & a = 2, \ldots, A-1\\
+      \dfrac{N_{1,a-1} \exp(-Z^{\textrm{eq}}_a)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
 \end{cases}
 (\#eq:sra-om-numinit)
 $$
 
+
+
 where the $R^{\textrm{eq}}$ is the equilibrium recruitment (Equation \@ref(eq:sra-om-recinit)) and $Z^{\textrm{eq}}_a$ is the equilibrium total mortality rate:
 
 $$
-Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f,
+Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f.
 (\#eq:sra-om-zeq)
 $$
 
-where unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$.
+If the stock is assumed to be unfished in the first year of the historical period ($y= t_1$), unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. In practical terms, this is done by the user setting the equilibrium catch to zero ($C^\textrm{eq} = 0$).
 
-To estimate $F^{\textrm{eq}}_f$, the corresponding equilibrium catch (in weight)  prior to the first year of the model $C^{\textrm{eq}}_f$ should be provided.
+If the stock was not unfished in year $t_1$, the population is assumed to be in an equilibrium state with catch equal to a user-defined equilibrium catch ($C^\textrm{eq}$), defined as a fraction of the observed catch in year $t_1$. In this case the SRA estimates predicted equilibrium catch (C^{\textrm{eq,pred}}), which is fit to $C^\textrm{eq}$, with very low standard deviation (0.01) in the likelihood function (Equation \@ref(eq:sra-om-like-eqcatch)). Equilibrium catch is predicted by the Baranov equation, summed across fleets ($f=1:nf$) and ages ($a=1:A$):
+
+$$
+C^{\textrm{eq,pred}} = \sum_{f=1}^{nf}\sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a
+(\#eq:sra-om-ceqpred)
+$$
+
+where $F^{\textrm{eq}}_f = 0$ is an estimated parameter. 
 
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 
@@ -201,7 +211,9 @@ $\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
 $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
 and
 $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively.
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively, and $B_0$ is derived from $R_0\phi_f^0$.
+
+It should be apparent from Equations \@ref(eq:sra-om-ceqpred), \@ref(eq:sra-om-recinit) and \@ref(eq:dlm-om-phif) that in data-limited cases, the parameters $R_0$ and $F^{\textrm{eq}}_f$ are highly confounded since both inform population size through R^{\textrm{eq}}. In such cases, it is strongly recommended to treat $C^\textrm{eq}$ as a major axis of uncertainty as it will be a strong determinant of initial depletion and stock size. We also note that the parameters ($q_s$) scaling survey observations to vulnerable biomass (Equation \@ref(eq:sra-om-iysb)) will also be confounded with $R_0$ and $F^{\textrm{eq}}_f$.
 
 ### Dynamics equations
 
@@ -218,8 +230,6 @@ N_{y,a} =
 $$
 
 where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum-age, treated as a plus-group.
-
-<!-- TODO: RF to add note about how plus group is handled in DLMtool if the SRA is used (Issue #94)-->
 
 Annual recruitment $R_y$ is modelled as
 
