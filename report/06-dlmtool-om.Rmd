@@ -449,7 +449,7 @@ Given that BC groundfish fisheries are subject to 100% at-sea and dockside obser
 However, for non-target species, there is a possibility that TACs will not be fully used.
 The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-cata).
 
-The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined fraction of the TAC taken $b_\textrm{TAC}$ and a degree of inter-annual variability controlled by $\sigma_\textrm{TAC}$.
+The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined fraction of the TAC taken $\widetilde{b}_\textrm{TAC}$ and a degree of inter-annual variability controlled by $\widetilde{\sigma}_\textrm{TAC}$.
 
 $$
 I_{\textrm{TAC},y} = \widetilde{b}_\textrm{TAC} \cdot \exp \left( \varepsilon_{\textrm{TAC},y} - \frac{{{\widetilde{\sigma}}}_{\textrm{TAC}}^2}{2} \right),
@@ -457,7 +457,7 @@ I_{\textrm{TAC},y} = \widetilde{b}_\textrm{TAC} \cdot \exp \left( \varepsilon_{\
 $$
 
 For example, $b_\textrm{TAC} = 0.7$ is equivalent to 30% catch underages.
-The error term $\varepsilon_{\textrm{TAC},y}$ is drawn from a normal distribution whose standard deviation $\sigma_\textrm{TAC}$ is user-defined and can be sampled at random in each simulation:
+The error term $\varepsilon_{\textrm{TAC},y}$ is drawn from a normal distribution whose standard deviation $\widetilde{\sigma}_\textrm{TAC}$ is user-defined and can be sampled at random in each simulation:
 
 $$
 \varepsilon_{TAC,y}\sim \textrm{Normal}\left( 0,\widetilde{\sigma}_{\textrm{TAC}} \right).
