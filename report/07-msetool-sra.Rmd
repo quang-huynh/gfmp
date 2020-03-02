@@ -213,7 +213,8 @@ and
 $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
 $\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively, and $B_0$ is derived from $R_0\phi_f^0$.
 
-It should be apparent from Equations \@ref(eq:sra-om-ceqpred), \@ref(eq:sra-om-recinit) and \@ref(eq:dlm-om-phif) that in data-limited cases, the parameters $R_0$ and $F^{\textrm{eq}}_f$ are highly confounded since both inform population size through R^{\textrm{eq}}. In such cases, it is strongly recommended to treat $C^\textrm{eq}$ as a major axis of uncertainty as it will be a strong determinant of initial depletion and stock size. We also note that the parameters ($q_s$) scaling survey observations to vulnerable biomass (Equation \@ref(eq:sra-om-iysb)) will also be confounded with $R_0$ and $F^{\textrm{eq}}_f$.
+It should be apparent from Equations \@ref(eq:sra-om-ceqpred), \@ref(eq:sra-om-recinit) and \@ref(eq:dlm-om-phif) that in data-limited cases, the parameters $R_0$ and $F^{\textrm{eq}}_f$ are highly confounded since both inform population size through $R^{\textrm{eq}}$. In such cases, it is strongly recommended to treat $C^\textrm{eq}$ as a major axis of uncertainty as it will be a strong determinant of initial depletion and stock size. We also note that the parameters ($q_s$) scaling survey observations to vulnerable biomass (Equation \@ref(eq:sra-om-iysb)) will also be confounded with $R_0$ and $F^{\textrm{eq}}_f$.
+
 
 ### Dynamics equations
 
