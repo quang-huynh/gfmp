@@ -452,7 +452,7 @@ $$
 (\#eq:dlm-om-epsilontac)
 $$
 
-Mean fraction of the TAC recommendation $b_{\textrm{TAC}} is drawn from
+Mean fraction of the TAC recommendation $b_{\textrm{TAC}}$ is drawn from
 a lognormal distribution with user-specified standard deviation $\sigma_{\textrm{bTAC}}$:
 
 $$
