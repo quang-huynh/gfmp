@@ -1,5 +1,8 @@
 \clearpage
 
+`r if(knitr:::is_latex_output()) '\\Appendices'`
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
+
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
 The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model described below.
