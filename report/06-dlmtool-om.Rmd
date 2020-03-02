@@ -449,15 +449,7 @@ $$
 (\#eq:dlm-om-epsilontac)
 $$
 
-By default the OM samples simulation-specific variability
-${{\sigma}}_{\textrm{TAC}}$ from a uniform distribution.
-
-$$
-\sigma_{\textrm{TAC}}\sim \textrm{Uniform}\left( \textrm{LB}_{\textrm{TAC}},\textrm{UB}_{\textrm{TAC}} \right),
-(\#eq:dlm-om-sigmatac)
-$$
-
-and where $b_{\textrm{TAC}}$ is drawn from
+Mean fraction of the TAC recommendation $b_{\textrm{TAC}} is drawn from
 a lognormal distribution with user-specified standard deviation $\sigma_{\textrm{bTAC}}$:
 
 $$
