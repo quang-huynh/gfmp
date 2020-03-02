@@ -472,12 +472,20 @@ $$
 $$
 
 and where $b_{\textrm{TAC}}$ is drawn from
-a lognormal distribution with user-specified standard deviation $\sigma_{\textrm{bTAC}}$:
+a lognormal distribution:
 
 $$
 b_{\textrm{TAC}} = \exp\left( \varepsilon_{\textrm{bTAC}} - \frac{\sigma_{\textrm{bTAC}}^2}{2} \right)
 (\#eq:dlm-om-btac)
 $$
+<!-- This might be wrong
+$$
+\varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
+(\#eq:dlm-om-epsilonbtac).
+$$
+-->
+
+<!-- TODO: Check this is correct, see RF's correspondence with QH-->
 
 $$
 \varepsilon_{\textrm{bTAC}}\sim \textrm{Normal}\left( 0,\sigma_{\textrm{bTAC}} \right)
@@ -588,7 +596,7 @@ How to treat reference points when parameters, particularly productivity paramet
 
 ## DLMTOOL SLOTS
 
-<!--TODO RF is checking the slot names for LBTAC and UBTAC-->
+<!--TODO Need to make sure TACFrac and TACSD are correctly described. See correspondence with Quang-->
 
 ```{r, echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
 # slot_include <- c(
@@ -675,14 +683,14 @@ How to treat reference points when parameters, particularly productivity paramet
 "Obs",     "Cobs",       "$\\sigma_{C}$",                 "Observation error SD of the catch in log space.",
 "Obs",      "Cbiascv",    "$b_C$",                         "CV controlling the sampling of bias in catch observations.",
 "Obs",     "beta",       "$\\beta$",                      "Hyperstability/hyperdepletion parameter.",
-"Obs",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
+"Obs",     "CAA\\_ESS",  "$\\textrm{ESS}_\\textrm{LB}{CAA}$", "Effective sample size of multinomial catch-at-age observation error model.",
 "Obs",     "CAA\\_nsamp", "$n_\\textrm{CAA}$",            "Number of catch-at-age observations per time step.",
-"Imp",     "TACFrac",    "$b_\\textrm{TAC}$",             "Mean fraction of TAC taken.",
-"Imp",     "??",         "$LB_TAC$",                      "Lower bound of annual TAC fraction taken",
-"Imp",     "??",         "$UB_TAC$",                      "Upper bound of annual TAC fraction taken",
-"Imp",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",      "SD in lognormal fraction of TAC taken."
+"Imp",     "TACFrac[1]",    "$\\textrm{LB}_\\textrm{TAC}$",       "Lower bound of Uniform distribution of TAC fraction",
+"Imp",     "TACFrac[2]",    "$\\textrm{UB}_\\textrm{TAC}$",       "Upper bound of Uniform distribution of TAC fraction",
+"Imp",     "TACSD",      "$\\sigma_\\textrm{bTAC}$",   "SD in lognormal fraction of TAC taken"
 )
 
+#(\\textrm{LB}_{\\textrm{TAC})
 
 p %>%
   mutate(slot = paste0("\\texttt{", slot, "}")) %>%
