@@ -509,7 +509,7 @@ La <- seq(0, max(m_mat$pred_data$age_or_length), length.out = 300)
 vulnerable1 <- data.frame(length = La, prob = v(La, L5 = 22, LFS = 34)) %>% 
   mutate(type = "Selectivity 1", id = 9999)
 
-vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 15, LFS = 30)) %>% 
+vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 17, LFS = 30)) %>%
   mutate(type = "Selectivity 2", id = 99999)
 
 bind_rows(.dm, vulnerable1) %>%
