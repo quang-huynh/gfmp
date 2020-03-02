@@ -258,22 +258,22 @@ r_{y,a} = \begin{cases}
 (\#eq:dlm-om-ray)
 $$
 
-where \({L}_{\textrm{rmax}}\) is the length at maximum retention.
-The standard deviation parameters of the ascending limb is given by the length at 5% retention \({r}_{5}\):
+where $L_\textrm{rmax}$ is the length at maximum retention.
+The standard deviation parameters of the ascending limb is given by the length at 5% retention $r_5$:
 
 $$
 \sigma_{\textrm{rasc}} = \frac{{{L}}_{r5} - {L}_{\textrm{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-sigrasc)
 $$
 
-While the standard deviation of the descending limb is given by retention $r_{L_\infty} $ of fish of length $L_\infty$:
+While the standard deviation of the descending limb is given by retention $r_{L_\infty}$ of fish of length $L_\infty$:
 
 $$
 \sigma_{\textrm{rdesc}} = \frac{L_\infty - {{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{{{r}}_{L_\infty}}}}}.
 (\#eq:dlm-om-sigrdec)
 $$
 
-The retention curve approaches an asymptotic curve as $r_{L_\infty} \to1$.
+The retention curve approaches an asymptotic curve as $r_{L_\infty} \to 1$.
 
 Fishing mortality rates are then calculated from the realized catches $C_{y,a}$ subject to the constraint that they do not exceed ${F_\textrm{max}}$:
 
