@@ -9,15 +9,15 @@ library("assertthat")
 # load_all("../gfdlm")
 
 cores <- floor(parallel::detectCores() / 2L)
-future::plan(future::multiprocess, workers = cores)
-# future::plan(future::sequential)
+# future::plan(future::multiprocess, workers = cores)
+future::plan(future::sequential)
 
 # Settings --------------------------------------------------------------------
 
 sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 250
+nsim <- 140
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
@@ -207,7 +207,7 @@ mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 
 # mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
-mp_sat <- mp_sat[!mp_sat %in% c(".SP6040_0.5", ".SP6040_0.4")] # dominated by .6
+mp_sat <- mp_sat[!mp_sat %in% c(".SP4010_0.6", ".SP6040_0.6_fox", ".SP6040_0.6")]
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
 mp_sat
 
@@ -229,7 +229,8 @@ mp_eg_not_sat <- c(
   ".IDX_smooth",
   ".IT5_hist",
   ".IT10_hist",
-  ".ITM_hist"
+  ".ITM_hist",
+  ".SP6040_0.4"
 )
 
 plots <- gfdlm::plot_factory(
