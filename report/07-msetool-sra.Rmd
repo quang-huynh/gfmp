@@ -163,7 +163,7 @@ If the stock is assumed to be unfished in the first year of the historical perio
 If the stock was not unfished in year $t_1$, the population is assumed to be in an equilibrium state with catch equal to a user-defined equilibrium catch ($C^\textrm{eq}$), defined as a fraction of the observed catch in year $t_1$. In this case the SRA estimates predicted equilibrium catch ($C^{\textrm{eq,pred}}$), which is fit to $C^\textrm{eq}$, with very low standard deviation (0.01) in the likelihood function (Equation \@ref(eq:sra-om-like-eqcatch)). Equilibrium catch is predicted by the Baranov equation, summed across fleets ($f=1:nf$) and ages ($a=1:A$):
 
 $$
-C^{\textrm{eq,pred}} = \sum_{f=1}^{nf}\sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a
+C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a
 (\#eq:sra-om-ceqpred)
 $$
 

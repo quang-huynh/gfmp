@@ -567,7 +567,7 @@ How to treat reference points when parameters, particularly productivity paramet
 
 <!--TODO Need to make sure TACFrac and TACSD are correctly described. See correspondence with Quang-->
 
-```{r, echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
+```{r tab-om-pars, echo=FALSE, cache=FALSE, message=FALSE, results='asis'}
 # slot_include <- c(
 #   "maxage",
 #   "R0",
