@@ -120,12 +120,36 @@ stock_default@Frac_area_1 <- c(0.5, 0.5)
 <!-- slot-chunk-begin -->
 ### Prob_staying {#app:desc-stock-prob_staying-default}
 
-*The probability of inviduals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
+*The probability of individuals in area 1 remaining in area 1 over the course of one year. Uniform distribution lower and upper bounds. Positive fraction.*
 
 We will set this to 0.5 to mimic a single area model.
 
 ```{r desc-stock-prob_staying-default, results = knitr_results, echo = knitr_echo}
 stock_default@Prob_staying <- c(0.5, 0.5)
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### SRrel {#app:desc-stock-srrel-default}
+
+*Type of stock-recruit relationship. Single integer value, switch (1) Beverton-Holt (2) Ricker.*
+
+We will use a Beverton-Holt stock-recruit relationship as has been used in most BC groundfish assessments and is assumed in the estimates of steepness defined in this operating model.
+
+```{r desc-stock-srrel-default, results = knitr_results, echo = knitr_echo}
+stock_default@SRrel <- 1L
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Fdisc {#app:desc-stock-fdisc-default}
+
+*Fraction of discarded fish that die. Uniform distribution lower and upper bounds.*
+
+As described below, provisionally, we suggest setting up the OM such that all discards are considered part of the catch. Since the discard rate will be set to zero, this parameter will have no effect. In specific scenarios it could be explored.
+
+```{r desc-stock-fdisc-default, results = knitr_results, echo = knitr_echo}
+stock_default@Fdisc <- c(1, 1)
 ```
 <!-- slot-chunk-end -->
 
@@ -301,6 +325,69 @@ fleet_default@MPA
 ```
 <!-- slot-chunk-end -->
 
+<!-- slot-chunk-begin -->
+### DR {#app:desc-fleet-dr-default}
+
+*Discard rate: the fraction of caught fish that are discarded. Uniform distribution lower and upper bounds. Fraction.*
+
+Since all the discards are included in the catch, we will set this to 0.
+
+```{r desc-fleet-dr-default, results = knitr_results, echo = FALSE}
+fleet_default@DR <- 0
+```
+
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### LR5 {#app:desc-fleet-lr5-default}
+
+*Shortest length corresponding ot 5% retention. Uniform distribution lower and upper bounds.*
+
+This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch by default.
+
+```{r desc-fleet-lr5-default, results = knitr_results, echo = knitr_echo}
+fleet_default@LR5
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### LFR {#app:desc-fleet-lfr-default}
+
+*Shortest length that is fully retained. Uniform distribution lower and upper bounds.*
+
+This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch by default.
+
+```{r desc-fleet-lfr-default, results = knitr_results, echo = knitr_echo}
+fleet_default@LFR
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Rmaxlen {#app:desc-fleet-rmaxlen-default}
+
+*The retention of fish at `Linf`. Uniform distribution lower and upper bounds.*
+
+This should have no impact on the results because we are assuming 100% discard mortality and reporting of all catch by default.
+
+```{r desc-fleet-rmaxlen-default, results = knitr_results, echo = knitr_echo}
+fleet_default@Rmaxlen <- c(1, 1)
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### Vmaxlen {#app:desc-fleet-vmaxlen-default}
+
+*The vulnerability of fish at `Linf`. Uniform distribution lower and upper bounds. Fraction.*
+
+We will set this to 1 by default. Setting this to a value lower than 1 would be assuming dome-shaped selectivity.
+
+```{r desc-fleet-vmaxlen-rex, results = knitr_results, echo = knitr_echo}
+fleet_default@Vmaxlen <- c(1, 1)
+```
+<!-- slot-chunk-end -->
+
+
+
 ## DEFAULT OBSERVATION SLOTS {#app:desc-obs-default}
 
 ```{r warnings = FALSE}
@@ -308,13 +395,13 @@ obs_default <- methods::new('Obs')
 ```
 
 <!-- slot-chunk-begin -->
-### Crefbiascv {#app:desc-obs-crefbiascv-rex}
+### Crefbiascv {#app:desc-obs-crefbiascv-default}
 
 *Log-normal CV for sampling persistent bias in MSY. Uniform distribution lower and upper bounds.*
 
 The provisional MPs do not make use of this slot.
 
-```{r desc-obs-crefbiascv-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-obs-crefbiascv-default, results = knitr_results, echo = knitr_echo}
 obs_default@Crefbiascv
 ```
 <!-- slot-chunk-end -->
@@ -367,5 +454,53 @@ We will not use this functionality by default.
 
 ```{r desc-imp-sizelimsd-default, results = knitr_results, echo = knitr_echo}
 imp_default@SizeLimSD
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### CAA_nsamp {#app:desc-obs-caa_nsamp-default}
+
+*Number of catch-at-age observation per time step. Uniform distribution lower and upper bounds.*
+
+This slot will not be relevant in the main operating model since none of the proposed MPs make use of age data. It could be re-enabled if evaluating the value of information inherent in ageing fish and using MPs that make use of them.
+
+```{r desc-obs-caa_nsamp-default, results = knitr_results, echo = knitr_echo}
+obs_default@CAA_nsamp
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### CAA_ESS {#app:desc-obs-caa_ess-default}
+
+*Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds.*
+
+This slot will not be relevant in the main operating model since none of the MPs make use of age data.
+
+```{r desc-obs-caa_ess-default, results = knitr_results, echo = knitr_echo}
+obs_default@CAA_ESS
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### CAL_nsamp {#app:desc-obs-cal_nsamp-default}
+
+*Number of catch-at-length observation per time step. Uniform distribution lower and upper bounds.*
+
+This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+
+```{r desc-obs-cal_nsamp-default, results = knitr_results, echo = knitr_echo}
+obs_default@CAL_nsamp
+```
+<!-- slot-chunk-end -->
+
+<!-- slot-chunk-begin -->
+### CAL_ESS {#app:desc-obs-cal_ess-default}
+
+*Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds.*
+
+This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+
+```{r desc-obs-cal_ess-default, results = knitr_results, echo = knitr_echo}
+obs_default@CAL_ESS
 ```
 <!-- slot-chunk-end -->

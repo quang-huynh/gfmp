@@ -1,0 +1,78 @@
+\clearpage
+
+# R PACKAGE TO SUPPORT THE MP FRAMEWORK {#app:gfdlm}
+
+Function:
+
+`plot_factory()`
+
+* The output is a named list of ggplot2 elements that can be viewed, modified,
+  and saved for inclusion in a report.
+
+`plot_convergence()`
+
+* test
+
+`plot_dots()`
+
+* Description here
+
+`plot_index()`
+
+* Description here
+
+`plot_index_fits()`
+
+* Description here
+
+`plot_kobe()`
+
+* Description here
+
+`plot_main_projections()`
+
+* Description here
+
+`plot_lollipop()`
+
+* Description here
+
+`plot_radar()`
+
+* Description here
+
+`plot_radar_facet()`
+
+* Description here
+
+`plot_scenario_projections()`
+
+* Description here
+
+`plot_sensitivity()`
+
+* Description here
+
+`plot_sensitivity_trajectory()`
+
+* Description here
+
+`plot_tigure()`
+
+* Description here
+
+`plot_tradeoff()`
+
+* Description here
+
+`plot_worms_grid()`
+
+`pm_factory()`
+`use_AddInd()`
+`reduce_survey()`
+`sample_AddIerr()`
+
+custom MPs
+
+`create_rmd()`
+
