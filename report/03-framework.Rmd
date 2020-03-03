@@ -47,9 +47,11 @@ We suggest the "short-term" year range, which only applies to the economic perfo
 
 The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole. This reference level could be obtained through consultation with stakeholders or by identifying the average or minimum catch in recent years (e.g., minimum catch in the last 5 years).
 
-The provisional performance metric AADC represents average absolute interannual difference in catch. We chose the specific representation of variability to be easy to understand and compared to historical values. It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers. I.e., it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret (Punt REF).
+The provisional performance metric AADC represents average absolute interannual difference in catch. We chose the specific representation of variability to be easy to understand and compared to historical values. 
+It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret (@punt2015).
 
-In cases where performance metrics are calculated over a range of years, we suggest the metrics be calculated across all years and simulation iteration simultaneously. This mimics the approach in XX (REF) but differs from the approach by ICES (REF), which typically considers its performance metrics based on each and every year. For example, one could calculate the probability that B > 0.4 *B*~MSY~ in each and every year. There is an inherent trade-off between these two approaches. The first (calculating across all years and simulations simultaneously)... TODO
+<!-- RF has asked Rob K for input-->
+In cases where performance metrics are calculated over a range of years, we suggest the metrics be calculated across all years and simulation iterations simultaneously. This mimics the approach in XX (REF) but differs from the approach by ICES (REF), which typically considers its performance metrics based on each and every year. For example, one could calculate the probability that B > 0.4 *B*~MSY~ in each and every year. There is an inherent trade-off between these two approaches. The first (calculating across all years and simulations simultaneously)... TODO
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 
@@ -62,7 +64,11 @@ DLMtool OMs are organized into four main components representing a real fished s
 
 Parameters under the four components are entered into "slots" [terminology referring to a feature of the "S4" object-oriented programming system in R; @r2019], described in detail in Appendix \@ref(app:dlmtool-om) and in Appendix B of @carruthers2018.
 
-DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution, typically a uniform distribution between two bounds by default. See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified. To isolate the effects of specific sources of uncertainty on performance of MPs, we also recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest. In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007]. For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely prior probability distributions used for natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
+DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution, typically a uniform distribution between two bounds by default. 
+See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified. 
+To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest. 
+In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007]. 
+For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely prior probability distributions used for natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
@@ -75,39 +81,26 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 
 To ensure transparency and reproducibility, we recommend that the full specification of all OM parameters be clearly documented in appendices attached to the working paper.
 
-We note that DLMtool OMs includes a large number of parameters that can vary through time, or which can be set to be deliberately biased. To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time-invariant and unbiased (Appendix \@ref(app:default-slots)). Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already a accepted components of the stock assessment.
+We note that DLMtool OMs includes a large number of parameters that can vary through time, or which can be set to be deliberately biased. 
+To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time-invariant and unbiased (Appendix \@ref(app:default-slots)). 
+Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already accepted components of the stock assessment.
 
-Best practice recommends calibrating OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data). DLMtool's companion software package, MSEtool [@huynh_msetool_2019], includes an efficient implementation of a stock reduction analysis (SRA) [@kimura1982; @walters2006] to help with this process (Appendix \@ref(app:sra)). An SRA is effectively a catch-at-age model that estimates the combinations of unfished recruitment, depletion, fishing effort, recruitment deviations, and selectivity that would be consistent with the observed data given assumptions about other parameters (e.g., growth, natural mortality). The SRA implementation in MSEtool can be conditioned on catch or effort time series (Appendix \@ref(app:sra)). For most applications for BC groundfish stocks, we suggest conditioning on catch, as historical trajectories of catch tend to be more reliable than time series of effort, especially given uncertainties in how to best represent and interpret effort in multispecies fisheries. Further details on the SRA OM-calibration model are available in Appendix \@ref(app:sra).
+Best practice recommends calibrating OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data). 
+DLMtool's companion software package, MSEtool [@huynh_msetool_2019], includes an efficient implementation of a stock reduction analysis (SRA) [@kimura1982; @walters2006] to help with this process (Appendix \@ref(app:sra)). 
+An SRA is effectively a catch-at-age model that estimates the combinations of unfished recruitment, depletion, fishing effort, recruitment deviations, and selectivity that would be consistent with the observed data given assumptions about other parameters (e.g., growth, natural mortality). 
+The SRA implementation in MSEtool can be conditioned on catch or effort time series (Appendix \@ref(app:sra)). 
+For most applications for BC groundfish stocks, we suggest conditioning on catch, as historical trajectories of catch tend to be more reliable than time series of effort, especially given uncertainties in how to best represent and interpret effort in multispecies fisheries. 
+Further details on the SRA OM-calibration model are available in Appendix \@ref(app:sra).
 
 <!-- While OM calibration is a critical step to improve plausibility of OMs, we emphasize that there are multiple ways to achieve goodness of fit, and a close fit to observations does not necessarily mean that an OM is correctly characterizing the mechanisms underlying the dynamics of the fish stock. This is one of the main reasons for constructing multiple OMs, to explore the impacts of alternative model assumptions and structures on performance of MPs. -->
 
-<!--*TODO: improve this. What do we recommend?*-->
-
-For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
+For very data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity. 
+In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
 Where there is no index of abundance, we recommend developing a wide range of uncalibrated OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
-<!--*TODO: Move commented-out text below (in Rmd file) to an appendix completely describing the SRA*-->
+We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet and observation characteristics of a set of similar species. 
+However, we strongly recommend focusing first on species for which customized OMs can be developed, which are calibrated to observed data.
 
-<!-- MOVE THIS TO APPENDIX
-The SRA function can take as input:
-
-* indices of relative abundance or biomass
-* age composition data
-* length composition data
-* mean length data
-
-Given that in the Pacific Region we tend to have full-length composition data rather than just mean length data, the mean length data input is unlikely to be used within the MP Framework.
-
-
-Selectivity is fixed based on input values in the operating model if there are not any age or length composition data included.
-
-Although the SRA requires a complete time series of catch, it can make use of potentially sparse inputs of relative abundance and age or length composition data. If catch data are not available all the way back to when it can be assumed the stock was in unfished conditions, the user can specify a range of initial depletion associated with the first year of available catch.
-
-The SRA implementation in MSEtool includes stochastic sampling of the specified operating model parameters. For example, if natural mortality is defined as being drawn from a uniform distribution between 0.1 and 0.2 across 200 stochastic iterations, then the SRA model will be fit 200 times, each time drawing a different value from that distribution. The sampled values of *M* are then stored and associated with the estimated parameters in the SRA model, such as annual biomass, depletion, and fishing mortality.
-
--->
-
-<!-- We used DLMtool and MSEtool [@carruthers2018] to develop and calibrate OMs for two BC groundfish species, Rex Sole and Shortraker Rockfish to illustrate application of the framework. The reference and robustness sets of OMs are described in detail in Appendices \@ref(app:desc-om-rex) and \@ref(app:desc-om-sr) for Rex Sole and Shortraker Rockfish, respectively. -->
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
