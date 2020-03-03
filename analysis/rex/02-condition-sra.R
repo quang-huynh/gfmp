@@ -172,7 +172,7 @@ rex_sra_no_cpue %<-% fit_sra_rex_no_cpue(rex_om, c_eq = 3)
 
 # No CPUE and lightly fished before 1996 --------------------------------------
 
-rex_sra_light %<-% fit_sra_rex_no_cpue(rex_om, c_eq = .5)
+rex_sra_light %<-% fit_sra_rex_no_cpue(rex_om, c_eq = .5, commercial_vul = c(28, 17, 1), surv_vul = c(28, 17, 1))
 # plot(rex_sra_light)
 
 # Shift commercial selectivity curve left -------------------------------------
