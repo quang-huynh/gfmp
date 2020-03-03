@@ -41,7 +41,7 @@ We propose the following provisional performance metrics, where MSY refers to ma
 
 In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term. FMSY is a conservation performance metric measuring Objective 3 over the whole projection period. LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AADC is an economic metric, representing Objective 5, measured over the whole projection period.
 
-The "long-term" year range should be defined on a stock-by-stock basis. However, barring some other specified requirement for a definition of long-term (e.g., an associated COSEWIC assessment), we suggest the following starting points: (1) consider "long-term" as a year or short window before (e.g., 5--15 years) 2--3 generation times of the species and (2) if that generation time window is less than 50 years, consider long-term as 50 years and an approximately 5--15 year window before it.
+The "long-term" year range should be defined on a stock-by-stock basis. However, barring some other specified requirement for a definition of long-term (e.g., an associated COSEWIC assessment), we suggest considering "long-term" as the the minimum of 1.5--2 generation times of the species or 50 years. Consider averaging the performance metric over a short (e.g., 5--15 year) window before the final year.
 
 We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near term interest to current participants in the fishery. Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
 

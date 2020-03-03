@@ -84,8 +84,8 @@ indexes <- drex$survey_index %>%
 saveRDS(indexes, file = here("generated-data/rex-indexes.rds"))
 
 # matching maturity, approximately:
-.commercial_vul <- c(34, 22, 1)
-.surv_vul <- c(34, 22, 1)
+.commercial_vul <- c(32, 22, 1)
+.surv_vul <- c(32, 22, 1)
 
 # # maturity ogive:
 # mean(vb_post$linf) * (1-exp(-mean(vb_post$k) * (2 - mean(vb_post$t0))))
@@ -178,7 +178,7 @@ rex_sra_light %<-% fit_sra_rex_no_cpue(rex_om, c_eq = .5)
 # Shift commercial selectivity curve left -------------------------------------
 
 rex_sra_sel1 %<-%
-  fit_sra_rex_cpue(rex_om, commercial_vul = c(30, 17, 1), surv_vul = c(30, 17, 1))
+  fit_sra_rex_cpue(rex_om, commercial_vul = c(28, 17, 1), surv_vul = c(28, 17, 1))
 # plot(rex_sra_sel1)
 
 # Robustness Set OMs: M increasing over time ----------------------------------
