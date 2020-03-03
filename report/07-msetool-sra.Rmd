@@ -174,18 +174,18 @@ Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calcul
 $$
 R^{\textrm{eq}} =
 \begin{cases}
-      \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
-      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker},
+      \dfrac{\alpha^{\textrm{B}}\phi - 1}{\beta^{\textrm{B}}\phi} & \textrm{Beverton-Holt}\\
+      \dfrac{\log(\alpha^{\textrm{R}}\phi)}{\beta^{\textrm{R}}\phi} & \textrm{Ricker},
 \end{cases}
 (\#eq:sra-om-recinit)
 $$
 
-where $\phi_f$ is equilibrium spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif)), $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
-$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_f^0}$,
+where $\phi$ is equilibrium spawners-per-recruit (see Equation \@ref(eq:dlm-om-phi)), $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
+$\alpha^{\textrm{B}} = \frac{4h}{(1-h)\phi_0}$,
 $\beta^{\textrm{B}} = \frac{5h-1}{(1-h)B_0}$
 and
-$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_f^0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively, and $B_0$ is derived from $R_0\phi_f^0$.
+$\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_0}$,
+$\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively, and $B_0$ is derived from $R_0\phi_0$.
 
 Initial spawning depletion is then given by
 
@@ -201,7 +201,7 @@ B_{1} = \sum_a^A w_{a} m_{a} N_{1,a}.
 (\#eq:sra-om-b1)
 $$
 
-It should be apparent from Equations \@ref(eq:sra-om-ceqpred), \@ref(eq:sra-om-recinit) and \@ref(eq:dlm-om-phif) that in data-limited cases, the parameters $R_0$ and $F^{\textrm{eq}}_f$ are highly confounded since both inform population size through $R^{\textrm{eq}}$. In such cases, it is strongly recommended to treat $C^\textrm{eq}$ as a major axis of uncertainty as it will be a strong determinant of initial depletion and stock size. We also note that the parameters ($q_s$) scaling survey observations to vulnerable biomass (Equation \@ref(eq:sra-om-iysb)) will also be confounded with $R_0$ and $F^{\textrm{eq}}_f$.
+It should be apparent from Equations \@ref(eq:sra-om-ceqpred), \@ref(eq:sra-om-recinit) and \@ref(eq:dlm-om-phi) that in data-limited cases, the parameters $R_0$ and $F^{\textrm{eq}}_f$ are highly confounded since both inform population size through $R^{\textrm{eq}}$. In such cases, it is strongly recommended to treat $C^\textrm{eq}$ as a major axis of uncertainty as it will be a strong determinant of initial depletion and stock size. We also note that the parameters ($q_s$) scaling survey observations to vulnerable biomass (Equation \@ref(eq:sra-om-iysb)) will also be confounded with $R_0$ and $F^{\textrm{eq}}_f$.
 
 
 ### Dynamics equations
@@ -266,14 +266,14 @@ and
 $$
 P(\ell \vert a) =
 \begin{cases}
-      \phi(L'_{\ell+1}) & \ell = 1\\
-      \phi(L'_{\ell+1}) - \phi(L'_\ell) & \ell = 2, \ldots, L - 1,\\
-      1 -\phi(L'_\ell) & \ell = L,
+      \phi^L(L'_{\ell+1}) & \ell = 1\\
+      \phi^L(L'_{\ell+1}) - \phi(L'_\ell) & \ell = 2, \ldots, L - 1,\\
+      1 -\phi^L(L'_\ell) & \ell = L,
 \end{cases}
 (\#eq:sra-om-pla)
 $$
 
-where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age).
+where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi^L(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age).
 
 The fitted catch in weight $C_{y,f}$ is
 

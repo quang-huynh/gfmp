@@ -107,12 +107,12 @@ N_{y, a = 1} = R_y =
 $$
 
 where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock-recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock-recruit relationship, derived from user-defined parameters steepness ($\widetilde{h}$) and $\widetilde{R}_0$, where
-$\alpha^{\textrm{B}} = \frac{4\tilde{h}}{(1-\tilde{h})\phi_f^0}$,
+$\alpha^{\textrm{B}} = \frac{4\tilde{h}}{(1-\tilde{h})\phi_0}$,
 $\beta^{\textrm{B}} = \frac{5\tilde{h}-1}{(1-\tilde{h})B_0}$
 and
-$\alpha^{\textrm{R}} = \frac{(5\tilde{h})^{1.25}}{\phi_f^0}$,
+$\alpha^{\textrm{R}} = \frac{(5\tilde{h})^{1.25}}{\phi_0}$,
 $\beta^{\textrm{R}} = \frac{\log(5\tilde{h})}{B_0}$.
-The parameter $\phi_f^0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phif), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
+The parameter $\phi_0$ is unfished spawners-per-recruit (see Equation \@ref(eq:dlm-om-phi), with $F^e=0$) and $B_{0}$ is unfished spawning biomass, calculated as
 
 $$
 B_{0} = \sum_{a = 1}^{A}{m_{a}\ w_{a}\ \widetilde{R}_{0}e^{-\widetilde{M}{(a-1)}}},
@@ -473,36 +473,30 @@ Calculation of BRPs is done using estimated parameters from the conditioning sta
 In the absence of annual variability in life history and/or selectivity parameters, $F_\textrm{MSY}$ is calculated by numerically solving for the value of equilibrium $F^e$ that maximizes the equilibrium yield $Y^e$
 
 $$
-Y^e = F^e R^e \phi_b,
+Y^e = F^e R^e \phi^b,
 (\#eq:dlm-om-yeq)
 $$
 
-where $R^e$ is equilibrium recruitment (Equation \@ref(eq:dlm-om-req)) and $\phi_b$ is equilibrium vulnerable biomass-per-recruit, defined in Equation \@ref(eq:dlm-om-phib) below.
+where $R^e$ is equilibrium recruitment (Equation \@ref(eq:dlm-om-req)) and $\phi^b$ is equilibrium vulnerable biomass-per-recruit, defined in Equation \@ref(eq:dlm-om-phib) below.
 
 In this framework, we assume a Beverton-Holt stock-recruit relationship [@beverton1957], although DLMtool also allows users to select the Ricker form [@ricker1954]:
 
 $$
 R^e =
 \begin{cases}
-      \dfrac{\alpha^{\textrm{B}}\phi_f - 1}{\beta^{\textrm{B}}\phi_f} & \textrm{Beverton-Holt}\\
-      \dfrac{\log(\alpha^{\textrm{R}}\phi_f)}{\beta^{\textrm{R}}\phi_f} & \textrm{Ricker},
+      \dfrac{\alpha^{\textrm{B}}\phi - 1}{\beta^{\textrm{B}}\phi} & \textrm{Beverton-Holt}\\
+      \dfrac{\log(\alpha^{\textrm{R}}\phi)}{\beta^{\textrm{R}}\phi} & \textrm{Ricker},
 \end{cases}
 (\#eq:dlm-om-req)
 $$
 
-where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship,  derived from user-defined parameters steepness ($h$) and $R_0$, where
-$\alpha^{\textrm{B}} = \frac{4\widetilde{h}}{(1-\widetilde{h})\phi_f^0}$,
-$\beta^{\textrm{B}} = \frac{5\widetilde{h}-1}{(1-\widetilde{h})B_0}$
-and
-$\alpha^{\textrm{R}} = \frac{(5\widetilde{h})^{1.25}}{\phi_f^0}$,
-$\beta^{\textrm{R}} = \frac{\log(5\widetilde{h})}{B_0}$,
-where $B_0$ is unfished spawning biomass, derived from $\widetilde{R}_0$ (Equation \@ref(eq:dlm-om-bo)), and $\phi_f^0$ is unfished spawning biomass-per-recruit defined by setting $F^e=0$ in Equation \@ref(eq:dlm-om-phif).
+where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock recruit relationship, defined above (see Equation \@ref(eq:sra-om-rya).
 
 Following the approach of @botsford1981, equilibrium spawning biomass-per-recruit is calculated
 
 $$
-\phi_f = \sum_{a=1}^A \iota_a w_a m_a,
-(\#eq:dlm-om-phif)
+\phi = \sum_{a=1}^A \iota_a w_a m_a,
+(\#eq:dlm-om-phi)
 $$
 
 where $\iota_a$ is equilibrium survivorship-at-age:
@@ -524,17 +518,17 @@ Z^e_{a} = \widetilde{M} +  F^e_{a}v_{a}.
 (\#eq:dlm-om-zeq)
 $$
 
-Finally, using the same approach, $\phi_b$ is calculated
+Finally, using the same approach, $\phi^b$ is calculated
 
 $$
-\phi_b = \sum_{a=1}^A \iota_a w_a v_a.
+\phi^b = \sum_{a=1}^A \iota_a w_a v_a.
 (\#eq:dlm-om-phib)
 $$
 
 After numerically solving Equation \@ref(eq:dlm-om-yeq) for $F_\textrm{MSY}$, $B_\textrm{MSY}$ is calculated:
 
 $$
-B_{\textrm{MSY}} = \phi_f^\textrm{MSY} R^e,
+B_{\textrm{MSY}} = \phi\textrm{MSY} R^e,
 (\#eq:dlm-om-bmsy)
 $$
 
