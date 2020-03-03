@@ -57,9 +57,19 @@ Since 2017, a partnership agreement between the University of British Columbia (
 
 ## OBJECTIVES OF THIS DOCUMENT
 
-This document aims to develop a management procedure framework (MP Framework) for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data for full statistical stock assessments. In doing so, it aims to improve the capacity of DFO to meet the Fish Stocks provisions of the *Fisheries Act* for data-limited species. The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers. We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
+This document aims to develop a management procedure framework (MP Framework) for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data to estimate the parameters needed for full statistical stock assessments.
+Therefore, the Framework will provide advice for stocks where biological reference points and stock status cannot be reliably estimated.
+In doing so, it aims to improve the capacity of DFO to meet the requirements of Canada's SFF and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers.
+We emphasize that biological reference points and stock status, which are integral to the SFF and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
+Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.
+We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 
-This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders. This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. In the proposed framework, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool package [@carruthers2018] for the statistical software R [r2019], which are then used in simulation-testing a range of data-limited MPs against performance metrics. An R package written by the authors for this framework, gfdlm [TODO REF], houses many tools and custom visualizations to aid in the process. Steps of the process are described more fully in the following sections of the document.
+This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders. 
+This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. 
+In the proposed framework, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool package [@carruthers2018] for the statistical software R [r2019], which are then used in simulation-testing a range of data-limited MPs against performance metrics. 
+An R package written by the authors for this framework, gfdlm [https://github.com/pbs-assess/gfdlm], houses many tools and custom visualizations to aid in the process. 
+Steps of the process are described more fully in the following sections of the document.
 
 ## EXPECTED BENEFITS
 
@@ -72,5 +82,3 @@ There are a number of expected benefits of this project. Compared to the current
 * help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock assessment advice.
 
 Critically, the framework will develop methods to improve capacity for DFO Science to provide sustainable, data-limited catch advice, consistent with Canada's PA Framework as legislated under the Fish Stocks provisions, therefore enabling data-limited stocks to be brought into compliance with the Fish Stocks provisions of the *Fisheries Act*.
-
-<!-- TODO: cite [@cox2013] -->
