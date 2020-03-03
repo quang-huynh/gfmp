@@ -89,7 +89,7 @@ We note this below where that occurs.
 
 ```{r warnings = FALSE}
 stock_rex <- methods::new("Stock")
-nsim <- 600
+nsim <- 650
 cpars <- list()
 set.seed(282943)
 ```
@@ -491,11 +491,11 @@ n_caught <- drex$commercial_samples %>%
 ```
 
 There are only `r n_caught` fish with measured lengths in the WCVI commercial data, which is insufficient to estimate selectivity in the SRA.
-We will make the assumption that commercial and survey selectivity approximately match the maturity ogive, similar to the assumption made in a delay difference model that maturity and vulnerability to the fishery occur at the same age.
+We will make the assumption that commercial and survey selectivity approximately match the maturity ogive (but are fully selected by $L_\infty$), similar to the assumption made in a delay-difference model that maturity and vulnerability to the fishery occur at the same age.
 We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery. 
 These curves will be specified in the SRA.
 
-```{r desc-selectivity-function, fig.cap="Maturity-at-length and 2 selectivity curves used in the operating models. Maturity ogive represents 100 draws from the posterior.", fig.width=6, out.width='4in'}
+```{r desc-selectivity-function, fig.cap="Maturity-at-length and 2 selectivity curves used in the operating models. Maturity ogive represents 100 draws from the posterior. Vertical lines represent samples from $L_\\infty$.", fig.width=6, out.width='4in'}
 v <- function(La, LFS, L5) {
   ifelse(La < LFS,{
     sigma_asc <- (L5 - LFS)^2 / sqrt(-log(0.05, base = 2))
@@ -506,10 +506,10 @@ La <- seq(0, max(m_mat$pred_data$age_or_length), length.out = 300)
 # plot(La, v(La, L5 = 20, LFS = 32), type = "l", lty = 1)
 # lines(La, v(La, L5 = 28, LFS = 12), lty = 2)
 
-vulnerable1 <- data.frame(length = La, prob = v(La, L5 = 22, LFS = 34)) %>% 
+vulnerable1 <- data.frame(length = La, prob = v(La, L5 = 22, LFS = 32)) %>%
   mutate(type = "Selectivity 1", id = 9999)
 
-vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 17, LFS = 30)) %>%
+vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 17, LFS = 28)) %>%
   mutate(type = "Selectivity 2", id = 99999)
 
 bind_rows(.dm, vulnerable1) %>%
@@ -520,7 +520,8 @@ bind_rows(.dm, vulnerable1) %>%
   theme_pbs() +
   coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005)) +
   scale_color_manual(values = c("#00000006", RColorBrewer::brewer.pal(3, "Dark2")[1:2])) +
-  guides(colour = guide_legend(override.aes = list(alpha=1)))
+  guides(colour = guide_legend(override.aes = list(alpha=1))) +
+  geom_vline(xintercept = cpars$Linf, alpha = 0.3)
 ```
 
 
