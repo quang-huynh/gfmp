@@ -17,7 +17,7 @@ future::plan(future::multiprocess, workers = cores)
 sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc # look good?
-nsim <- 95
+nsim <- 250
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
@@ -78,8 +78,6 @@ om <- map(scenarios, ~ {
   }
   om@nsim <- nsim
   om@interval <- interval
-  om@TACSD <- c(0, 0)
-  om@CurrentYr <- 2019
   om <- gfdlm::sample_AddIerr(om)
   om
 })
@@ -113,15 +111,14 @@ oddify <- function(x) seq(2, x, by = 2)
 
 .ITM_hist <- use_AddInd(reduce_survey(ITM_hist, index = oddify))
 
-# stopifnot(round(ref_catch) == 124387) # parallel problem otherwise:
-# .SP4010_0.6 <- SP4010_gf %>%
-#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
-# .SP8040_0.6 <- SP8040_gf %>%
-#   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
+.SP4010_0.6 <- SP4010_gf %>%
+  add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
+.SP8040_0.6 <- SP8040_gf %>%
+  add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
 .SP6040_0.6 <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
@@ -146,10 +143,10 @@ oddify <- function(x) seq(2, x, by = 2)
   reduce_survey(index = oddify) %>%
   use_AddInd()
 
-# .SP6040_fox <- SP6040_gf %>%
-#   add_SP_prior(r_prior = .r_prior, initial_tac = ref_catch, start = list(n = 1)) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
+.SP6040_0.6_fox <- SP6040_gf %>%
+  add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch, start = list(n = 1)) %>%
+  reduce_survey(index = oddify) %>%
+  use_AddInd()
 
 missing <- mp$mp[!map_lgl(mp$mp, exists)]
 assert_that(length(missing) == 0,
