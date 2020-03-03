@@ -11,7 +11,7 @@ rmd_files: ["index.Rmd",
             "08-default-slots.Rmd",
             "09-mps.Rmd",
             "10-om-rex.Rmd",
-            # "11-mse-rex.Rmd",
+            "11-mse-rex.Rmd",
             "12-gfdlm.Rmd",
             "99-references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]

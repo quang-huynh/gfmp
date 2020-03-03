@@ -14,9 +14,111 @@ In each commercial database there is an official catch table that provides the b
 
 Research survey data and commercial biological data from the 1940s to present are housed in GFBio, the Groundfish Biological Samples database. In order to improve data on BC groundfish stocks, fishery-independent synoptic bottom trawl surveys were established in 2003 that are conducted in four areas: the west coast of Vancouver Island, Hecate Strait, Queen Charlotte Sound and the west coast of Haida Gwaii. The surveys alternately cover two areas each year. These survey and observer data are available to provide important time-series and biological data for stock assessment of a broad range of BC groundfish species.
 
-In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the west coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and starry flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The west coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation in Stock Synthesis [@cope2015].
+In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the West Coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and Starry Flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The West Coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation [@cope2015].
 
 Data are shown in Figures \@ref(fig:rex-syn1) and \@ref(fig:rex-syn1).
+
+```{r}
+library(ggplot2)
+library(dplyr)
+drex <- readRDS(here::here("generated-data", "rex-filter-data.rds"))
+if (!file.exists(here::here("generated-data/rex-survey-sets.rds"))) {
+  dsurv <- gfdata::get_survey_sets("rex sole", ssid = 1)
+  saveRDS(dsurv, here::here("generated-data/rex-survey-sets.rds"))
+} else {
+  dsurv <- readRDS(here::here("generated-data/rex-survey-sets.rds"))
+}
+if (!file.exists(here::here("generated-data/rex-cpue-spatial.rds"))) {
+  dcomm <- gfdata::get_cpue_spatial("rex sole")
+  saveRDS(dcomm, here::here("generated-data/rex-cpue-spatial.rds"))
+} else {
+  dcomm <- readRDS(here::here("generated-data/rex-cpue-spatial.rds"))
+}
+
+# dsurv <- readRDS(here::here("../../gfs/report/data-cache/rex-sole.rds"))$survey_sets
+# dcomm <- readRDS(here::here("../../gfs/report/data-cache/rex-sole.rds"))$cpue_spatial
+drex$survey_sets <- dsurv
+drex$cpue_spatial <- dcomm
+plot_multiyear_survey_sets <- function(dat, survey_abbrev,
+  density_column = "density_kgpm2",
+  density_lab = expression(Density~(kg/km^2)), density_multiplier = 1e6) {
+  dd <- gfplot::tidy_survey_sets(dat, survey_abbrev, years = seq(0, 1e6),
+    density_column = density_column)
+  coast <- gfplot:::load_coastline(range(dd$lon) + c(-1, 1),
+    range(dd$lat) + c(-1, 1),
+    utm_zone = 9
+  )
+  ggplot(filter(dd, present == 1), aes(X, Y,
+    size = density*density_multiplier,
+    fill = density*density_multiplier)) +
+    scale_size_area(max_size = 8) +
+    geom_point(data = filter(dd, present == 0), pch = 4,
+      size = 1, col = "grey60", alpha = 0.5) +
+    coord_equal(expand = FALSE, xlim = range(dd$X), ylim = range(dd$Y)) +
+    geom_point(pch = 21, alpha = 0.5) +
+    facet_wrap(~year) +
+    geom_polygon(
+      data = coast, aes_string(x = "X", y = "Y", group = "PID"),
+      fill = "grey87", col = "grey70", lwd = 0.2, inherit.aes = FALSE) +
+    scale_fill_viridis_c(trans = "sqrt") +
+    labs(fill = density_lab,
+      size = density_lab, x = "Easting",
+      y = "Northing") +
+    guides(
+      size = guide_legend(order = 1),
+      fill = guide_colorbar(order = 0)) +
+    gfdlm::theme_pbs()
+}
+```
+
+```{r rex-surv-set-plot, fig.cap="Survey tows for Rex Sole. TODO", fig.asp=1, fig.width = 9, out.width = "6in"}
+plot_multiyear_survey_sets(dsurv, "SYN WCVI")
+```
+
+```{r rex-surv-index-plot, fig.cap="Survey index for Rex Sole. TODO", fig.width = 5, out.width = "4in"}
+survey_cols <- c(RColorBrewer::brewer.pal(5L, "Set1"),
+      RColorBrewer::brewer.pal(8L, "Set1")[7:8],
+      "#303030", "#a8a8a8", "#a8a8a8", "#a8a8a8")
+survey_col_names <- c("SYN WCHG", "SYN HS", "SYN QCS", "SYN WCVI",
+    "HBLL OUT N", "HBLL OUT S", "IPHC FISS", "Commercial",
+    "HBLL INS N", "HBLL INS S", "MSA HS")
+survey_cols <- stats::setNames(survey_cols, survey_col_names)
+drex$survey_index %>%
+  gfplot::tidy_survey_index(survey = "SYN WCVI") %>%
+  gfplot::plot_survey_index(col = c("grey60", "grey20"), survey_cols = survey_cols) +
+  ylab("Survey relative biomass index")
+```
+
+```{r rex-catch-plot, fig.cap="Catch for Rex Sole. TODO", fig.asp = 0.8, fig.width = 5, out.width = "4in"}
+suppressWarnings({g <- drex$catch %>%
+  gfplot::tidy_catch(areas = "3[CD]+") %>%
+  gfplot::plot_catch(xlim = c(1954, 2019))})
+g + labs(title = "")
+```
+
+```{r rex-cpue-map, fig.cap="Spatial CPUE for Rex Sole. TODO", fig.width = 8, out.width = "5.5in"}
+drex$cpue_spatial %>%
+  dplyr::filter(year >= 2010, year <= 2019) %>%
+  dplyr::filter(major_stat_area_code %in% c("03", "04")) %>%
+  gfplot::plot_cpue_spatial(xlim = c(500, 890), ylim = c(5353, 5700),
+    percent_excluded_xy = c(0, 0), bin_width = 4)
+```
+
+```{r rex-samples, fig.cap="Sample availability for Rex Sole. TODO", fig.asp = 0.6, fig.width = 7, out.width = "4.5in"}
+# viridis::scale_fill_viridis(option = "D", end = 0.82, na.value = na_colour)}
+g1 <- drex$survey_samples %>%
+  gfplot::tidy_sample_avail(year_range = c(1996, 2019)) %>%
+  gfplot::plot_sample_avail(title = "Biological samples") +
+  scale_fill_viridis_c(option = "C", na.value = "white", end = 0.82)
+
+g2 <- drex$commercial_samples %>%
+  gfplot::tidy_sample_avail(year_range = c(1996, 2019)) %>%
+  gfplot::plot_sample_avail(title = "Commercial samples") +
+  scale_fill_viridis_c(option = "D", na.value = "white", end = 0.82)
+
+cowplot::plot_grid(g1, g2, nrow = 2)
+```
+
 
 *TODO: Properly write up data and include individual figs for WCVI Rex Sole.*
 
@@ -161,11 +263,11 @@ Fits to the historical indices of abundance from the nine OMs are shown in Figur
 Estimates of depletion (*SSB*/*SSB*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
 
 ```{r rex-selectivity, fig.cap="Selectivity-at-length used by all OMs.", out.width="4in"}
-knitr::include_graphics(here::here("report/figure/rex-selectivity.png"))
+# knitr::include_graphics(here::here("report/figure/rex-selectivity.png"))
 ```
 
 ```{r rex-survey-fits, fig.cap="Survey fits.", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
+# knitr::include_graphics(here::here("report/figure/rex-index-fits.png"))
 ```
 
 \clearpage
@@ -176,7 +278,7 @@ Depletion is represented as a fraction of B0 (biomass at unfished equilibrium).
 Some OMs ("M decreasing" and "M increasing") have identical historical trajectories as "Catch eq. 50%", but with a fixed value of M in the historical period (i.e., the change in M only occurs in the projection period).
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-panel.png"))
+# knitr::include_graphics(here::here("report/figure/rex-compare-SRA-depletion-panel.png"))
 ```
 
 \clearpage
@@ -187,9 +289,9 @@ We started with the full set of candidate MPs described in Appendix \@ref(app:MP
 
 ```{r rex-mps, results='asis'}
 #mp <- readr::read_csv(here::here("data", "mp.txt"), comment = "#")
-mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
-mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs.", col_names = c("Management procedure", "MP type"))
+# mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
+# mp_list <- split(mp, mp$type)
+# csasdown::csas_table(mp, caption = "Candidate MPs.", col_names = c("Management procedure", "MP type"))
 ```
 
 We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.
@@ -200,23 +302,26 @@ We set a prior on the intrinsic rate of population increase $r$ in the surplus p
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
 ```{r}
-pm_all <- readRDS(here::here("generated-data/rex-pm-all.rds"))
-pm_avg <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)
-pm_min <- group_by(pm_all, MP) %>%
-  summarise_if(is.numeric, min, na.rm = TRUE)
-rex_satisficed <- dplyr::filter(pm_min, `LT P40` > 0.8, STY > 0.7) %>% pull(MP)
-reference_mp <- c("FMSYref75", "NFref", "FMSYref")
-rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
-
-pm_avg_sat <- pm_avg %>% filter(MP %in% rex_satisficed)
+# pm_all <- readRDS(here::here("generated-data/rex-pm-all.rds"))
+# pm_avg <- group_by(pm_all, MP) %>%
+#   summarise_if(is.numeric, mean, na.rm = TRUE)
+# pm_min <- group_by(pm_all, MP) %>%
+#   summarise_if(is.numeric, min, na.rm = TRUE)
+# rex_satisficed <- dplyr::filter(pm_min, `LT P40` > 0.8, STY > 0.7) %>% pull(MP)
+# reference_mp <- c("FMSYref75", "NFref", "FMSYref")
+# rex_satisficed <- rex_satisficed[!rex_satisficed %in% reference_mp]
+#
+# pm_avg_sat <- pm_avg %>% filter(MP %in% rex_satisficed)
 ```
 
 
 Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010].
 We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
 To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT P40 $>$ 0.8 and STY $>$ 0.7.
-This left us with `r length(rex_satisficed)` MPs (`r gfutilities::commify(rex_satisficed)`).
+
+```{r}
+# This left us with `length(rex_satisficed)` MPs (`gfutilities::commify(rex_satisficed)`).
+```
 
 We ran the closed-loop simulations across 200 stochastic iterations using DLMtool version XX with the OMs and MPs described above.
 We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as iterations were added (Figure \@ref(fig:rex-converge)).
@@ -229,7 +334,7 @@ Assessing convergence of the Rex Sole closed-loop simulation under an example OM
 Broad differences between MPs have converged (lines no longer cross each other).
 
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-converge.png"))
+# knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 ```
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:results-rex6}
@@ -238,7 +343,9 @@ knitr::include_graphics(here::here("report/figure/rex-converge.png"))
 
 Average performance within the reference set of OMs varied across MPs and performance metrics (Figure \@ref(fig:rex-tigure-avg)).
 We can also see some variability in performance within the individual reference set scenarios (Figure \@ref(fig:rex-tigure-panel)).
-LT P40 varied between `r round(min(pm_avg_sat$"LT P40"), 2)` and `r round(max(pm_avg_sat$"LT P40"), 2)` and STY varied between `r round(min(pm_avg_sat$STY), 2)` and `r round(max(pm_avg_sat$STY), 2)`.
+```{r}
+# LT P40 varied between `round(min(pm_avg_sat$"LT P40"), 2)` and `round(max(pm_avg_sat$"LT P40"), 2)` and STY varied between `round(min(pm_avg_sat$STY), 2)` and `round(max(pm_avg_sat$STY), 2)`.
+```
 
 Across the categories of MPs, index-slope MPs had the most consistent performance across all six performance metrics (Figure \@ref(fig:rex-spider-all-mps)).
 We were unable to obtain reasonable performance out of the surplus production models, but will investigate this further (Figure \@ref(fig:rex-spider-all-mps)).
@@ -263,7 +370,7 @@ This figure is the same as Figure \@ref(fig:rex-tigure-avg) but shows the **mini
 In other words, this figure illustrates the worst performance of each MP across the reference set of OMs.
 
 ```{r rex-tigure-min, fig.cap="(ref:fig-rex-tigure-min)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-min.png"))
+# knitr::include_graphics(here::here("report/figure/rex-pm-table-min.png"))
 ```
 
 (ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
@@ -271,7 +378,7 @@ MPs are ordered by decreasing performance metric values from top to bottom start
 The color shading reflects the underlying numbers.
 
 ```{r rex-tigure-avg, fig.cap="(ref:fig-rex-tigure-avg)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
+# knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
 ```
 
 \clearpage
@@ -280,19 +387,19 @@ knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
 MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-min).
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-pm-tigures-ref-set.png"))
+# knitr::include_graphics(here::here("report/figure/rex-pm-tigures-ref-set.png"))
 ```
 
 \clearpage
 
 ```{r rex-spider-all-mps, fig.cap="Radar plots of performance metric trade-offs amongst all MPs for the averaged reference set of OMs. Each spoke of the web represents a performance metric and each line represents a management procedure. Lines closer to the outside of the web correspond to MPs that are determined to have a higher probability of achieving that performance metric.", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-avg-panel.png"))
+# knitr::include_graphics(here::here("report/figure/rex-spider-all-mptypes-avg-panel.png"))
 ```
 
 \clearpage
 
 ```{r rex-spider-satisficed-mps-avg, fig.cap="Average performance metrics for satisficed MPs for the reference set of OMs.", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-avg.png"))
+# knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-avg.png"))
 ```
 
 \clearpage
@@ -301,7 +408,7 @@ knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-avg.png"
 Performance metrics for satisficed MPs for the individual OMs in the reference set. Colours are the same as for Figure \@ref(fig:rex-spider-satisficed-mps-avg).
 
 ```{r rex-spider-satisficed-mps-reference, fig.cap="(ref:fig-rex-spider-satisficed-mps-reference)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
+# knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel.png"))
 ```
 
 \clearpage
@@ -313,19 +420,19 @@ The vertical dashed line indicates the last year of the historical period.
 The horizontal dashed lines indicate SSB/SSB~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
 
 ```{r rex-proj-ceq100, fig.cap="(ref:fig-rex-proj-ceq100)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
+# knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
 ```
 
 (ref:fig-rex-proj-ceq200-cpue) Same as Figure \@ref(fig:rex-proj-ceq100) but for the OM "Catch 200% + CPUE".
 
 ```{r rex-proj-ceq200-cpue, fig.cap="(ref:fig-rex-proj-ceq200-cpue)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq200-cpue.png"))
+# knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq200-cpue.png"))
 ```
 
 (ref:fig-rex-proj-low-h) Same as Figure \@ref(fig:rex-proj-ceq100) but for the OM "h = 0.5--0.7". (Other similar projection plots would be included but are not included in this draft.)
 
 ```{r rex-proj-low-h, fig.cap="(ref:fig-rex-proj-low-h)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-low-h.png"))
+# knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-low-h.png"))
 ```
 
 \clearpage
@@ -334,7 +441,7 @@ knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-low
 Caption is otherwise the same as Figure \@ref(fig:rex-proj-ceq100).
 
 ```{r rex-proj-failed, fig.cap="(ref:fig-rex-proj-failed)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
+# knitr::include_graphics(here::here("report/figure/rex-projections-eg-NOT-satisficed-ceq50.png"))
 ```
 
 \clearpage
@@ -344,7 +451,7 @@ Dots represent individual iterations.
 Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
 
 ```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
+# knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
 ```
 
 \clearpage
@@ -354,7 +461,7 @@ The solid line corresponds to the median value.
 Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 
 ```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
 ```
 
 \clearpage
@@ -366,13 +473,13 @@ However, all satisficed MPs had a lower probability of achieving yield performan
 The Iratio2 MP achieved the highest AAVY, LTY, and STY performance metrics in the M increasing scenario, while maintaining virtually identical conservation performance metrics as the other MPs (Figure \@ref(fig:rex-spider-satisficed-mps-robust), dark green line).
 
 ```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-robust.png"))
+# knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-panel-robust.png"))
 ```
 
 (ref:fig-rex-tigure-panel-rob) Performance of satisficed MPs for the robustness set OMs.
 
 ```{r rex-tigure-panel-rob, fig.cap="(ref:fig-rex-tigure-panel-rob)", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-tigures-rob-set.png"))
+# knitr::include_graphics(here::here("report/figure/rex-pm-tigures-rob-set.png"))
 ```
 
 \clearpage
@@ -391,14 +498,14 @@ A variety of MPs are illustrated across rows.
 Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother.
 
 ```{r rex-sens-bbmsy, fig.cap="(ref:fig-rex-sens-bbmsy)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-sensitivity-bbmsy-base.png"))
 ```
 
 (ref:fig-rex-sens-yield)
 Same as Figure \@ref(fig:rex-sens-bbmsy) but for mean catch in years 6--20 of the projection.
 
 ```{r rex-sens-yield, fig.cap="(ref:fig-rex-sens-yield)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-sensitivity-yield-base.png"))
 ```
 
 \clearpage
@@ -408,7 +515,7 @@ The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colours) of var
 This example uses the "Catch eq. 100%" OM.
 
 ```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens-bbmsy)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
 ```
 
 \clearpage
@@ -418,5 +525,5 @@ The sensitivity of F/F~MSY~ (y-axis) to high and low values (colours) of various
 This example uses the "Catch eq. 100%" OM.
 
 ```{r rex-proj-sens-ffmsy, fig.cap="(ref:fig-rex-proj-sens-ffmsy)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-ffmsy-base.png"))
+# knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-ffmsy-base.png"))
 ```
