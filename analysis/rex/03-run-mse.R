@@ -242,8 +242,12 @@ plots <- gfdlm::plot_factory(
 
 .ggsave("dot-refset-avg", width = 7.5, height = 4.5, plot = plots$dot_refset_avg)
 .ggsave("dot-robset", width = 8, height = 6, plot = plots$dot_robset + facet_wrap(~scenario, ncol = 1))
-.ggsave("convergence", width = 10.5, height = 7.5,
-  plot = plots$convergence + scale_x_continuous(breaks = seq(100, 300, 100)))
+.ggsave("convergence", width = 10.5, height = 8.25,
+  plot = plots$convergence + scale_x_continuous(breaks = seq(100, 300, 100)) +
+    theme(
+      legend.box.margin = ggplot2::margin(0.2, 0.2, 12, .2),
+      legend.position = "bottom"
+    ))
 
 g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 6)
 .ggsave("tradeoff-refset", width = 9.5, height = 5, plot = g)
