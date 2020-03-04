@@ -521,7 +521,7 @@ bind_rows(.dm, vulnerable1) %>%
   coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005)) +
   scale_color_manual(values = c("#00000006", RColorBrewer::brewer.pal(3, "Dark2")[1:2])) +
   guides(colour = guide_legend(override.aes = list(alpha=1))) +
-  geom_vline(xintercept = cpars$Linf, alpha = 0.3)
+  geom_vline(xintercept = cpars$Linf[1:100], alpha = 0.1)
 ```
 
 
