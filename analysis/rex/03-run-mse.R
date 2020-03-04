@@ -18,7 +18,7 @@ sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 sc # look good?
-nsim <- 225L
+nsim <- 250L
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
@@ -230,19 +230,20 @@ plots <- gfdlm::plot_factory(
   mp_not_sat2 = mp_eg_not_sat,
   mp_ref = reference_mp,
   custom_pal = custom_pal,
-  eg_scenario = "ceq200",
-  tradeoff = c("LT LRP", "STC"),
+  eg_scenario = sc$scenario[1],
+  tradeoff = names(satisficed_criteria),
   catch_breaks = catch_breaks,
   catch_labels = catch_labels,
   satisficed_criteria = satisficed_criteria,
   skip_projections = FALSE,
   survey_type = "AddInd",
-  omit_index_fn = function(x) seq(2, x, by = 2)
+  omit_index_fn = oddify
 )
 
 .ggsave("dot-refset-avg", width = 7.5, height = 4.5, plot = plots$dot_refset_avg)
 .ggsave("dot-robset", width = 8, height = 6, plot = plots$dot_robset + facet_wrap(~scenario, ncol = 1))
-.ggsave("convergence", width = 12, height = 9, plot = plots$convergence)
+.ggsave("convergence", width = 10.5, height = 7.5,
+  plot = plots$convergence + scale_x_continuous(breaks = seq(100, 300, 100)))
 
 g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 6)
 .ggsave("tradeoff-refset", width = 9.5, height = 5, plot = g)
@@ -259,10 +260,10 @@ g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 6)
 .ggsave("radar-refset-min", width = 6, height = 6, plot = plots$radar_refset_min)
 
 g <- plots$projections_index +
-  scale_x_continuous(breaks = seq(1980, 2090, 20)) +
+  scale_x_continuous(breaks = seq(1975, 2100, 25)) +
   coord_cartesian(ylim = c(0, 16e6)) +
   scale_y_continuous(labels = function(x) x / 1e6)
-.ggsave("projections-index", width = 12, height = 10, plot = g)
+.ggsave("projections-index", width = 9, height = 8.5, plot = g)
 
 walk(names(plots$projections), ~ {
   .ggsave(paste0("projections-", .x),
@@ -283,21 +284,19 @@ walk(names(plots$projections), ~ {
   plot = plots$projections_scenarios_ref
 )
 
-.ggsave("worms-proj", width = 12, height = 8.5, plot = plots$worms_proj_ref)
-.ggsave("worms-hist-proj", width = 13, height = 10.5, plot = plots$worms_hist_proj_ref)
-.ggsave("kobe", width = 13, height = 10.5, plot = plots$kobe_ref)
+.ggsave("worms-proj", width = 8.5, height = 9.5, plot = plots$worms_proj_ref)
+.ggsave("worms-hist-proj", width = 8.5, height = 9.5, plot = plots$worms_hist_proj_ref)
+.ggsave("kobe", width = 8, height = 10.5, plot = plots$kobe_ref)
 
-# Substantially speeds up LaTeX rendering on a Mac:
-optimize_png <- FALSE
-if (optimize_png) {
-  cores <- parallel::detectCores()
-  files_per_core <- 2
+# Substantially speeds up LaTeX rendering on a Mac
+# by pre-optimizing the PNG compression:
+optimize_png <- TRUE
+if (optimize_png && !identical(.Platform$OS.type, "windows")) {
+  files_per_core <- 4
   setwd("report/figure")
-  if (!identical(.Platform$OS.type, "windows")) {
-    system(paste0(
-      "find -X . -name '*.png' -print0 | xargs -0 -n ",
-      files_per_core, " -P ", cores, " optipng -strip all"
-    ))
-  }
+  system(paste0(
+    "find -X . -name '*.png' -print0 | xargs -0 -n ",
+    files_per_core, " -P ", cores, " optipng -strip all"
+  ))
   setwd(here())
 }

@@ -381,6 +381,15 @@ Although these satisficed MPs mostly perform similarly to each other, by inspect
 
 We can also look at "Kobe" plots that demonstrate either the final SSB/SSB~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
 
+(ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
+MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
+The color shading reflects the underlying numbers.
+
+```{r rex-tigure-avg, fig.cap="(ref:fig-rex-tigure-avg)", out.width="3.5in"}
+knitr::include_graphics(here("report/figure/rex-tigure-refset-avg.png"))
+```
+
+\clearpage
 
 (ref:fig-rex-tigure-min) Minimum performance of all candidate MPs across the reference set of OMs.
 This figure is the same as Figure \@ref(fig:rex-tigure-avg) but shows the **minimum** performance metric across the OMs in the reference set for the purposes of applying satisficing rules.
@@ -388,14 +397,6 @@ In other words, this figure illustrates the worst performance of each MP across 
 
 ```{r rex-tigure-min, fig.cap="(ref:fig-rex-tigure-min)", out.width="3.5in"}
 knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
-```
-
-(ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
-MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
-The color shading reflects the underlying numbers.
-
-```{r rex-tigure-avg, fig.cap="(ref:fig-rex-tigure-avg)", out.width="3.5in"}
-knitr::include_graphics(here("report/figure/rex-tigure-refset-avg.png"))
 ```
 
 \clearpage
@@ -415,8 +416,28 @@ knitr::include_graphics(here("report/figure/rex-dot-refset-avg.png"))
 
 \clearpage
 
+```{r rex-tradeoff-reference, fig.cap="Trade-off plot between...", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-tradeoff-refset.png"))
+```
+
+\clearpage
+
 ```{r rex-spider-satisficed-mps-avg, fig.cap="Average performance metrics for satisficed MPs for the reference set of OMs.", out.width="5in"}
 knitr::include_graphics(here("report/figure/rex-radar-refset-avg.png"))
+```
+
+\clearpage
+
+```{r rex-proj-index, fig.cap="Index projections TODO", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-projections-index.png"))
+```
+
+\clearpage
+
+(ref:fig-rex-proj-scenarios) Same as Figure \@ref(fig:rex-proj-ceq200) etc. but showing all scenarios at once.
+
+```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-projections-scenarios-ref.png"))
 ```
 
 \clearpage
@@ -461,28 +482,6 @@ knitr::include_graphics(here("report/figure/rex-projections-sel1.png"))
 knitr::include_graphics(here("report/figure/rex-projections-no-cpue.png"))
 ```
 
-(ref:fig-rex-proj-no-cpue-light) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "No CPUE Ceq. 50%".
-
-```{r rex-proj-no-cpue-light, fig.cap="(ref:fig-rex-proj-no-cpue-light)", out.width="6.5in"}
-knitr::include_graphics(here("report/figure/rex-projections-no-cpue-light.png"))
-```
-
-(ref:fig-rex-proj-inc-m) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "Increasing M".
-
-```{r rex-proj-inc-m, fig.cap="(ref:fig-rex-proj-inc-m)", out.width="6.5in"}
-knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
-```
-
-(ref:fig-rex-proj-scenarios) Same as Figure \@ref(fig:rex-proj-ceq200) etc. but showing all scenarios at once.
-
-```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-projections-scenarios-ref.png"))
-```
-
-```{r rex-proj-index, fig.cap="Index projections TODO", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-projections-index.png"))
-```
-
 \clearpage
 
 (ref:fig-rex-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations.
@@ -505,12 +504,6 @@ knitr::include_graphics(here("report/figure/rex-worms-proj.png"))
 
 \clearpage
 
-```{r rex-tradeoff-reference, fig.cap="Trade-off plot between...", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-tradeoff-refset.png"))
-```
-
-\clearpage
-
 ### Robustness Set Results
 
 With the exception of the GB_slope MPs, the satisficed MPs were relatively robust to linear increases in natural mortality in the projection period (Figure \@ref(fig:rex-spider-satisficed-mps-robust) and \@ref(fig:rex-tigure-panel-rob)).
@@ -523,17 +516,28 @@ The Iratio2 MP achieved the highest AAVY, LTY, and STY performance metrics in th
 knitr::include_graphics(here("report/figure/rex-tigure-robset.png"))
 ```
 
-```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-radar-robset.png"))
-```
-
 ```{r rex-dots-satisficed-mps-robust, fig.cap="TODO.", out.width="0.9\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-dot-robset.png"))
 ```
 
-
 ```{r rex-tradeoff-robust, fig.cap="Trade-off plot between...", out.width="6in"}
 knitr::include_graphics(here("report/figure/rex-tradeoff-robset.png"))
+```
+
+```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-radar-robset.png"))
+```
+
+(ref:fig-rex-proj-no-cpue-light) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "No CPUE Ceq. 50%".
+
+```{r rex-proj-no-cpue-light, fig.cap="(ref:fig-rex-proj-no-cpue-light)", out.width="6.5in"}
+knitr::include_graphics(here("report/figure/rex-projections-no-cpue-light.png"))
+```
+
+(ref:fig-rex-proj-inc-m) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "Increasing M".
+
+```{r rex-proj-inc-m, fig.cap="(ref:fig-rex-proj-inc-m)", out.width="6.5in"}
+knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 ```
 
 \clearpage

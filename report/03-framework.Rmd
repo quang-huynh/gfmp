@@ -365,7 +365,8 @@ Lines that are crossing indicate changes to the rank order of MP performance as 
 A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
 
 ```{r methods-converge, fig.cap="(ref:fig-methods-converge)", out.width="5in"}
-knitr::include_graphics(here::here("report/figure/rex-converge.png"))
+# knitr::include_graphics(here::here("report/figure/rex-convergence.png"))
+plot(1)
 ```
 
 \clearpage
@@ -379,7 +380,8 @@ The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; a
 Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
 
 ```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="6.5in"}
-knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
+# knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
+plot(1)
 ```
 
 \clearpage
@@ -391,7 +393,8 @@ The colour shading reflects the underlying numbers and is included to make the d
 TODO: will add an indication of satisficing thresholds with shading or bold MPs names.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
-knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
+# knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
+plot(1)
 ```
 
 \clearpage
