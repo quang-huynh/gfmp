@@ -213,7 +213,7 @@ cpars$AC[cpars$AC < -1] <- -1
 
 Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well (Figure \@ref(fig:rex-length1)). We will extract samples from the model posterior (Figure \@ref(fig:desc-vb-parameters)) and save them as custom parameters.
 
-```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent samples from the posterior.", fig.width=6, out.width='4in'}
+```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent 100 samples from the posterior.", fig.width=6, out.width='4in'}
 if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
   msa <- gfdata::get_survey_samples("rex sole", ssid = 2)
   saveRDS(msa, file = here("generated-data", "msa-ages-rex.rds"))
@@ -241,7 +241,7 @@ vb <- function(age, linf, k, t0) {
   linf * (1 - exp(-k * (age - t0)))
 }
 .dp <- purrr::pmap_df(
-  list(cpars$Linf, cpars$K, cpars$t0, seq_along(cpars$t0)), ~ {
+  list(cpars$Linf[1:100], cpars$K[1:100], cpars$t0[1:100], seq_along(cpars$t0[1:100])), ~ {
     data.frame(ages = ages, length = vb(ages, ..1, ..2, ..3), id = ..4)
   }
 )
@@ -336,7 +336,7 @@ L50 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.5)
 i <- sample(seq_along(post_mat$length), nsim)
 ```
 
-```{r desc-stock-rex-mat2, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length from the Bayesian model for a fish of average male/female sex. Individual thin translucent lines represent independent draws from the posterior."}
+```{r desc-stock-rex-mat2, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length from the Bayesian model for a fish of average male/female sex. Individual thin translucent lines represent 100 draws from the posterior."}
 La <- seq(0, max(m_mat$pred_data$age_or_length), length.out = 300)
 mat_prob <- function(x, intercept, slope) {
   plogis(intercept + x * slope)
@@ -410,7 +410,9 @@ stock_rex@D
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined.", fig.width=6, out.width="4in", message=FALSE}
+(ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
+
+```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="", fig.width=6, out.width="4in", message=FALSE}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
 stock_rex@a <- exp(mlw$pars[["log_a"]])
