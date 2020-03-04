@@ -18,13 +18,13 @@ sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 sc # look good?
-nsim <- 225
+nsim <- 225L
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
-#
+
 catch_breaks <- seq(0, 600000, 100000)
 catch_labels <- catch_breaks / 1000
 
@@ -124,26 +124,14 @@ oddify <- function(x) seq(2, x, by = 2)
   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
-# .SP4010_0.4 <- SP4010_gf %>%
-#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
-# .SP8040_0.4 <- SP8040_gf %>%
-#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
-
 .SP6040_0.4 <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
 .SP6040_0.5 <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.5, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
 .SP6040_0.6_fox <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch, start = list(n = 1)) %>%
   reduce_survey(index = oddify) %>%
@@ -198,16 +186,15 @@ pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 saveRDS(pm_df_list, file = here("generated-data", "rex-pm-all.rds"))
 
 satisficed_criteria <- c("LT LRP" = 0.9, "STC" = 0.8)
-plot_tigure(pm_avg, satisficed = satisficed_criteria)
-plot_tigure(pm_min, satisficed = satisficed_criteria)
+# plot_tigure(pm_avg, satisficed = satisficed_criteria)
+# plot_tigure(pm_min, satisficed = satisficed_criteria)
 
 mp_sat <- dplyr::filter(pm_min, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
-  # arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`, -AAVC) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 
-# mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
+# Near identical performance:
 mp_sat <- mp_sat[!mp_sat %in% c(".SP4010_0.6", ".SP6040_0.6_fox", ".SP6040_0.6")]
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
 mp_sat
@@ -217,9 +204,6 @@ stopifnot(length(mp_sat) <= 8) # for RColorBrewer::brewer.pal()
 mp_sat_with_ref <- union(mp_sat, reference_mp)
 mp_not_sat <- mp$mp[!mp$mp %in% mp_sat_with_ref]
 stopifnot(length(mp_not_sat) > 1)
-
-# custom_pal <- c(RColorBrewer::brewer.pal(8, "Set2")[seq_along(mp_sat)], ref_mp_cols) %>%
-  # set_names(mp_sat_with_ref)
 
 custom_pal <- c(RColorBrewer::brewer.pal(8, "Dark2")[seq_along(mp_sat)], ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
@@ -303,6 +287,7 @@ walk(names(plots$projections), ~ {
 .ggsave("worms-hist-proj", width = 13, height = 10.5, plot = plots$worms_hist_proj_ref)
 .ggsave("kobe", width = 13, height = 10.5, plot = plots$kobe_ref)
 
+# Substantially speeds up LaTeX rendering on a Mac:
 optimize_png <- FALSE
 if (optimize_png) {
   cores <- parallel::detectCores()
@@ -314,5 +299,5 @@ if (optimize_png) {
       files_per_core, " -P ", cores, " optipng -strip all"
     ))
   }
-  setwd(here::here())
+  setwd(here())
 }
