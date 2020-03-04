@@ -285,7 +285,7 @@ walk(names(plots$projections), ~ {
 )
 .ggsave("projections-scenarios-ref",
   width = 8, height = 10,
-  plot = plots$projections_scenarios_ref
+  plot = plots$projections_scenarios
 )
 
 .ggsave("worms-proj", width = 8.5, height = 9.5, plot = plots$worms_proj_ref)

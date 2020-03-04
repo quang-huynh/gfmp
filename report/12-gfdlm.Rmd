@@ -4,49 +4,49 @@
 
 Function:
 
-`plot_convergence()`
-
-* Figure \@ref(fig:rex-converge).
-
-`plot_dots()`
-
-* For example, Figure \@ref(fig:rex-dot-lines).
-
-`plot_index()`
-
-* For example, Figure \@ref(fig:rex-proj-index).
-
-`plot_index_fits()` 
+`plot_index_fits()`
 
 * For example, Figure \@ref(fig:rex-survey-fits).
 
-`plot_kobe()` 
+`plot_convergence()`
 
-* For example, Figure \@ref(fig:rex-kobe).
-
-`plot_main_projections()` 
-
-* For example, Figure \@ref(fig:rex-proj-ceq200).
-
-`plot_radar()` 
-
-* For example, Figure \@ref(fig:rex-spider-satisficed-mps-avg).
-
-`plot_scenario_projections()` 
-
-* For example, Figure \@ref(fig:rex-proj-scenarios).
+* Figure \@ref(fig:rex-converge).
 
 `plot_tigure()` 
 
 * For example, Figure \@ref(fig:rex-tigure-avg).
 
+`plot_dots()`
+
+* For example, Figure \@ref(fig:rex-dot-lines).
+
 `plot_tradeoff()` 
 
-* For example, Figure \@ref(fig:rex-tradeoff-robust).
+* For example, Figure \@ref(fig:rex-tradeoff-reference).
+
+`plot_radar()` 
+
+* For example, Figure \@ref(fig:rex-spider-satisficed-mps-avg).
+
+`plot_index()`
+
+* For example, Figure \@ref(fig:rex-proj-index).
+
+`plot_main_projections()` 
+
+* For example, Figure \@ref(fig:rex-proj-ceq200).
+
+`plot_kobe()` 
+
+* For example, Figure \@ref(fig:rex-kobe).
 
 `plot_worms()` 
 
 * For example, Figure \@ref(fig:rex-worm).
+
+`plot_scenario_projections()` 
+
+* For example, Figure \@ref(fig:rex-proj-scenarios).
 
 `plot_factory()`
 
@@ -77,3 +77,82 @@ oddify <- function(x) seq(2, x, by = 2)
 
 * This function creates or updates a template for specifying a DLMtool OM. For example, it was used to create Appendix \@ref(app:desc-om-rex).
 
+\clearpage
+
+# COMPUTATIONAL ENVIRONMENT {-}
+
+This version of the document was generated on `r Sys.time()` with
+`r devtools::session_info()$platform$version` [@r2019] and R package versions:
+
+```{r env, echo = FALSE, results='asis', message=FALSE, warning=FALSE, eval=TRUE, cache=FALSE}
+library(TMB)
+library(rstan)
+library(rstanarm)
+library(bookdown)
+library(rmarkdown)
+library(DLMtool)
+library(cowplot)
+library(MSEtool)
+library(glmmTMB)
+library(gfdata)
+pkgs <- sort(c("gfplot", "ggplot2", "dplyr", "rstan", "knitr", "glmmTMB",
+  "TMB", "purrr", "kableExtra", "cowplot", "csasdown", "bookdown", "rmarkdown",
+  "rstanarm", "gfdlm", "gfdata",
+  "DLMtool", "MSEtool"))
+info <- devtools::session_info()$packages
+info <- info %>% dplyr::filter(package %in% pkgs) %>%
+  dplyr::select(package, ondiskversion, date) %>%
+  dplyr::rename(Package = package, Version = ondiskversion, Date = date)
+
+info %>%
+  knitr::kable(booktabs = TRUE, linesep = "", longtable = TRUE, format = "pandoc") %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"))
+```
+
+```{r sha, cache=FALSE}
+get_sha <- function(path) {
+  suppressWarnings({
+    sha <- tryCatch(system(paste0("git ls-remote git@github.com:", path, ".git"),
+      intern = TRUE, ignore.stderr = TRUE), error = function(e) " ")
+  })
+  if (is.null(attr(sha, "status")))
+    substr(sha[grepl("HEAD", sha)], 1, 7)
+  else
+    "xxxxxxx"
+}
+sha_gfmp <- get_sha("pbs-assess/gfmp")
+sha_gfdlm <- get_sha("pbs-assess/gfdlm")
+# sha_gfdata <- get_sha("pbs-assess/gfdata")
+sha_gfdata <- "7e075bc"
+sha_gfplot <- get_sha("pbs-assess/gfplot")
+# sha_mse <- get_sha("pbs-assess/MSEtool")
+sha_mse <- "0805813"
+# sha_dlm <- get_sha("DLMtool/DLMtool")
+sha_dlm <- "feb23c76"
+sha_csasdown <- get_sha("pbs-assess/csasdown")
+```
+
+The source code for this document is available at:\
+<`r paste0("https://github.com/pbs-assess/gfmp/tree/", sha_gfmp)`>.
+
+This document was compiled with the R package csasdown.
+
+The specific versions of the primary packages used to generate this report can be viewed at:
+
+<`r paste0("https://github.com/DLMtool/DLMtool/tree/", sha_dlm)`>\
+<`r paste0("https://github.com/tcarruth/MSEtool/tree/", sha_mse)`>\
+<`r paste0("https://github.com/pbs-assess/gfdlm/tree/", sha_gfdlm)`>\
+<`r paste0("https://github.com/pbs-assess/gfdata/tree/", sha_gfdata)`>\
+<`r paste0("https://github.com/pbs-assess/csasdown/tree/", sha_csasdown)`>\
+
+\vspace{4mm}
+or installed via:
+
+`# install.packages('devtools')`\
+`devtools::install_github('DLMtool/DLMtool', ref = '`r sha_dlm`')`\
+`devtools::install_github('tcarruth/MSEtool', ref = '`r sha_mse`')`\
+`devtools::install_github('pbs-assess/gfdlm', ref = '`r sha_gfdlm`')`\
+`devtools::install_github('pbs-assess/gfdata', ref = '`r sha_gfdata`')`\
+`devtools::install_github('pbs-assess/csasdown', ref = '`r sha_csasdown`')`\
+
+\clearpage

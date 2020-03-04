@@ -472,18 +472,6 @@ knitr::include_graphics(here("report/figure/rex-projections-index.png"))
 
 \clearpage
 
-(ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
-Colours represent the individual reference-set scenarios.
-Lines represent medians and shaded regions represent 50% quantiles.
-Satisficed in reference MPs are shown from top to bottom.
-The scenarios are shown individually with example iterations in the following figures.
-
-```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-projections-scenarios-ref.png"))
-```
-
-\clearpage
-
 (ref:fig-rex-proj-ceq200) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods for the "Ceq. 200%" OM.
 Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation iterations.
@@ -586,44 +574,11 @@ knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 
 ### Sensitivity Tests
 
-The closed-loop simulation results demonstrate that conservation and catch metrics are generally insensitive to the range of operating model parameter values explored within a given operating model with the exception of the depletion in the final historical year (D) (Figure \@ref(fig:rex-sens-bbmsy)--\@ref(fig:rex-proj-sens-ffmsy)).
-We note that the sensitivity demonstrated here is sensitivity to the range of parameter values within an already conditioned OM.
-Changing some of these parameter values prior to fitting the conditioning SRA model would demonstrate sensitivity in some cases (as demonstrated by the OM scenarios).
+(ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
+Colours represent the reference- and robustness-set scenarios.
+Lines represent medians and shaded regions represent 50% quantiles.
+Satisficed and reference MPs are shown from top to bottom.
 
-
-(ref:fig-rex-sens-bbmsy)
-The sensitivity of SSB/SSB~MSY~ in years 36--50 of the projection (y-axis) to OM parameter values (x-axis).
-This example uses the "Catch eq. 100%" OM.
-A variety of MPs are illustrated across rows.
-Each point corresponds to simulation iteration and the solid lines correspond to a loess smoother.
-
-```{r rex-sens-bbmsy, fig.cap="(ref:fig-rex-sens-bbmsy)", out.width="\\textwidth"}
-# knitr::include_graphics(here("report/figure/rex-sensitivity-bbmsy-base.png"))
-```
-
-(ref:fig-rex-sens-yield)
-Same as Figure \@ref(fig:rex-sens-bbmsy) but for mean catch in years 6--20 of the projection.
-
-```{r rex-sens-yield, fig.cap="(ref:fig-rex-sens-yield)", out.width="\\textwidth"}
-# knitr::include_graphics(here("report/figure/rex-sensitivity-yield-base.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-proj-sens-bbmsy)
-The sensitivity of SSB/SSB~MSY~ (y-axis) to high and low values (colours) of various OM parameters (columns) over time.
-This example uses the "Catch eq. 100%" OM.
-
-```{r rex-proj-sens-bbmsy, fig.cap="(ref:fig-rex-proj-sens-bbmsy)", out.width="\\textwidth"}
-# knitr::include_graphics(here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
-```
-
-\clearpage
-
-(ref:fig-rex-proj-sens-ffmsy)
-The sensitivity of F/F~MSY~ (y-axis) to high and low values (colours) of various OM parameters (columns) over time.
-This example uses the "Catch eq. 100%" OM.
-
-```{r rex-proj-sens-ffmsy, fig.cap="(ref:fig-rex-proj-sens-ffmsy)", out.width="\\textwidth"}
-# knitr::include_graphics(here("report/figure/rex-sensitivity-traj-ffmsy-base.png"))
+```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-projections-scenarios.png"))
 ```
