@@ -106,7 +106,7 @@ N_{y, a = 1} = R_y =
       \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \varepsilon_{R,y-1} & \textrm{Beverton-Holt}\\
       \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\varepsilon_{R,y-1} & \textrm{Ricker},
 \end{cases}
-(\#eq:sra-om-rya)
+(\#eq:dlm-om-rya)
 $$
 
 where $\alpha^{\textrm{B}}$ and $\beta^{\textrm{B}}$ are the parameters of the Beverton-Holt stock-recruit relationship, and $\alpha^{\textrm{R}}$ and $\beta^{\textrm{R}}$ are the parameters of the Ricker stock-recruit relationship, derived from user-defined parameters steepness ($\widetilde{h}$) and $\widetilde{R}_0$, where
