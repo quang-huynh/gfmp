@@ -296,41 +296,12 @@ walk(names(plots$projections), ~ {
 )
 .ggsave("projections-scenarios-ref",
   width = 8, height = 10,
-  plot = plots$projections_scenarios
+  plot = plots$projections_scenarios_ref
 )
 
-get_filtered_scenario <- function(type, column) {
-  dplyr::filter(sc, scenario_type == type) %>%
-    dplyr::pull(!!column) %>%
-    purrr::set_names()
-}
-scenarios <- sc$scenario %>% set_names()
-scenarios_human <- sc$scenario_human %>% set_names()
-scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
-x <- purrr::map(
-  scenarios_ref,
-  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
-) %>%
-  set_names(scenarios_ref_human)
-
-plot_index(x, type = "AddInd", omit_index_fn = oddify)
-
-# g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
-#   set_names() %>%
-#   map(~ x[[.]]) %>%
-#   plot_scenario_projections()
-# .ggsave("projections-scenarios-ref1", width = 8, height = 10)
-#
-# g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
-#   set_names() %>%
-#   map(~ x[[.]]) %>%
-#   plot_scenario_projections()
-# .ggsave("projections-scenarios-ref2", width = 8, height = 10)
-
-.ggsave("worms-proj", width = 12, height = 8.5, plot = plots$worms_proj)
-.ggsave("worms-hist-proj", width = 13, height = 10.5, plot = plots$worms_hist_proj)
-.ggsave("kobe", width = 13, height = 10.5, plot = plots$kobe)
+.ggsave("worms-proj", width = 12, height = 8.5, plot = plots$worms_proj_ref)
+.ggsave("worms-hist-proj", width = 13, height = 10.5, plot = plots$worms_hist_proj_ref)
+.ggsave("kobe", width = 13, height = 10.5, plot = plots$kobe_ref)
 
 optimize_png <- FALSE
 if (optimize_png) {
