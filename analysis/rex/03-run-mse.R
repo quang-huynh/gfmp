@@ -294,7 +294,7 @@ walk(names(plots$projections), ~ {
 
 # Substantially speeds up LaTeX rendering on a Mac
 # by pre-optimizing the PNG compression:
-optimize_png <- TRUE
+optimize_png <- FALSE
 if (optimize_png && !identical(.Platform$OS.type, "windows")) {
   files_per_core <- 4
   setwd("report/figure")

@@ -220,6 +220,7 @@ sc <- tibble::tribble(
 )
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = here("generated-data/rex-scenarios.rds"))
+sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 
 sra_rex <- purrr::map(sc$scenario, ~ {
   readRDS(here("generated-data", paste0("rex-sra-", .x, ".rds")))
@@ -260,14 +261,16 @@ g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
   geom_line() +
   facet_wrap(vars(scenario)) +
   gfplot::theme_pbs() +
-  labs(x = "Year", y = "Depletion")
+  labs(x = "Year", y = "Depletion") +
+  coord_cartesian(ylim = c(0, 1), expand = FALSE)
 ggsave(here::here("report/figure/rex-compare-SRA-depletion-panel.png"),
-  width = 8, height = 6
+  width = 8, height = 6.75
 )
 
-sra_rex %>% set_names(sc$scenario_human) %>%
+g <- sra_rex %>% set_names(sc$scenario_human) %>%
   gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE")) +
-  ylim(0, 2.5)
+  coord_cartesian(ylim = c(0, 2.5), expand = FALSE) +
+  scale_y_continuous(breaks = seq(0, 2, .5))
 ggsave(here::here("report/figure/rex-index-fits.png"), width = 5.5, height = 9.5)
 
 # FIXME: get this into gfdlm:

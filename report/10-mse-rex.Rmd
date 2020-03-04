@@ -16,8 +16,6 @@ Research survey data and commercial biological data from the 1940s to present ar
 
 In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the West Coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and Starry Flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The West Coast stock was last assessed in 2013 using "extended simple Stock Synthesis" in which a depletion-based stock reduction type analysis is extended to allow index data (and potentially length and age data) to be used for parameter estimation [@cope2015].
 
-Data are shown in Figures \@ref(fig:rex-syn1) and \@ref(fig:rex-syn1).
-
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -71,40 +69,70 @@ plot_multiyear_survey_sets <- function(dat, survey_abbrev,
 }
 ```
 
-```{r rex-surv-set-plot, fig.cap="Survey tows for Rex Sole. TODO", fig.asp=1, fig.width = 9, out.width = "6in"}
+```{r rex-surv-set-plot, fig.cap="Individual survey tows for the West Coast Vancouver Island synoptic bottom trawl survey. Light gray crosses indicate survey sets that did not catch Rex Sole. The area and colour of the circles are proportional to the density of Rex Sole for that survey set. Eastings and Northings are for UTM zone 9.", fig.asp=1, fig.width = 9, out.width = "\\textwidth"}
 plot_multiyear_survey_sets(dsurv, "SYN WCVI")
 ```
 
-```{r rex-surv-index-plot, fig.cap="Survey index for Rex Sole. TODO", fig.width = 5, out.width = "4in"}
-survey_cols <- c(RColorBrewer::brewer.pal(5L, "Set1"),
-      RColorBrewer::brewer.pal(8L, "Set1")[7:8],
-      "#303030", "#a8a8a8", "#a8a8a8", "#a8a8a8")
-survey_col_names <- c("SYN WCHG", "SYN HS", "SYN QCS", "SYN WCVI",
-    "HBLL OUT N", "HBLL OUT S", "IPHC FISS", "Commercial",
-    "HBLL INS N", "HBLL INS S", "MSA HS")
-survey_cols <- stats::setNames(survey_cols, survey_col_names)
-drex$survey_index %>%
-  gfplot::tidy_survey_index(survey = "SYN WCVI") %>%
-  gfplot::plot_survey_index(col = c("grey60", "grey20"), survey_cols = survey_cols) +
-  ylab("Survey relative biomass index")
+(ref:fig-rex-indexes)
+West Coast Vancouver Island synoptic bottom trawl survey and standardized commercial bottom trawl CPUE for Rex Sole standardized according to the methods in @anderson2019synopsis. Each index is centred by its geometric mean for years 2004--2019 for visualization purposes. Dots represent mean estimates and line segments represent 95% confidence intervals. The index in the top panel is derived from the data shown in Figure \@ref(fig:rex-surv-set-plot).
+
+```{r rex-surv-index-plot, fig.cap="(ref:fig-rex-indexes)", fig.width = 5, out.width = "4.3in", fig.asp=1.15}
+# survey_cols <- c(RColorBrewer::brewer.pal(5L, "Set1"),
+#       RColorBrewer::brewer.pal(8L, "Set1")[7:8],
+#       "#303030", "#a8a8a8", "#a8a8a8", "#a8a8a8")
+# survey_col_names <- c("SYN WCHG", "SYN HS", "SYN QCS", "SYN WCVI",
+#     "HBLL OUT N", "HBLL OUT S", "IPHC FISS", "Commercial",
+#     "HBLL INS N", "HBLL INS S", "MSA HS")
+# survey_cols <- stats::setNames(survey_cols, survey_col_names)
+# drex$survey_index %>%
+#   gfplot::tidy_survey_index(survey = "SYN WCVI") %>%
+#   gfplot::plot_survey_index(col = c("grey60", "grey20"), survey_cols = survey_cols) +
+#   ylab("Survey relative biomass index")
+rex_indexes <- readRDS(here("generated-data/rex-indexes.rds"))
+
+d1 <- reshape2::melt(rex_indexes, id.vars = c("year"),
+  measure.vars = c("syn_wcvi", "trawl_cpue"), 
+  variable.name = "index", value.name = "est") %>% 
+  mutate(index = as.character(index)) %>% 
+  mutate(index = ifelse(grepl("^syn", index), "SYN WCVI", "Trawl CPUE"))
+  
+d2 <- reshape2::melt(rex_indexes, id.vars = c("year"),
+  measure.vars = c("syn_wcvi_sd", "trawl_sd"), 
+  variable.name = "index", value.name = ".sd") %>% 
+  mutate(index = as.character(index)) %>% 
+  mutate(index = ifelse(grepl("^syn", index), "SYN WCVI", "Trawl CPUE"))
+d3 <- inner_join(d1, d2, by = c("year", "index"))
+
+d3 <- group_by(d3, index) %>%
+  mutate(est = est / exp(mean(log(est[year >= 2004]), na.rm = TRUE)))
+
+ggplot(d3, aes(year, est)) + 
+  # geom_line(na.rm = TRUE) + 
+  facet_wrap(~index, ncol = 1) +
+  geom_pointrange(aes(ymin = exp(log(est) - 2 * .sd), ymax = exp(log(est) + 2 * .sd)), na.rm = TRUE) + #, position = position_dodge(width = 0.3)
+  theme_pbs() + 
+  ylab("Index (centred by its geometric mean)")+
+  xlab("Year") +
+ geom_linerange(aes(ymin = exp(log(est) - 2 * .sd), ymax = exp(log(est) + 2 * .sd)), na.rm = TRUE) +
+  geom_point(pch = 21, size = 2, fill = "white", na.rm = TRUE)
 ```
 
-```{r rex-catch-plot, fig.cap="Catch for Rex Sole. TODO", fig.asp = 0.8, fig.width = 5, out.width = "4in"}
+```{r rex-catch-plot, fig.cap="Commercial catch for Rex Sole. Note that limited catch in the early 1990s is considered unreliable and is not shown. The shaded region prior to 1996 indicates the time period before the at-sea observer program was implemented for bottom and midwater trawl fleets. Depth contours are shown at 100 m, 200 m, and 500 m.", fig.asp = 0.8, fig.width = 5, out.width = "4.5in"}
 suppressWarnings({g <- drex$catch %>%
   gfplot::tidy_catch(areas = "3[CD]+") %>%
-  gfplot::plot_catch(xlim = c(1954, 2019))})
+  gfplot::plot_catch(xlim = c(1954, 2019), unreliable = c(1996))})
 g + labs(title = "")
 ```
 
-```{r rex-cpue-map, fig.cap="Spatial CPUE for Rex Sole. TODO", fig.width = 8, out.width = "5.5in"}
+```{r rex-cpue-map, fig.cap="Spatial commercial trawl CPUE for Rex Sole for tows that caught any Rex Sole from 2013--2019. Cells are 4 km wide and are only shown in cases where there are at least three unique vessels in a given cell to meet privacy requirements. CPUE is calculated as the weight of catch (landings plus discards) divided by hours fished for all positive tows from the groundfish trawl sector. Trawl data are shown from 2013 onwards after the trawl footprint was frozen.", fig.width = 7.75, out.width = "\\textwidth"}
 drex$cpue_spatial %>%
-  dplyr::filter(year >= 2010, year <= 2019) %>%
+  dplyr::filter(year >= 2013, year <= 2019) %>%
   dplyr::filter(major_stat_area_code %in% c("03", "04")) %>%
   gfplot::plot_cpue_spatial(xlim = c(500, 890), ylim = c(5353, 5700),
     percent_excluded_xy = c(0, 0), bin_width = 4)
 ```
 
-```{r rex-samples, fig.cap="Sample availability for Rex Sole. TODO", fig.asp = 0.6, fig.width = 7, out.width = "4.5in"}
+```{r rex-samples, fig.cap="Specimen availability for Rex Sole. Shown are the number of available fish specimens that have had their length measured, have been weighed, had their maturity assessed, had their age assessed, and for which ageing structures are available for ageing. Blank panels indicate year-measurement combinations without any data. Shading of these cells reflects the relative number of specimens available with the actual number of specimens indicated in the cells to the nearest round number.", fig.asp = 0.6, fig.width = 7, out.width = "6in"}
 # viridis::scale_fill_viridis(option = "D", end = 0.82, na.value = na_colour)}
 g1 <- drex$survey_samples %>%
   gfplot::tidy_sample_avail(year_range = c(1996, 2019)) %>%
@@ -119,16 +147,13 @@ g2 <- drex$commercial_samples %>%
 cowplot::plot_grid(g1, g2, nrow = 2)
 ```
 
-
-*TODO: Properly write up data and include individual figs for WCVI Rex Sole.*
-
 \clearpage
 
 (ref:fig-rex-syn1)
 First Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
 
 ```{r rex-syn1, fig.cap="(ref:fig-rex-syn1)", out.width="6in"}
-knitr::include_graphics(here("images/rex-sole-1.png"))
+# knitr::include_graphics(here("images/rex-sole-1.png"))
 ```
 
 \clearpage
@@ -137,7 +162,7 @@ knitr::include_graphics(here("images/rex-sole-1.png"))
 Second Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we properly plot out just the relevant data.)
 
 ```{r rex-syn2, fig.cap="(ref:fig-rex-syn2)", out.width="6in"}
-knitr::include_graphics(here("images/rex-sole-2.png"))
+# knitr::include_graphics(here("images/rex-sole-2.png"))
 ```
 
 \clearpage
@@ -265,22 +290,24 @@ Variation in the selectivity ogives comes from the distributions assumed for the
 Fits to the historical indices of abundance from the nine OMs are shown in Figure (\@ref(fig:rex-survey-fits)).
 Estimates of depletion (*SSB*/*SSB*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
 
-TODO: add the other selectivity:
+(ref:fig-rex-survey-fits)
+SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes. 
+Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
+Panels from top to bottom represent scenarios.
+Dots represent index mean and line segments represent 2 $\times$ the standard errors as entered into the SRA models.
+In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to downweight the commercial index relative to the survey index.
 
-```{r rex-selectivity, fig.cap="Selectivity-at-length used by all OMs.", out.width="4in"}
-knitr::include_graphics(here("report/figure/rex-selectivity.png"))
-```
-
-```{r rex-survey-fits, fig.cap="Survey fits.", out.width="0.7\\textwidth"}
+```{r rex-survey-fits, fig.cap="(ref:fig-rex-survey-fits)", out.width="0.65\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-index-fits.png"))
 ```
 
 \clearpage
 
 (ref:fig-rex-depletion-om)
-SSB depletion trajectories from reference and robustness set OMs.
-Depletion is represented as a fraction of B0 (biomass at unfished equilibrium).
-Some OMs ("M increasing") have identical historical trajectories as "Catch eq. 50%", but with a fixed value of M in the historical period (i.e., the change in M only occurs in the projection period).
+Spawning stock biomass ($B$) depletion trajectories for reference and robustness set OMs.
+Depletion is represented as a fraction of $B_0$ (spawning stock biomass at unfished equilibrium).
+Note that the "M increasing" scenario only represents natural mortality increasing in the future projections---not the historical time period illustrated here.
+Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across simulations.
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-compare-SRA-depletion-panel.png"))
