@@ -124,7 +124,7 @@ $$
 
 where $L_{y,a}$ is the mean length-at-age, and $\sigma^{\textrm{asc}}_f = (L^5_f - L^{\textrm{FS}}_f)/\sqrt{-\log_2(0.05)}$ and $\sigma^{\textrm{des}}_f = (L_{\infty} - L^{\textrm{FS}}_f)/\sqrt{-\log_2(v^{L_{\infty}})}$ control the shape of the ascending and descending limbs, respectively, of the selectivity function. In this parameterization, length-based selectivity is constant over time. The corresponding age-based selectivity is constant over time if growth is not time-varying.
 
-See Appendix \@ref(app:dlm-om), Section \@ref(sec:dlmtool-fleet-dynamics) for description of handling of multiple fleets in the DLMtool OM during the projection period.
+See Appendix \@ref(app:dlmtool-om), Section \@ref(sec:dlmtool-fleet-dynamics) for descriptions of handling of multiple fleets in the DLMtool OM during the projection period.
 
 Total mortality $Z$ in year $y$ and for age $a$ is given by
 

@@ -229,24 +229,24 @@ csasdown::csas_table(caption = "Rex Sole scenarios", col_names = c("Scenario nam
 
 #### Magnitude of pre-1996 commercial catch and importance of commercial CPUE
 
-Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure \@ref(fig:rex-syn1)).
+Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure \@ref(fig:rex-catch-plot)).
 Assumptions about pre-1996 catch levels affect the SRA model's estimates of the depletion level in 1996 (Appendix \@ref(app:sra)).
-The SRA model parameter $\tilde{C}^{\textrm{eq}}_f$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}_f$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}_a$ needed to calculate recruits and numbers in the first year of the model (Equation C.3).
-We note that the use of $F^{\textrm{eq}}_f$ and $\tilde{C}^{\textrm{eq}}_f$ make the assumption that the population biomass and fishery were in equilibrium at that catch level prior to 1996.
+The SRA model parameter $C^{\textrm{eq}}_f$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}_f$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}_a$ needed to calculate recruits and numbers in the first year of the model (Equation C.3).
+We note that the use of $F^{\textrm{eq}}_f$ and $C^{\textrm{eq}}_f$ make the assumption that the population biomass and fishery were in equilibrium at that catch level prior to 1996.
 While this is likely an unrealistic assumption, it is a convenient means of initializing a population model in the presence of fishing.
-For this reason, we treated the value of $\tilde{C}^{\textrm{eq}}_f$ as a major axis of uncertainty.
+For this reason, we treated the value of $C^{\textrm{eq}}_f$ as a major axis of uncertainty.
 
 <!-- *TODO, make equation C.3 a dynamic ref* RF -->
 
-We considered four scenarios that varied in the assumed value of $\tilde{C}^{\textrm{eq}}_f$ (Table \@ref(tab:rex-scen)).
+We considered four scenarios that varied in the assumed value of $C^{\textrm{eq}}_f$ (Table \@ref(tab:rex-scen)).
 
 * The scenario "Catch eq. 100%" assumes that equilibrium catch prior to 1996 was the same as that in 1996.
 
 * The scenario "Catch eq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996, where the catch could possibly have been underestimated because it was not mandatory to report all landings and discards prior to 1996.
 
-* The scenario "Catch eq. 200% + CPUE" also assumes that equilibrium catch prior to 1996 was twice that in 1996, plus the SRA model is fit to the commercial CPUE index, which is available from 1996, therefore providing a longer index of abundance than the synoptic bottom trawl survey (Figure \@ref(fig:rex-syn1)).
+* The scenario "Catch eq. 200% + CPUE" also assumes that equilibrium catch prior to 1996 was twice that in 1996, plus the SRA model is fit to the commercial CPUE index, which is available from 1996, therefore providing a longer index of abundance than the synoptic bottom trawl survey (Figure \@ref(fig:rex-surv-index-plot)).
 
-* The scenario "Catch eq. 50%" assumes that equilibrium catch prior to 1996 was half that in 1996, approximating the reported 1995 catch. Unless otherwise stated, all other scenarios use $\tilde{C}^{\textrm{eq}}_f$ = 50%.
+* The scenario "Catch eq. 50%" assumes that equilibrium catch prior to 1996 was half that in 1996, approximating the reported 1995 catch. Unless otherwise stated, all other scenarios use $C^{\textrm{eq}}_f$ = 50%.
 
 *Note: we are planning on exploring the best "default" value for Catch eq. after discussions with the technical team*.
 
@@ -283,12 +283,12 @@ Results from the Robustness Set will be presented separately in Section \@ref(se
 
 ### OM Model Outputs
 
-Selectivity-at-length used by all OMs is shown in Figure (\@ref(fig:rex-selectivity)).
+Selectivity-at-length used by all OMs is shown in Figure \@ref(fig:desc-selectivity-function).
 Selectivity-at-length is calculated from two parameters: L5, the shortest length corresponding to 5% vulnerability; and LFS, the shortest length that is fully vulnerable to fishing.
 Variation in the selectivity ogives comes from the distributions assumed for these two parameters in the OM (See Sections \@ref(app:desc-fleet-l5-rex) and \@ref(app:desc-fleet-lfs-rex)).
 
 Fits to the historical indices of abundance from the nine OMs are shown in Figure (\@ref(fig:rex-survey-fits)).
-Estimates of depletion (*SSB*/*SSB*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
+Estimates of depletion (*B*/*B*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
 
 (ref:fig-rex-survey-fits)
 SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes. 
@@ -406,10 +406,10 @@ These satisficed MPs achieve STY and LTY with close to the same probability as f
 Within the reference set OMs, the "Catch eq. 200%" OM had the most noticeable effect on the yield performance metrics with slightly lower values than in the other scenarios (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
 However, making the same assumption about catch at equilibrium the year before the initial year of the historical period but including commercial CPUE resulted in consistently high conservation performance metric values and slightly higher yield performance metric values than the scenario that did not include commercial CPUE (Figure \@ref(fig:rex-spider-satisficed-mps-reference)).
 
-We can look at timeseries trajectories of SSB/SSB~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--\@ref(fig:rex-proj-low-h); other trajectories not shown yet).
+We can look at timeseries trajectories of B/B~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--\@ref(fig:rex-proj-low-h); other trajectories not shown yet).
 Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).
 
-We can also look at "Kobe" plots that demonstrate either the final SSB/SSB~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
+We can also look at "Kobe" plots that demonstrate either the final B/B~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
 
 (ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
 MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
