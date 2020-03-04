@@ -4,75 +4,76 @@
 
 Function:
 
-`plot_factory()`
-
-* The output is a named list of ggplot2 elements that can be viewed, modified,
-  and saved for inclusion in a report.
-
 `plot_convergence()`
 
-* test
+* Figure \@ref(fig:rex-converge).
 
 `plot_dots()`
 
-* Description here
+* For example, Figure \@ref(fig:rex-dot-lines).
 
 `plot_index()`
 
-* Description here
+* For example, Figure \@ref(fig:rex-proj-index).
 
-`plot_index_fits()`
+`plot_index_fits()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-survey-fits).
 
-`plot_kobe()`
+`plot_kobe()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-kobe).
 
-`plot_main_projections()`
+`plot_main_projections()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-proj-ceq200).
 
-`plot_lollipop()`
+`plot_radar()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-spider-satisficed-mps-avg).
 
-`plot_radar()`
+`plot_scenario_projections()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-proj-scenarios).
 
-`plot_radar_facet()`
+`plot_tigure()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-tigure-avg).
 
-`plot_scenario_projections()`
+`plot_tradeoff()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-tradeoff-robust).
 
-`plot_sensitivity()`
+`plot_worms()` 
 
-* Description here
+* For example, Figure \@ref(fig:rex-worm).
 
-`plot_sensitivity_trajectory()`
+`plot_factory()`
 
-* Description here
-
-`plot_tigure()`
-
-* Description here
-
-`plot_tradeoff()`
-
-* Description here
-
-`plot_worms_grid()`
+* This function takes a name to the list of DLMtool output objects and generates common versions of all the figures described below. The output is a named list of ggplot2 [REF] elements that can be viewed, modified, and/or saved for inclusion in a report.
 
 `pm_factory()`
-`use_AddInd()`
-`reduce_survey()`
-`sample_AddIerr()`
 
-custom MPs
+* This is a function factory that generates a performance metric function. For example, the following creates a performance metric `LT LRP` that is based on spotting biomass, a reference level of 0.4 of B~MSY~, and calculated over years 36--50 in the projection period.
+
+```{r, echo=TRUE, eval=FALSE}
+`LT LRP` <- gfdlm::pm_factory("SBMSY", ref = 0.4, yrs = c(36, 50))
+```
+
+`use_AddInd()` and `reduce_survey()`
+
+* These are function factories that modify MPs to use the DLMtool "additional index" data and discard selected survey years, respectively. The additional index data (as used in this framework) reflects the observed index in the historical period and an index that reflects the survey or fleet selectivity pattern in the projection period.
+
+* For example, the following creates a new MP named `.Itarget_w0.8` by taking the MP `Itarget_w0.8` and (1) modifying it to use the first "additional index" and (2) omitting every even year of the survey to emulate a biennial survey:
+
+```{r, echo=TRUE, eval=FALSE}
+oddify <- function(x) seq(2, x, by = 2)
+.Itarget_w0.8 <- gfdlm::Itarget_w0.8 %>% 
+  gfdlm::use_AddInd() %>% 
+  gfdlm::reduce_survey(index = oddify)
+```
 
 `create_rmd()`
+
+* This function creates or updates a template for specifying a DLMtool OM. For example, it was used to create Appendix \@ref(app:desc-om-rex).
 
