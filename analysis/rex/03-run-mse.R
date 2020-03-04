@@ -283,7 +283,7 @@ walk(names(plots$projections), ~ {
   width = 6.5, height = 20,
   plot = plots$projections_not_sat
 )
-.ggsave("projections-scenarios-ref",
+.ggsave("projections-scenarios",
   width = 8, height = 10,
   plot = plots$projections_scenarios
 )
