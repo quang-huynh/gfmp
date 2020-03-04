@@ -97,7 +97,7 @@ If the selectivity is assumed to be dome-shaped, then the descending limb can ei
 
 - Standard deviation of recruitment deviations $\sigma_{R}$. Historical recruitment deviations are updated by the SRA model (Equation \@ref(eq:sra-om-rya)), while recruitment deviations in the projection period are sampled with autocorrelation (Equation \@ref(eq:dlm-om-recdev)).
 
-If initial depletion (Equation \@ref(eq:sra-om-d1)) is estimated, then the annual recruitment deviations in the first year are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:eq:sra-om-rya)).
+If initial depletion (Equation \@ref(eq:sra-om-d1)) is estimated, then the annual recruitment deviations in the first year are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-rya)).
 
 If multiple fleets are used for conditioning, then selectivity-at-age ($v_{a,f}$, Equation \@ref(eq:sra-om-vaf)) will be updated based on the relative fishing mortality among fleets.
 The default assumption in the projection period of the closed-loop simulation is that the selectivity and relative fishing mortality among fleets are identical to those in the last historical year $t_c$.
@@ -167,7 +167,7 @@ C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm
 (\#eq:sra-om-ceqpred)
 $$
 
-where $F^{\textrm{eq}}_f = 0$ is an estimated parameter. 
+where $F^{\textrm{eq}}_f = 0$ are estimated parameters. 
 
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 

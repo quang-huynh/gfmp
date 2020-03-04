@@ -2,23 +2,27 @@
 
 *Final discussion may include other topics. Below is a rough start.*
 
+*Summary intro paragraph*
+
+<!-- Sean -->
+
 * re-sample data | `rnorm` etc. > `runif`
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
-
+<!--RF-->
 * How this is compliant with the DFO precautionary framework and Bill C68
 * Not just a backup solution, could be argued that this is "implicit" knowledge is a better solution then the usual "explicit" knowledge
+* Where is risk? Issue #61
 
-## FORMAT OF THE ADVICE
-
-* Suggested elements to include in a Research Document
-* Suggested elements to include in a SAR
-* Potential use of SRs to update advice
-* Potential to assess multiple spatial regions and related species simultaneously
+## TUNING MPs
+* See Issue #55
+* There is a trade-off between more generic MPs (work across a coarse array of tuning parameters and hone in on a finer grid of better-performing MPs) vs highly "tuned" MPs
+* Importance of transparency about what was explored and how "tuning" was done
+* Extent of tuning exercise may depend on how well MPs are performing. If all performing badly, may need to go on more extensive tuning expedition
 
 ## REASSESSMENT FREQUENCY AND TRIGGERS
-
-* Annual(?) updating of catch recommendation
+<!-- RF -->
+* Annual(?) updating of catch recommendation -- see also Issue #82
 * Less frequent revisiting of the OM and potential changes to MP/HCR
 * Some suggested interval barring a trigger
 
@@ -26,17 +30,36 @@
 * Suggested that these are checked on some regular interval
 * Which data are we suggesting to check
 
-## INCLUDING ENVIRONMENTAL EFFECTS
+* Is the future index outside the projection envelope?
+* Have the management decisions departed from the MP?
+* Carruthers and Hordyk CJFAS paper - multivariate approach
+* Simple would be better
 
+## INCLUDING ENVIRONMENTAL EFFECTS
+<!-- RF -->
 * Tie into bill C68 and ecosystem approach to fisheries management working group
+* e.g., increasing M scenario
 * Perhaps one of the most feasible ways to include environmental effects is via operating models
 
 ## ASSESSING THE VALUE OF INFORMATION
 
-* Possibly draw on the value of aging data for English sole from a case study as an example
+* Possibly draw on the value of aging data for Rex sole from a case study as an example
 * Can also suggest other possible uses, e.g., changes to survey coverage
+* Issue #60 "There was also a recommendation to discuss and document process of how species would be selected for data-limited assessment via the MP Framework and how a species could be moved out of the Framework to have more data-rich, conventional assessments. While the availability of quality age-composition data would be the first consideration, this will likely need to be done on a stock-by-stock basis, and in consultation with science, managers, stakeholders, and other interested parties."
 
 ## REBUILDING PLANS
 
 * Brief overview
 * Note the upcoming yelloweye inside application
+
+\clearpage
+
+# ACKNOWLEDGEMENTS
+
+*TODO: turn into sentences*
+
+- Technical Team members: Dana Haggarty, Rob Kronlund, Greg Workman, Rowan Haigh, Adam Keizer, Rob Tadey, Roger Kanno, Paul Starr, Ashleen Benson
+
+- DLMtool developers: Tom Carruthers, Adrian Hordyk
+
+- John Holmes
