@@ -374,8 +374,10 @@ Therefore, final inference should probably be drawn on somewhat greater than the
 We checked other OMs and these showed similar patterns to the representative  Figure \@ref(fig:rex-converge).
 
 (ref:fig-rex-converge)
-Assessing convergence of the Rex Sole closed-loop simulation under an example OM from the reference set with MPs that are later determined to be part of the satisficed set.
-Broad differences between MPs have converged (lines no longer cross each other).
+Assessing convergence of the Rex Sole closed-loop simulations on a consistent rank order of MPs within performance metrics.
+Colours represent individual satisficed and reference MPs.
+Lines that are no longer crossing by the final iterations indicate simulations that are consistent with convergence.
+We also checked that the satisficing rules had converged (the selection of satisficed MPs would not change with further iterations).
 
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-convergence.png"))
@@ -387,6 +389,7 @@ knitr::include_graphics(here("report/figure/rex-convergence.png"))
 
 Average performance within the reference set of OMs varied across MPs and performance metrics (Figure \@ref(fig:rex-tigure-avg)).
 We can also see some variability in performance within the individual reference set scenarios (Figure \@ref(fig:rex-tigure-panel)).
+
 ```{r}
 # LT P40 varied between `round(min(pm_avg_sat$"LT P40"), 2)` and `round(max(pm_avg_sat$"LT P40"), 2)` and STY varied between `round(min(pm_avg_sat$STY), 2)` and `round(max(pm_avg_sat$STY), 2)`.
 ```
@@ -410,7 +413,9 @@ We can also look at "Kobe" plots that demonstrate either the final SSB/SSB~MSY~ 
 
 (ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
 MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
-The color shading reflects the underlying numbers.
+The colour shading reflects the underlying numbers.
+Outlined cells represent MPs that met a particular performance metric satisficing criteria.
+Light grey MPs indicate reference MPs.
 
 ```{r rex-tigure-avg, fig.cap="(ref:fig-rex-tigure-avg)", out.width="3.5in"}
 knitr::include_graphics(here("report/figure/rex-tigure-refset-avg.png"))
@@ -429,7 +434,8 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
 \clearpage
 
 (ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
-MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-min).
+MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-avg).
+These are the same data underlying Figure \@ref(fig:rex-tigure-avg and Figure \@ref(fig:rex-tigure-min but shown for individual reference-set scenarios and only for satisficed MPs.
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="0.8\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
@@ -437,31 +443,40 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
 
 \clearpage
 
-```{r rex-dot-lines, fig.cap="Dots on line plots of performance metrics across scenarios.", out.width="\\textwidth"}
+(ref:fig-rex-dot-lines)
+Dot on line plot of performance metrics across scenarios.
+Dots represent average performance metric values and thin lines represent the range of values across scenarios.
+Thick lines represent the range of values across scenarios after dropping the high and low values.
+
+```{r rex-dot-lines, fig.cap="(ref:fig-rex-dot-lines)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-dot-refset-avg.png"))
 ```
 
 \clearpage
 
-```{r rex-tradeoff-reference, fig.cap="Trade-off plot between...", out.width="\\textwidth"}
+```{r rex-tradeoff-reference, fig.cap="Trade-off between LT LRP and STC performance metrics across the reference-set scenarios.", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-tradeoff-refset.png"))
 ```
 
 \clearpage
 
-```{r rex-spider-satisficed-mps-avg, fig.cap="Average performance metrics for satisficed MPs for the reference set of OMs.", out.width="5in"}
+```{r rex-spider-satisficed-mps-avg, fig.cap="Radar-plot representation of average performance metric trade-offs for the reference-set scenarios. The outside of the hexagon represents a performance metric probability of 1.0 in the middle represents a value of 0. Dashed lines represent reference MPs.", out.width="5in"}
 knitr::include_graphics(here("report/figure/rex-radar-refset-avg.png"))
 ```
 
 \clearpage
 
-```{r rex-proj-index, fig.cap="Index projections TODO", out.width="\\textwidth"}
+```{r rex-proj-index, fig.cap="Historical and projected SYN WCVI relative biomass index values. Vertical dashed line represents 2019. The shaded region represents the 95\\% quantile and individual lines represent four sample iterations.", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-projections-index.png"))
 ```
 
 \clearpage
 
-(ref:fig-rex-proj-scenarios) Same as Figure \@ref(fig:rex-proj-ceq200) etc. but showing all scenarios at once.
+(ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
+Colours represent the individual reference-set scenarios.
+Lines represent medians and shaded regions represent 50% quantiles.
+Satisficed in reference MPs are shown from top to bottom.
+The scenarios are shown individually with example iterations in the following figures.
 
 ```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-projections-scenarios-ref.png"))
@@ -469,13 +484,13 @@ knitr::include_graphics(here("report/figure/rex-projections-scenarios-ref.png"))
 
 \clearpage
 
-(ref:fig-rex-proj-ceq100) Historical and projected SSB/SSB~MSY~, F/F~MSY~, and catch across satisficed and reference MPs and the "Ceq. 200%" OM.
+(ref:fig-rex-proj-ceq200) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods for the "Ceq. 200%" OM.
 Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation iterations.
 The vertical dashed line indicates the last year of the historical period.
-The horizontal dashed lines indicate SSB/SSB~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
+The horizontal dashed lines indicate B/B~MSY~ = 0.8 and 0.4 and F/F~MSY~ = 1.
 
-```{r rex-proj-ceq200, fig.cap="(ref:fig-rex-proj-ceq100)", out.width="6.5in"}
+```{r rex-proj-ceq200, fig.cap="(ref:fig-rex-proj-ceq200)", out.width="6.5in"}
 knitr::include_graphics(here("report/figure/rex-projections-ceq200.png"))
 ```
 
@@ -513,7 +528,7 @@ knitr::include_graphics(here("report/figure/rex-projections-no-cpue.png"))
 
 (ref:fig-rex-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations.
 Dots represent individual iterations.
-Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
+Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.25, 0.50, and 0.75 levels, calculated in log space.
 
 ```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-kobe.png"))
@@ -523,7 +538,7 @@ knitr::include_graphics(here("report/figure/rex-kobe.png"))
 
 (ref:fig-rex-worm) Trajectory of B/B~MSY~ and F/F~MSY~ values summarized across iterations.
 The solid line corresponds to the median value.
-Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
+Each diamond represents the 50% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 
 ```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-worms-proj.png"))
@@ -543,25 +558,25 @@ The Iratio2 MP achieved the highest AAVY, LTY, and STY performance metrics in th
 knitr::include_graphics(here("report/figure/rex-tigure-robset.png"))
 ```
 
-```{r rex-dots-satisficed-mps-robust, fig.cap="TODO.", out.width="0.9\\textwidth"}
+```{r rex-dots-satisficed-mps-robust, fig.cap="Performance of satisficed MPs for the robustness set OMs.", out.width="0.9\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-dot-robset.png"))
 ```
 
-```{r rex-tradeoff-robust, fig.cap="Trade-off plot between...", out.width="6in"}
+```{r rex-tradeoff-robust, fig.cap="Trade-off plot between LT LRP and STC performance metric values for satisficed MPs for the robustness set OMs.", out.width="6in"}
 knitr::include_graphics(here("report/figure/rex-tradeoff-robset.png"))
 ```
 
-```{r rex-spider-satisficed-mps-robust, fig.cap="Performance metrics for satisficed MPs for the individual OMs in the robustness set. Colours are the same as in the average spider plot figure (legend to be added TODO).", out.width="\\textwidth"}
+```{r rex-spider-satisficed-mps-robust, fig.cap="Radar-plot representation of the trade-off in performance metric values for satisficed MPs for the robustness set OMs.", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-radar-robset.png"))
 ```
 
-(ref:fig-rex-proj-no-cpue-light) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "No CPUE Ceq. 50%".
+(ref:fig-rex-proj-no-cpue-light) Same as Figure \@ref(fig:rex-proj-ceq200) but for the robustness OM "No CPUE Ceq. 50%".
 
 ```{r rex-proj-no-cpue-light, fig.cap="(ref:fig-rex-proj-no-cpue-light)", out.width="6.5in"}
 knitr::include_graphics(here("report/figure/rex-projections-no-cpue-light.png"))
 ```
 
-(ref:fig-rex-proj-inc-m) Same as Figure \@ref(fig:rex-proj-ceq200) but for the OM "Increasing M".
+(ref:fig-rex-proj-inc-m) Same as Figure \@ref(fig:rex-proj-ceq200) but for the robustness OM "Increasing M".
 
 ```{r rex-proj-inc-m, fig.cap="(ref:fig-rex-proj-inc-m)", out.width="6.5in"}
 knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
