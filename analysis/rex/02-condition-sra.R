@@ -212,11 +212,11 @@ sc <- tibble::tribble(
   "ceq200", "Ceq. 200%", "Reference",
   "ceq250", "Ceq. 250%", "Reference",
   "high-m", "Higher M", "Reference",
-  "high-h", "Higher steepness", "Reference",
-  "sel1", "Lower selectivity", "Reference",
-  "no-cpue", "No CPUE Ceq. 250%", "Reference",
-  "no-cpue-light", "No CPUE Ceq. 50%", "Robustness",
-  "inc-m", "M inc.", "Robustness"
+  "high-h", "Higher\nsteepness", "Reference",
+  "sel1", "Lower\nselectivity", "Reference",
+  "no-cpue", "No CPUE\nCeq. 250%", "Reference",
+  "no-cpue-light", "No CPUE\nCeq. 50%", "Robustness",
+  "inc-m", "M\nincreasing", "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = here("generated-data/rex-scenarios.rds"))
