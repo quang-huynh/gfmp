@@ -18,7 +18,7 @@ sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
 sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 sc # look good?
-nsim <- 140
+nsim <- 225
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
