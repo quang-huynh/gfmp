@@ -435,7 +435,7 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
 
 (ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
 MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-avg).
-These are the same data underlying Figure \@ref(fig:rex-tigure-avg and Figure \@ref(fig:rex-tigure-min but shown for individual reference-set scenarios and only for satisficed MPs.
+These are the same data underlying Figure \@ref(fig:rex-tigure-avg) and Figure \@ref(fig:rex-tigure-min) but shown for individual reference-set scenarios and only for satisficed MPs.
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="0.8\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
@@ -444,7 +444,7 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
 \clearpage
 
 (ref:fig-rex-dot-lines)
-Dot on line plot of performance metrics across scenarios.
+Dot-and-line plot of performance metrics across scenarios.
 Dots represent average performance metric values and thin lines represent the range of values across scenarios.
 Thick lines represent the range of values across scenarios after dropping the high and low values.
 
