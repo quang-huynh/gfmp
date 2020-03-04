@@ -79,7 +79,7 @@ oddify <- function(x) seq(2, x, by = 2)
 
 \clearpage
 
-# COMPUTATIONAL ENVIRONMENT {-}
+# COMPUTATIONAL ENVIRONMENT
 
 This version of the document was generated on `r Sys.time()` with
 `r devtools::session_info()$platform$version` [@r2019] and R package versions:
