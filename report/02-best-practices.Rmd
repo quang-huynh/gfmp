@@ -1,4 +1,4 @@
-# BEST PRACTICES FOR MANAGEMENT PROCEDURE APPROACHES {#sec:best-practices} 
+# BEST PRACTICES FOR MANAGEMENT PROCEDURE APPROACHES {#sec:best-practices}
 
 @punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012 and Cox and Benson (unpublished)].
 

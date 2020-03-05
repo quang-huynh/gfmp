@@ -1,6 +1,6 @@
 \clearpage
 
-`r if(knitr:::is_latex_output()) '\\Appendices'`	
+`r if(knitr:::is_latex_output()) '\\Appendices'`
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
 
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
@@ -408,7 +408,7 @@ We do not describe the observation model of CAL at this time.
 
 <!--TODO: Check this. RF cleaned it up, it was very hard to follow and I think some terms were mixed up in the text. Removed summation over r ... assume this was areas -->
 
-The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\widetilde{\textrm{ESS}}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_{CAA}$, number of individuals aged). 
+The observation model for CAA uses a simple multinomial distribution to generate observed catches at age for the projection period $C_{y,a}^{\textrm{obs}}$, accounting for the user-defined effective sample size ($\widetilde{\textrm{ESS}}_{\textrm{CAA}}$, the number of independent observations) and the average annual number of samples ($n_{CAA}$, number of individuals aged).
 For example, $\widetilde{\textrm{ESS}}_\textrm{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p_a$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):

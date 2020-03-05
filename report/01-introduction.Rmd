@@ -65,10 +65,10 @@ We emphasize that biological reference points and stock status, which are integr
 Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.
 We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 
-This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders. 
-This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC. 
-In the proposed framework, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool package [@carruthers2018] for the statistical software R [r2019], which are then used in simulation-testing a range of data-limited MPs against performance metrics. 
-An R package written by the authors for this framework, gfdlm [https://github.com/pbs-assess/gfdlm], houses many tools and custom visualizations to aid in the process. 
+This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
+This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC.
+In the proposed framework, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool package [@carruthers2018] for the statistical software R [r2019], which are then used in simulation-testing a range of data-limited MPs against performance metrics.
+An R package written by the authors for this framework, gfdlm [https://github.com/pbs-assess/gfdlm], houses many tools and custom visualizations to aid in the process.
 Steps of the process are described more fully in the following sections of the document.
 
 ## EXPECTED BENEFITS

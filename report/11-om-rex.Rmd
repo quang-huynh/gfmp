@@ -348,8 +348,8 @@ mat_prob <- function(x, intercept, slope) {
   }
 ) %>% mutate(type = "Maturity")
 
-.dm %>% 
-  ggplot(aes(length, prob, group = id)) + 
+.dm %>%
+  ggplot(aes(length, prob, group = id)) +
   geom_line(alpha = 0.04) +
   labs(colour = "Type", y = "Probability", x = "Length (cm)") +
   theme_pbs() +
@@ -494,7 +494,7 @@ n_caught <- drex$commercial_samples %>%
 
 There are only `r n_caught` fish with measured lengths in the WCVI commercial data, which is insufficient to estimate selectivity in the SRA.
 We will make the assumption that commercial and survey selectivity approximately match the maturity ogive (but are fully selected by $L_\infty$), similar to the assumption made in a delay-difference model that maturity and vulnerability to the fishery occur at the same age.
-We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery. 
+We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery.
 These curves will be specified in the SRA.
 
 ```{r desc-selectivity-function, fig.cap="Maturity-at-length and 2 selectivity curves used in the operating models. Maturity ogive represents 100 draws from the posterior. Vertical lines represent samples from $L_\\infty$.", fig.width=6, out.width='4in'}
@@ -515,8 +515,8 @@ vulnerable2 <- data.frame(length = La, prob = v(La, L5 = 17, LFS = 28)) %>%
   mutate(type = "Selectivity 2", id = 99999)
 
 bind_rows(.dm, vulnerable1) %>%
-  bind_rows(vulnerable2) %>% 
-  ggplot(aes(length, prob, colour = type, group = id)) + 
+  bind_rows(vulnerable2) %>%
+  ggplot(aes(length, prob, colour = type, group = id)) +
   geom_line(lwd = 1) +
   labs(colour = "Type", y = "Probability", x = "Length (cm)") +
   theme_pbs() +

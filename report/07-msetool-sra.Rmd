@@ -39,7 +39,7 @@ The sampled values of $h$ (as well as all other input parameters to the SRA) are
 ## THE STOCK REDUCTION ANALYSIS MODEL {#sec:sra-model}
 
 The SRA model can be conditioned on catch or fishing effort.
-For BC groundfish species, we recommend conditioning the model on catch. 
+For BC groundfish species, we recommend conditioning the model on catch.
 Catch data since the introduction of 100% at-sea and dockside observer coverage are known with very little error.
 Effort data in multispecies fisheries is more difficult to interpret.
 If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed catches.
@@ -87,9 +87,9 @@ If growth, maturity, or natural mortality are set to be time-varying in the hist
 
 - Unfished recruitment ($R_0$), which is used as the starting value for estimation if the model is conditioned on catch.
 
-- Selectivity parameters $L_{5}$, $L_{LFS}$ and $V_{L_\infty}$. 
+- Selectivity parameters $L_{5}$, $L_{LFS}$ and $V_{L_\infty}$.
 
-If there are no age- or length-composition data, then selectivity in the model is fixed to these values. 
+If there are no age- or length-composition data, then selectivity in the model is fixed to these values.
 Otherwise, the ascending limb of selectivity is estimated with age or length composition data.
 If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled using the range of $V_{L_\infty}$ or estimated in the SRA. See Equation \@ref(eq:sra-om-vaf).
 
@@ -167,7 +167,7 @@ C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm
 (\#eq:sra-om-ceqpred)
 $$
 
-where $F^{\textrm{eq}}_f = 0$ are estimated parameters. 
+where $F^{\textrm{eq}}_f = 0$ are estimated parameters.
 
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 
