@@ -1,6 +1,6 @@
-# INTRODUCTION
+# INTRODUCTION {#sec:intro}
 
-## BACKGROUND
+## BACKGROUND {#sec:intro-background}
 
 DFO fishery-independent surveys encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the British Columbia (BC) integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[@dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the BC integrated groundfish fishery.
 
@@ -8,7 +8,7 @@ In recent decades, advice on TACs for Pacific groundfish species has been develo
 
 The majority of fish stocks encountered by the integrated groundfish fishery are considered data-limited, where data-limited stocks are defined as those with insufficient data to: (1) reliably estimate stock status; or (2) estimate abundance or productivity with conventional stock assessment methods such as statistical catch-at-age models [@dowling2015; @dowling2015a]. Many of these stocks are without current assessment advice.
 
-## MOTIVATION
+## MOTIVATION {#sec:intro-motivation}
 
 The Canadian Sustainable Fisheries Framework (SFF) lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP) (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the need to take into account risk and uncertainty when developing BRPs and determining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
@@ -33,13 +33,13 @@ For data-limited stocks, data are generally insufficient to adequately account f
 
 The objective of the framework proposed in this document is to preserve the *intent* of the PA Framework, legislated in the Fish Stocks provisions, and provide decision-makers with a quantified characterization of risk with respect to the likelihood of maintaining stocks above the LRP, regardless of the quality of available data.
 
-## TIERED APPROACHES
+## TIERED APPROACHES {#sec:intro-tiered-approaches}
 
 Many other nations and governing bodies have established frameworks for assessing data-limited fish stocks ---often through "tiered" approaches (e.g., United States [@newman2015], ICES [@ices2012], Australia [@smith2009]). A tiered approach places stocks into ranked categories (tiers) based on the types and quality of available data. Specific data-limited methods for setting catch limits are identified for each tier. Arbitrary buffers may also be added to recommended catch limits in each tier (e.g., reduce recommended catch limit by 20%), in an attempt to account for the additional uncertainty inherent in more data-limited tiers.
 
 In 2016, a CSAS workshop was held in the Pacific region to review international tiered approaches, as a preliminary evaluation of the suitability of a tiered approach for the BC integrated groundfish fishery [@dfo2016tiered]. Instead of recommending a discrete tiered approach based on data-availability, the workshop recommended considering data-richness on a continuous scale and simulation-testing multiple alternative management procedures (MPs) on a stock-by-stock basis, using a management-oriented, or management strategy evaluation (MSE), approach to identify data-limited MPs that would best meet policy and fishery objectives, explicitly accounting for risk.
 
-## MANAGEMENT-ORIENTED APPROACHES
+## MANAGEMENT-ORIENTED APPROACHES {#sec:intro-management-oriented}
 
 In the scientific literature and in practice around the world, there has been a movement towards management-oriented (or MSE) approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment methods focus on estimation of biological parameters and stock status explicitly, a management-oriented approach focuses on identifying MPs that perform best with respect to policy and fishery objectives when implemented in a "closed-loop" simulation environment (Figure \@ref(fig:mse-chart-basic)).
 
@@ -55,7 +55,7 @@ The scientific literature reports a very large number of data-limited MPs. When 
 
 Since 2017, a partnership agreement between the University of British Columbia (UBC) and DFO [@dfo_dlmtool_2017] has supported development of two open-source software packages for MSE, implemented in R [@r2019]: the Data Limited Methods toolkit (DLMtool) [@carruthers2018; @carruthers_hordyk_2018] and the Management Strategy Evaluation toolkit (MSEtool) [@huynh_msetool_2019]. After several years of development, these packages provide some of the fastest, most flexible and extensible software for conducting MSE for fisheries, ranging from data-poor to data-rich, enabling rapid assessment of multiple MPs according to customizable conservation and fisheries objectives, and evaluation of key trade-offs.
 
-## OBJECTIVES OF THIS DOCUMENT
+## OBJECTIVES OF THIS DOCUMENT {#sec:intro-objectives}
 
 This document aims to develop a management procedure framework (MP Framework) for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data to estimate the parameters needed for full statistical stock assessments.
 Therefore, the Framework will provide advice for stocks where biological reference points and stock status cannot be reliably estimated.
@@ -71,7 +71,7 @@ In the proposed framework, data and empirical analyses from the synopsis are use
 An R package written by the authors for this framework, gfdlm [https://github.com/pbs-assess/gfdlm], houses many tools and custom visualizations to aid in the process.
 Steps of the process are described more fully in the following sections of the document.
 
-## EXPECTED BENEFITS
+## EXPECTED BENEFITS {#sec:intro-benefits}
 
 There are a number of expected benefits of this project. Compared to the current status quo, this framework will allow DFO to:
 

@@ -28,7 +28,7 @@ An advantage of an MP framework is that all objectives must be transparently sta
 
 We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status. 
 MP frameworks such as this one may be especially important for these species. 
-The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:motivation). 
+The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)). 
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be provided.
 The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice.
 We recommend that products such as DFO's sustainability survey (https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP, over a fifty year time frame".
@@ -54,15 +54,18 @@ In general, protocols include monitoring the biomass index, catch, and sometimes
 Examples of triggers include observed data falling outside the 90% or 95% confidence interval of the OM-predicted data (or some other statistical criteria).
 @carruthers_hordyk_2018 recommend testing the statistical power of protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics. 
 For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low. 
-It may therefore be necessary to use more rigorous test statistic, possibly based on multiple sources of data [e.g., @carruthers_hordyk_2018].
+It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., @carruthers_hordyk_2018].
 
 <!--TODo: RF has asked Rob and Brendan for info on protocols for Sablefish-->
 
-We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that formal protocol has not yet been establish. 
+We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that a formal protocol has not yet been established. 
 We therfore also recommend further analyses to evaluate protocols for detecting exceptional circumstances as a matter of priority.
 
 ## INCLUDING ENVIRONMENTAL EFFECTS
-<!-- RF -->
+
+The Fish Stocks Provisions of the *Fisheries Act* state that 
+
+
 * Tie into bill C68 and ecosystem approach to fisheries management working group
 * e.g., increasing M scenario
 * Perhaps one of the most feasible ways to include environmental effects is via operating models
