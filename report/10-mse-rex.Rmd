@@ -22,6 +22,8 @@ What follows is a demonstration of the MP Framework through a case study of the 
 
 The decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision would be stated in the request for science advice. In a real application of the MP Framework additional aspects of the decision context would be established through a technical committee. See Section \@ref(sec:approach1).
 
+The available data include TODO and reference figures
+
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:results-rex2}
 
 We defined the objectives for Rex Sole based on the provisional objectives presented in Section \@ref(sec:approach2). These objectives are guided by the PA Framework of which elements are incorporated into the Fish Stocks provisions of the *Fisheries Act*.
@@ -289,8 +291,7 @@ MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
 Mortality
 natural mortality used in GOA assessment 0.17-->
 
-
-### OM Model Outputs
+### OM CONDITIONING
 
 Selectivity-at-length used by all OMs is shown in Figure \@ref(fig:desc-selectivity-function).
 Selectivity-at-length is calculated from two parameters: L5, the shortest length corresponding to 5% vulnerability; and LFS, the shortest length that is fully vulnerable to fishing.
@@ -331,13 +332,11 @@ We started with the full set of candidate MPs described in Appendix \@ref(app:MP
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs.", col_names = c("Management procedure", "MP type"))
+csasdown::csas_table(mp, caption = "Candidate MPs. We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
 ```
 
-We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.
-Due to the biennial nature of the trawl survey, we set the MPs to be applied every second year.
-
-We set a prior on the intrinsic rate of population increase $r$ in the surplus production models based on...
+We set evaluated a range of priors on the intrinsic rate of population increase $r$ in the surplus production models: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
+With the Schaffer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which roughly mimic the values of natural mortality $M$ explored in the operating models. In applications of the Framework, additional tuning of the priors could be explored.
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
