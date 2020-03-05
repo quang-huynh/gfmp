@@ -336,7 +336,7 @@ csasdown::csas_table(mp, caption = "Candidate MPs. We used the `.` version of th
 ```
 
 We set evaluated a range of priors on the intrinsic rate of population increase $r$ in the surplus production models: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
-With the Schaffer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which roughly mimic the values of natural mortality $M$ explored in the operating models. In applications of the Framework, additional tuning of the priors could be explored.
+With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which roughly mimic the values of natural mortality $M$ explored in the operating models. In applications of the Framework, additional tuning of the priors could be explored.
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
@@ -357,12 +357,9 @@ satisficed_criteria <- c("LT LRP" = 0.9, "STC" = 0.8)
 mp_sat <- dplyr::filter(pm_min, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
-mp_sat
 
 mp_sat <- mp_sat[!mp_sat %in% c(".SP4010_0.6", ".SP6040_0.6_fox", ".SP6040_0.6")]
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
-# mp_sat
-
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 
 pm_avg_sat <- pm_avg %>% filter(MP %in% mp_sat)
@@ -371,15 +368,12 @@ pm_min_sat <- pm_min %>% filter(MP %in% mp_sat)
 
 Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010].
 We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
-To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT P40 $>$ 0.8 and STY $>$ 0.7.
+To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT LRP $>$ 0.9 and STC $>$ 0.8.
 
 This left us with `r length(mp_sat)` MPs (`r gfutilities::commify(mp_sat)`).
 
-We ran the closed-loop simulations across 200 stochastic iterations using DLMtool version XX with the OMs and MPs described above.
+We ran the closed-loop simulations across 250 stochastic iterations using DLMtool version 5.4.2 with the OMs and MPs described above.
 We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as iterations were added (Figure \@ref(fig:rex-converge)).
-Some MPs with very similar performance may still be exchanging rank order within specific performance metrics as of 200 iterations.
-Therefore, final inference should probably be drawn on somewhat greater than the 200 iterations shown here.
-We checked other OMs and these showed similar patterns to the representative  Figure \@ref(fig:rex-converge).
 
 (ref:fig-rex-converge)
 Assessing convergence of the Rex Sole closed-loop simulations on a consistent rank order of MPs within performance metrics.
