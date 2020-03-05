@@ -5,3 +5,6 @@ _book/resdoc.pdf: 01-introduction.Rmd 02-best-practices.Rmd 99-references.Rmd in
 
 continuous:
 	while true; do make --silent; sleep 0.5; done
+
+bibclean:
+	bibtool -s --print.use.tab=Off --print.line.length=80 -i bib/refs.bib -o bib/refs.bib
