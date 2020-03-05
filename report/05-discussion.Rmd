@@ -9,7 +9,17 @@
 * re-sample data | `rnorm` etc. > `runif`
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
-<!--RF-->
+
+This MP framework, and all MSE processes, differ from conventional stock assessments in the way advice is delivered.
+In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future catch levels. 
+It is then the job of the decision-makers to select a future TAC based on their choice of probability and consideration of trade-offs (e.g.,  between economic and conservation objectives).
+In this process, the objectives are not always clearly stated or transparent in the final catch decision.
+
+<!-- From intro:
+We emphasize that biological reference points and stock status, which are integral to the SFF and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
+Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.-->
+
+
 * How this is compliant with the DFO precautionary framework and Bill C68
 * Not just a backup solution, could be argued that this is "implicit" knowledge is a better solution then the usual "explicit" knowledge
 * Where is risk? Issue #61
