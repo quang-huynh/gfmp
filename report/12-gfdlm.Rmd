@@ -109,16 +109,20 @@ info %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-```{r sha, cache=FALSE}
+```{r sha, cache=TRUE}
 get_sha <- function(path) {
-  suppressWarnings({
-    sha <- tryCatch(system(paste0("git ls-remote git@github.com:", path, ".git"),
-      intern = TRUE, ignore.stderr = TRUE), error = function(e) " ")
-  })
-  if (is.null(attr(sha, "status")))
-    substr(sha[grepl("HEAD", sha)], 1, 7)
-  else
-    "xxxxxxx"
+  if (!identical(.Platform$OS.type, "windows")) {
+    suppressWarnings({
+      sha <- tryCatch(system(paste0("git ls-remote git@github.com:", path, ".git"),
+        intern = TRUE, ignore.stderr = TRUE), error = function(e) "error")
+    })
+    if (is.null(attr(sha, "status")) && sha != "error")
+      substr(sha[grepl("HEAD", sha)], 1, 7)
+    else
+      out <- "xxxxxxx"
+  } else {
+    out <- "xxxxxxx"
+  }
 }
 sha_gfmp <- get_sha("pbs-assess/gfmp")
 sha_gfdlm <- get_sha("pbs-assess/gfdlm")
