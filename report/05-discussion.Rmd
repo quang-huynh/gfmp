@@ -21,19 +21,26 @@
 * Extent of tuning exercise may depend on how well MPs are performing. If all performing badly, may need to go on more extensive tuning expedition
 
 ## REASSESSMENT FREQUENCY AND TRIGGERS
-<!-- RF -->
-* Annual(?) updating of catch recommendation -- see also Issue #82
-* Less frequent revisiting of the OM and potential changes to MP/HCR
-* Some suggested interval barring a trigger
 
-* Identifying mismatches between the operating model and realized data
-* Suggested that these are checked on some regular interval
-* Which data are we suggesting to check
+In general, the purpose of an MP framework is to identify and select a robust MP that can be left in place for an agreed amount of time.
+We do not recommend a specific interval between assessments in this framework but suggest that five years could be an appropriate interval, given current assessment capacity, noting that the MP framework itself can be used to test appropriate re-assessment intervals for individual species [e.g., @huynh2020].
 
-* Is the future index outside the projection envelope?
-* Have the management decisions departed from the MP?
-* Carruthers and Hordyk CJFAS paper - multivariate approach
-* Simple would be better
+In addition to the best pactice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is reviewed once it has been implemented.
+Departures from an MPs predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
+Exceptional circumstances can  be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics (e.g., changes in natural mortality, growth, recruitment or fishing dynamics). 
+Evidence for exceptional circumstances, ocurring within the recommended assessment interval, would trigger a formal review of the MP, possibly resulting in a new MSE, or an adjustment to the selected MP.
+
+@carruthers_hordyk_2018 list several examples where protocols for detecting exceptional circumstances have been established. 
+In general, protocols include monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
+Examples of triggers include observed data falling outside the 90% or 95% confidence interval of the OM-predicted data (or some other statistical criteria).
+@carruthers_hordyk_2018 recommend testing the statistical power of protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics. 
+For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low. 
+It may therefore be necessary to use more rigorous test statistic, possibly based on multiple sources of data [e.g., @carruthers_hordyk_2018].
+
+<!--TODo: RF has asked Rob and Brendan for info on protocols for Sablefish-->
+
+We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that formal protocol has not yet been establish. 
+We therfore also recommend further analyses to evaluate protocols for detecting exceptional circumstances as a matter of priority.
 
 ## INCLUDING ENVIRONMENTAL EFFECTS
 <!-- RF -->
