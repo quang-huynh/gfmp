@@ -14,10 +14,9 @@ This MP framework, and all MSE processes, differ from conventional stock assessm
 In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future catch levels. 
 This process depends upon explicit reporting of reference points and estimation of stock status.
 Uncertainty can be incorporated into the process in two main ways: 1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process and observation error terms) as random variables; and/or 2) developing alternative models to test sensitivity to model assumptions.
-In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision-table, capturing uncertainties from multiple models.
-Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based probability of breaching reference points and consideration of trade-offs (e.g.,  between economic and conservation objectives).
+In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision-table [e.g., @forrest2019], integrating uncertainties across multiple models.
+Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probability of breaching reference points and consideration of trade-offs (e.g.,  between economic and conservation objectives).
 Therefore, consideration of the probability of breaching reference points is made at the last step of the decision-making process.
-The final decision point is the TAC.
 It is possible for the final catch decision to be made without any agreement on objectives with respect to probabilities of breaching reference points.
 
 The MP Framework differs from conventional assessments in two key ways: 1) Reference points and stock status are not explicitly reported; and 2) objectives related to the probability of breaching reference points must be made at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)). 
@@ -29,21 +28,10 @@ An advantage of an MP framework is that all objectives must be transparently sta
 
 We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status. 
 MP frameworks such as this one may be especially important for these species. 
-The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP. 
+The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:motivation). 
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be provided.
-The framework therefore increases capacity for provision of SFF-compliant advice.
+The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice.
 We recommend that products such as DFO's sustainability survey (https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP, over a fifty year time frame".
-
-
-
-<!-- From intro:
-We emphasize that biological reference points and stock status, which are integral to the SFF and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
-Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.-->
-
-
-* How this is compliant with the DFO precautionary framework and Bill C68
-* Not just a backup solution, could be argued that this is "implicit" knowledge is a better solution then the usual "explicit" knowledge
-* Where is risk? Issue #61
 
 ## TUNING MPs
 * See Issue #55
