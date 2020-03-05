@@ -117,12 +117,13 @@ get_sha <- function(path) {
         intern = TRUE, ignore.stderr = TRUE), error = function(e) "error")
     })
     if (is.null(attr(sha, "status")) && sha != "error")
-      substr(sha[grepl("HEAD", sha)], 1, 7)
+      out <- substr(sha[grepl("HEAD", sha)], 1, 7)
     else
       out <- "xxxxxxx"
   } else {
     out <- "xxxxxxx"
   }
+  out
 }
 sha_gfmp <- get_sha("pbs-assess/gfmp")
 sha_gfdlm <- get_sha("pbs-assess/gfdlm")
