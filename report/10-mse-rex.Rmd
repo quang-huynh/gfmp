@@ -59,9 +59,9 @@ We defined six OM reference-set scenarios that differed from each other in these
 sc <- readRDS(here("generated-data/rex-scenarios.rds"))
 sc %>%
   select(-scenario, -order) %>%
-  mutate(scenario_human = gsub("inc\\.", "increasing", scenario_human)) %>% 
-  mutate(scenario_human = gsub("\\\n", " ", scenario_human)) %>% 
-  csasdown::csas_table(caption = "Rex Sole OM scenarios. \"Ceq.\" refers to \"catch equilibrium\" in 1995 and is used as a way to parameterize the level of biomass depletion at the beginning of the recorded catch history.", 
+  mutate(scenario_human = gsub("inc\\.", "increasing", scenario_human)) %>%
+  mutate(scenario_human = gsub("\\\n", " ", scenario_human)) %>%
+  csasdown::csas_table(caption = "Rex Sole OM scenarios. \"Ceq.\" refers to \"catch equilibrium\" in 1995 and is used as a way to parameterize the level of biomass depletion at the beginning of the recorded catch history.",
     col_names = c("Scenario name", "Category"))
 ```
 
@@ -80,11 +80,11 @@ We considered three reference-set scenarios that varied in the assumed value of 
 
 We attempted to fit $C^{\textrm{eq}}_f$ values ranging from 0 to 2.5 times the catch in 1996, which imply that equilibrium catch in 1995 was 0% to 250% of catch in 1996.
 The SRA model estimated implausibly high values of fishing mortality $F$ ($F > 3$) if $C^{\textrm{eq}}_f < 200\%$ 1996 catch suggesting that there may be considerable missing discarded catch prior to 1996 and the stock may not have been close to $B_0$ in 1995.
-Therefore, our reference set includes only two levels of catch equilibrium that we thought rendered plausible operating model conditioning. 
+Therefore, our reference set includes only two levels of catch equilibrium that we thought rendered plausible operating model conditioning.
 We include an additional scenario that starts closer to $B_0$ but excludes commercial CPUE in the robustness set.
 
 We think this assumption of missing discarded catch prior to 1996 is consistent with the data and what we know about the multispecies groundfish fishery for three reasons.
-First, standardized commercial CPUE shows an increasing trend from 1996 to 2003 before the SYN WCVI survey began (Figure \@ref(fig:REF)). 
+First, standardized commercial CPUE shows an increasing trend from 1996 to 2003 before the SYN WCVI survey began (Figure \@ref(fig:REF)).
 While there are many caveats to the commercial CPUE timeseries, two factors lead us to play some faith in late 1990s trend: (1) commercial CPUE has somewhat mimicked the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:REF)) and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
 This increase in commercial CPUE from 1996 to 2003 suggests that there may be a substantial amount of missing discarded catch prior to 100% at-sea-observer coverage in 1996.
 Second, the SYN WCVI survey has shown approximately a doubling in its relative index value from the early 2000s to 2019, which will be consistent with the stock starting in a somewhat depleted state in 1996.
@@ -206,26 +206,26 @@ West Coast Vancouver Island synoptic bottom trawl survey and standardized commer
 rex_indexes <- readRDS(here("generated-data/rex-indexes.rds"))
 
 d1 <- reshape2::melt(rex_indexes, id.vars = c("year"),
-  measure.vars = c("syn_wcvi", "trawl_cpue"), 
-  variable.name = "index", value.name = "est") %>% 
-  mutate(index = as.character(index)) %>% 
+  measure.vars = c("syn_wcvi", "trawl_cpue"),
+  variable.name = "index", value.name = "est") %>%
+  mutate(index = as.character(index)) %>%
   mutate(index = ifelse(grepl("^syn", index), "SYN WCVI", "Trawl CPUE"))
-  
+
 d2 <- reshape2::melt(rex_indexes, id.vars = c("year"),
-  measure.vars = c("syn_wcvi_sd", "trawl_sd"), 
-  variable.name = "index", value.name = ".sd") %>% 
-  mutate(index = as.character(index)) %>% 
+  measure.vars = c("syn_wcvi_sd", "trawl_sd"),
+  variable.name = "index", value.name = ".sd") %>%
+  mutate(index = as.character(index)) %>%
   mutate(index = ifelse(grepl("^syn", index), "SYN WCVI", "Trawl CPUE"))
 d3 <- inner_join(d1, d2, by = c("year", "index"))
 
 d3 <- group_by(d3, index) %>%
   mutate(est = est / exp(mean(log(est[year >= 2004]), na.rm = TRUE)))
 
-ggplot(d3, aes(year, est)) + 
-  # geom_line(na.rm = TRUE) + 
+ggplot(d3, aes(year, est)) +
+  # geom_line(na.rm = TRUE) +
   facet_wrap(~index, ncol = 1) +
   geom_pointrange(aes(ymin = exp(log(est) - 2 * .sd), ymax = exp(log(est) + 2 * .sd)), na.rm = TRUE) + #, position = position_dodge(width = 0.3)
-  theme_pbs() + 
+  theme_pbs() +
   ylab("Index (centred by its geometric mean)")+
   xlab("Year") +
  geom_linerange(aes(ymin = exp(log(est) - 2 * .sd), ymax = exp(log(est) + 2 * .sd)), na.rm = TRUE) +
@@ -301,7 +301,7 @@ Fits to the historical indices of abundance from the nine OMs are shown in Figur
 Estimates of depletion (*B*/*B*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
 
 (ref:fig-rex-survey-fits)
-SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes. 
+SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes.
 Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
 Panels from top to bottom represent scenarios.
 Dots represent index mean and line segments represent 2 $\times$ the standard errors as entered into the SRA models.

@@ -12,7 +12,7 @@ Function:
 
 * Figure \@ref(fig:rex-converge).
 
-`plot_tigure()` 
+`plot_tigure()`
 
 * For example, Figure \@ref(fig:rex-tigure-avg).
 
@@ -20,11 +20,11 @@ Function:
 
 * For example, Figure \@ref(fig:rex-dot-lines).
 
-`plot_tradeoff()` 
+`plot_tradeoff()`
 
 * For example, Figure \@ref(fig:rex-tradeoff-reference).
 
-`plot_radar()` 
+`plot_radar()`
 
 * For example, Figure \@ref(fig:rex-spider-satisficed-mps-avg).
 
@@ -32,19 +32,19 @@ Function:
 
 * For example, Figure \@ref(fig:rex-proj-index).
 
-`plot_main_projections()` 
+`plot_main_projections()`
 
 * For example, Figure \@ref(fig:rex-proj-ceq200).
 
-`plot_kobe()` 
+`plot_kobe()`
 
 * For example, Figure \@ref(fig:rex-kobe).
 
-`plot_worms()` 
+`plot_worms()`
 
 * For example, Figure \@ref(fig:rex-worm).
 
-`plot_scenario_projections()` 
+`plot_scenario_projections()`
 
 * For example, Figure \@ref(fig:rex-proj-scenarios).
 
@@ -68,8 +68,8 @@ Function:
 
 ```{r, echo=TRUE, eval=FALSE}
 oddify <- function(x) seq(2, x, by = 2)
-.Itarget_w0.8 <- gfdlm::Itarget_w0.8 %>% 
-  gfdlm::use_AddInd() %>% 
+.Itarget_w0.8 <- gfdlm::Itarget_w0.8 %>%
+  gfdlm::use_AddInd() %>%
   gfdlm::reduce_survey(index = oddify)
 ```
 
