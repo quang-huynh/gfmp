@@ -722,7 +722,11 @@ knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 
 \clearpage
 
-### Sensitivity Tests
+### SENSITIVITY OF PROJECTIONS
+
+By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
+The historical trajectory is most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the others.
+The projected trajectory is relatively similar across the reference-set scenarios, while differing markedly for the "No CPUE Ceq. 50%" and "M increasing" robustness scenarios.
 
 (ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
 Colours represent the reference- and robustness-set scenarios.

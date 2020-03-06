@@ -142,7 +142,7 @@ stock_rex@maxage <- 27
 
 *Natural mortality rate. Uniform distribution lower and upper bounds.*
 
-@mcgilliard2017 used 0.17 for M but they also note that growth rates and size can vary with latitude, which can affect M. M is likely slightly higher in BC at lower latitudes. Here, we add a range of possible M values starting with a lower bound of that from @mcgilliard2017. We include an alternative scenario with a higher M value (M = 0.3).
+@mcgilliard2017 used 0.17 y^-1^ for *M* but they also note that growth rates and size can vary with latitude, which can affect *M*. *M* is likely slightly higher in BC at lower latitudes. Here, we add a range of possible *M* values starting with a lower bound of that from @mcgilliard2017. The maximum age observed in our database of 15 implies a higher value of *M*, although this maximum age is likely an underestimate. We include an alternative scenario with a higher *M* value (*M* = 0.3 y^-1^).
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@M <- c(0.17, 0.25)
@@ -154,7 +154,7 @@ stock_rex@M <- c(0.17, 0.25)
 
 *Steepness of the stock-recruit relationship. Uniform distribution lower and upper bounds with values from 1/5 to 1.*
 
-@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth (Figure \@ref(fig:desc-rex-h)) but we also include an alternative scenario with steepness fixed to a value of 0.95.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth (Figure \@ref(fig:desc-rex-h)) but we also include an alternative scenario with steepness fixed to a relatively high value of 0.95.
 
 <!-- quantile(rbeta(1e6, shape1 = 13.4, shape2 = 2.4), probs = c(0.025, 0.5, 0.975)) -->
 <!-- stock_rex@h <- c(0.80, 0.95) -->
@@ -193,11 +193,15 @@ cpars$Perr <- rnorm(nsim, 0.6, 0.1)
 
 *Autocorrelation in recruitment deviations. Uniform distribution lower and upper bounds.*
 
-@thorson2014 found the mean autocorrelation for Pleuronectiformes to be about 0.44 with a standard deviation of about 0.27. We will use these values but ensure that all samples are between -1 and 1:
+This parameter will be replaced by the stock reduction analysis (SRA) model based on a post-hoc calculation performed on the estimated historical recruitment deviations.
 
 <!-- stock_rex@AC <- c(0.2, 0.7) -->
 
-```{r desc-stock-ac-rex, results = knitr_results, echo = knitr_echo}
+```{r desc-stock-ac-rex1, results = knitr_results, echo = knitr_echo}
+cpars$AC <- c(0, 1)
+```
+
+```{r desc-stock-ac-rex, results = knitr_results, echo = FALSE}
 cpars$AC <- rnorm(nsim, 0.44, 0.27)
 cpars$AC[cpars$AC > 1] <- 1
 cpars$AC[cpars$AC < -1] <- -1
@@ -210,6 +214,17 @@ cpars$AC[cpars$AC < -1] <- -1
 *Maximum length. Uniform distribution lower and upper bounds.*
 
 Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well (Figure \@ref(fig:rex-length1)). We will extract samples from the model posterior (Figure \@ref(fig:desc-vb-parameters)) and save them as custom parameters.
+
+We fit the model with Stan [REF] using the model implemented in the gfplot R package [REF] according to the equation:
+
+$$
+  L_i \sim \operatorname{Log-normal}
+  \left( \log(l_{\infty} (1 - \exp(-k (A_i - t_0)))), \sigma \right),
+$$
+
+where $L_i$ and $A_i$ refer to the length and age of fish $i$, $\sigma$ refers to the scale parameter of the lognormal distribution, and all other parameters refer to the von Bertalanffy equation.
+We used weakly informative priors: $k \sim \textrm{Normal}(0, 2)$, $L_\mathrm{inf} \sim \textrm{Normal}(0, \varphi)$, $t_0 \sim \textrm{Normal}(0, 20)$, and $\sigma \sim \textrm{Student-t}(3,0, 2)$, where $\varphi$ refers to the 99% quantile of the observed lengths (36 m).
+We sampled 8000 iterations across four chains from the posterior and checked that the chains were consistent with convergence via the Rhat and ESS (effective sample size) metrics along with traceplots of the samples [REF].
 
 ```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent 100 samples from the posterior.", fig.width=6, out.width='4in'}
 if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
@@ -304,9 +319,9 @@ ggplot(vbd, aes(value)) + geom_histogram() +
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
-Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)). We use priors of Normal(0, 50^2^) for the intercept and Normal(0, 10^2^) for the effect of length and male/female. We sample 2000 replicates across 4 separate chains from the posterior.
-
-TODO expand a bit
+Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)).
+We used priors of Normal(0, 50) for the intercept and Normal(0, 10) for the effect of length and male/female. 
+We sampled 2000 replicates for each of four chains from the posterior and check that the chains were consistent with convergence using the same approach as described above for the von Bertalanffy model.
 
 ```{r desc-stock-mat-plot, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length. \"Rug lines\" along the top and bottom indicate individual sampled fish was some overlap. Curved lines represent predictions from a logistic regression. Vertical line represents the length at 50\\% maturity."}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
@@ -354,7 +369,6 @@ mat_prob <- function(x, intercept, slope) {
   coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005))
 ```
 
-
 ```{r desc-stock-l50-rex, results = knitr_results, echo = knitr_echo, message=FALSE, warning=FALSE}
 cpars$L50 <- L50[i]
 ```
@@ -372,7 +386,7 @@ ggplot(lwd, aes(value)) + geom_histogram() +
 L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 ```
 
-`r round(mean(L50), 1)` is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2005].
+Our estimated average length at 50% maturity (`r round(mean(L50), 1)` cm) is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2005].
 
 <!-- slot-chunk-end -->
 
@@ -410,9 +424,18 @@ We have sufficient length and weight data to fit a model to our data for both se
 
 (ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
 
-```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="(ref:desc-stock-a-rex)", fig.width=6, out.width="4in", message=FALSE}
+<!-- Suppressing a Makevars R message: -->
+```{r desc-stock-a-rex1, message=FALSE, warning=FALSE, echo=FALSE}
 mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
 gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+```
+
+```{r desc-stock-a-rex2, echo=TRUE, eval=FALSE}
+mlw <- gfplot::fit_length_weight(drex$survey_samples, sex = "all")
+gfplot::plot_length_weight(object_all = mlw, col = c("All" = "black"))
+```
+
+```{r desc-stock-a-rex, results = knitr_results, echo = knitr_echo, fig.cap="(ref:desc-stock-a-rex)", fig.width=6, out.width="4in", message=FALSE}
 stock_rex@a <- exp(mlw$pars[["log_a"]])
 round(log(stock_rex@a), 2)
 round(stock_rex@a, 7)
@@ -492,7 +515,8 @@ n_caught <- drex$commercial_samples %>%
 
 There are only `r n_caught` fish with measured lengths in the WCVI commercial data, which is insufficient to estimate selectivity in the SRA.
 We will make the assumption that commercial and survey selectivity approximately match the maturity ogive (but are fully selected by $L_\infty$), similar to the assumption made in a delay-difference model that maturity and vulnerability to the fishery occur at the same age.
-We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery.
+For this we use $L^5 = 22$ and $L^\textrm{FS} = 32$.
+We will include an alternative assumption that the selectivity curve is shifted to the left making younger fish vulnerable to the fishery ($L^5 = 17$ and $L^\textrm{FS}$ = 28$).
 These curves will be specified in the SRA.
 
 ```{r desc-selectivity-function, fig.cap="Maturity-at-length and 2 selectivity curves used in the operating models. Maturity ogive represents 100 draws from the posterior. Vertical lines represent samples from $L_\\infty$.", fig.width=6, out.width='4in'}
@@ -553,8 +577,6 @@ fleet_rex@CurrentYr <- 2019
 <!-- slot-chunk-end -->
 
 ## OBS SLOT DESCRIPTIONS {#app:desc-obs-rex}
-
-We will start with a built-in observation object and substitute values as we go:
 
 ```{r warnings = FALSE}
 obs_rex <- DLMtool::Precise_Unbiased
