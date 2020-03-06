@@ -35,6 +35,7 @@ junk/
 sra/knitr-cache*
 sra/knitr-figs*
 nodejs/
+*.sublime*
 
 report/gfmp-outline.mindnode/QuickLook/Preview.jpg
 report/resdoc.toc
