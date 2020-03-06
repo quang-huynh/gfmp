@@ -222,13 +222,13 @@ Annual recruitment $R_y$ is modelled as
 $$
 R_y =
 \begin{cases}
-      \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \exp(\delta_y - 0.5 \tau^2) & \textrm{Beverton-Holt}\\
-      \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\exp(\delta_y - 0.5 \tau^2) & \textrm{Ricker},
+      \dfrac{\alpha^{\textrm{B}} B_{y-1}}{1 + \beta^{\textrm{B}}B_{y-1}} \exp(\varepsilon_y - 0.5 \tau^2) & \textrm{Beverton-Holt}\\
+      \alpha^{\textrm{R}} B_{y-1} \exp(-\beta^{\textrm{R}} B_{y-1})\exp(\varepsilon_y - 0.5 \tau^2) & \textrm{Ricker},
 \end{cases}
 (\#eq:sra-om-rya)
 $$
 
-where $\delta_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates, and $B_y$ is annual spawning biomass, given by
+where $\varepsilon_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates, and $B_y$ is annual spawning biomass, given by
 
 $$
 B_y = \sum_a^A w_{a} m_{a} N_{y,a},
@@ -365,10 +365,10 @@ $$
 
 where $\omega_f$ is the standard deviation of mean lengths.
 
-The log-likelihood component $\Lambda_6$ of annual estimated recruitment deviates $\delta_y$ in log space is
+The log-likelihood component $\Lambda_6$ of annual estimated recruitment deviates $\varepsilon_y$ in log space is
 
 $$
-\Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\delta_y^2}{2 \tau^2}\right),
+\Lambda_6 = \Sigma_y\left(-\log(\tau) - \dfrac{\varepsilon_y^2}{2 \tau^2}\right),
 (\#eq:sra-om-like-recdevs)
 $$
 
