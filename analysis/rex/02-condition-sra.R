@@ -253,6 +253,34 @@ get_depletion <- function(x, scenario) {
   left_join(d1, d2, by = "year")
 }
 
+get_F <- function(x, scenario) {
+
+  .F1 <- map(x@Misc, "F_at_age")
+  .F <- map_dfc(.F1, ~tibble(.F = apply(.x, 1, max)))
+  .F <- t(as.matrix(.F))
+
+  last_year <- dim(.F)[2]
+  all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
+  all_years <- all_years[-length(all_years)]
+
+  d1 <- t(apply(.F[, -last_year], 2,
+    FUN = quantile,
+    probs = c(0.025, 0.5, 0.975)
+  )) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    mutate(scenario = scenario) %>%
+    rename(lwr = 1, med = 2, upr = 3, year = all_years)
+  d2 <- t(apply(.F[, -last_year], 2,
+    FUN = quantile,
+    probs = c(0.25, 0.75))) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    rename(lwr50 = 1, upr50 = 2, year = all_years)
+
+  left_join(d1, d2, by = "year")
+}
+
 g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
   mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
   ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
@@ -264,6 +292,19 @@ g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
   labs(x = "Year", y = "Depletion") +
   coord_cartesian(ylim = c(0, 1), expand = FALSE)
 ggsave(here::here("report/figure/rex-compare-SRA-depletion-panel.png"),
+  width = 8, height = 6.75
+)
+g <- purrr::map2_df(sra_rex, sc$scenario_human, get_F) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
+  ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
+  geom_ribbon(fill = "grey90") +
+  geom_ribbon(fill = "grey70", mapping = aes(ymin = lwr50, ymax = upr50)) +
+  geom_line() +
+  facet_wrap(vars(scenario)) +
+  gfplot::theme_pbs() +
+  labs(x = "Year", y = "Depletion") +
+  coord_cartesian(ylim = c(0, 1.8), expand = FALSE)
+ggsave(here::here("report/figure/rex-compare-F-panel.png"),
   width = 8, height = 6.75
 )
 
