@@ -208,11 +208,11 @@ where $\widetilde{L}^\textrm{FS}$ represents the user-defined length-at-full-sel
 The standard deviation of the ascending limb ($\widetilde{\sigma}_{\textrm{sasc}}^{2}$) is given by
 
 $$
-\sigma_{\textrm{sasc}} = \frac{{\widetilde{L}}_{5} - \widetilde{L}^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
+\sigma_{\textrm{sasc}} = \frac{{\widetilde{L}}^{5} - \widetilde{L}^\textrm{FS}}{\sqrt{- \log_{2^{0.05}}}}
 (\#eq:dlm-om-siglasc)
 $$
 
-where $\widetilde{L}_5$ is the user-defined length-at-5%-selectivity
+where $\widetilde{L}^5$ is the user-defined length-at-5%-selectivity
 
 The standard deviation of the descending limb is given by
 
@@ -642,7 +642,7 @@ How to treat reference points when parameters, particularly productivity paramet
 "Stock",    "L50\\_95",    "$\\theta_{l50-95}$",           "Length increment from 50\\% to 95\\% maturity.",
 "Stock",    "a",          "$\\alpha_W$",                   "Length-weight parameter.",
 "Stock",    "b",          "$\\beta_W$",                    "Length-weight parameter.",
-"Fleet",    "L5",         "$L_5$",                         "Shortest length corresponding to 5\\% vulnerability.",
+"Fleet",    "L5",         "$L^5$",                         "Shortest length corresponding to 5\\% vulnerability.",
 "Fleet",    "LFS",        "$L^\\textrm{FS}$",              "Shortest length that is fully vulnerable to fishing.",
 "Fleet",    "Vmaxlen",    "$V_{L_\\infty}$",               "The vulnerability of fish at maximum expected length.",
 "Fleet",    "LR5",        "${L}_{r5}$",                         "Shortest length fish corresponding to 5\\% retention.",
