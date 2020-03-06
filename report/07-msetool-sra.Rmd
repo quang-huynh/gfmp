@@ -133,7 +133,7 @@ Z_{y,a} = M + \Sigma_f v_{a,f} F_{y,f},
 (\#eq:sra-om-zya)
 $$
 
-where $F_{y,f}$ is fishing mortality in year $y$ and fleet $f$, and $M$ is natural mortality, assumed here to be constnt.
+where $F_{y,f}$ is fishing mortality in year $y$ and fleet $f$, and $M$ is natural mortality, assumed here to be constant.
 
 ### Initial population distribution
 
