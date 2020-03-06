@@ -563,6 +563,8 @@ Time-varying growth, natural mortality and/or selectivity will result in time-va
 
 How to treat reference points when parameters, particularly productivity parameters such as $\widetilde{M}$ or $\widetilde{\kappa}$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the Framework.
 
+\clearpage
+
 ## DLMTOOL SLOTS
 
 <!--TODO Need to make sure TACFrac and TACSD are correctly described. See correspondence with Quang-->

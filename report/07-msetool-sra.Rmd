@@ -17,21 +17,16 @@ For data-limited species, where it may only be possible to provide ranges of val
 In other words, it helps address the broader question:
 What combinations of historical fishing mortality and recruitment could have generated the observed data [@walters2006]?
 
-We make the important note that an SRA does not necessarily require age-composition data, as long as credible estimates of maturity-at-length or age and vulnerability-at-length or age can be provided. However, if age- or length-composition data are available, even for one or a few years, these can be used to inform vulnerability-at-age in the model.
+We note that an SRA does not necessarily require age-composition data, as long as credible estimates of maturity-at-length or age and vulnerability-at-length or age can be provided. However, if age- or length-composition data are available, even for one or a few years, these can be used to inform vulnerability-at-age in the model.
 
 ## STOCK REDUCTION ANALYSIS IN THE CONTEXT OF DLMTOOL {#sec:sra-dlmtool}
 
 The SRA described here can be fit with the R package MSEtool via the function `SRA_scope()`.
-The function takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and historical observed data (observed catches, indices of abundance and, if available, composition data), fits the SRA to the observed data, and returns a list with an updated OM and calibrated outputs from the SRA.
+The function takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and historical observed data (observed catches, indices of abundance and, if available, composition data), fits the SRA to the observed data, and returns a list with an updated OM and outputs from the SRA.
 
 The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters.
 For example, the steepness parameter of the stock-recruit relationship ($h$) is usually highly uncertain.
-The initial OM can specify a range of values for $h$ (e.g., 0.6 to 0.9 with a uniform distribution):
-
-$$
-h \sim \textrm{Uniform} (0.6,0.9).
-$$
-
+The initial OM can specify a range of values for $h$, for example: $h \sim \textrm{Uniform} (0.6,0.9)$.
 In this case, with $i = 1$ to $n$ (e.g., $n = 250$) simulations in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
 The SRA model reconstruction from the $i^{\textrm{th}}$ fit will be conditioned on the $i^{\textrm{th}}$ sampled value of $h$.
 The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved alongside the estimated parameters to form the conditioned OM.
@@ -71,7 +66,7 @@ Age-composition data from one or a few years can also be informative about selec
 
 ### PARAMETERS OF THE SRA MODEL
 
-The required pre-specified OM parameters needed for SRA scoping are as follows. DLMtool slot names are provided in Table \@ref(tab:tab-om-pars):
+The required pre-specified OM parameters needed for SRA scoping are as follows (DLMtool slot names are provided in Table \@ref(tab:tab-om-pars)):
 
 - Growth parameters $L_{\infty}$, $\kappa$ and $a_{0}$.
 
@@ -81,9 +76,11 @@ The required pre-specified OM parameters needed for SRA scoping are as follows. 
 
 - Natural mortality $M$.
 
+- Steepness $h$.
+
 If growth, maturity, or natural mortality are set to be time-varying in the historical period, then the SRA will implement time-varying life history in the estimation model as well.
 
-- The stock-recruit relationship (Beverton-Holt or Ricker)
+- The stock-recruit relationship type (Beverton-Holt or Ricker)
 
 - Unfished recruitment ($R_0$), which is used as the starting value for estimation if the model is conditioned on catch.
 
@@ -93,9 +90,9 @@ If there are no age- or length-composition data, then selectivity in the model i
 Otherwise, the ascending limb of selectivity is estimated with age or length composition data.
 If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled using the range of $V_{L_\infty}$ or estimated in the SRA. See Equation \@ref(eq:sra-om-vaf).
 
-- Recruitment autocorrelation ($\theta_{\textrm{AC}}$), which is estimated post-hoc from the recruitment deviation estimates.
+- Recruitment autocorrelation ($\theta_{\textrm{AC}}$) is estimated post-hoc from the recruitment deviation estimates.
 
-- Standard deviation of recruitment deviations $\sigma_{R}$. Historical recruitment deviations are updated by the SRA model (Equation \@ref(eq:sra-om-rya)), while recruitment deviations in the projection period are sampled with autocorrelation (Equation \@ref(eq:dlm-om-recdev)).
+- Standard deviation of recruitment deviations $\sigma_{R}$ is taken as input. Historical recruitment deviations are updated by the SRA model (Equation \@ref(eq:sra-om-rya)), while recruitment deviations in the projection period are sampled with autocorrelation (Equation \@ref(eq:dlm-om-recdev)).
 
 If initial depletion (Equation \@ref(eq:sra-om-d1)) is estimated, then the annual recruitment deviations in the first year are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-rya)).
 
