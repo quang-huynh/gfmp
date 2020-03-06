@@ -400,12 +400,17 @@ PM <- c("LT LRP", "LT USR", "FMSY", "STC", "LTC", "AADC")
 mse2@OM$RefY <- ref_catch
 
 # mse <- DLMtool::Sub(mse, MPs = c("CC0.8", "CC0.9", "CC1.0", "CC1.1", "CC1.2"))
-mse <- DLMtool::Sub(mse2, MPs = c(".Itarget_d0.8", ".Itarget_w0.8", ".Itarget_base"))
+mse <- DLMtool::Sub(mse2, MPs = c(".Itarget_d0.8", ".Itarget_w0.8", ".Itarget_base", ".Itarget_x0.2"))
 mse@OM$RefY <- ref_catch
 
 pm_df <- gfdlm::get_probs(mse, PM)
 
 pm_df_list <- list("Scenario 1" = pm_df)
+```
+
+```{r}
+catch_breaks <- seq(0, 600000, 100000)
+catch_labels <- catch_breaks / 1000
 ```
 
 (ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation has reached convergence in the rank order of MP performance.
@@ -416,12 +421,12 @@ A wiggly line indicates that a given MP is still varying in its performance metr
 Lines that are crossing indicate changes to the rank order of MP performance as more iterations are run.
 A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
 
-```{r methods-converge, fig.cap="(ref:fig-methods-converge)", out.width="5in"}
-gfdlm::plot_convergence(mse, c("LT USR")) +
+```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
+x3 <- mse
+x3@MPs <- paste0("MP-", seq_along(x3@MPs))
+gfdlm::plot_convergence(x3, c("LT USR")) +
   scale_colour_brewer(palette = "Dark2")
 ```
-
-\clearpage
 
 (ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~, F/F~MSY~, and catch across various management procedures (rows) for a single operating model.
 The historical period is the same in every row.
@@ -431,17 +436,15 @@ The vertical dashed line indicates the last year of the historical period.
 The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
 Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
 
-```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="6.5in"}
+```{r methods-proj, fig.cap="(ref:fig-methods-proj)", fig.asp=0.3, out.width="\\textwidth"}
 x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8"))
 x@MPs <- "MP-1"
-x %>% gfdlm::plot_main_projections()
+x %>% gfdlm::plot_main_projections(catch_breaks = catch_breaks, catch_labels = catch_labels)
 ```
-
-\clearpage
 
 (ref:fig-methods-index) index TODO
 
-```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="4.5in"}
+```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="4.5in", fig.width=6}
 oddify <- function(x) seq(2, x, by = 2)
 DLMtool::Sub(mse, MPs = c(".Itarget_d0.8")) %>%
   list("Scenario 1" = .) %>% 
@@ -450,47 +453,31 @@ DLMtool::Sub(mse, MPs = c(".Itarget_d0.8")) %>%
     n_samples = 3, seed = 12345)
 ```
 
-\clearpage
-
 (ref:fig-methods-tigure) This figure-table illustrates performance metric values for a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
 The MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
 The colour shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
 TODO: will add an indication of satisficing thresholds with shading or bold MPs names.
 
-```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
+```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", fig.asp=1.5, out.width="3.5in", fig.width=4}
 mse2 %>%
   gfdlm::get_probs(PM) %>% 
   mutate(MP = paste0("MP-", seq_len(length(MP)))) %>% 
   gfdlm::plot_tigure(satisficed = c("LT LRP" = 0.9, "LTC" = 0.7))
 ```
 
-\clearpage
-
-(ref:fig-methods-radar) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
-Each spoke represents a performance metric (Section \@ref(sec:approach2)).
-Each line represents a management procedure.
-The position of each line on each spoke represents the probability of that MP achieving that performance metric.
-Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
-
-```{r methods-radar, fig.cap="(ref:fig-methods-radar)", out.width="4.5in"}
-pm_df %>% 
-  mutate(MP =  c("MP-1", "MP-2", "MP-3")) %>% 
-  gfdlm::plot_radar(palette = "Dark2")
-```
-
 (ref:fig-methods-dots) dots TODO
 
-```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="4.5in"}
-map(pm_df_list_all, dplyr::filter, MP %in% c("CC1.2", "CC1.0", "CC0.8", "FMSYref75")) %>%
-  map(~ {.x$MP <- c("MP-1", "MP-2", "MP-3", "FMSYref75");.x}) %>% 
+```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="6in"}
+map(pm_df_list_all, dplyr::filter, MP %in% c("CC1.2", "CC1.0", "CC0.8", ".Itarget_x0.2", "FMSYref75")) %>%
+  map(~ {.x$MP <- c("MP-1", "MP-2", "MP-3", "MP-4", "FMSYref75");.x}) %>% 
   gfdlm::plot_dots(type = "single") + 
-    scale_colour_manual(values = c("grey50", RColorBrewer::brewer.pal(3, "Dark2")))
+    scale_colour_manual(values = c("grey50", RColorBrewer::brewer.pal(4, "Dark2")))
 ```
 
 (ref:fig-methods-tradeoff) trade-off TODO
 
-```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="4.5in"}
+```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", fig.width=6, out.width="4.5in"}
 pm_df_list_all_rob$`no-cpue-light` %>%
   dplyr::filter(grepl("^.Itarg", MP)) %>% 
   list("Scenario 1" = .) %>% 
@@ -501,15 +488,26 @@ pm_df_list_all_rob$`no-cpue-light` %>%
   guides(shape = "none")
 ```
 
-\clearpage
+(ref:fig-methods-radar) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
+Each spoke represents a performance metric (Section \@ref(sec:approach2)).
+Each line represents a management procedure.
+The position of each line on each spoke represents the probability of that MP achieving that performance metric.
+Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
+
+```{r methods-radar, fig.cap="(ref:fig-methods-radar)"}
+pm_df %>% 
+  mutate(MP =  c("MP-1", "MP-2", "MP-3", "MP-4")) %>% 
+  gfdlm::plot_radar(palette = "Dark2")
+```
 
 (ref:fig-methods-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations.
 The dots represent individual iterations.
 The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
 For example, the 0.50 (outermost) contour lines encompass approximately 50% of the iterations.
 
-```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="\\textwidth"}
+```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", fig.asp=1.2, fig.width=4, out.width="3.5in"}
 x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8", ".Itarget_base"))
+x@MPs <- paste0("MP-", seq_along(x@MPs))
 gfdlm::plot_kobe_grid(list("Scenario 1" = x))
 ```
 
@@ -535,11 +533,11 @@ For each OM parameter value and MP, the iterations from the top and lower third 
 Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
 For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
 
-```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth", fig.asp=0.3}
 purrr::map(seq_along(mse_all), ~ DLMtool::Sub(mse_all[[.x]], MPs = c(".Itarget_d0.8"))) %>%
   set_names(c("Scenario 1", "Scenario 2")) %>%
   purrr::map(~ {.x@MPs <- "MP-1";.x}) %>% 
-  gfdlm::plot_scenario_projections()
+  gfdlm::plot_scenario_projections(catch_breaks = catch_breaks, catch_labels = catch_labels)
 ```
 
 *TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*

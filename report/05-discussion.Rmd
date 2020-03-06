@@ -78,7 +78,7 @@ OMs could explicitly include environmental variables (e.g., linking ocean temper
 The latter, mechanism-free approaches are already very straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ varied through time. In this case, no specific mechanism for changing $M$ was provided. 
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events. 
-These are sometimes referred to as "Black Swan" events [@taleb2007; @anderson2017; @anderson2018] and can be incorporated into operating models through addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events. 
+These are sometimes referred to as "Black Swan" events [@taleb2007; @anderson2017; @anderson2019] and can be incorporated into operating models through addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events. 
 An upcoming application of the MP Framework for Inside Yelloweye Rockfish includes an OM scenario incorporating occasional large recruitment events.
 
 We recommend using the tools developed for the MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
