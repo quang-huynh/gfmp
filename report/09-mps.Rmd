@@ -125,7 +125,7 @@ library(ggplot2)
 library(dplyr)
 pars %>%
   mutate(lambda = sprintf("%.2f", (lambda))) %>%
-  ggplot(aes(slope, tac, color = lambda)) +
+  ggplot(aes(slope, tac, colour = lambda)) +
   geom_line() +
   gfdlm::theme_pbs() +
   labs(
@@ -186,7 +186,7 @@ pars <- expand.grid(
 pars$tac <- purrr::pmap_dbl(pars, f)
 pars %>%
   mutate(x = paste("x =", x)) %>%
-  ggplot(aes(slope, tac, color = as.factor(lambda))) +
+  ggplot(aes(slope, tac, colour = as.factor(lambda))) +
   geom_line() +
   gfdlm::theme_pbs() +
   labs(
@@ -367,13 +367,13 @@ pars %>%
   gfdlm::theme_pbs() +
   facet_grid(TACtarg ~ Itarg) +
   labs(
-    color = "w",
+    colour = "w",
     x = expression(I[recent] / I[target]),
     y = "TAC (based on 100 t average\nin last 5 historical years)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-  scale_color_viridis_d() +
+  scale_colour_viridis_d() +
   coord_cartesian(expand = FALSE)
 ```
 
@@ -402,13 +402,13 @@ pars2 %>%
   gfdlm::theme_pbs() +
   facet_grid(TACtarg ~ Itarg) +
   labs(
-    color = "w",
+    colour = "w",
     x = expression(I[recent] / I[target]),
     y = "TAC (based on 100 t average\nin last 5 historical years)"
   ) +
   geom_hline(yintercept = 100, lty = 2, alpha = 0.4) +
   geom_vline(xintercept = 1, lty = 2, alpha = 0.2) +
-  scale_color_viridis_d() +
+  scale_colour_viridis_d() +
   coord_cartesian(expand = FALSE)
 ```
 

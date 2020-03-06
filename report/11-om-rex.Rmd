@@ -304,7 +304,7 @@ ggplot(vbd, aes(value)) + geom_histogram() +
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
-Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)). We use priors of Normal(0, 50^2^) for the intercept and Normal(0, 10^2^) for the effect of length and male/female. We sample 2000 iterations across 4 separate chains from the posterior.
+Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)). We use priors of Normal(0, 50^2^) for the intercept and Normal(0, 10^2^) for the effect of length and male/female. We sample 2000 replicates across 4 separate chains from the posterior.
 
 TODO expand a bit
 
@@ -519,7 +519,7 @@ bind_rows(.dm, vulnerable1) %>%
   labs(colour = "Type", y = "Probability", x = "Length (cm)") +
   theme_pbs() +
   coord_cartesian(expand = FALSE, ylim = c(-0.005, 1.005)) +
-  scale_color_manual(values = c("#00000006", RColorBrewer::brewer.pal(3, "Dark2")[1:2])) +
+  scale_colour_manual(values = c("#00000006", RColorBrewer::brewer.pal(3, "Dark2")[1:2])) +
   guides(colour = guide_legend(override.aes = list(alpha=1))) +
   geom_vline(xintercept = cpars$Linf[1:100], alpha = 0.1)
 ```
@@ -636,7 +636,7 @@ imp_rex@Name <- "BC Implementation"
 
 *Mean fraction of TAC taken. Uniform distribution lower and upper bounds.*
 
-We will assume that there is no persistent bias from iteration to iteration of the fraction of TAC taken.
+We will assume that there is no persistent bias from replicate to replicate of the fraction of TAC taken.
 
 ```{r desc-imp-tacfrac-rex, results = knitr_results, echo = knitr_echo}
 imp_rex@TACFrac <- c(1.0, 1.0)

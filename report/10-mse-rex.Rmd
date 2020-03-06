@@ -71,7 +71,7 @@ plot_multiyear_survey_sets <- function(dat, survey_abbrev,
       y = "Northing") +
     guides(
       size = guide_legend(order = 1),
-      fill = guide_colorbar(order = 0)) +
+      fill = guide_colourbar(order = 0)) +
     gfdlm::theme_pbs()
 }
 ```
@@ -458,14 +458,14 @@ To obtain a manageable number of MPs for further consideration, we set satisfici
 
 This left us with `r length(mp_sat)` MPs (`r gfutilities::commify(mp_sat)`).
 
-We ran the closed-loop simulations across 250 stochastic iterations using DLMtool version 5.4.2 with the OMs and MPs described above.
-We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as iterations were added (Figure \@ref(fig:rex-converge)).
+We ran the closed-loop simulations across 250 stochastic replicates using DLMtool version 5.4.2 with the OMs and MPs described above.
+We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as replicates were added (Figure \@ref(fig:rex-converge)).
 
 (ref:fig-rex-converge)
 Assessing convergence of the Rex Sole closed-loop simulations on a consistent rank order of MPs within performance metrics.
 Colours represent individual satisficed and reference MPs.
-Lines that are no longer crossing by the final iterations indicate simulations that are consistent with convergence.
-We also checked that the satisficing rules had converged (the selection of satisficed MPs would not change with further iterations).
+Lines that are no longer crossing by the final replicates indicate simulations that are consistent with convergence.
+We also checked that the satisficing rules had converged (the selection of satisficed MPs would not change with further replicates).
 
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-convergence.png"))
@@ -554,7 +554,7 @@ knitr::include_graphics(here("report/figure/rex-radar-refset-avg.png"))
 
 \clearpage
 
-```{r rex-proj-index, fig.cap="Historical and projected SYN WCVI relative biomass index values. Vertical dashed line represents 2019. The shaded region represents the 95\\% quantile and individual lines represent four sample iterations.", out.width="\\textwidth"}
+```{r rex-proj-index, fig.cap="Historical and projected SYN WCVI relative biomass index values. Vertical dashed line represents 2019. The shaded region represents the 95\\% quantile and individual lines represent four sample replicates.", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-projections-index.png"))
 ```
 
@@ -562,7 +562,7 @@ knitr::include_graphics(here("report/figure/rex-projections-index.png"))
 
 (ref:fig-rex-proj-ceq200) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods for the "Ceq. 200%" OM.
 Dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
-Thin gray lines represent illustrative simulation iterations.
+Thin gray lines represent illustrative simulation replicates.
 The vertical dashed line indicates the last year of the historical period.
 The horizontal dashed lines indicate B/B~MSY~ = 0.8 and 0.4 and F/F~MSY~ = 1.
 
@@ -602,8 +602,8 @@ knitr::include_graphics(here("report/figure/rex-projections-no-cpue.png"))
 
 \clearpage
 
-(ref:fig-rex-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all iterations.
-Dots represent individual iterations.
+(ref:fig-rex-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all replicates.
+Dots represent individual replicates.
 Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.25, 0.50, and 0.75 levels, calculated in log space.
 
 ```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}
@@ -612,7 +612,7 @@ knitr::include_graphics(here("report/figure/rex-kobe.png"))
 
 \clearpage
 
-(ref:fig-rex-worm) Trajectory of B/B~MSY~ and F/F~MSY~ values summarized across iterations.
+(ref:fig-rex-worm) Trajectory of B/B~MSY~ and F/F~MSY~ values summarized across replicates.
 The solid line corresponds to the median value.
 Each diamond represents the 50% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 

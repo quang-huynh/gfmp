@@ -664,7 +664,7 @@ How to treat reference points when parameters, particularly productivity paramet
 
 p %>%
   mutate(slot = paste0("\\texttt{", slot, "}")) %>%
-  csasdown::csas_table(format = "latex", col_names = c("OM element", "Slot", "Parameter", "Description"), caption = "DLMtool operating model (OM) `slots', parameter symbols, and brief descriptions. In the `OM elements' column, `Obs.' and `Imp.' refer to the observation and implementation components, respectively. `Slots' is the technical name for the parameter elements within the DLMtool R package. All parameters in this table can be defined as stochastic with different draws from a distribution for each simulation iteration.") %>%
+  csasdown::csas_table(format = "latex", col_names = c("OM element", "Slot", "Parameter", "Description"), caption = "DLMtool operating model (OM) `slots', parameter symbols, and brief descriptions. In the `OM elements' column, `Obs.' and `Imp.' refer to the observation and implementation components, respectively. `Slots' is the technical name for the parameter elements within the DLMtool R package. All parameters in this table can be defined as stochastic with different draws from a distribution for each simulation replicate.") %>%
   kableExtra::column_spec(1, width = "1.75cm") %>%
   kableExtra::column_spec(2, width = "1.75cm") %>%
   kableExtra::column_spec(3, width = "1.75cm") %>%
