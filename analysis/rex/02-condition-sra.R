@@ -261,9 +261,9 @@ get_F <- function(x, scenario) {
 
   last_year <- dim(.F)[2]
   all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
-  all_years <- all_years[-length(all_years)]
+  all_years <- all_years #[-length(all_years)]
 
-  d1 <- t(apply(.F[, -last_year], 2,
+  d1 <- t(apply(.F[, ], 2,
     FUN = quantile,
     probs = c(0.025, 0.5, 0.975)
   )) %>%
@@ -271,7 +271,7 @@ get_F <- function(x, scenario) {
     cbind(all_years) %>%
     mutate(scenario = scenario) %>%
     rename(lwr = 1, med = 2, upr = 3, year = all_years)
-  d2 <- t(apply(.F[, -last_year], 2,
+  d2 <- t(apply(.F[, ], 2,
     FUN = quantile,
     probs = c(0.25, 0.75))) %>%
     as.data.frame() %>%
@@ -279,6 +279,17 @@ get_F <- function(x, scenario) {
     rename(lwr50 = 1, upr50 = 2, year = all_years)
 
   left_join(d1, d2, by = "year")
+}
+
+get_Perr_y <- function(x, scenario) {
+  max_age <- x@OM@maxage
+  nyears <- x@OM@nyears
+  perr_y <- x@OM@cpars$Perr_y[,max_age:(max_age+nyears-1), drop=FALSE]
+  all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
+  reshape2::melt(perr_y) %>%
+    rename(iteration = Var1) %>%
+    mutate(year = rep(all_years, each = max(iteration))) %>%
+    mutate(scenario = scenario)
 }
 
 g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
@@ -305,6 +316,20 @@ g <- purrr::map2_df(sra_rex, sc$scenario_human, get_F) %>%
   labs(x = "Year", y = "F") +
   coord_cartesian(ylim = c(0, 1.8), expand = FALSE)
 ggsave(here::here("report/figure/rex-compare-F-panel.png"),
+  width = 8, height = 6.75
+)
+g <- purrr::map2_df(sra_rex, sc$scenario_human, get_Perr_y) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
+  dplyr::filter(iteration %in% 1:100) %>%
+  ggplot(aes(year, y = log(value), group = iteration)) +
+  geom_line(alpha = 0.1) +
+  facet_wrap(vars(scenario)) +
+  gfplot::theme_pbs() +
+  labs(x = "Year", y = "Recruitment deviation in log space") +
+  coord_cartesian(ylim = c(-1.5, 1.7), expand = FALSE) +
+  geom_hline(yintercept = 0, lty = 2, alpha = 0.6)
+# g
+ggsave(here::here("report/figure/rex-compare-recdev-panel.png"),
   width = 8, height = 6.75
 )
 

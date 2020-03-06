@@ -193,11 +193,11 @@ The performance metrics measuring the objectives are:
 5. LTC: Probability catch > reference catch (long-term year range)
 6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (entire projection)
 
-We measure the performance metrics as the probability integrating over all years and replicates simultaneously.
+We measured the performance metrics as the probability integrating over all years and replicates simultaneously.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
 
-We consider the major axes of uncertainty for Rex Sole to be:
+We considered the major axes of uncertainty for Rex Sole to be:
 
 1. The magnitude of the commercial catch prior to 1996
 2. The importance of the commercial CPUE index
@@ -297,10 +297,6 @@ We included a detailed explanation of the initial OM specification in Appendix \
 
 ### OM CONDITIONING
 
-<!-- Selectivity-at-length used by all OMs is shown in Figure \@ref(fig:desc-selectivity-function).
-Selectivity-at-length is calculated from two parameters: $L^5$, the shortest length corresponding to 5% vulnerability; and $L^\textrm{FS}$, the shortest length that is fully vulnerable to fishing.
-Variation in the selectivity ogives comes from the distributions assumed for these two parameters in the OM (See Sections \@ref(app:desc-fleet-l5-rex) and \@ref(app:desc-fleet-lfs-rex)). -->
-
 We took the initial OMs and conditioned them using the SRA model described in Appendix \@ref(app:app:sra).
 We condition of the models using commercial catch from 1996--2019 and the synoptic WCVI (SYN WCVI) trawl relative biomass index and commercial bottom trawl CPUE.
 We downweighted the commercial CPUE slightly by inflating the standard errors 1.5 times since we have greater faith in the stratified random survey reflecting underlying biomass trends.
@@ -329,7 +325,7 @@ We used the SRA to populate in the conditioned OMs:
 - $F_{a,y}$ (fishing mortality at age by year)
 - $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (historical recruitment deviations)
 
-The reference and robustness scenarios rendered a range of these parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters) and \@ref(fig:rex-F-om)).
+The reference and robustness scenarios rendered a range of these parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
 In fitting the SRA across replicate draws from the initial OMs, any models that did not converge or had $F_{a,y} > 3$ were discarded.
 The vast majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)), but by discarding the replicate initial OM parameter values associated with these discarded models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
 The discarded parameter values represent implausible parameter combinations according to the SRA model.
@@ -381,8 +377,8 @@ x <- oms %>% set_names(sc2$scenario_human) %>%
 
 x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
   ggplot(aes(value)) +
-  # geom_histogram(bins = 40, colour = "grey60") +
-  geom_freqpoly(aes(colour = Scenario), bins = 30) +
+  geom_histogram(bins = 30, colour = "grey40", fill = "white", lwd = 0.4) +
+  # geom_freqpoly(aes(colour = Scenario), bins = 30) +
     facet_grid(Scenario~variable, scales = "free_x")+
   theme_pbs() +
   coord_cartesian(ylim = c(0, 200), expand = FALSE) +
@@ -428,20 +424,30 @@ Lines represent medians, and dark and light grey shading represent 50% and 95% q
 knitr::include_graphics(here::here("report/figure/rex-compare-F-panel.png"))
 ```
 
+(ref:fig-rex-recdev-om)
+Historical recruitment deviations estimated by the SRA model (in log space).
+Lines represent 100 random samples from the replicates.
+
+```{r rex-recdev-om, fig.cap="(ref:fig-rex-recdev-om)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-compare-recdev-panel.png"))
+```
+
 \clearpage
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
 
-We started with the full set of candidate MPs described in Appendix \@ref(app:MPs):
+We started with the full set of provisional candidate MPs described in Appendix \@ref(app:MPs) (Table \@ref(tab:rex-mps)). 
+Early explorations suggested little effect of the three harvest control rules described in Appendix \@ref(app:MPs) (presumably because the simulation spent little time on the "ramp") a little difference between the Fox and Schaefer production models.
+Therefore, with the SP models we focused mostly on tuning the prior on $r$, the intrinsic population growth rate.
+We set evaluated three priors on $r$: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
+With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which roughly mimic the values of natural mortality $M$ explored in the operating models. 
+In applications of the Framework, additional tuning of SP models and index-based MPs could be explored if needed.
 
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs. We used the `.` version of the MPs, where applicable, to refer to the version of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
+csasdown::csas_table(mp, caption = "Candidate MPs. The `.` in front of some MPs denotes versions of the MPs that only observes the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
 ```
-
-We set evaluated a range of priors on the intrinsic rate of population increase $r$ in the surplus production models: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
-With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which roughly mimic the values of natural mortality $M$ explored in the operating models. In applications of the Framework, additional tuning of the priors could be explored.
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
 
@@ -471,16 +477,12 @@ pm_avg_sat <- pm_avg %>% filter(MP %in% mp_sat)
 pm_min_sat <- pm_min %>% filter(MP %in% mp_sat)
 ```
 
-TODO: fix this:
-
-Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010].
-We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
-To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT LRP $>$ 0.9 and STC $>$ 0.8.
-
-This left us with `r length(mp_sat)` MPs (`r gfutilities::commify(mp_sat)`).
-
 We ran the closed-loop simulations across 250 stochastic replicates using DLMtool version 5.4.2 with the OMs and MPs described above.
 We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as replicates were added (Figure \@ref(fig:rex-converge)).
+We deemed the number of replicates sufficient since the rank order of MPs was remaining consistent by 250 replicates (Figure \@ref(fig:rex-converge)).
+
+We began by assessing average and minimum performance across all candidate MPs for the reference set of OMs (Figures \@ref(fig:rex-tigure-min) and \@ref(fig:rex-tigure-avg)) to determine which MPs would be carried forward as satisficed MPs [@miller2010].
+To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of LT LRP $>$ 0.9 and STC $>$ 0.8. This left us with `r length(mp_sat)` MPs (`r gfutilities::commify(sort(mp_sat))`).
 
 (ref:fig-rex-converge)
 Assessing convergence of the Rex Sole closed-loop simulations on a consistent rank order of MPs within performance metrics.
