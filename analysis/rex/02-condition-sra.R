@@ -302,7 +302,7 @@ g <- purrr::map2_df(sra_rex, sc$scenario_human, get_F) %>%
   geom_line() +
   facet_wrap(vars(scenario)) +
   gfplot::theme_pbs() +
-  labs(x = "Year", y = "Depletion") +
+  labs(x = "Year", y = "F") +
   coord_cartesian(ylim = c(0, 1.8), expand = FALSE)
 ggsave(here::here("report/figure/rex-compare-F-panel.png"),
   width = 8, height = 6.75
