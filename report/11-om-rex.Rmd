@@ -321,7 +321,7 @@ We have sufficient maturity and length data to fit a logistic maturity model. @m
 
 Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)).
 We used priors of Normal(0, 50) for the intercept and Normal(0, 10) for the effect of length and male/female. 
-We sampled 2000 replicates for each of four chains from the posterior and check that the chains were consistent with convergence using the same approach as described above for the von Bertalanffy model.
+We sampled 2000 iterations for each of four chains from the posterior and check that the chains were consistent with convergence using the same approach as described above for the von Bertalanffy model.
 
 ```{r desc-stock-mat-plot, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length. \"Rug lines\" along the top and bottom indicate individual sampled fish was some overlap. Curved lines represent predictions from a logistic regression. Vertical line represents the length at 50\\% maturity."}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
