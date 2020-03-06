@@ -11,29 +11,29 @@
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
 This MP framework, and all MSE processes, differ from conventional stock assessments in the way advice is delivered.
-In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future catch levels. 
+In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future catch levels.
 This process depends upon explicit reporting of reference points and estimation of stock status.
-Uncertainty can be incorporated into the process in two main ways: 1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process and observation error terms) as random variables; and/or 2) developing alternative models to test sensitivity to model assumptions.
+Uncertainty can be incorporated into the process in two main ways: 1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or 2) developing alternative models to test sensitivity to model assumptions.
 In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision-table [e.g., @forrest2019], integrating uncertainties across multiple models.
 Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probability of breaching reference points and consideration of trade-offs (e.g.,  between economic and conservation objectives).
 Therefore, consideration of the probability of breaching reference points is made at the last step of the decision-making process.
 It is possible for the final catch decision to be made without any agreement on objectives with respect to probabilities of breaching reference points.
 
-The MP Framework differs from conventional assessments in two key ways: 1) Reference points and stock status are not explicitly reported; and 2) objectives related to the probability of breaching reference points must be made at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)). 
-In the first case, it is very important to state that reference points and stock status are still an integral component of the framework. 
-Reference points and stock status are calculated in the OMs and are built into the performance metrics.
-Agreement on acceptable probabilities of breaching reference points must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established. 
-The final decision point in this process is the MP that delivers a TAC that meets objectives, while, ideally, also achieving acceptable trade-offs among other objectives such as catch or variability in catch. 
-An advantage of an MP framework is that all objectives must be transparently stated and are "baked in" to the final catch advice.
+The MP Framework differs from conventional assessments in two key ways: (1) Reference points and stock status are not explicitly reported; and (2) objectives related to the probability of breaching reference points must be made at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
+Reference points and stock status are therefore still an integral component of the framework---they are calculated in the OMs and are built into the performance metrics.
+Agreement on acceptable probabilities of breaching reference points must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established.
+The final decision point in this process is the MP that delivers a TAC that meets objectives, while, ideally, also achieving acceptable trade-offs among other objectives such as catch or variability in catch.
+An advantage of MP frameworks is that all objectives must be transparently stated and are "baked in" to the final catch advice.
 
-We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status. 
-MP frameworks such as this one may be especially important for these species. 
-The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)). 
+We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status.
+MP frameworks such as this one may be especially important for these species.
+The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be provided.
 The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice.
-We recommend that products such as DFO's sustainability survey (https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP, over a fifty year time frame".
+We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP over a 50-year time frame".
 
 ## TUNING MPs
+
 * See Issue #55
 * There is a trade-off between more generic MPs (work across a coarse array of tuning parameters and hone in on a finer grid of better-performing MPs) vs highly "tuned" MPs
 * Importance of transparency about what was explored and how "tuning" was done
@@ -42,23 +42,23 @@ We recommend that products such as DFO's sustainability survey (https://www.dfo-
 ## REASSESSMENT FREQUENCY AND TRIGGERS
 
 In general, the purpose of an MP framework is to identify and select a robust MP that can be left in place for an agreed amount of time.
-We do not recommend a specific interval between assessments in this framework but suggest that five years could be an appropriate interval, given current assessment capacity, noting that the MP framework itself can be used to test appropriate re-assessment intervals for individual species [e.g., @huynh2020].
+We do not recommend a specific interval between assessments in this framework but note that the MP Framework itself can be used to test appropriate re-assessment intervals for individual species [e.g., @huynh2020].
 
 In addition to the best pactice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is reviewed once it has been implemented.
-Departures from an MPs predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
-Exceptional circumstances can  be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics (e.g., changes in natural mortality, growth, recruitment or fishing dynamics). 
+Departures from an MP's predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
+Exceptional circumstances can  be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics (e.g., changes in natural mortality, growth, recruitment or fishing dynamics).
 Evidence for exceptional circumstances, ocurring within the recommended assessment interval, would trigger a formal review of the MP, possibly resulting in a new MSE, or an adjustment to the selected MP.
 
-@carruthers_hordyk_2018 list several examples where protocols for detecting exceptional circumstances have been established. 
+@carruthers_hordyk_2018 list several examples where protocols for detecting exceptional circumstances have been established.
 In general, protocols include monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
 Examples of triggers include observed data falling outside the 90% or 95% confidence interval of the OM-predicted data (or some other statistical criteria).
-@carruthers_hordyk_2018 recommend testing the statistical power of protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics. 
-For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low. 
+@carruthers_hordyk_2018 recommend testing the statistical power of protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics.
+For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low.
 It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., @carruthers_hordyk_2018].
 
 <!--TODo: RF has asked Rob and Brendan for info on protocols for Sablefish-->
 
-We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that a formal protocol has not yet been established. 
+We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that a formal protocol has not yet been established.
 We therfore also recommend further analyses to evaluate protocols for detecting exceptional circumstances as a matter of priority.
 
 ## INCLUDING ENVIRONMENTAL EFFECTS
@@ -71,14 +71,14 @@ Robust methods for including environmental considerations into single-species ca
 This is because of large uncertainties associated with observing complex marine environments and understanding mechanisms linking fish population dynamics with environmental change [@myers1995].
 Unless mechanisms are well-understood [e.g., @swain2015], incorporating environmental variables into stock assessments may produce biased advice [@haltuch2011].
 
-Closed loop simulation-testing is one way to evaluate how MPs perform in the presence of uncertainty and a changing environment [@haltuch2009; @haltuch2011; @punt2014]. 
+Closed loop simulation-testing is one way to evaluate how MPs perform in the presence of uncertainty and a changing environment [@haltuch2009; @haltuch2011; @punt2014].
 In this approach, hypotheses about how environmental variables impact population dynamics are incorporated into the OMs, with the performance of alternative MPs (which may or may not include environmental variables) evaluated in the same way as presented in this framework.
 Multiple OMs can be developed that represent multiple hypotheses for environmental effects.
-OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations), or could be mechanism-free (e.g., allow growth parameters or $M$ to vary through time). 
-The latter, mechanism-free approaches are already very straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ varied through time. In this case, no specific mechanism for changing $M$ was provided. 
+OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations), or could be mechanism-free (e.g., allow growth parameters or $M$ to vary through time).
+The latter, mechanism-free approaches are already very straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ varied through time. In this case, no specific mechanism for changing $M$ was provided.
 
-Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events. 
-These are sometimes referred to as "Black Swan" events [@taleb2007; @anderson2017; @anderson2019] and can be incorporated into operating models through addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events. 
+Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.
+These are sometimes referred to as "Black Swan" events [@taleb2007; @anderson2017; @anderson2019] and can be incorporated into operating models through addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
 An upcoming application of the MP Framework for Inside Yelloweye Rockfish includes an OM scenario incorporating occasional large recruitment events.
 
 We recommend using the tools developed for the MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
