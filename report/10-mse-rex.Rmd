@@ -276,9 +276,9 @@ We considered the above six scenarios to represent the major sources of plausibl
 
 ### The Robustness Set
 
-In addition, to illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two robustness scenarios (Table \@ref(tab:rex-scen)).
+To illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two robustness scenarios (Table \@ref(tab:rex-scen)):
 
-* The "No CPUE Ceq. 50%" scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996. In order to fit such a model with plausible $F$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" scenario.
+* The "No CPUE Ceq. 50%" scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996. In other words, this scenario assumes that the stock started in a much less depleted state then the other scenarios. In order to fit such a model with plausible $F$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" scenario.
 
 * The "M increasing" scenario assumes that *M* increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change. We include this scenario as an example of including a time-varying parameter in the projection period that reflects an underlying environmental process and to assess robustness of MPs to such a scenario. We do not necessarily expect this particular scenario to be included in applications of the Framework.
 
@@ -293,24 +293,49 @@ MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
 Mortality
 natural mortality used in GOA assessment 0.17-->
 
+We included a detailed explanation of the initial OM specification in Appendix \@ref(app:desc-om-rex).
+
 ### OM CONDITIONING
 
-Selectivity-at-length used by all OMs is shown in Figure \@ref(fig:desc-selectivity-function).
+<!-- Selectivity-at-length used by all OMs is shown in Figure \@ref(fig:desc-selectivity-function).
 Selectivity-at-length is calculated from two parameters: $L^5$, the shortest length corresponding to 5% vulnerability; and $L^\textrm{FS}$, the shortest length that is fully vulnerable to fishing.
-Variation in the selectivity ogives comes from the distributions assumed for these two parameters in the OM (See Sections \@ref(app:desc-fleet-l5-rex) and \@ref(app:desc-fleet-lfs-rex)).
+Variation in the selectivity ogives comes from the distributions assumed for these two parameters in the OM (See Sections \@ref(app:desc-fleet-l5-rex) and \@ref(app:desc-fleet-lfs-rex)). -->
 
-Fits to the historical indices of abundance from the `r number_to_word(nrow(sc))` OMs are shown in Figure (\@ref(fig:rex-survey-fits)).
-Estimates of depletion (*B*/*B*~0~) during the historical period from the nine OMs are shown in Figure (\@ref(fig:rex-depletion-om)).
+We took the initial OMs and conditioned them using the SRA model described in Appendix \@ref(app:app:sra).
+We condition of the models using commercial catch from 1996--2019 and the synoptic WCVI (SYN WCVI) trawl relative biomass index and commercial bottom trawl CPUE.
+We downweighted the commercial CPUE slightly by inflating the standard errors 1.5 times since we have greater faith in the stratified random survey reflecting underlying biomass trends.
+We specified a range of $C^{\textrm{eq}}$ values as described above to reflect uncertainty about initial stock depletion.
 
-We used the SRA to populate in the OM:
+The SRA was able to fit to the WCVI synoptic trawl survey relative biomass index and commercial bottom trawl CPUE reasonably well (Figure \@ref(fig:rex-survey-fits)). 
+The SYN WCVI survey was better fit than the commercial CPUE, likely due to the smaller standard errors (Figure \@ref(fig:rex-survey-fits)).
+The models fit the catch almost perfectly due to the specification of the models with observation errors of only 0.01 standard deviations on the catch (Equation \@ref(eq:sra-om-like-catch)).
 
-- $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (historical recruitment deviations)
+(ref:fig-rex-survey-fits)
+SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes.
+Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
+Panels from top to bottom represent scenarios.
+Dots represent index mean and line segments represent 2 $\times$ the standard errors as entered into the SRA models.
+In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to downweight the commercial index relative to the survey index.
+
+```{r rex-survey-fits, fig.cap="(ref:fig-rex-survey-fits)", out.width="0.65\\textwidth"}
+knitr::include_graphics(here("report/figure/rex-index-fits.png"))
+```
+
+We used the SRA to populate in the conditioned OMs:
+
+- $B_{t_c}/B_0$ (or "D"; depletion in the last historical year)
 - $R_0$ (unfished recruitment)
+- $\theta_\textrm{AC}$ (or "AC"; first-order autocorrelation of recruitment deviations)
 - $F_{a,y}$ (fishing mortality at age by year)
-- $\theta_\textrm{AC}$ (first-order autocorrelation of recruitment deviations)
-- $B_{t_c}/B_0$ (depletion in the last historical year)
+- $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (historical recruitment deviations)
 
-```{r rex-om-load, results='asis'}
+The reference and robustness scenarios rendered a range of these parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters) and \@ref(fig:rex-F-om)).
+In fitting the SRA across replicate draws from the initial OMs, any models that did not converge or had $F_{a,y} > 3$ were discarded.
+The vast majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)), but by discarding the replicate initial OM parameter values associated with these discarded models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
+The discarded parameter values represent implausible parameter combinations according to the SRA model.
+The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs are somewhat similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
+
+```{r rex-sra-fraction, results='asis'}
 sp <- "rex"
 scenarios <- sc$scenario %>% purrr::set_names(sc$scenario_human)
 oms <- map(scenarios, ~ {
@@ -320,8 +345,7 @@ map_dfr(oms, ~tibble(nsim = .x@nsim), .id = "scenario") %>%
   mutate(fraction_converged = sprintf("%.2f",round(nsim / 650, 2))) %>%
   select(-nsim) %>%
   csasdown::csas_table(col_names = c("Scenario", "Fraction retained"),
-    caption = "Fraction of replicates retained after conditioning with the SRA model.") %>%
-  kableExtra::kable_styling(latex_options = c("hold_position"))
+    caption = "Fraction of replicates retained after conditioning with the SRA model.")
 ```
 
 (ref:fig-rex-sra-conditioned-parameters) Frequency polygons of parameters estimated as part of the SRA. These are effectively polygons outlining a histogram. Fishing mortality at age, the historical depletion trajectory, and historical recruitment deviations are also derived from the SRA model. Apical fishing mortality by year are shown in Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and Figures \@ref(fig:rex-proj-inc-m)--\@ref(fig:rex-proj-inc-m), and historical depletion trajectories are shown in Figure \@ref(fig:rex-depletion-om).
@@ -370,7 +394,7 @@ x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
 (ref:fig-rex-sra-conditioned-parameters2)
 Frequency polygons for parameters filtered as part of the SRA. These distributions are sampled stochastically as input into the SRA and any samples associated with non-converged SRA models are discarded. Since most SRA models converged, these distributions are similar across scenarios unless they are specified differently. The large spikes represent fixed parameter values in the OM. sigma_R refers to $\sigma_R$.
 
-```{r rex-sra-conditioned-parameters2, out.width="\\textwidth", fig.asp=0.85, fig.width=7, fig.cap="fig-rex-sra-conditioned-parameters2"}
+```{r rex-sra-conditioned-parameters2, out.width="\\textwidth", fig.asp=0.85, fig.width=7, fig.cap="(ref:fig-rex-sra-conditioned-parameters2)"}
 x %>% dplyr::filter(variable %in% c("sigma_R", "h", "L50", "L50_95", "t0", "k", "Linf", "M")) %>%
   ggplot(aes(value)) +
   # geom_histogram(bins = 40, colour = "grey60") +
@@ -383,30 +407,25 @@ x %>% dplyr::filter(variable %in% c("sigma_R", "h", "L50", "L50_95", "t0", "k", 
   scale_colour_brewer(palette = "Dark2")
 ```
 
-Any replicates that did not converge or in which $F_y$ reached 3 were discarded and the corresponding draw of other OM parameters (growth parameters, length-weight parameters, maturity parameters, selectivity parameters, stock-recruit parameters) were discarded.
-The vast majority of replicates converged and were retained: TODO
-
-(ref:fig-rex-survey-fits)
-SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indexes.
-Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
-Panels from top to bottom represent scenarios.
-Dots represent index mean and line segments represent 2 $\times$ the standard errors as entered into the SRA models.
-In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to downweight the commercial index relative to the survey index.
-
-```{r rex-survey-fits, fig.cap="(ref:fig-rex-survey-fits)", out.width="0.65\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-index-fits.png"))
-```
-
 \clearpage
 
 (ref:fig-rex-depletion-om)
 Spawning stock biomass ($B$) depletion trajectories for reference and robustness set OMs.
 Depletion is represented as a fraction of $B_0$ (spawning stock biomass at unfished equilibrium).
-Note that the "M increasing" scenario only represents natural mortality increasing in the future projections---not the historical time period illustrated here.
-Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across simulations.
+Note that the "M increasing" scenario only represents *M* increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of *M* in the historical period.
+Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across replicates.
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-compare-SRA-depletion-panel.png"))
+```
+
+(ref:fig-rex-F-om)
+Apical fishing mortality ($F$) trajectories for reference and robustness set OMs.
+Apical fishing mortality is the maximum $F$ experienced by fish of any age in a given year.
+Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across replicates.
+
+```{r rex-F-om, fig.cap="(ref:fig-rex-F-om)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("report/figure/rex-compare-F-panel.png"))
 ```
 
 \clearpage
@@ -451,6 +470,8 @@ mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 pm_avg_sat <- pm_avg %>% filter(MP %in% mp_sat)
 pm_min_sat <- pm_min %>% filter(MP %in% mp_sat)
 ```
+
+TODO: fix this:
 
 Before running the final simulations, we ran a set of trial simulations to screen out MPs that did not meet a basic set of criteria, i.e., a satisficing step [@miller2010].
 We began by assessing minimum performance across all candidate MPs for the reference set of OMs (Figure \@ref(fig:rex-tigure-min)) to determine which MPs would be carried forward as satisficed MPs.
@@ -497,7 +518,7 @@ However, making the same assumption about catch at equilibrium the year before t
 We can look at timeseries trajectories of B/B~MSY~, F/F~MSY~, and catch to further understand performance across the various MPs and reference set OMs (Figure \@ref(fig:rex-proj-ceq100)--\@ref(fig:rex-proj-low-h); other trajectories not shown yet).
 Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).
 
-We can also look at "Kobe" plots that demonstrate either the final B/B~MSY~ vs. F/F~MSY~ status of the various simulations or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
+We can also look at "Kobe" plots that demonstrate either the final B/B~MSY~ vs. F/F~MSY~ status of the various replicates or the trajectory of these status values through time (Figure \@ref(fig:rex-kobe) and \@ref(fig:rex-worm)).
 
 (ref:fig-rex-tigure-avg) Average performance of all candidate MPs across the reference set of OMs.
 MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
