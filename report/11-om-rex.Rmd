@@ -223,7 +223,7 @@ $$
 $$
 
 where $L_i$ and $A_i$ refer to the length and age of fish $i$, $\sigma$ refers to the scale parameter of the lognormal distribution, and all other parameters refer to the von Bertalanffy equation.
-We used weakly informative priors: $k \sim \textrm{Normal}(0, 2)$, $L_\mathrm{inf} \sim \textrm{Normal}(0, \varphi)$, $t_0 \sim \textrm{Normal}(0, 20)$, and $\sigma \sim \textrm{Student-t}(3,0, 2)$, where $\varphi$ refers to the 99% quantile of the observed lengths (36 m).
+We used weakly informative priors: $k \sim \textrm{Normal}(0, 2)$, $L_\mathrm{inf} \sim \textrm{Normal}(0, \varphi)$, $t_0 \sim \textrm{Normal}(0, 20)$, and $\sigma \sim \textrm{Student-t}(3,0, 2)$, where $\varphi$ refers to the 99% quantile of the observed lengths (36 cm).
 We sampled 8000 iterations across four chains from the posterior and checked that the chains were consistent with convergence via the Rhat and ESS (effective sample size) metrics along with traceplots of the samples [REF].
 
 ```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent 100 samples from the posterior.", fig.width=6, out.width='4in'}
