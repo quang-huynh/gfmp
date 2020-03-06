@@ -7,4 +7,4 @@ continuous:
 	while true; do make --silent; sleep 0.5; done
 
 bibclean:
-	bibtool -s --print.use.tab=Off --print.line.length=80 -i bib/refs.bib -o bib/refs.bib
+	bibtool -s --print.use.tab=Off --print.line.length=80 -i refs.bib -o refs.bib
