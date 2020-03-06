@@ -90,9 +90,9 @@ If there are no age- or length-composition data, then selectivity in the model i
 Otherwise, the ascending limb of selectivity is estimated with age or length composition data.
 If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled using the range of $V_{L_\infty}$ or estimated in the SRA. See Equation \@ref(eq:sra-om-vaf).
 
-- Recruitment autocorrelation ($\theta_{\textrm{AC}}$) is estimated post-hoc from the recruitment deviation estimates.
+- The recruitment deviation first-order autocorrelation ($\theta_{\textrm{AC}}$) is estimated post-hoc from the recruitment deviation estimates.
 
-- Standard deviation of recruitment deviations $\sigma_{R}$ is taken as input. Historical recruitment deviations are updated by the SRA model (Equation \@ref(eq:sra-om-rya)), while recruitment deviations in the projection period are sampled with autocorrelation (Equation \@ref(eq:dlm-om-recdev)).
+- The standard deviation of recruitment deviations $\sigma_{R}$ is taken as input. Historical recruitment deviations are updated by the SRA model (Equation \@ref(eq:sra-om-rya)), while recruitment deviations in the projection period are sampled with autocorrelation (Equation \@ref(eq:dlm-om-recdev)).
 
 If initial depletion (Equation \@ref(eq:sra-om-d1)) is estimated, then the annual recruitment deviations in the first year are adjusted in order to produce the estimated abundance-at-age in the first year of the SRA model (Equation \@ref(eq:sra-om-rya)).
 
