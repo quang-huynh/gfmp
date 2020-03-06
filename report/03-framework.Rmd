@@ -51,7 +51,7 @@ The provisional performance metric AADC represents average absolute interannual 
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
 <!-- RF has asked Rob K for input-->
-In cases where performance metrics are calculated over a range of years, we suggest the metrics be calculated across all years and simulation replicates simultaneously. This mimics the approach in XX (REF) but differs from the approach by ICES (REF), which typically considers its performance metrics based on each and every year. For example, one could calculate the probability that B > 0.4 *B*~MSY~ in each and every year. There is an inherent trade-off between these two approaches. The first (calculating across all years and simulations simultaneously)... TODO
+In cases where performance metrics are calculated over a range of years, we suggest the metrics be calculated across all years and simulation replicates simultaneously. This mimics the approach in XX (REF) but differs from the approach by ICES (REF), which typically considers its performance metrics based on each and every year. For example, one could calculate the probability that B > 0.4 *B*~MSY~ in each and every year. There is an inherent trade-off between these two approaches. The first (calculating across all years and replicates simultaneously)... TODO
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 

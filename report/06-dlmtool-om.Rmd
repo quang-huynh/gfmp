@@ -14,7 +14,7 @@ We present the simplest version of the OM, without time-varying parameters or mu
 This simple OM structure should be suitable as a base OM for most species intended to be assessed within the framework.
 More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
 
-Following the lead of @carruthers2018, we denote parameters that are user-defined and sampled stochastically across simulations with a tilde (e.g. $\widetilde{M}$).
+Following the lead of @carruthers2018, we denote parameters that are user-defined and sampled stochastically across replicates with a tilde (e.g. $\widetilde{M}$).
 For example, $\widetilde{M_i} \sim f \left( \theta \right)$ represents the $i^\textrm{th}$ simulation draw of parameter $M$ being sampled from the distribution function $f$ and parameters $\theta$.
 In most cases, the stochastic parameters could be sampled from a uniform distribution or specified directly after sampling from any distribution or model.
 

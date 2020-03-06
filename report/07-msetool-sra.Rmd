@@ -27,7 +27,7 @@ The function takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and hist
 The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters.
 For example, the steepness parameter of the stock-recruit relationship ($h$) is usually highly uncertain.
 The initial OM can specify a range of values for $h$, for example: $h \sim \textrm{Uniform} (0.6,0.9)$.
-In this case, with $i = 1$ to $n$ (e.g., $n = 250$) simulations in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
+In this case, with $i = 1$ to $n$ (e.g., $n = 250$) replicates in the closed-loop simulation, the SRA function will sample $n$ steepness values from this distribution and fit the SRA model $n$ times.
 The SRA model reconstruction from the $i^{\textrm{th}}$ fit will be conditioned on the $i^{\textrm{th}}$ sampled value of $h$.
 The sampled values of $h$ (as well as all other input parameters to the SRA) are then saved alongside the estimated parameters to form the conditioned OM.
 
