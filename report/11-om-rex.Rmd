@@ -73,8 +73,6 @@ knitr::include_graphics(here::here("report/figure/rex-sole-1.pdf"))
 knitr::include_graphics(here::here("report/figure/rex-sole-2.pdf"))
 ```
 
-<!-- \clearpage -->
-
 ```{r message = FALSE}
 library(DLMtool)
 knitr_results <- TRUE
