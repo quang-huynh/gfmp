@@ -10,27 +10,26 @@
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
-This MP framework, and all MSE processes, differ from conventional stock assessments in the way advice is delivered.
-In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future catch levels.
-This process depends upon explicit reporting of reference points and estimation of stock status.
+This MP framework, and all MSE processes, differ from conventional stock assessments in the way science advice is delivered.
+In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future TAC levels.
 Uncertainty can be incorporated into the process in two main ways: 1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or 2) developing alternative models to test sensitivity to model assumptions.
 In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision-table [e.g., @forrest2019], integrating uncertainties across multiple models.
-Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probability of breaching reference points and consideration of trade-offs (e.g.,  between economic and conservation objectives).
-Therefore, consideration of the probability of breaching reference points is made at the last step of the decision-making process.
-It is possible for the final catch decision to be made without any agreement on objectives with respect to probabilities of breaching reference points.
+This process depends upon explicit reporting of reference points and estimation of stock status.
+Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probabilities presented in the decision table and their consideration of other factors such as economic needs of the fishery.
+In this process, consideration of risk (i.e., probability of breaching reference points and resulting impacts) occurs at the final step of the decision-making process and may not always be transparent or be related to agreed-upon objectives. 
 
-The MP Framework differs from conventional assessments in two key ways: (1) Reference points and stock status are not explicitly reported; and (2) objectives related to the probability of breaching reference points must be made at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
+MP Frameworks differ from conventional assessments in two key ways: (1) Reference points and stock status are not explicitly reported; and (2) Objectives related to the probability of breaching reference points must be agreed at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
 Reference points and stock status are therefore still an integral component of the framework---they are calculated in the OMs and are built into the performance metrics.
-Agreement on acceptable probabilities of breaching reference points must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established.
+Critically, agreement on acceptable risk (acceptable probabilities of breaching reference points) must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established.
 The final decision point in this process is the MP that delivers a TAC that meets objectives, while, ideally, also achieving acceptable trade-offs among other objectives such as catch or variability in catch.
 An advantage of MP frameworks is that all objectives must be transparently stated and are "baked in" to the final catch advice.
 
 We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status.
 MP frameworks such as this one may be especially important for these species.
 The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
-This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be provided.
-The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice.
-We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP over a 50-year time frame".
+This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be explicitly provided.
+The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice for data-limited species.
+We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accomodate status reports from MSE processes, which may use alternative wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP over a 50-year time frame".
 
 ## TUNING MPs
 
