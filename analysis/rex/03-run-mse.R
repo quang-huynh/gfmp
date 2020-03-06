@@ -184,6 +184,7 @@ pm_df <- bind_rows(pm_df_list, .id = "scenario")
 pm_avg <- group_by(pm_df, MP) %>% summarise_if(is.numeric, mean)
 pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 saveRDS(pm_df_list, file = here("generated-data", "rex-pm-all.rds"))
+saveRDS(pm_df_list_rob, file = here("generated-data", "rex-pm-all-rob.rds"))
 
 satisficed_criteria <- c("LT LRP" = 0.9, "STC" = 0.8)
 # plot_tigure(pm_avg, satisficed = satisficed_criteria)

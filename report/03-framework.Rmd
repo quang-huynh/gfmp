@@ -356,6 +356,58 @@ In many cases it will also make sense to look at timeseries trajectories across 
 
 \clearpage
 
+```{r methods-loading}
+sc <- readRDS(here::here("generated-data/rex-scenarios.rds"))
+d_catch <- readRDS(here("generated-data", "rex-catch2.rds"))
+d_catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
+catch <- suppressWarnings(gfplot::tidy_catch(d_catch))
+catch <- catch %>%
+  group_by(year) %>%
+  summarize(value = sum(value)) %>%
+  pull(value)
+
+yrs <- length(catch)
+ref_aadc <- gfdlm:::get_aadc(catch[(yrs - 10 + 1):yrs])
+ref_catch <- mean(catch[(yrs - 5 + 1):yrs]) - 5000
+
+get_scenario <- function(scenario, id = "", sp = "rex") {
+  if (id != "") id <- paste0(id, "-")
+  file_name <- here::here("generated-data", paste0(sp, "-mse-", id, scenario, ".rds"))
+  readRDS(file_name)
+}
+scenarios <- c(sc$scenario[1], sc$scenario[7])
+# mse_cc <- map(scenarios, get_scenario, id = "cc")
+mse_ind <- map(scenarios, get_scenario, id = "ind")
+mse_sp <- map(scenarios, get_scenario, id = "sp")
+mse_ref <- map(scenarios, get_scenario, id = "ref")
+source(here::here("analysis/rex/merge_MSE.R"))
+mse_all <- pmap(list(mse_ind, mse_sp, mse_ref), merge_MSE)
+for (i in seq_along(mse_all)) mse_all[[i]]@OM$RefY <- ref_catch
+
+pm_df_list_all <- readRDS(here("generated-data", "rex-pm-all.rds"))
+pm_df_list_all_rob <- readRDS(here("generated-data", "rex-pm-all-rob.rds"))
+
+mse2 <- readRDS(here::here("generated-data", "rex-mse-ind-ceq200.rds"))
+
+`LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
+`LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
+FMSY <- DLMtool::PNOF
+STC <- gfdlm::pm_factory("LTY", 1, c(1, 10))
+LTC <- gfdlm::pm_factory("LTY", 1, c(36, 50))
+AADC <- gfdlm::pm_factory("AADC", ref_aadc, c(1, 50))
+PM <- c("LT LRP", "LT USR", "FMSY", "STC", "LTC", "AADC")
+
+mse2@OM$RefY <- ref_catch
+
+# mse <- DLMtool::Sub(mse, MPs = c("CC0.8", "CC0.9", "CC1.0", "CC1.1", "CC1.2"))
+mse <- DLMtool::Sub(mse2, MPs = c(".Itarget_d0.8", ".Itarget_w0.8", ".Itarget_base"))
+mse@OM$RefY <- ref_catch
+
+pm_df <- gfdlm::get_probs(mse, PM)
+
+pm_df_list <- list("Scenario 1" = pm_df)
+```
+
 (ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation has reached convergence in the rank order of MP performance.
 The y-axis represents the proportion of cumulative iterations that have achieved the performance metric.
 The cumulative iterations are shown along the x-axis.
@@ -365,8 +417,8 @@ Lines that are crossing indicate changes to the rank order of MP performance as 
 A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
 
 ```{r methods-converge, fig.cap="(ref:fig-methods-converge)", out.width="5in"}
-# knitr::include_graphics(here::here("report/figure/rex-convergence.png"))
-plot(1)
+gfdlm::plot_convergence(mse, c("LT USR")) +
+  scale_colour_brewer(palette = "Dark2")
 ```
 
 \clearpage
@@ -380,8 +432,22 @@ The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; a
 Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
 
 ```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="6.5in"}
-# knitr::include_graphics(here::here("report/figure/rex-projections-satisficed-ceq100.png"))
-plot(1)
+x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8"))
+x@MPs <- "MP-1"
+x %>% gfdlm::plot_main_projections()
+```
+
+\clearpage
+
+(ref:fig-methods-index) index TODO
+
+```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="4.5in"}
+oddify <- function(x) seq(2, x, by = 2)
+DLMtool::Sub(mse, MPs = c(".Itarget_d0.8")) %>%
+  list("Scenario 1" = .) %>% 
+  map(~{.x@MPs <- "MP 1"; .x}) %>% 
+  gfdlm::plot_index(type = "AddInd", omit_index_fn = oddify, 
+    n_samples = 3, seed = 12345)
 ```
 
 \clearpage
@@ -393,21 +459,46 @@ The colour shading reflects the underlying numbers and is included to make the d
 TODO: will add an indication of satisficing thresholds with shading or bold MPs names.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
-# knitr::include_graphics(here::here("report/figure/rex-pm-table-avg.png"))
-plot(1)
+mse2 %>%
+  gfdlm::get_probs(PM) %>% 
+  mutate(MP = paste0("MP-", seq_len(length(MP)))) %>% 
+  gfdlm::plot_tigure(satisficed = c("LT LRP" = 0.9, "LTC" = 0.7))
 ```
 
 \clearpage
 
-(ref:fig-methods-spider) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
+(ref:fig-methods-radar) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
 Each spoke represents a performance metric (Section \@ref(sec:approach2)).
 Each line represents a management procedure.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
 Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 
-```{r methods-spider, fig.cap="(ref:fig-methods-spider)", out.width="4.5in"}
-# knitr::include_graphics(here::here("report/figure/rex-spider-satisficed-ceq0.png"))
-plot(1)
+```{r methods-radar, fig.cap="(ref:fig-methods-radar)", out.width="4.5in"}
+pm_df %>% 
+  mutate(MP =  c("MP-1", "MP-2", "MP-3")) %>% 
+  gfdlm::plot_radar(palette = "Dark2")
+```
+
+(ref:fig-methods-dots) dots TODO
+
+```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="4.5in"}
+map(pm_df_list_all, dplyr::filter, MP %in% c("CC1.2", "CC1.0", "CC0.8", "FMSYref75")) %>%
+  map(~ {.x$MP <- c("MP-1", "MP-2", "MP-3", "FMSYref75");.x}) %>% 
+  gfdlm::plot_dots(type = "single") + 
+    scale_colour_manual(values = c("grey50", RColorBrewer::brewer.pal(3, "Dark2")))
+```
+
+(ref:fig-methods-tradeoff) trade-off TODO
+
+```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="4.5in"}
+pm_df_list_all_rob$`no-cpue-light` %>%
+  dplyr::filter(grepl("^.Itarg", MP)) %>% 
+  list("Scenario 1" = .) %>% 
+  map(~{.x$MP <- paste0("MP-", seq_along(.x$MP));.x}) %>%
+  gfdlm::plot_tradeoff("LT LRP", "STC") +
+    scale_colour_brewer(palette = "Dark2") +
+    coord_cartesian(xlim = c(0.6, 1), ylim = c(0.2, 1), expand = FALSE)+
+  guides(shape = "none")
 ```
 
 \clearpage
@@ -418,8 +509,8 @@ The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 
 For example, the 0.50 (outermost) contour lines encompass approximately 50% of the iterations.
 
 ```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="\\textwidth"}
-# knitr::include_graphics(here::here("report/figure/rex-kobe-satisficed-ceq100.png"))
-plot(1)
+x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8", ".Itarget_base"))
+gfdlm::plot_kobe_grid(list("Scenario 1" = x))
 ```
 
 \clearpage
@@ -437,7 +528,7 @@ plot(1)
 
 \clearpage
 
-(ref:fig-methods-proj-sens) This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
+(ref:fig-methods-proj-sens) TODO: update! This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colors) of various OM parameters (columns) over time.
 A variety of MPs are illustrated across rows.
 The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across iterations.
 For each OM parameter value and MP, the iterations from the top and lower third quantiles have been retained and the middle third has been discarded.
@@ -445,11 +536,11 @@ Substantial differences between the trajectories for the two colours would indic
 For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
 
 ```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
-# knitr::include_graphics(here::here("report/figure/rex-sensitivity-traj-bbmsy-base.png"))
-plot(1)
+purrr::map(seq_along(mse_all), ~ DLMtool::Sub(mse_all[[.x]], MPs = c(".Itarget_d0.8"))) %>%
+  set_names(c("Scenario 1", "Scenario 2")) %>%
+  purrr::map(~ {.x@MPs <- "MP-1";.x}) %>% 
+  gfdlm::plot_scenario_projections()
 ```
-
-
 
 *TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*
 
