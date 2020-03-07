@@ -111,10 +111,9 @@ This framework is currently being applied to evaluate alternative data-limited M
 
 # ACKNOWLEDGEMENTS
 
-*TODO: turn into sentences*
+<!-- TODO: Robyn: I took a first stab at this, but please edit as needed. Especially the DLMtool partnership part and J. Holmes. -->
 
-- Technical Team members: Dana Haggarty, Rob Kronlund, Greg Workman, Rowan Haigh, Adam Keizer, Rob Tadey, Roger Kanno, Paul Starr, Ashleen Benson
-
-- DLMtool developers: Tom Carruthers, Adrian Hordyk
-
-- John Holmes
+We thank the technical work group members Rob Kronlund, Adam Keizer, Ashleen Benson, Tom Carruthers, Dana Haggarty, Rowan Haigh, Adrian Hordyk, Roger Kanno, Paul Starr, Rob Tadey, and Greg Workman for helpful discussions and comments on earlier drafts of this document.
+We thank John Holmes for supporting our work on this framework within the Stock Assessment and Research division at Pacific Biological Station.
+We especially thank Tom Carruthers and Adrian Hordyk their work developing DLMtool.
+Without DLMtool this project would have been a much bigger undertaking and their helpful guidance and many new features added on request have greatly improved the Framework.
