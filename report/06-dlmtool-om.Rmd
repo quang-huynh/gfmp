@@ -95,9 +95,7 @@ $$
 ### Population dynamics
 
 Leading parameters of the population dynamics model, defined as fixed values or ranges by the user, are: unfished recruitment $R_0$, the steepness parameter of the stock-recruit relationship ($h$) [@mace1988], and natural mortality ($M$).
-
 Recruitment and numbers-at-age are initialized in the first historical year using the SRA model (Appendix \@ref(app:sra), Equations \@ref(eq:sra-om-numinit) to \@ref(eq:sra-om-recinit)).
-
 During the projection period (years $y = t_{c+1}$ to $y = t_N$), the number of fish recruited to the first age group in each year $N_{y,a=1}$ is calculated as a function of the previous year's spawning biomass $B_{y-1}$. The framework assumes a Beverton-Holt stock-recruit relationship [@beverton1957] with annual lognormal recruitment deviations $\varepsilon_{R,y-1}$, but analysts can alternatively choose a Ricker function [@ricker1954]:
 
 $$
