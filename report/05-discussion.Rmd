@@ -41,46 +41,45 @@ We recommend that products such as [DFO's sustainability survey](https://www.dfo
 ## REASSESSMENT FREQUENCY AND TRIGGERS
 
 In general, the purpose of an MP framework is to identify and select a robust MP that can be left in place for an agreed amount of time.
-We do not recommend a specific interval between assessments in this framework but note that the MP Framework itself can be used to test appropriate re-assessment intervals for individual species [e.g., @huynh2020].
+We do not recommend a specific interval between assessments in this framework and suggest this should be done on a stock-by-stock basis. We suggest that the MP Framework itself can be used to test appropriate re-assessment intervals for individual fish stocks [e.g., @huynh2020]. Interim checks between assessments are also recommended to ensure the selected MP is performing as expected.
 
-In addition to the best pactice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is reviewed once it has been implemented.
+In addition to the best pactice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is formally reviewed once it has been implemented.
 Departures from an MP's predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
-Exceptional circumstances can  be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics (e.g., changes in natural mortality, growth, recruitment or fishing dynamics).
-Evidence for exceptional circumstances, ocurring within the recommended assessment interval, would trigger a formal review of the MP, possibly resulting in a new MSE, or an adjustment to the selected MP.
+Exceptional circumstances can  be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics that were not captured in the original OM(s) (e.g., changes in natural mortality, growth, recruitment or fishing dynamics).
+Evidence for exceptional circumstances, ocurring within the recommended assessment interval, would trigger a review of the MP, possibly resulting in a new MSE, or an adjustment to the selected MP [@carruthers_hordyk_2018]. 
 
-@carruthers_hordyk_2018 list several examples where protocols for detecting exceptional circumstances have been established.
-In general, protocols include monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
-Examples of triggers include observed data falling outside the 90% or 95% confidence interval of the OM-predicted data (or some other statistical criteria).
-@carruthers_hordyk_2018 recommend testing the statistical power of protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics.
+In established MSE processes (e.g., @cox2008a), informal evaluation evaluation of performance of MPs may be done at regular intervals as the MP is applied and new data are gathered (e.g., survey and commercial CPUE information). 
+@carruthers_hordyk_2018 list several examples of MSEs where formal protocols for detecting exceptional circumstances have been established.
+In general, formal protocols have included monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
+Examples of triggers for re-evaluation include observed data falling outside some confidence interval of the OM-predicted data (e.g., 90% or 95%).
+@carruthers_hordyk_2018 recommend testing the statistical power of formal protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics.
 For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low.
-It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., @carruthers_hordyk_2018].
-
-<!--TODo: RF has asked Rob and Brendan for info on protocols for Sablefish-->
+It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., examples provided in @carruthers_hordyk_2018].
 
 We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that a formal protocol has not yet been established.
 We therfore also recommend further analyses to evaluate protocols for detecting exceptional circumstances as a matter of priority.
 
 ## INCLUDING ENVIRONMENTAL EFFECTS
 
-<!--TODO: Improve this. RF to check references. SA please check black swan section ... very rough -->
+<!--TODO: Improve this. SA please check black swan section ... very rough -->
 
 The Fish Stocks Provisions of the *Fisheries Act* state that fisheries management decisions shall take "into account the biology of the fish and the environmental conditions affecting the stock" (Section \@ref(sec:intro-motivation)).
 Changing environmental conditions can affect fish stocks in many ways, including impacting natural mortality rates, growth rates and condition, recruitment success, and spatial distribution, which may impact fishery catchability or selectivity.
-Robust methods for including environmental considerations into single-species catch advice are not well-established in fisheries decision-making environments [but see @crone2019; @haltuch2019].
+Robust methods for including environmental considerations into single-species catch advice are not well-established in fisheries decision-making environments [but see @haltuch2011; @haltuch2019 @crone2019].
 This is because of large uncertainties associated with observing complex marine environments and understanding mechanisms linking fish population dynamics with environmental change [@myers1995].
-Unless mechanisms are well-understood [e.g., @swain2015], incorporating environmental variables into stock assessments may produce biased advice [@haltuch2011].
+Unless mechanisms are well-understood [e.g., @swain2015], incorporating environmental variables into stock assessments does not necessarily improve advice [@punt2014].
 
-Closed loop simulation-testing is one way to evaluate how MPs perform in the presence of uncertainty and a changing environment [e.g., @haltuch2009; @haltuch2011; @punt2014].
+Closed loop simulation-testing is an important means of evaluating how MPs perform in the presence of uncertainty and a changing environment [e.g., @haltuch2009; @haltuch2011; @punt2011b].
 In this approach, hypotheses about how environmental variables impact population dynamics are incorporated into the OMs, with the performance of alternative MPs (which may or may not include environmental variables) evaluated in the same way as presented in this framework.
 Multiple OMs can be developed that represent multiple hypotheses for environmental effects.
-OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations), or could be mechanism-free (e.g., allow growth parameters or $M$ to vary through time).
+OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations, or linking predator abundance with $M$), or could be mechanism-free (e.g., allowing growth parameters or $M$ to vary through time with no specific driver).
 The latter, mechanism-free approaches are already straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ increase linearly through time. In this case, no specific mechanism for changing $M$ was provided.
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.
 These are sometimes referred to as "black-swan" events [e.g., @taleb2007; @anderson2017; @anderson2019] and can be incorporated into operating models through the addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
-An upcoming application of the MP Framework for Inside Yelloweye Rockfish includes an OM scenario incorporating occasional large recruitment events.
+An upcoming application of the MP Framework for the Inside stock of Yelloweye Rockfish (*Sebastes ruberrimus*) will include an OM scenario that incorporates occasional sudden large recruitment events.
 
-We recommend using the tools developed for the MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
+We recommend using the tools developed for this MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
 
 ## ASSESSING THE VALUE OF INFORMATION
 
