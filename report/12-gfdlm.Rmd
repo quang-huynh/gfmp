@@ -13,7 +13,7 @@ All plotting functions are set up to take either:
 2. a named list of SRA model fits from `MSEtool::SRA_scope()`, or
 3. a named list of performance metric data frames from `gfdlm::get_probs()`.
 
-In all cases, the list element names should reflect the scenario names.
+In all cases, the list elements should contain different scenarios from the reference and/or robustness sets and the names should reflect the scenario names.
 
 The following are the main plotting functions:
 
