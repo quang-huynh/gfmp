@@ -177,7 +177,7 @@ Second Rex Sole page from @anderson2019synopsis. (Temporary placeholder until we
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:results-rex1}
 
-The decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision would be stated in the Request for Science Advice. In a real application of the MP Framework,6 additional aspects of the decision context would be established through a technical committee. See Section \@ref(sec:approach1).
+The decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time-frame for making the decision would be stated in the Request for Science Advice. In applications of the MP Framework, additional aspects of the decision context would be established through a technical committee. See Section \@ref(sec:approach1).
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:results-rex2}
 
