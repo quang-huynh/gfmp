@@ -85,16 +85,16 @@ This version of the document was generated on `r Sys.time()` with
 `r devtools::session_info()$platform$version` [@r2019] and R package versions:
 
 ```{r env, echo = FALSE, results='asis', message=FALSE, warning=FALSE, eval=TRUE, cache=FALSE}
-library(TMB)
-library(rstan)
-library(rstanarm)
-library(bookdown)
-library(rmarkdown)
-library(DLMtool)
-library(cowplot)
-library(MSEtool)
-library(glmmTMB)
-library(gfdata)
+library(TMB, warn.conflicts = FALSE, quietly = TRUE)
+library(rstan, warn.conflicts = FALSE, quietly = TRUE)
+library(rstanarm, warn.conflicts = FALSE, quietly = TRUE)
+library(bookdown, warn.conflicts = FALSE, quietly = TRUE)
+library(rmarkdown, warn.conflicts = FALSE, quietly = TRUE)
+library(DLMtool, warn.conflicts = FALSE, quietly = TRUE)
+library(cowplot, warn.conflicts = FALSE, quietly = TRUE)
+library(MSEtool, warn.conflicts = FALSE, quietly = TRUE)
+library(glmmTMB, warn.conflicts = FALSE, quietly = TRUE)
+library(gfdata, warn.conflicts = FALSE, quietly = TRUE)
 pkgs <- sort(c("gfplot", "ggplot2", "dplyr", "rstan", "knitr", "glmmTMB",
   "TMB", "purrr", "kableExtra", "cowplot", "csasdown", "bookdown", "rmarkdown",
   "rstanarm", "gfdlm", "gfdata",

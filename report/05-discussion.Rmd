@@ -1,12 +1,8 @@
 # DISCUSSION
 
-*Final discussion may include other topics. Below is a rough start.*
-
 *Summary intro paragraph*
 
 <!-- Sean -->
-
-* re-sample data | `rnorm` etc. > `runif`
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
