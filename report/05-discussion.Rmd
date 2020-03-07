@@ -37,8 +37,8 @@ However, in some applications of the framework it may be desirable to iterativel
 
 There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and honing in on better-performing MPs via the satisficing step vs. focusing effort on a few highly "tuned" MPs.
 In cases where generic MPs perform poorly, the latter approach may be desirable.
-This latter approach may also be desirable in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives (e.g., @cox2008).
-Ultimately the decision about whether to evaluate generic or finely tuned MPs will be made on a stock-by-stock basis.
+This latter approach may also be desirable in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives [e.g., @cox2008a].
+Ultimately, the decision about whether to evaluate generic or finely tuned MPs will be made on a stock-by-stock basis.
 The process may start with more generic MPs and graduate to more finely tuned MPs as experience is gained with the performance of specific MPs.
 
 ## REASSESSMENT FREQUENCY AND TRIGGERS
