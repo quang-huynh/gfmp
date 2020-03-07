@@ -89,6 +89,8 @@ We recommend using the tools developed for this MP Framework to further explore 
 
 <!-- Suggest deleting this section. We need to be careful about suggesting we wouldn't use the framework in a given data situation. This document is just about the framework to apply once a decision has been made to use it. It isn't about whether to use it or not, which is a process question-->
 
+<!--Update: just talk about the utility of the framework for testing the VoI, e.g., more or less survey information or age comp data for tuning the SRA. Note that some of these data-limited procedures might work well for data rich species -->
+
 * Possibly draw on the value of aging data for Rex sole from a case study as an example
 * Can also suggest other possible uses, e.g., changes to survey coverage
 * Issue #60 "There was also a recommendation to discuss and document process of how species would be selected for data-limited assessment via the MP Framework and how a species could be moved out of the Framework to have more data-rich, conventional assessments. While the availability of quality age-composition data would be the first consideration, this will likely need to be done on a stock-by-stock basis, and in consultation with science, managers, stakeholders, and other interested parties."

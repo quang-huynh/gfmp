@@ -8,12 +8,15 @@ round2 <- function(x) sprintf("%.2f",round(x, 2))
 
 ## BACKGROUND
 
-Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They have been caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole have been caught in BC waters as large as 58 cm and up to 1.44 kg. The only aged Rex Sole from BC are those caught in the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. The oldest Rex Sole aged from BC was a 34 cm female aged at 15 years, though larger, non-aged individuals have been caught up to length 58 cm. This species has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. Otoliths have been collected on BC surveys from 2000--present although they have not been aged.
+Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. Rex Sole are primarily caught in the Groundfish bottom trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
 
-Rex Sole are a commonly caught flatfish species in the WCVI (West Coast Vancouver Island) synoptic groundfish bottom trawl surveys (Figure \@ref(fig:rex-surv-set-plot)) and although they are caught in the commercial mixed-species bottom trawl fishery (Figures \@ref(fig:rex-catch-plot) and \@ref(fig:rex-cpue-map)), there is no directed fishery or assigned quota for them.
-They are commonly caught with Pacific Cod (*Gadus macrocephalus*), Dover Sole (*Microstomus pacificus*), English Sole (*Parophrys vetulus*) and Arrowtooth Flounder (*Atheresthes stomias*). Rex Sole have never been formally assessed in BC; however, biomass of Rex Sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012].
-The WCVI synoptic bottom trawl survey shows a moderate decline in biomass density from ~2008 to 2012 and an increase from 2014 to 2018 (Figures \@ref(fig:rex-surv-set-plot) and \@ref(fig:rex-surv-index-plot)).
-Standardized commercial trawl CPUE (catch per unit effort) shows an increase in the late 1990s, a moderate decline from ~2004 to 2010, and a moderate increase until about 2016 (Figure \@ref(fig:rex-surv-index-plot)).
+Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters, while the oldest aged individual was a 34 cm female aged 15 years. However, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. 
+
+Rex Sole are a commonly caught flatfish species in the West Coast Vancouver Island (WCVI) synoptic groundfish bottom trawl survey (Figure \@ref(fig:rex-surv-set-plot)). While they are caught in the commercial mixed-species bottom trawl fishery (Figures \@ref(fig:rex-catch-plot) and \@ref(fig:rex-cpue-map)), there is no directed fishery or assigned quota for them.
+They are commonly caught with Pacific Cod (*Gadus macrocephalus*), Dover Sole (*Microstomus pacificus*), English Sole (*Parophrys vetulus*) and Arrowtooth Flounder (*Atheresthes stomias*). Rex Sole have never been formally assessed in BC. 
+However, biomass of Rex Sole in Hecate Strait was estimated in 2012 using research survey data collected between 1984 and 2003 [@fargo2012].
+The WCVI synoptic bottom trawl survey has shown a moderate decline in biomass density from ~2008 to 2012 and an increase from 2014 to 2018 (Figures \@ref(fig:rex-surv-set-plot) and \@ref(fig:rex-surv-index-plot)).
+Standardized commercial trawl CPUE (catch per unit effort) increased in the late 1990s, showing a moderate decline from ~2004 to 2010, and a moderate increase until about 2016 (Figure \@ref(fig:rex-surv-index-plot)).
 There are many samples of length, weight, otoliths, and maturity of Rex Sole from the WCVI synoptic survey, but no aged fish (Figure \@ref(fig:rex-samples)).
 There are limited biological samples of any kind from the commercial fleet (Figure \@ref(fig:rex-samples)).
 
@@ -24,9 +27,15 @@ There are limited biological samples of any kind from the commercial fleet (Figu
 <!-- Research survey data and commercial biological data from the 1940s to present are housed in GFBio, the Groundfish Biological Samples database. In order to improve data on BC groundfish stocks, fishery-independent synoptic bottom trawl surveys were established in 2003 that are conducted in four areas: the west coast of Vancouver Island, Hecate Strait, Queen Charlotte Sound and the west coast of Haida Gwaii. The surveys alternately cover two areas each year. These survey and observer data are available to provide important time-series and biological data for stock assessment of a broad range of BC groundfish species. -->
 
 <!-- TODO: I wonder if this paragraph should be cut or reduced to a sentence or two. Kind of weird having it here -->
-In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the West Coast stock from Washington to California. The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and Starry Flounder make up most of the commercial harvest. This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. The West Coast stock was last assessed in 2013 using "extended simple" Stock Synthesis in which a depletion-based stock reduction type analysis is extended to allow for the inclusion of index data (and potentially length and age data) [@cope2015].
+In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock (GOA), the Bering Sea/Aleutian Islands (BSAI) stock and the West Coast stock from Washington to California. 
+The GOA stock is assessed every four years using an age-structured model and was last fully assessed in 2017 [@mcgilliard2017]. 
+The BSAI stock is assessed as part of the "other flatfish complex" of which Rex Sole and Starry Flounder make up most of the commercial harvest. 
+This stock is also assessed every four years, and was last fully assessed in 2015 [@wilderbuer2015]. 
+The West Coast stock was last assessed in 2013 using "extended simple" Stock Synthesis in which a depletion-based stock reduction type analysis is extended to allow for the inclusion of index data (and potentially length and age data) [@cope2015].
 
-What follows is a demonstration of the MP Framework through a case study of the Rex Sole stock in WCVI (Area 3CD). This case study is *not* meant to be used for catch advice at this time. We frame our case study according to the steps outlined in Section \@ref(sec:approach).
+We present a demonstration of the MP Framework through a case study of the Rex Sole stock in the WCVI groundfish management area (Area 3CD). 
+This detailed case study is illustrative and is not intended for catch advice at this time. 
+We frame our case study according to the steps outlined in Section \@ref(sec:approach).
 
 ```{r rex-survey-plotting-functions}
 library(ggplot2)
@@ -207,7 +216,7 @@ We measured the performance metrics as the probability integrating over all year
 
 We considered the major axes of uncertainty for Rex Sole to be:
 
-1. The magnitude of the commercial catch prior to 1996
+1. The magnitude of the commercial catch prior to 1996 (influencing initial depletion in 1996)
 2. The importance of the commercial CPUE index
 3. The value of the steepness parameter (*h*) of the stock-recruit relationship
 4. The value of natural mortality (*M*)
@@ -232,6 +241,7 @@ sc %>% select(-scenario) %>%
 #### Magnitude of pre-1996 commercial catch and importance of commercial CPUE
 
 Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure \@ref(fig:rex-catch-plot)).
+This is likely partly due to a lack of observer coverage and reporting requirements prior to 1996.
 Assumptions about pre-1996 catch levels affect the SRA model's estimates of the depletion level in 1996 (Appendix \@ref(app:sra)).
 The SRA model parameter $C^{\textrm{eq}}$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to calculate equilibrium fishing mortality prior to the first year of the model $F^{\textrm{eq}}$, which in turn is used to calculate total mortality $Z^{\textrm{eq}}$ needed to calculate recruits and numbers in the first year of the model (Equation \@ref(eq:sra-om-ceqpred)).
 We note that the use of $F^{\textrm{eq}}$ and $C^{\textrm{eq}}$ make the assumption that the population biomass and fishery were in equilibrium prior to 1996.
