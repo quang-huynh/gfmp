@@ -317,10 +317,10 @@ We included a detailed explanation of the initial OM specification in Appendix \
 
 After specifying most of the OM parameters as described in Appendix \@ref(app:desc-om-rex), we conditioned the OMs using the SRA model described in Appendix \@ref(app:app:sra).
 We conditioned of the models using commercial catch from 1996--2019, the synoptic WCVI (SYN WCVI) trawl relative biomass index and commercial bottom trawl CPUE.
-We downweighted the commercial CPUE by inflating the standard errors 1.5 times since we have greater confidence in the stratified random survey reflecting underlying biomass trends.
+We down weighted the commercial CPUE by inflating the standard errors 1.5 times since we have greater confidence in the stratified random survey reflecting underlying biomass trends.
 We specified a range of $C^{\textrm{eq}}$ values as described above to reflect uncertainty about initial stock depletion.
 
-The SRA was able to fit to the WCVI synoptic trawl survey relative biomass index and commercial bottom trawl CPUE reasonably well (Figure \@ref(fig:rex-survey-fits)). 
+The SRA was able to fit to the WCVI synoptic trawl survey relative biomass index and commercial bottom trawl CPUE reasonably well (Figure \@ref(fig:rex-survey-fits)).
 The SYN WCVI survey was better fit than the commercial CPUE, likely due to the smaller standard errors (Figure \@ref(fig:rex-survey-fits)).
 The models fit the catch almost perfectly due to the specification of the models with standard deviations of the observation error of only 0.01 (Equation \@ref(eq:sra-om-like-catch)).
 
@@ -329,7 +329,7 @@ SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass
 Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
 Panels from top to bottom represent scenarios.
 Dots represent index mean and line segments represent 2 times the standard errors as entered into the SRA models.
-In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to downweight the commercial CPUE index relative to the survey index.
+In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to down weight the commercial CPUE index relative to the survey index.
 
 ```{r rex-survey-fits, fig.cap="(ref:fig-rex-survey-fits)", out.width="0.65\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-index-fits.png"))
@@ -345,7 +345,7 @@ We used the SRA to populate in the conditioned OMs:
 
 The reference and robustness scenarios rendered a range of these parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
 In fitting the SRA across replicate draws from the initial OMs, we discarded any models that did not converge or had $F_{a,y} > 3$.
-The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)), but by discarding the replicate initial OM parameter values associated with these unconverged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
+The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)), but by discarding the replicate initial OM parameter values associated with these non-converged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
 The discarded parameter values represent implausible parameter combinations according to the SRA model.
 The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs are similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
 
@@ -454,7 +454,7 @@ knitr::include_graphics(here::here("report/figure/rex-compare-recdev-panel.png")
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
 
-We started with the full set of provisional candidate MPs described in Appendix \@ref(app:MPs) (Table \@ref(tab:rex-mps)). 
+We started with the full set of provisional candidate MPs described in Appendix \@ref(app:MPs) (Table \@ref(tab:rex-mps)).
 Early explorations suggested little effect of the three harvest control rules described in Appendix \@ref(app:MPs) (presumably because the simulations spent little time on the "ramp") and little difference between the Fox and Schaefer production models.
 Therefore, with the SP models we focused mostly on tuning the prior on $r$, the intrinsic population growth rate.
 We evaluated three priors on $r$: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
