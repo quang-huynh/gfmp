@@ -33,10 +33,18 @@ We recommend that products such as [DFO's sustainability survey](https://www.dfo
 
 ## TUNING MPs
 
-* See Issue #55
-* There is a trade-off between more generic MPs (work across a coarse array of tuning parameters and hone in on a finer grid of better-performing MPs) vs highly "tuned" MPs
-* Importance of transparency about what was explored and how "tuning" was done
-* Extent of tuning exercise may depend on how well MPs are performing. If all performing badly, may need to go on more extensive tuning expedition
+<!--TODO: SA please edit as necessary-->
+
+Many of the data-limited MPs in this framework are characterized by one or more parameters that control how the TAC should change in reponse to changes in the survey index (Appendix \@ref(app:MPs)).
+For example, the `Itarget` MPs have four "tuning" parameters, $w$, $x$, $\lambda$ and $\delta$, which control the rate and scale of TAC adjustments in response to the index (Section \@ref(sec:mp-itarget)).
+In our Rex Sole case study, we tested six versions of the `Itarget` MPs over a fairly coarse scale of the tuning parameters.
+In this particular case, several of the MPs performed well with respect to satisficing criteria so we did not explore more combinations.
+However, in some applications of the framework it may be desirable to iteratively tune MPs on a fine scale to achieve desired performance outcomes.
+
+There is obviously a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and honing in on better-performing MPs via the satisficing step *vs* focusing effort on a few  highly "tuned" MPs. 
+In cases where generic MPs perform poorly, the latter approach may be more desirable.
+This approach may also be more desirable in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives (e.g., @cox2008). 
+Ultimately the decision on whether to evaluate generic or finely-tuned MPs will be made on a stock-by-stock basis. The process may start with more generic MPs and graduate to more finely-tuned MPs as experience is gained with performance of the MPs.
 
 ## REASSESSMENT FREQUENCY AND TRIGGERS
 
@@ -61,7 +69,7 @@ We therfore also recommend further analyses to evaluate protocols for detecting 
 
 ## INCLUDING ENVIRONMENTAL EFFECTS
 
-<!--TODO: Improve this. SA please check black swan section ... very rough -->
+<!--TODO: SA please check black swan section ... very rough -->
 
 The Fish Stocks Provisions of the *Fisheries Act* state that fisheries management decisions shall take "into account the biology of the fish and the environmental conditions affecting the stock" (Section \@ref(sec:intro-motivation)).
 Changing environmental conditions can affect fish stocks in many ways, including impacting natural mortality rates, growth rates and condition, recruitment success, and spatial distribution, which may impact fishery catchability or selectivity.
@@ -93,6 +101,7 @@ The [PA policy](https://waves-vagues.dfo-mpo.gc.ca/Library/40584781.pdf) and the
 Rebuilding plans require that management measures should rebuild stocks out of the Critical Zone within a specified time frame (e.g., one or two generation times), with a specified probability.
 The MP Framework can be easily modified to test performance of alternative MPs with respect to meeting rebuilding objectives for stocks requiring rebuilding plans.
 The only real modifications needed are to the objectives and performance metrics, which are already customizable within this framework.
+
 A challenge for data-limited species is how stocks are assessed to be in the Critical Zone in the first place so that a rebuilding plan is triggered.
 However, we suggest that if calibrated OMs overwhelmingly place a fish stock in the Critical Zone across a range of plausible OM assumptions, this could be grounds for triggering a rebuilding plan.
 This framework is currently being applied to evaluate alternative data-limited MPs for the rebuilding plan for the Inside stock of Yelloweye Rockfish in British Columbia.
