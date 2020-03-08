@@ -270,7 +270,7 @@ TODO: For discussion?
 Once the objectives, performance metrics, calibrated OMs and MPs are fully specified, a closed-loop simulation framework (Figures \@ref(fig:mse-chart-basic) and \@ref(fig:mse-chart)) can be applied to test relative performance of the MPs with respect to meeting the stated objectives.
 
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
-For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 80% probability of keeping the stock above the LRP (LT LRP $\geq$ 0.8) and a short-term 70% probability of catch being above recent average catch (STC $\geq$ 0.7).
+For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT LRP $>$ 0.9) and a short-term 80% probability of catch being above recent average catch (STC $>$ 0.8).
 <!-- This resulted in 5 final MPs (out of an initial 30 MPs), plus the four reference MPs. -->
 We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
 The purpose is to simplify the decision step by focusing on a manageable number of MPs.
@@ -474,7 +474,7 @@ TODO: will add an indication of satisficing thresholds with shading or bold MPs 
 mse2 %>%
   gfdlm::get_probs(PM) %>%
   mutate(MP = paste0("MP-", seq_len(length(MP)))) %>%
-  gfdlm::plot_tigure(satisficed = c("LT LRP" = 0.9, "LTC" = 0.7))
+  gfdlm::plot_tigure(satisficed = c("LT LRP" = 0.9, "LTC" = 0.8))
 ```
 
 (ref:fig-methods-dots) dots TODO
