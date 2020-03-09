@@ -435,11 +435,10 @@ knitr::include_graphics(here("report/figure/framework-dot.png"))
 ```
 
 (ref:fig-methods-tradeoff)
-This visualization demonstrates bivariate trade-offs between two performance metrics for a given scenario.
-You can also be used for average performance across scenarios.
-Bottom and left axis correspond to two performance metrics an individual dots represent MPs.
+This visualization demonstrates bivariate trade-offs between two performance metrics for a given scenario or average across scenarios.
+Bottom and left axis correspond to two performance metrics and individual dots represent MPs.
 
-```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="3.5in"}
+```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="4.25in"}
 knitr::include_graphics(here("report/figure/framework-trade-off.png"))
 ```
 

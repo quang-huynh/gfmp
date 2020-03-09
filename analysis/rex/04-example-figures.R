@@ -119,7 +119,7 @@ pm_df_list_all_rob$`no-cpue-light` %>%
   map(~{.x$MP <- paste0("MP-", seq_along(.x$MP));.x}) %>%
   gfdlm::plot_tradeoff("LT LRP", "STC") +
   scale_colour_brewer(palette = "Dark2") +
-  coord_equal(xlim = c(0.6, 1), ylim = c(0.2, 1), expand = FALSE)+
+  coord_equal(xlim = c(0.6, 1), ylim = c(0.6, 1), expand = FALSE)+
   guides(shape = "none")
 .ggsave("trade-off", 3.5, 4.5)
 

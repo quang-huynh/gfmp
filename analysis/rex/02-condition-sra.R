@@ -359,3 +359,82 @@ ggsave(here::here("report/figure/rex-selectivity.png"), width = 5, height = 3)
 
 # sra_rex[[1]]@Misc[[1]]$s_vul[1,,1]
 # sra_rex[[1]]@Misc[[1]]$s_vul[1,,2]
+
+# for report ---------------------------------
+
+sp <- "rex"
+scenarios <- sc$scenario %>% purrr::set_names(sc$scenario_human)
+oms <- map(scenarios, ~ {
+  readRDS(here("generated-data", paste0(sp, "-sra-", .x, ".rds")))@OM
+})
+rex_converged <- map_dfr(oms, ~tibble(nsim = .x@nsim), .id = "scenario")
+saveRDS(rex_converged, file = here("generated-data/rex-converged.rds"))
+
+sc2 <- readRDS(here("generated-data", "rex-scenarios.rds"))
+sc2$scenario_human <- paste0(sc2$order, " - ", sc2$scenario_human)
+x <- oms %>% set_names(sc2$scenario_human) %>%
+  map_dfr(~tibble(
+    D = .x@cpars$D,
+    h = .x@cpars$h,
+    R0 = .x@cpars$R0,
+    sigma_R = .x@cpars$Perr,
+    AC = .x@cpars$AC,
+    L50 = .x@cpars$L50,
+    L50_95 = .x@cpars$L50_95,
+    t0 = .x@cpars$t0,
+    k = .x@cpars$K,
+    Linf = .x@cpars$Linf,
+    M = .x@cpars$M_ageArray[,1,1],
+  ), .id = "Scenario") %>%
+  reshape2::melt(id.vars = "Scenario") %>%
+  dplyr::filter(!(variable == "R0" & value > 1e7))
+
+# x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
+#   ggplot(aes(value)) +
+#   geom_histogram(bins = 40, colour = "grey60") +
+#   facet_grid(Scenario~variable, scales = "free_x")+
+#   theme_pbs() +
+#   coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+#   xlab("Parameter value") +
+#   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank())
+
+x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
+  ggplot(aes(value)) +
+  geom_histogram(bins = 30, colour = "grey40", fill = "white", lwd = 0.4) +
+  # geom_freqpoly(aes(colour = Scenario), bins = 30) +
+  facet_grid(Scenario~variable, scales = "free_x")+
+  gfdlm::theme_pbs() +
+  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+  xlab("Parameter value") + ylab("Count") +
+  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
+  scale_colour_brewer(palette = "Dark2")
+
+ggsave(here::here("report/figure/rex-sra-estimated.png"),
+  width = 6.5, height = 8.5)
+
+x %>% dplyr::filter(variable %in% c("sigma_R", "h", "L50", "L50_95", "t0", "k", "Linf", "M")) %>%
+  ggplot(aes(value)) +
+  # geom_histogram(bins = 40, colour = "grey60") +
+  geom_freqpoly(aes(colour = Scenario), bins = 30) +
+  facet_wrap(~variable, scales = "free_x")+
+  gfdlm::theme_pbs() +
+  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+  xlab("Parameter value") + ylab("Count") +
+  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
+  scale_colour_brewer(palette = "Dark2")
+
+ggsave(here::here("report/figure/rex-sra-filtered.png"),
+  width = 6.5, height = 5.5)
+
+# Substantially speeds up LaTeX rendering on a Mac
+# by pre-optimizing the PNG compression:
+optimize_png <- TRUE
+if (optimize_png && !identical(.Platform$OS.type, "windows")) {
+  files_per_core <- 4
+  setwd("report/figure")
+  system(paste0(
+    "find -X . -name 'rex-*.png' -print0 | xargs -0 -n ",
+    files_per_core, " -P ", cores, " optipng -strip all"
+  ))
+  setwd(here())
+}

@@ -347,13 +347,10 @@ The discarded parameter values represent implausible parameter combinations acco
 The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs are similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
 
 ```{r rex-sra-fraction, results='asis'}
-sp <- "rex"
-scenarios <- sc$scenario %>% purrr::set_names(sc$scenario_human)
-oms <- map(scenarios, ~ {
-  readRDS(here("generated-data", paste0(sp, "-sra-", .x, ".rds")))@OM
-})
-map_dfr(oms, ~tibble(nsim = .x@nsim), .id = "scenario") %>%
+rex_converged <- readRDS(here("generated-data/rex-converged.rds"))
+rex_converged %>%
   mutate(fraction_converged = sprintf("%.2f",round(nsim / 650, 2))) %>%
+  mutate(scenario = gsub("\\n", " ", scenario)) %>%
   select(-nsim) %>%
   csasdown::csas_table(col_names = c("Scenario", "Fraction retained"),
     caption = "Fraction of replicates retained after conditioning with the SRA model.")
@@ -362,60 +359,15 @@ map_dfr(oms, ~tibble(nsim = .x@nsim), .id = "scenario") %>%
 (ref:fig-rex-sra-conditioned-parameters) Histograms of parameters estimated by the SRA. Fishing mortality at age, the historical depletion trajectory, and historical recruitment deviations are also derived from the SRA model. Historical depletion trajectories are shown in Figure \@ref(fig:rex-depletion-om), apical fishing mortality by year are shown in Figure \@ref(fig:rex-F-om), and historical recruitment deviations are shown in Figure \@ref(fig:rex-recdev-om).
 D refers to depletion. AC refers to $\theta_\textrm{AC}$.
 
-```{r rex-sra-conditioned-parameters, out.width="0.85\\textwidth", fig.asp=1.4, fig.cap="(ref:fig-rex-sra-conditioned-parameters)"}
-sc2 <- readRDS(here("generated-data", "rex-scenarios.rds"))
-sc2$scenario_human <- paste0(sc2$order, " - ", sc2$scenario_human)
-x <- oms %>% set_names(sc2$scenario_human) %>%
-  map_dfr(~tibble(
-    D = .x@cpars$D,
-    h = .x@cpars$h,
-    R0 = .x@cpars$R0,
-    sigma_R = .x@cpars$Perr,
-    AC = .x@cpars$AC,
-    L50 = .x@cpars$L50,
-    L50_95 = .x@cpars$L50_95,
-    t0 = .x@cpars$t0,
-    k = .x@cpars$K,
-    Linf = .x@cpars$Linf,
-    M = .x@cpars$M_ageArray[,1,1],
-    ), .id = "Scenario") %>%
-  reshape2::melt(id.vars = "Scenario") %>% dplyr::filter(!(variable == "R0" & value > 1e7))
-
-# x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
-#   ggplot(aes(value)) +
-#   geom_histogram(bins = 40, colour = "grey60") +
-#   facet_grid(Scenario~variable, scales = "free_x")+
-#   theme_pbs() +
-#   coord_cartesian(ylim = c(0, 200), expand = FALSE) +
-#   xlab("Parameter value") +
-#   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank())
-
-x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
-  ggplot(aes(value)) +
-  geom_histogram(bins = 30, colour = "grey40", fill = "white", lwd = 0.4) +
-  # geom_freqpoly(aes(colour = Scenario), bins = 30) +
-    facet_grid(Scenario~variable, scales = "free_x")+
-  theme_pbs() +
-  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
-  xlab("Parameter value") + ylab("Count") +
-  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
-  scale_colour_brewer(palette = "Dark2")
+```{r rex-sra-conditioned-parameters, out.width="0.85\\textwidth", fig.cap="(ref:fig-rex-sra-conditioned-parameters)"}
+knitr::include_graphics(here("report/figure/rex-sra-estimated.png"))
 ```
 
 (ref:fig-rex-sra-conditioned-parameters2)
 Frequency polygons for parameters input to the SRA. Parameters were sampled stochastically as input into the SRA (see Appendix \@ref(app:desc-om-rex) for ranges). Any samples associated with non-converged SRA models were discarded. Since most SRA models converged, these distributions are similar across scenarios unless they were specified differently in the OM. The large spikes represent fixed parameter values in the OM. sigma_R refers to $\sigma_R$.
 
 ```{r rex-sra-conditioned-parameters2, out.width="\\textwidth", fig.asp=0.85, fig.width=7, fig.cap="(ref:fig-rex-sra-conditioned-parameters2)"}
-x %>% dplyr::filter(variable %in% c("sigma_R", "h", "L50", "L50_95", "t0", "k", "Linf", "M")) %>%
-  ggplot(aes(value)) +
-  # geom_histogram(bins = 40, colour = "grey60") +
-  geom_freqpoly(aes(colour = Scenario), bins = 30) +
-  facet_wrap(~variable, scales = "free_x")+
-  theme_pbs() +
-  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
-  xlab("Parameter value") + ylab("Count") +
-  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
-  scale_colour_brewer(palette = "Dark2")
+knitr::include_graphics(here("report/figure/rex-sra-filtered.png"))
 ```
 
 \clearpage
@@ -494,7 +446,7 @@ pm_min_sat <- pm_min %>% filter(MP %in% mp_sat)
 rversion <- gsub(" \\([0-9-]+\\)", "", devtools::session_info()$platform$version)
 ```
 
-We ran the closed-loop simulations across 250 stochastic replicates using DLMtool version 5.4.2, `r rversion`, and the simulation random seed set to `r oms[[1]]@seed`, with the OMs and MPs described above.
+We ran the closed-loop simulations across 250 stochastic replicates using DLMtool version 5.4.2, `r rversion`, and the simulation random seed set to `1`, with the OMs and MPs described above.
 We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as replicates were added (Figure \@ref(fig:rex-converge)).
 We deemed 250 replicates sufficient since the rank order of MPs was consistent for this number of replicates (Figure \@ref(fig:rex-converge)).
 
@@ -604,8 +556,8 @@ knitr::include_graphics(here("report/figure/rex-dot-refset-avg.png"))
 
 \clearpage
 
-```{r rex-tradeoff-reference, fig.cap="Trade-off between LT LRP and STC performance metrics across the reference-set scenarios.", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/rex-tradeoff-refset.png"))
+```{r rex-tradeoff-reference, fig.cap="Trade-off between LT LRP and STC average performance metrics across the reference-set scenarios.", out.width="5in"}
+knitr::include_graphics(here("report/figure/rex-tradeoff-refset-avg.png"))
 ```
 
 \clearpage

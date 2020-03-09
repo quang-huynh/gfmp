@@ -252,6 +252,8 @@ plots <- gfdlm::plot_factory(
 
 g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 6)
 .ggsave("tradeoff-refset", width = 9.5, height = 5, plot = g)
+.ggsave("tradeoff-refset-avg", width = 4.5, height = 4,
+  plot = plots$tradeoff_avg + coord_equal(xlim = c(0.8, 1), ylim = c(0.8, 1), expand = FALSE))
 .ggsave("tradeoff-robset", width = 7, height = 3, plot = plots$tradeoff_robset)
 
 .ggsave("tigure-refset", width = 6.5, height = 8, plot = plots$tigure_refset)
