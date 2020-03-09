@@ -711,7 +711,12 @@ Within this scenario, over time, the .SP8040_0.6, CC1.1, and CC1.2 MPs all have 
 
 For the "M increasing" scenario, the satisficed MPs were fairly robust to linear increases in natural mortality in the projection period, with the exception that all satisficed MPs had a considerably lower probability of achieving the long-term catch (LTC) metric (Figures \@ref(fig:rex-tigure-panel-rob)--\@ref(fig:rex-spider-satisficed-mps-robust)).
 Notably, the Itarget satisficed MPs maintained LT LRP $>$ 0.9 despite increasing $M$, whereas the fixed-catch and surplus-production MPs all resulted in LT LRP $<$ 0.9.
-By looking at the projections, it is possible to see that the Itarget MPs were able to ramp down catch appropriately as $M$ increased (Figure \@ref(fig:rex-proj-inc-m)) to maintain most replicates above the LRP.
+The Itarget MPs were able to ramp down catch as $M$ increased (Figure \@ref(fig:rex-proj-inc-m)) to maintain most replicates above the LRP.
+
+By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
+The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the other scenarios.
+The projected trajectories were relatively similar across all reference-set scenarios, while differing for the "No CPUE Ceq. 50%" and "M increasing" robustness scenarios.
+Note that sensitivity of the projections does not necessarily correspond to sensitivity of the rank order of MPs (Figure \@ref(fig:rex-tigure-panel-rob)).
 
 (ref:fig-rex-tigure-panel-rob) Performance of satisficed MPs for the robustness set OMs.
 
@@ -742,14 +747,6 @@ knitr::include_graphics(here("report/figure/rex-projections-no-cpue-light.png"))
 ```{r rex-proj-inc-m, fig.cap="(ref:fig-rex-proj-inc-m)", out.width="6.5in"}
 knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 ```
-
-\clearpage
-
-### SENSITIVITY OF PROJECTIONS
-
-By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
-The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the other scenarios.
-The projected trajectories were relatively similar across all reference-set scenarios, while differing for the "No CPUE Ceq. 50%" and "M increasing" robustness scenarios.
 
 (ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
 Colours represent the reference- and robustness-set scenarios.

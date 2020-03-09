@@ -365,138 +365,82 @@ Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend thems
 
 In many cases it will also make sense to look at timeseries trajectories across multiple operating models (Figure \@ref(fig:methods-proj)).
 
-\clearpage
-
-```{r methods-loading}
-sc <- readRDS(here::here("generated-data/rex-scenarios.rds"))
-d_catch <- readRDS(here("generated-data", "rex-catch2.rds"))
-d_catch <- dplyr::filter(d_catch, year >= 1996, year <= 2019)
-catch <- suppressWarnings(gfplot::tidy_catch(d_catch))
-catch <- catch %>%
-  group_by(year) %>%
-  summarize(value = sum(value)) %>%
-  pull(value)
-
-yrs <- length(catch)
-ref_aadc <- gfdlm:::get_aadc(catch[(yrs - 10 + 1):yrs])
-ref_catch <- mean(catch[(yrs - 5 + 1):yrs]) - 5000
-
-get_scenario <- function(scenario, id = "", sp = "rex") {
-  if (id != "") id <- paste0(id, "-")
-  file_name <- here::here("generated-data", paste0(sp, "-mse-", id, scenario, ".rds"))
-  readRDS(file_name)
-}
-scenarios <- c(sc$scenario[1], sc$scenario[7])
-# mse_cc <- map(scenarios, get_scenario, id = "cc")
-mse_ind <- map(scenarios, get_scenario, id = "ind")
-mse_sp <- map(scenarios, get_scenario, id = "sp")
-mse_ref <- map(scenarios, get_scenario, id = "ref")
-source(here::here("analysis/rex/merge_MSE.R"))
-mse_all <- pmap(list(mse_ind, mse_sp, mse_ref), merge_MSE)
-for (i in seq_along(mse_all)) mse_all[[i]]@OM$RefY <- ref_catch
-
-pm_df_list_all <- readRDS(here("generated-data", "rex-pm-all.rds"))
-pm_df_list_all_rob <- readRDS(here("generated-data", "rex-pm-all-rob.rds"))
-
-mse2 <- readRDS(here::here("generated-data", "rex-mse-ind-ceq200.rds"))
-
-`LT LRP` <- gfdlm::pm_factory("SBMSY", 0.4, c(36, 50))
-`LT USR` <- gfdlm::pm_factory("SBMSY", 0.8, c(36, 50))
-FMSY <- DLMtool::PNOF
-STC <- gfdlm::pm_factory("LTY", 1, c(1, 10))
-LTC <- gfdlm::pm_factory("LTY", 1, c(36, 50))
-AADC <- gfdlm::pm_factory("AADC", ref_aadc, c(1, 50))
-PM <- c("LT LRP", "LT USR", "FMSY", "STC", "LTC", "AADC")
-
-mse2@OM$RefY <- ref_catch
-
-# mse <- DLMtool::Sub(mse, MPs = c("CC0.8", "CC0.9", "CC1.0", "CC1.1", "CC1.2"))
-mse <- DLMtool::Sub(mse2, MPs = c(".Itarget_d0.8", ".Itarget_w0.8", ".Itarget_base", ".Itarget_x0.2"))
-mse@OM$RefY <- ref_catch
-
-pm_df <- gfdlm::get_probs(mse, PM)
-
-pm_df_list <- list("Scenario 1" = pm_df)
-```
-
-```{r}
-catch_breaks <- seq(0, 600000, 100000)
-catch_labels <- catch_breaks / 1000
-```
-
-(ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation has reached convergence in the rank order of MP performance.
+(ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation replicates have reached convergence in the rank order of MP performance.
 The y-axis represents the proportion of cumulative replicates that have achieved the performance metric.
 The cumulative replicates are shown along the x-axis.
 Each panel represents a different performance metric and the colours illustrate the various MPs.
 A wiggly line indicates that a given MP is still varying in its performance metric value as more replicates are run.
 Lines that are crossing indicate changes to the rank order of MP performance as more replicates are run.
-A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of each panel.
+A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of the panel.
 
 ```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
-x3 <- mse
-x3@MPs <- paste0("MP-", seq_along(x3@MPs))
-gfdlm::plot_convergence(x3, c("LT USR")) +
-  scale_colour_brewer(palette = "Dark2")
+knitr::include_graphics(here("report/figure/framework-convergence.png"))
 ```
 
-(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~, F/F~MSY~, and catch across various management procedures (rows) for a single operating model.
-The historical period is the same in every row.
-The dark line indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
+(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single operating model.
+Dark lines indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation replicates.
 The vertical dashed line indicates the last year of the historical period.
-The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4; F/F~MSY~ = 1; and catch = catch from the last historical year.
-Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line in the case of FMSYref (a reference MP that fishes perfectly at F~MSY~).
+The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4 and F/F~MSY~ = 1.
+Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line even if fishing perfectly at F~MSY~.
 
-```{r methods-proj, fig.cap="(ref:fig-methods-proj)", fig.asp=0.3, out.width="\\textwidth"}
-x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8"))
-x@MPs <- "MP-1"
-x %>% gfdlm::plot_main_projections(catch_breaks = catch_breaks, catch_labels = catch_labels)
+```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-main-projections.png"))
 ```
 
-(ref:fig-methods-index) index TODO
+(ref:fig-methods-proj-sens) 
+This visualization highlights sensitivity of the historical conditioning and projected timeseries across OM scenarios.
+The solid lines correspond to median values and shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
+Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this scenario highlights the comparison within a given MP across scenarios.
+This visualization lends itself to multiple rows where each row represents a different MP.
+Note that sensitivity of the timeseries to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of performance metrics, which is ultimately the important result in an MP Framework.
 
-```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="4.5in", fig.width=6}
-oddify <- function(x) seq(2, x, by = 2)
-DLMtool::Sub(mse, MPs = c(".Itarget_d0.8")) %>%
-  list("Scenario 1" = .) %>%
-  map(~{.x@MPs <- "MP 1"; .x}) %>%
-  gfdlm::plot_index(type = "AddInd", omit_index_fn = oddify,
-    n_samples = 3, seed = 12345)
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
 ```
 
-(ref:fig-methods-tigure) This figure-table illustrates performance metric values for a number of MPs.
+(ref:fig-methods-index) This visualization illustrates the historical and projected relative population index values.
+The thin black lines represent example replicates.
+The shaded grey region represents the 95% quantile.
+The vertical dashed line represents the last historical year of the closed-loop simulation.
+In the historical period, the index represents the observed index (usually a survey index).
+In cases such as the one illustrated here, the survey is performed every second year.
+For index-based MPs, understanding the expected envelope of possible future survey trends is important for evaluating whether the system continues to be consistent with the OM assumptions in the future.
+For simple MPs, this visualization is also helpful for assessing whether the simulation is generating future index projections that are consistent with the observed historical trends.
+
+```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="6in",}
+knitr::include_graphics(here("report/figure/framework-index-projections.png"))
+```
+
+(ref:fig-methods-tigure) This probability table illustrates performance metric values across a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
 The MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
 The colour shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
-TODO: will add an indication of satisficing thresholds with shading or bold MPs names.
+Outline cells represent MPs that met a given satisficing criteria.
+MP names shaded grey represent reference MPs.
 
-```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", fig.asp=1.5, out.width="3.5in", fig.width=4}
-mse2 %>%
-  gfdlm::get_probs(PM) %>%
-  mutate(MP = paste0("MP-", seq_len(length(MP)))) %>%
-  gfdlm::plot_tigure(satisficed = c("LT LRP" = 0.9, "LTC" = 0.8))
+```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
+knitr::include_graphics(here("report/figure/framework-tigure.png"))
 ```
 
-(ref:fig-methods-dots) dots TODO
+(ref:fig-methods-dots)
+This visualization summarizes performance of a small number of MPs (e.g., satisficed MPs) across scenarios.
+Dots represent mean performance across scenarios.
+Thin lines represent the range of performance across scenarios.
+Thicker lines represent the range of performance across scenarios after dropping the highest and lowest scenario within each performance metric.
+This visualization can also be used without the line segments to represent performance for individual scenarios (e.g., robustness scenarios).
 
-```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="6in"}
-map(pm_df_list_all, dplyr::filter, MP %in% c("CC1.2", "CC1.0", "CC0.8", ".Itarget_x0.2", "FMSYref75")) %>%
-  map(~ {.x$MP <- c("MP-1", "MP-2", "MP-3", "MP-4", "FMSYref75");.x}) %>%
-  gfdlm::plot_dots(type = "single") +
-    scale_colour_manual(values = c("grey50", RColorBrewer::brewer.pal(4, "Dark2")))
+```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-dot.png"))
 ```
 
-(ref:fig-methods-tradeoff) trade-off TODO
+(ref:fig-methods-tradeoff)
+This visualization demonstrates bivariate trade-offs between two performance metrics for a given scenario.
+You can also be used for average performance across scenarios.
+Bottom and left axis correspond to two performance metrics an individual dots represent MPs.
 
-```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", fig.width=6, out.width="4.5in"}
-pm_df_list_all_rob$`no-cpue-light` %>%
-  dplyr::filter(grepl("^.Itarg", MP)) %>%
-  list("Scenario 1" = .) %>%
-  map(~{.x$MP <- paste0("MP-", seq_along(.x$MP));.x}) %>%
-  gfdlm::plot_tradeoff("LT LRP", "STC") +
-    scale_colour_brewer(palette = "Dark2") +
-    coord_cartesian(xlim = c(0.6, 1), ylim = c(0.2, 1), expand = FALSE)+
-  guides(shape = "none")
+```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="3.5in"}
+knitr::include_graphics(here("report/figure/framework-trade-off.png"))
 ```
 
 (ref:fig-methods-radar) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
@@ -504,53 +448,35 @@ Each spoke represents a performance metric (Section \@ref(sec:approach2)).
 Each line represents a management procedure.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
 Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
+Care should be taken when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes [@diehl2010; @feldman2013; @albo2016].
 
 ```{r methods-radar, fig.cap="(ref:fig-methods-radar)"}
-pm_df %>%
-  mutate(MP =  c("MP-1", "MP-2", "MP-3", "MP-4")) %>%
-  gfdlm::plot_radar(palette = "Dark2")
+knitr::include_graphics(here("report/figure/framework-radar.png"))
 ```
 
-(ref:fig-methods-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all replicates.
-The dots represent individual replicates.
-The contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.10, 0.25, and 0.50 levels, calculated in log space.
-For example, the 0.50 (outermost) contour lines encompass approximately 50% of the replicates.
+(ref:fig-methods-kobe) Kobe (B/B~MSY~ vs. F/F~MSY~) plots for the final year of the projections across all replicates.
+Dots represent individual replicates.
+The contour lines indicate two-dimensional kernel-density-smoothed quantiles, calculated in log space.
+For example, the 0.50 contour lines encompass approximately 50% of the replicates.
+Replicates with values beyond the outer axis limits are shown on the axis limit with an open circle (e.g., bottom right corner).
 
-```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", fig.asp=1.2, fig.width=4, out.width="3.5in"}
-x <- DLMtool::Sub(mse, MPs = c(".Itarget_d0.8", ".Itarget_base"))
-x@MPs <- paste0("MP-", seq_along(x@MPs))
-gfdlm::plot_kobe_grid(list("Scenario 1" = x))
+```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="5in"}
+knitr::include_graphics(here("report/figure/framework-kobe.png"))
 ```
-
-\clearpage
 
 (ref:fig-methods-worm) This visualization illustrates the time trajectory of B/B~MSY~ and F/F~MSY~ values summarized across replicates.
 The solid line corresponds to the median value.
-Each diamond represents the 80% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
+Each diamond represents the 50% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 There is one diamond per year of the historical and projection period.
 The lines and diamonds change colour over time and specific points in time are illustrated with symbols (first year, last historical year, and last projected year).
+For reference, the data underlying the last time slice in this figure are the same as Figure \@ref(fig:methods-kobe).
 
-```{r methods-worm, fig.cap="(ref:fig-methods-worm)", out.width="\\textwidth"}
-# knitr::include_graphics(here::here("report/figure/rex-neon-worms-base.png"))
-plot(1)
+```{r methods-worm, fig.cap="(ref:fig-methods-worm)", out.width="5in"}
+knitr::include_graphics(here("report/figure/framework-worm.png"))
 ```
 
 \clearpage
 
-(ref:fig-methods-proj-sens) TODO: update! This visualization illustrates the sensitivity of some quantity of interest (y-axis; here B/B~MSY~) to high and low values (colours) of various OM parameters (columns) over time.
-A variety of MPs are illustrated across rows.
-The solid lines correspond to median values and shaded ribbons correspond to some quantile (here 0.15 and 0.85) to indicate variability across replicates.
-For each OM parameter value and MP, the replicates from the top and lower third quantiles have been retained and the middle third has been discarded.
-Substantial differences between the trajectories for the two colours would indicate that the quantity of interest is sensitive to high or low values of that OM parameter.
-For example, the first column illustrates that all the MPs are somewhat sensitive to depletion in the final historical year in terms of B/B~MSY~.
-
-```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth", fig.asp=0.3}
-purrr::map(seq_along(mse_all), ~ DLMtool::Sub(mse_all[[.x]], MPs = c(".Itarget_d0.8"))) %>%
-  set_names(c("Scenario 1", "Scenario 2")) %>%
-  purrr::map(~ {.x@MPs <- "MP-1";.x}) %>%
-  gfdlm::plot_scenario_projections(catch_breaks = catch_breaks, catch_labels = catch_labels)
-```
-
-*TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*
+<!--*TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*-->
 
 <!-- how do we recommend a catch limit -->
