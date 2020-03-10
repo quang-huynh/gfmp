@@ -334,18 +334,18 @@ $$
 $$
 
 The DLMtool OM can also be set up to reflect one or more real observed indices of biomass or abundance in the historical period and apply the specified survey selectivity-at-age to the projected period.
-We recommend this approach for the MP Framework assuming that the OM has been condition via an SRA model (Appendix \@ref(app:sra)).
+We recommend this approach for the MP Framework assuming that the OM has been conditioned via an SRA model (Appendix \@ref(app:sra)).
 In this case, the index values in years $t_1$ to $t_c$ are specified as data and the index values $I$ (without observation error) in year $y$ (for $y > t_c$) and for survey $s$ are calculated as:
 
 $$
-I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a},
+I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a} w_{y,a}
 (\#eq:sra-om-iysn-addind)
 $$
 
 for a biomass-based index and:
 
 $$
-I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a},
+I_{y,s} = q_s \sum_{a=1}^A v_{a,s} N_{y,a}
 (\#eq:sra-om-iysb-addind)
 $$
 
@@ -419,7 +419,7 @@ $$
 -->
 
 $$
-C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \widetilde{\textrm{ESS}}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right)
+C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \widetilde{\textrm{ESS}}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right).
 (\#eq:dlm-om-cataobs)
 $$
 
@@ -453,7 +453,7 @@ The implementation uncertainty in TACs is applied in Equation \@ref(eq:dlm-om-ca
 The TAC implementation uncertainty term ($I_\textrm{TAC}$) is the product of a user-defined fraction of the TAC taken $\widetilde{b}_\textrm{TAC}$ and a degree of inter-annual variability controlled by $\widetilde{\sigma}_\textrm{TAC}$.
 
 $$
-I_{\textrm{TAC},y} = \widetilde{b}_\textrm{TAC} \cdot \exp \left( \varepsilon_{\textrm{TAC},y} - \frac{{{\widetilde{\sigma}}}_{\textrm{TAC}}^2}{2} \right),
+I_{\textrm{TAC},y} = \widetilde{b}_\textrm{TAC} \cdot \exp \left( \varepsilon_{\textrm{TAC},y} - \frac{{{\widetilde{\sigma}}}_{\textrm{TAC}}^2}{2} \right).
 (\#eq:dlm-om-itac)
 $$
 
@@ -467,7 +467,7 @@ $$
 
 ## CALCULATION OF MSY-BASED REFERENCE POINTS {#sec:dlmtool-msy-refpts}
 
-Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\textrm{MSY}$ and the Upper Stock Reference (USR) is defined as the OM value of $0.8B_\textrm{MSY}$.
+Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\textrm{MSY}$ and the upper stock reference (USR) is defined as the OM value of $0.8B_\textrm{MSY}$.
 $B_\textrm{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\textrm{MSY}$.
 
 Calculation of BRPs is done using estimated parameters from the conditioning stage, described in Appendix \@ref(app:sra).
@@ -519,7 +519,7 @@ Z^e_{a} = \widetilde{M} +  F^e_{a}v_{a}.
 (\#eq:dlm-om-zeq)
 $$
 
-Finally, using the same approach, $\phi^b$ is calculated
+Finally, using the same approach, $\phi^b$ is calculated:
 
 $$
 \phi^b = \sum_{a=1}^A \iota_a w_a v_a.
@@ -542,9 +542,9 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 The OM as described above assumes that model parameters representing growth, selectivity, and fishery catchability are time-invariant.
 DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope and variation parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
-This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)) maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-age (Equation \@ref(eq:dlm-om-va)).
+This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)), maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-at-age (Equation \@ref(eq:dlm-om-va)).
 
-Similarly, $M$ can be set to be time-varying, either as a function of: 1) a user-defined percentage annual increase; 2) weight-age-age relative to maximum weight; or 3) both [@carruthers2018, their Appendix C, Equation 4].
+Similarly, $M$ can be set to be time-varying, either as a function of: (1) a user-defined percentage annual increase or (2) weight-at-age relative to maximum weight, or both [@carruthers2018, their Appendix C, Equation 4].
 Fishery catchability $q$ can also be set to vary through time during the projection period [@carruthers2018, their Appendix D, Equation 42].
 Note that setting growth and mortality parameters to be time-varying in the DLMtool OM will result in them being carried through to the SRA model.
 
