@@ -1,3 +1,0 @@
-2.63 Fisheries and Oceans Canada should set out priorities and timelines for establishing the reference points at which the major stocks it manages can be considered healthy, in the cautious zone, or in the critical zone.
-2.65 Fisheries and Oceans Canada should set out priorities and timelines for identifying the measures to be taken if a major stock falls below a certain level, where this has not yet been done, so that sustainable fishing limits can be determined with greater certainty.
-2.71 For each major fish stock, Fisheries and Oceans Canada should identify the indicators and values that would trigger a full stock assessment earlier than scheduled.
