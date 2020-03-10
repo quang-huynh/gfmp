@@ -104,5 +104,8 @@ A second satisficing step may be used towards the end of the process, to further
 
 @carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not demonstrate this formal review, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
 
+<!-- TODO: Yes? -->
+Selection of the final MP should ideally result from careful specification of the objectives and performance metrics. In cases where a trade-off remains, or multiple MPs achieve sufficient performance, it is the role of managers---with input from stakeholders and First Nations and advice from Science---to select the final MP.
+
 <!-- TODO: implementation section Dowling et al. 2015 -->
 
