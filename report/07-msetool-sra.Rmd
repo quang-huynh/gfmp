@@ -44,7 +44,7 @@ If the time series is long enough, the historical period can be assumed to begin
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
 In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
 We note that $C^{\textrm{eq}}_f$ need not be the true catch prior to the first year---factors such as recruitment, predator mortality, or any number of catch trends could have caused the estimated initial depletion---but $C^{\textrm{eq}}_f$ represents the corresponding catch in equilibrium.
-The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period (see Equation \@ref.
+The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period (see Equation \@ref).
 
 Initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
 We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
@@ -142,7 +142,7 @@ N_{1,a} =
       R^{\textrm{eq}} & a = 1 \\
       N_{1,a-1} \exp(-Z^{\textrm{eq}}_a) & a = 2, \ldots, A-1\\
       \dfrac{N_{1,a-1} \exp(-Z^{\textrm{eq}}_a)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
-\end{cases}
+\end{cases},
 (\#eq:sra-om-numinit)
 $$
 
@@ -160,7 +160,7 @@ If the stock is assumed to be unfished in the first year of the historical perio
 If the stock was not unfished in year $t_1$, the population is assumed to be in an equilibrium state with catch equal to a user-defined equilibrium catch ($C^\textrm{eq}$), defined as a fraction of the observed catch in year $t_1$. In this case the SRA estimates predicted equilibrium catch ($C^{\textrm{eq,pred}}$), which is fit to $C^\textrm{eq}$, with very low standard deviation (0.01) in the likelihood function (Equation \@ref(eq:sra-om-like-eqcatch)). Equilibrium catch is predicted by the Baranov equation, summed across fleets ($f=1:nf$) and ages ($a=1:A$):
 
 $$
-C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a
+C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a,
 (\#eq:sra-om-ceqpred)
 $$
 
@@ -173,7 +173,7 @@ R^{\textrm{eq}} =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}}\phi - 1}{\beta^{\textrm{B}}\phi} & \textrm{Beverton-Holt}\\
       \dfrac{\log(\alpha^{\textrm{R}}\phi)}{\beta^{\textrm{R}}\phi} & \textrm{Ricker},
-\end{cases}
+\end{cases},
 (\#eq:sra-om-recinit)
 $$
 
@@ -184,7 +184,7 @@ and
 $\alpha^{\textrm{R}} = \frac{(5h)^{1.25}}{\phi_0}$,
 $\beta^{\textrm{R}} = \frac{\log(5h)}{B_0}$, and where $\phi_0$ and $B_0$ are unfished spawners-per-recruit and unfished spawning biomass, respectively, and $B_0$ is derived from $R_0\phi_0$.
 
-Initial spawning depletion is then given by
+Initial spawning depletion is then given by:
 
 $$
 \frac{B_{1}}{B_0},
@@ -215,9 +215,9 @@ N_{y,a} =
 (\#eq:sra-om-nya)
 $$
 
-where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum-age, treated as a plus-group.
+where $R_y$ is the annual recruitment (Equation \@ref(eq:sra-om-rya)) and $A$ is the maximum age, treated as a plus-group.
 
-Annual recruitment $R_y$ is modelled as
+Annual recruitment $R_y$ is modelled as:
 
 $$
 R_y =
@@ -228,7 +228,7 @@ R_y =
 (\#eq:sra-om-rya)
 $$
 
-where $\varepsilon_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates, and $B_y$ is annual spawning biomass, given by
+where $\varepsilon_y$ are recruitment deviates and $\tau$ is the standard deviation of the deviates, and $B_y$ is annual spawning biomass, given by:
 
 $$
 B_y = \sum_a^A w_{a} m_{a} N_{y,a},
