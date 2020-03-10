@@ -1,8 +1,10 @@
 # DISCUSSION
 
-*Summary intro paragraph*
-
-<!-- Sean -->
+In this document we have presented a framework for implementing an MP approach to providing Science advice for groundfish in British Columbia.
+We outlined a approach to developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
+Ultimately, it is our aim that the Framework improves the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+Although the Framework does not emphasize explicit knowledge of fish-stock reference points, it emphasizes selecting management approaches that have a high likelihood of maintaining fish stocks above implicitly known reference points across multiple plausible states of nature.
+In the following discussion we highlight issues regarding reference points, MP tuning, assessment frequency and triggers, the inclusion of environmental effects, assessing the value of information, and use of the Framework as part of stock rebuilding plans.
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
