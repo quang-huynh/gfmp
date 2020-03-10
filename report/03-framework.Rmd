@@ -42,7 +42,7 @@ We propose the following provisional performance metrics, where MSY refers to ma
 
 In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term. FMSY is a conservation performance metric measuring Objective 3 over the whole projection period. LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AADC is an economic metric, representing Objective 5, measured over the whole projection period.
 
-The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period. However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the the minimum of 1.5--2 generation times of the species or 50 years. We further suggest, averaging the performance metrics over a short (e.g., 5--15 year) window before the final year.
+The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period. However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the the minimum of 1.5--2 generation times of the species or 50 years. We further suggest averaging the performance metrics over a short (e.g., 5--15 year) window before the final year.
 
 We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery. Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
 
@@ -89,7 +89,7 @@ In some cases these uncertainties may be included in the reference set.
 
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
-We note that DLMtool OMs includes a large number of parameters that can vary through time, or which can be set to be deliberately biased.
+We note that DLMtool OMs include a large number of parameters that can vary through time, or which can be set to be deliberately biased.
 To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time-invariant and unbiased (Appendix \@ref(app:default-slots)).
 Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already accepted components of the stock assessment.
 
