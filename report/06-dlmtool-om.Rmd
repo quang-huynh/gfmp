@@ -6,9 +6,9 @@
 # DLMTOOL OPERATING MODEL {#app:dlmtool-om}
 
 The population dynamics operating model (OM), as implemented in DLMtool, is an age-structured model described below.
-The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time (see Section \@ref(sec:dlmtool-time-varying).
+The OM is flexible, with options to allow a number of parameters (e.g., natural mortality, growth, selectivity) to vary through time (see Section \@ref(sec:dlmtool-time-varying)).
 Multiple sub-areas can also be described, and outcome uncertainty can be represented through the addition of implementation uncertainty and bias parameters.
-Full documentation of the DLMtool OM, including the range of possible parameterizations, is described in the appendices of @carruthers2018. adapted here for the MP Framework.
+Full documentation of the DLMtool OM, including the range of possible parameterizations, is described in the appendices of @carruthers2018, adapted here for the MP Framework.
 Here, we adapt the documentation in @carruthers2018, following their notation conventions where possible for consistency.
 We present the simplest version of the OM, without time-varying parameters or multiple sub-areas.
 This simple OM structure should be suitable as a base OM for most species intended to be assessed within the framework.
@@ -22,13 +22,13 @@ There are two distinct time-periods in the simulation framework:
 (1) The historical period, which includes the years from the first year of the catch time-series $t_1$ to the final year of the catch time series $t_c$ (where "c" represents the "current" year); and
 (2) the projection period, which covers the period from the first year after $t_c$ to the final projection year $t_N$.
 The historical period is calibrated to historical observations using an age-structured stock-reduction analysis [SRA; @kimura1982; @walters2006], described in Appendix \@ref(app:sra).
-The closed-loop simulation, with application of the MPs and calculation of performance metrics begins in the first year of the projection period (year $t_{c+1}$).
+The closed-loop simulation, with application of the MPs and calculation of performance metrics, begins in the first year of the projection period (year $t_{c+1}$).
 
 Operating model development in the MP Framework follows three steps:
 
-1. Set parameter values and ranges in the OM (OM equations are provided in this appendix; default parameter settings are provided in Appendix \@ref(app:default-slots); and examples of user-defined parameter settings are provided in Appendix \@ref(app:desc-om-rex).
+1. Set parameter values and ranges in the OM (OM equations are provided in this appendix; default parameter settings are provided in Appendix \@ref(app:default-slots); and examples of user-defined parameter settings are provided in Appendix \@ref(app:desc-om-rex)).
 
-2. Pass the OM parameters to the SRA model, which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (and options to fit to age- and/or length-composition data if available).
+2. Pass the OM parameters to the SRA model, which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (with options to fit to age- and/or length-composition data if available).
 This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality (in years $t_1$ to $t_c$), which are consistent with historical observations.
 Equations for the SRA model are provided in Appendix \@ref(app:sra).
 
@@ -210,7 +210,7 @@ $$
 (\#eq:dlm-om-siglasc)
 $$
 
-where $\widetilde{L}^5$ is the user-defined length-at-5%-selectivity
+where $\widetilde{L}^5$ is the user-defined length-at-5%-selectivity.
 
 The standard deviation of the descending limb is given by
 
@@ -234,7 +234,7 @@ It is the coding of specific MPs that determines which index is used in the MPs 
 
 The realized projected catches $C_{y,a}$ are the TAC recommendations across ages (with possible implementation error).
 Projected catches may account for retention rate ($\dot{R}_{y,a}$) and post-release discard mortality rate $\widetilde{\theta}_{M{\textrm{disc}}}$ in the presence of discarding.
-Implementation uncertainty ($I_\textrm{TAC}$, Equation \@ref(eq:dlm-om-itac)) may also be accounted for, e.g., in the presence of consistent under-utilization of TACs.
+Implementation uncertainty ($I_\textrm{TAC}$, Equation \@ref(eq:dlm-om-itac)) may also be accounted for (e.g., in the presence of consistent under-utilization of TACs):
 
 $$
 C_{y,a} = \frac{B^V_{y,a}} {\sum_{a}^{A}B^V_{y,a}}
@@ -269,7 +269,7 @@ $$
 (\#eq:dlm-om-sigrasc)
 $$
 
-While the standard deviation of the descending limb is given by retention $\widetilde{r}_{L_\infty}$ of fish of length $\widetilde{L}_\infty$:
+while the standard deviation of the descending limb is given by retention $\widetilde{r}_{L_\infty}$ of fish of length $\widetilde{L}_\infty$:
 
 $$
 \sigma_{\textrm{rdesc}} = \frac{\widetilde{L}_\infty - \widetilde{{L}}_{\textrm{rmax}}}{\sqrt{- \log_{2^{\widetilde{{r}}_{L_\infty}}}}}.
@@ -291,7 +291,7 @@ The parameter ${F_\textrm{max}}$ can be adjusted, but is set to 3 by default.
 
 <!-- Parameters for observation dynamics are included in the `Obs` object of DLMtool. -->
 The observation dynamics emulate the collection of data for use in the MPs.
-Two fundamental types of data are simulated by the OM: (1) time series data (e.g. annual
+Two fundamental types of data are simulated by the OM: (1) time series data (e.g., annual
 catches from 1970--2017); and (2) catch composition data (e.g., length or age samples).
 
 ### Time series data
