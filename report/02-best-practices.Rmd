@@ -1,0 +1,111 @@
+# BEST PRACTICES FOR MANAGEMENT PROCEDURE APPROACHES {#sec:best-practices}
+
+@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016].
+
+(ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
+
+```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="\\textwidth"}
+knitr::include_graphics(here::here("images/mse-chart.pdf"))
+```
+
+<!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
+
+
+<!--When an MSE approach is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selection of MPs [e.g., @cox2008a].-->
+
+<!-- NOTE (RF): I commented the above paragraph out, it interrupts the flow and should be captured in the steps anyway. I think we need a "roles and responsibilities" heading. However, we  somewhere need to state that this report represents the elements of the framework as tested by Science but will require engagement when implemented in providing advice for specific stocks, as we haven't done a full engagement process. I think in the discussion.  -->
+
+
+## STEP 1: DEFINE THE DECISION CONTEXT {#sec:best1}
+
+Key questions to guide defining the decision context for MSE include:
+
+* What is the exact decision to be made?
+
+* What is the timeframe for making the decision?
+
+* What are the boundaries on the project and decision?
+
+* What are specific roles and responsibilities of parties involved. Parties include Science, Management, First Nations, industry, academia, and/or non-governmental organizations (NGOs).
+
+* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance against objectives.
+
+Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
+
+<!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
+
+## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
+
+Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016]. Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability of maintaining the stock above the LRP is greater than 95%, throughout a 50 year period).
+
+Since the properties of the underlying system represented by the OM are known exactly, a wide range of biological and economic metrics can be calculated from the OM [@carruthers2018]. However, having too many performance metrics can make the final decision process complex. Performance metrics should be chosen so they can be understood by decision-makers and participants, and to facilitate a tractable decision-making environment [@punt2016].
+
+Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties.
+
+## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:best3}
+
+Uncertainties inherent in the underlying system are represented in the OM. Uncertainty in the OMs may be related to: the biology of the stock (e.g., growth, natural mortality, recruitment, migration); the dynamics of the fleet (e.g., targeting behaviour, selectivity of the fishing gear); the observation process (e.g., bias or imprecision in survey data or age/length composition data); and/or the implementation process (e.g., exceeding catch limits) [@carruthers2018].
+
+Some of this uncertainty (e.g., range of values of natural mortality or other parameters) may be captured within a single OM by expressing distributions for these parameters. However, it is unlikely that the full range of uncertainties thought to influence the system can be captured in a single OM. Therefore, best practice recommends dividing MSE trials into a "reference set", utilizing a core set of OMs that include the most important uncertainties (e.g., depletion of the stock or range of natural mortality values), and a "robustness set", representing other plausible OM formulations that represent alternative structural hypotheses [@rademeyer2007]. These authors recommend  that the reference set of OMs include the most important uncertainties, which are both highly plausible and have major impacts on results. @punt2016 provide a list of factors which commonly have a large impact on MSE performance due to uncertainty (their Table 3).
+
+Once an agreed-upon reference set of OMs has been determined, a wider range of OMs (the robustness set) should be developed to capture a wider range of uncertainties that may be less plausible but should nonetheless be explored [@rademeyer2007]. These may include effects related to: environmental change (e.g., time-varying mortality, climate-driven recruitment, predator-prey relationships); structural representation of population dynamics (e.g., form of the stock-recruit relationship); or fleet dynamics (e.g., selectivity). @punt2016 also note that, in some cases, where the data used to parameterize the OM are in conflict (e.g., two indices of abundance are in conflict), the best practice may be to develop alternative OMs based on the different data sources. Other uncertainties in past reliability or future availability of data may also be captured in the robustness set [@rademeyer2007].
+
+Ideally, OMs should be calibrated to real data to ensure they can reproduce historical observations [e.g., @cox2008a; @forrest2018]. In data-limited cases without reliable historical observations, this may not be possible. In these cases, best practice would be to develop a set of OMs that differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
+
+Development of OMs is principally the responsibility of Science, although input from stakeholders, First Nations and other parties is desirable, especially with respect to identifying key uncertainties and ensuring plausibility of the OMs.
+
+## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES {#sec:best4}
+
+The scientific literature now reports many MPs for data-limited fisheries, more than 80 of which have been integrated into the DLMtool software [@carruthers2016; @carruthers2018]. Management procedures for fisheries managed by catch limits are generally either model-based, where data are integrated into a stock assessment model and outputs are used to calculate catch limits, or data-based, where data are used in an algorithm to directly determine the catch limit (e.g., adjustment of catch based on change in index of abundance) [@punt2016]. Data-based MPs can make use of a variety of data types including catch, population indices, fish lengths, and fish ages.
+
+Data-based MPs take data sampled from the system, such as a survey index, apply an algorithm, and make a catch recommendation. An example is the "Iratio" MP [@ices2012; @jardim2015], where the mean survey index value from the last two years is divided by the mean survey index value three to five years before present. This provides a ratio indicating whether the survey has increased or decreased, which is then multiplied by the previous year's catch to generate a new catch recommendation.
+If the survey index has been trending up, then the catch recommendation will increase, and vice versa.
+
+Model-based MPs fit a statistical population model (e.g., surplus production model) to observed data to estimate biological reference points and stock biomass. These are then incorporated into a harvest control rule (e.g., Figure \@ref(fig:pa-illustration)) to determine the catch limit for the following year.
+
+Given the large number of MP options available, a screening step is desirable.
+For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit.
+Also, unless the decision context involves considering the value of collecting new information, it is important to test MPs for which information or data are available [@punt2016].
+For example, data-limited MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many BC groundfish stocks.
+While it is important to work with a manageable set of MPs, it is also important not to screen too aggressively, to make sure good candidate MPs are not screened out early on.
+
+In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable performance metrics, and may also provide input on feasibility of implementing some MPs.
+
+## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES {#sec:best5}
+
+Once the OM and MPs are fully specified, the MSE simulation replicates can be run, following the process illustrated in Figure \@ref(fig:mse-chart).
+
+<!-- TODO: Give an example of a satisficing criteria -->
+
+After screening out MPs that are not consistent with management needs or that do not meet data requirements, there may still be a need to reduce the number of candidate MPs to a manageable set.
+Analysts can screen out MPs that do not meet a basic set of requirements for a broad range of stocks (e.g., MPs that result in a high probability of stocks being below the LRP).
+Such a procedure of screening out poorly performing MPs has been termed "satisficing" [@miller2010], where MPs must meet a minimum-defined standard to be accepted.
+Satisficing criteria may be used at the screening stage and can also be used at the final MP selection stage to help streamline the decision-making process.
+Satisficing criteria may be less strict at the preliminary screening stage, to ensure that potentially successful MPs are not screened out of the process too early.
+
+<!-- TODO: we aren't advocating this two-step approach later -->
+The full set of satisficed MPs should then be tested in the simulation framework, using data generated by each OM. Critically, the simulations include feedback between the OM and the MP, where the OM generates data at each time step, which is used to apply the MP, which generates a catch recommendation, which is removed from the OM, which generates the next time step of data, and so forth until the projection period is complete.
+
+Typically, a large number of replicate simulations are run for each OM-MP combination.
+Replicates may differ in terms of OM process error, observation errors and random draws from ranges of OM parameters, meaning that each replicate provides a different set of simulated data to the MPs.
+The number of replicates should be selected to ensure that performance metrics can be calculated with adequate precision [@punt2016], which can be indicated by MPs being consistently ranked in the same order throughout the simulated projection period [@carruthers2018].
+The MSE should output enough information to calculate performance metrics for the MPs, and also to evaluate the behaviour and performance of the MSE itself (e.g., whether all trials converged, ranges of OM parameter values, and trajectories of key OM variables such as biomass and catch).
+It is important to note that there will be feedback between the MPs and the data generated by the OM, as different MPs will be expected to impact the underlying system differently.
+
+Running the simulations is the role of Science.
+Feedback from managers, stakeholders and First Nations should be sought throughout the process, to enable iterative refinment of the models and outputs [e.g., @cox2008a].
+
+## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE {#sec:best6}
+
+Selection of the "best" MP involves addressing trade-offs (e.g., between conservation and economic performance metrics), and therefore is the purview of managers, stakeholders, First Nations and interested parties [@punt2016]. Ultimately, selection of the best MP may be a subjective process, depending on the magnitude of trade-offs. It may be necessary to rank performance metrics in order of priority before the process starts. The role of Science in this step is to ensure that results are clearly presented to decision-makers. Ideally this should include presentation of graphical outputs that enable clear comparison of MPs with respect to performance metrics and trade-offs [@punt2017].
+
+Two basic approaches may be used in selecting the final MP: satisficing and trading-off evaluation, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trading-off evaluation involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly-performing MPs.
+A second satisficing step may be used towards the end of the process, to further screen out MPs that do not meet a minimum standard and to simplify the decision-making environment [@miller2010]. After this, MP selection may move to a trading-off stage with a final reduced set of MPs. An iterative process may also be required, where MPs and/or OMs are refined following examination of results [e.g., @cox2008a]. In cases where there is a reference and robustness set of OMs, it may be necessary to weight OMs on the basis of plausibility, although this may require a qualitative, expert-driven approach and may not be straightforward [@punt2016].
+
+@carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not demonstrate this formal review, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
+
+<!-- TODO: Yes? -->
+Selection of the final MP should ideally result from careful specification of the objectives and performance metrics. In cases where a trade-off remains, or multiple MPs achieve sufficient performance, it is the role of managers---with input from stakeholders and First Nations and advice from Science---to select the final MP.
+
+<!-- TODO: implementation section Dowling et al. 2015 -->
+

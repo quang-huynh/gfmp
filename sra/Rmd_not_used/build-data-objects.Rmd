@@ -1,0 +1,92 @@
+
+## Pacific Cod
+
+## Constructing the operating model
+
+First, combine the stock, fleet, observation, and mp objects into a complete operating model and output it to file.
+
+```{r echo = TRUE}
+ompc <- new('OM', stockpc, fleetpc, obspc, imppc)
+ompc@nsim <- 250L
+plotStock(ompc, nsamp = 3, incVB = TRUE)
+saveRDS(ompc, "Pacific_Cod_OM.RDS")
+
+```
+
+Now build and fill the data object
+
+```{r make-data-object-pc, warning=FALSE, message=FALSE, echo=FALSE}
+datapc <- methods::new('Data')
+
+starting_year <- 1956
+ending_year <- 2018
+all_years <- seq(starting_year, ending_year)
+
+#First of all get generic survey samples ... don't break out by survey
+calpc <- dplyr::filter(dpc$survey_samples) %>%
+  gfdlm::tidy_cal(yrs = all_years, interval = 5)
+(length_bins <- get_cal_bins(calpc, length_bin_interval = 5))
+(calpc <- calpc[1, , ])
+
+#Catch at age
+caapc <- dplyr::filter(dpc$survey_samples) %>%
+  gfdlm::tidy_caa(yrs = all_years)
+caapc[1, , ]
+
+#Commercial catch at length
+comcalpc <- dplyr::filter(dpc$commercial_samples) %>%
+  gfdlm::tidy_cal(yrs = all_years, interval = 5, unsorted_only=FALSE)
+(length_bins <- get_cal_bins(comcalpc, length_bin_interval = 5))
+(comcalpc <- comcalpc[1, , ])
+
+#Mean length in commercial data
+mean_lengthpc <- dplyr::filter(dpc$commercial_samples) %>%
+  gfdlm::tidy_mean_length(unsorted_only=FALSE) %>%
+  dplyr::filter(n > 10, year <= ending_year, year >= starting_year) %>%
+  right_join(tibble(year = all_years), by = "year")
+#as.data.frame(mean_lengthpc)
+
+#Commercial catch
+if ("catch" %in% names(dpc)) {
+  catchpc <- dpc$catch %>%
+    filter(gear == "BOTTOM TRAWL", year %in% all_years) %>%
+    gfplot::tidy_catch() %>%
+    group_by(year) %>%
+    summarize(value = sum(value)) %>%
+    right_join(tibble(year = all_years), by = "year")
+saveRDS(catchpc, file = here::here("generated-data", "pcod-catch.rds"))
+} else {
+  catchpc <- readRDS(here::here("generated-data", "pcod-catch.rds"))
+}
+
+# catch per unit effort from the trawl fleet only for now:
+cpue <- readRDS(here::here("generated-data", "pcod-cpue.csv"))
+
+#Trawl indices of abundance
+indexes <- gfplot::tidy_survey_index(dpc$survey_index) %>%
+  dplyr::filter(survey_abbrev %in% c("SYN QCS", "SYN Hs")) %>%
+  reshape2::dcast(year ~ survey_abbrev, value.var = "biomass") %>%
+  right_join(tibble(year = all_years), by = "year") %>%
+  left_join(rename(select(cpue, year, est), trawl_cpue = est), by = "year") %>%
+  select(-year) %>%
+  as.matrix()
+
+#Assign data to data object
+datapc@CAA <- caapc
+datapc@CAL <- calpc
+datapc@ML <- as.matrix(mean_lengthpc[,3])
+
+
+```
+
+
+
+## References {-}
+<!--This manually sets the header for this unnumbered chapter.-->
+\markboth{References}{References}
+
+\noindent
+\vspace{-2em}
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}

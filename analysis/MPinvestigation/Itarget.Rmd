@@ -1,0 +1,145 @@
+## Robyn's exploration of the Itarget MP
+ I want to improve the documentation of the Itarget MP as it isn't very clear as written (from dlmtool vignette). Making sure I understand it, as this is one of our satisficed MPs.
+ 
+ Something funny about itarget5. Is there a cap on it that isn't documented in the gfmp working paper? I don't see a cap in the code for itarget5, but if I have programmed it correctly then it keeps going up.
+
+Based on Butterworth and Geromont 2015
+ #Generic management procedures for data-poor fisheries: forecasting with few data
+ #https://doi.org/10.1093/icesjms/fst232
+
+The equation implemented in DLMtool is this:
+
+ * Tac_y+1 = 0.5TAC* [1 + ((Irecent-I0)/(Itarget-I0))]  if Irecent >= I0   ... Eq 1
+ * Tac_y+1 = 0.5TAC*(Irecent/I0)^2                      if Irecent <  I0   ... Eq 2
+
+ In the supplementary material there is a more generalized version of the Itarget equation
+ https://academic.oup.com/icesjms/article/72/1/251/815189#supplementary-data
+
+ * Tac_y+1 = TAC* [w + (1-w)((Irecent-I0)/(Itarget-I0))] if Irecent >= I0  ... Eq 2.24
+ * Tac_y+1 = wTAC*(Irecent/I0)                           if Irecent <  I0  ... Eq 2.25
+
+ When w = 0.5, Eq 2.24 simplifies to Eq. 1, and (obviously) Eq 2.24 simplifies to Eq. 2
+
+ It isn't really clear how B&G 2015 settled on w=0.5 to put in their main paper, which was then implemented in DLMtool.
+ 
+ Their Supplementary Figure 2 showed their harvest control rule for values of w=0, w=0.5 and w=1, reproduced here with additional values of w=0.2 and w=0.8.
+ 
+ As you increase w, you get less catch when Irecent is less than Itarget, but more catch when Irecent is greater than Itarget. You always get TAC* when Irecent=Itarget.
+ 
+ I am interested in whether we should be looking at some other values of w, instead of (or as well as), just removing the 0.5 from the front of the equation, as in itarget5 (as documented in the gfmp working paper). The 0.5 in the Irecent>I0 case is a result of simplifying Eq 2.24, and will not always be the same for the Irecent>I0 and Irecent<I0 cases for different values of w. So by removing it we are departing from the original itarget equations, as described in Eq. 2.24 and 2.25.
+ 
+ I don't know if this matters at all but we might be asked questions about it since it is a satisficed MP.
+ 
+Something funny about itarget5 as I have implemented it. I could have made a mistake but I think my code is the same as in gfdlm. In the GFMP working paper it looks like it has a cap on it that isn't documented ??? Just trying to understand so I can explain it (to myself and others who ask). So please tell me what I have missed or done incorrectly.
+
+*To compare the base B&G2015 Itarget MPs and Itarget5, compare the green lines (which have w=0.5) to the pink lines*. Two plots for each MP with different x axes.
+
+And sorry these aren't nice facet plots ...
+
+```{r}
+library(tidyverse)
+library(reshape2)
+```
+
+
+```{r, echo=TRUE}
+get_tac <- function(w,irecent,itarg, i0, tacstar){
+  
+  if(irecent >= i0) tac <- tacstar*(w + (1-w)*((irecent-i0)/(itarg-i0)))
+  if(irecent < i0)  tac <- w*tacstar*(irecent/i0)^2
+  return(tac)
+}
+
+```
+
+```{r, echo=TRUE}
+get_tac_gfmp <- function(irecent,itarg, i0, tacstar){
+  
+  if(irecent >= i0) tac <- tacstar*(1 + ((irecent-i0)/(itarg-i0)))
+  if(irecent < i0)  tac <- tacstar*(irecent/i0)^2
+  return(tac)
+}
+
+```
+
+```{r, echo=TRUE}
+get_Itarget_HCR <- function(Iav=4,Cav=100,Imulti=1.5,Cmulti=1){
+  w<-c(0,0.2,0.5,0.8,1.0)
+  wnames<-paste("w=",w)
+  Irecent<-seq(0,12,0.1)
+  
+  TACstar<-Cav*Cmulti
+  I0<-0.8*Iav
+  Itarg <- Iav*Imulti
+  
+  I0gfmp <- Iav
+  TACstargfmp <- Cav
+  
+  #I would like to use apply for this but I don't have time to figure out
+  # the conditional aspect of it!
+  
+  TAC <- as.data.frame(matrix(nrow=length(Irecent), ncol=length(w)+3))
+  TAC[,1] <- Irecent
+  TAC[,2] <- Irecent/Itarg
+  colnames(TAC) <- c("Irecent", "IrecentItarget",wnames, "gfmp_itarget5")
+ 
+    for(i in 1:length(Irecent)) {
+    Irec <- Irecent[i]
+    for(j in 1:length(w)){
+      W <- w[j]
+      
+      TAC[i,j+2] <- get_tac(W,Irec,Itarg,I0,TACstar)
+      } #end for j
+  
+     #Now add gfmp Itarget5 rule
+    TAC[i,ncol(TAC)] <- get_tac_gfmp(Irec,Itarg,I0gfmp,TACstargfmp)} #end for i
+  
+  p <- reshape2::melt(TAC, id=c("Irecent","IrecentItarget")) %>%
+     rename("w"="variable","TAC"="value" ) %>%
+     ggplot(aes(x=Irecent,y=TAC,color=w) )+
+     geom_line(size=1.5)+
+     geom_vline(xintercept=I0, linetype="dashed")+
+     geom_vline(xintercept=Itarg, linetype="dashed")+
+     ylim(0,250)+
+     ggtitle(paste("Imulti = ",Imulti, ", x = ", 1-Cmulti))
+  print(p)
+
+ #plot again as a function of irecent/itarget
+  
+  pp <- reshape2::melt(TAC, id=c("Irecent","IrecentItarget")) %>%
+     rename("w"="variable","TAC"="value" ) %>% 
+     ggplot(aes(x=IrecentItarget,y=TAC,color=w) )+
+     geom_line(size=1.5)+
+     geom_vline(xintercept=1, linetype="dashed")+
+     ylim(0,250)+
+     ggtitle(paste("Imulti = ",Imulti, ", x = ", 1-Cmulti))
+  print(pp)
+  
+  
+}
+```
+
+## Itarget1 (with alternative w values), plus Itarget5
+
+```{r, echo=TRUE}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=1.5,Cmulti=1)
+```
+ 
+## Itarget2 (with alternative w values), plus Itarget5
+ 
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2,Cmulti=1)
+```
+
+## Itarget3 (with alternative w values), plus Itarget5
+
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=1)
+```
+
+## Itarget4 (with alternative w values), plus Itarget5
+
+```{r}
+dfTAC <- get_Itarget_HCR(Iav=4,Cav=100,Imulti=2.5,Cmulti=0.7)
+```
+

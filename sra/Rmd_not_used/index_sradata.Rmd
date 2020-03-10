@@ -1,0 +1,63 @@
+---
+title: "Get data for testing SRA scoping function"
+author: "Robyn Forrest, Sean Anderson, Chris Grandin, Elise Keppel"
+date: "May 17, 2019"
+output: html_document
+knit: bookdown::render_book
+link-citations: true
+bibliography: "../report/bib/refs.bib"
+---
+
+```{r setup, echo=FALSE, cache=FALSE, message=FALSE, results='hide', warning=FALSE}
+# adjust as desired:
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  comment = "#>",
+  fig.path = if (knitr:::is_latex_output()) "knitr-figs-pdf/" else "knitr-figs-docx/",
+  cache.path = if (knitr:::is_latex_output()) "knitr-cache-tex/" else "knitr-cache-docx/",
+  fig.asp = 0.618,
+  fig.width = 9,
+  out.width = "6in",
+  echo = FALSE,
+  autodep = TRUE,
+  cache = TRUE,
+  cache.comments = FALSE,
+  dev = if (knitr:::is_latex_output()) "png" else "png",
+  dpi = 180,
+  fig.align = "center",
+  fig.pos = "htb"
+)
+options(kableExtra.latex.load_packages = FALSE)
+```
+
+
+```{r load-libraries, cache=FALSE, echo=FALSE,  message=FALSE, results='hide', warning=FALSE}
+# add other packages here:
+library(gfplot)
+library(gfdata)
+library(gfutilities)
+library(gfdlm)
+library(csasdown)
+library(DLMtool)
+library(MSEtool)
+library(rfishbase)
+library(RColorBrewer)
+library(tidyverse)
+```
+
+## Purpose
+
+Using code from gfdlm to build datasets for testing Quang's SRA scoping function. This function will use SRA to condition an operating model on historical catches, plus one or more indices, composition data and life history data from the OM object. Trawl caught species in Area 5ABCD for now. Inside YE in Area 4B.
+
+**Test species**
+
+*Species for which we already have OMs:*
+
+Shortraker Rockfish
+
+Pacific Cod (currently assessed with delay difference model assuming knife-edged selectivity and maturity at age 2 y).
+
+Inside YE Rockfish
+
