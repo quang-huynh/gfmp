@@ -271,7 +271,6 @@ Once the objectives, performance metrics, calibrated OMs and MPs are fully speci
 
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
 For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT LRP $>$ 0.9) and a short-term 80% probability of catch being above recent average catch (STC $>$ 0.8).
-<!-- This resulted in 5 final MPs (out of an initial 30 MPs), plus the four reference MPs. -->
 We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
 The purpose is to simplify the decision step by focusing on a manageable number of MPs.
 If possible, criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs.
@@ -281,22 +280,34 @@ We recommend selection of satisficing criteria be done iteratively with the tech
 DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:mse-chart)).
 For each MP, the OM is used to simulate the various data streams required by the MP at each time step, then the population biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete.
 Performance is then evaluated through calculation of performance statistics in the OM.
-<!-- DLMtool makes use of the C++ programming language and parallel processing, making the simulations computationally efficient [@carruthers2018]. -->
+DLMtool makes use of the C++ programming language and parallel processing, making the simulations computationally efficient [@carruthers2018].
 
 For each OM-MP combination, multiple replicate projections are run to account for observation and process errors in the data streams.
 This is achieved by adding stochastic noise to the data (e.g, indices of abundance) before passing them to the MP.
 Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007].
-Typically, at least 100 replicate simulations are run for each OM/MP combination.
 We suggest selecting a sufficient number of replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional replicates [@carruthers_user_2019].
 This can be checked by plotting the cumulative performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:methods-converge)).
+In our experience, the number of required replicates is likely to be at least 100.
+
+(ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation replicates have reached convergence in the rank order of MP performance.
+The y-axis represents the proportion of cumulative replicates that have achieved the performance metric.
+The cumulative replicates are shown along the x-axis.
+Each panel represents a different performance metric and the colours illustrate the various MPs.
+A wiggly line indicates that a given MP is still varying in its performance metric value as more replicates are run.
+Lines that are crossing indicate changes to the rank order of MP performance as more replicates are run.
+A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of the panel.
+
+```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
+knitr::include_graphics(here("report/figure/framework-convergence.png"))
+```
 
 Performance statistics for each OM-MP combination are calculated and summarized across replicates.
 Care needs to be taken to clearly report how summary statistics are calculated, e.g., whether probabilities are calculated across replicates, across time, or across time and replicates.
 Similarly, it is important to report how probabilities are calculated.
-<!--*TODO: should probably report how probabilities are calculated in DLMtool/our framework*-->
 Provisionally, we calculate performance statistics across replicates and the entire time window as defined for the performance metric.
 For example, we calculate the $F_\textrm{MSY}$ performance metric across all replicates and years simultaneously.
-An alternative would be... ICES each and every... TODO
+Alternative calculations would include calculating the performance statistics for a specific year of interest, or ensuring that the performance metric threshold is met in each-and-every year (ICES REF), or each-and-every iteration.
+Best practices for these calculations and their implications is an open area of research.
 
 <!--*TODO: What is missing in this section?*-->
 
@@ -326,91 +337,58 @@ The performance statistics chosen to aid a selection among
 CMPs need to be meaningful to all stakeholders, and careful
 thought needs to be given on how best to present these to
 permit easy comparison.
-
 -->
-
-
-**Early draft text (see figures that follow):**
-
-For this step we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
 
 ### Reference and robustness sets
 
-Step 3 (Section \@ref(sec:approach3)) recommended dividing OM scenarios into a reference set, which includes a range of plausible alternative scenarios that impact results, and a robustness set, which includes a wider range of alternative scenarios, which may be less supported by available data, but still potentially impact results [@rademeyer2007].
+In Step 3 (Section \@ref(sec:approach3)), we recommended dividing OM scenarios into a reference set, which includes a range of plausible alternative scenarios that impact results, and a robustness set, which includes a wider range of alternative scenarios, which may be less supported by available data, but still potentially impact results [@rademeyer2007].
 These authors recommended reducing the set of robustness scenarios down to those which yield the most contrasting results from the reference set.
 Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios, represented in the robustness set.
 
-We present performance metrics from the reference and robustness sets separately.
-For most visualisations, the reference set performance metrics are averaged across all reference set scenarios. An exception is the table of performance metrics (e.g., Figure \@ref(fig:rex-tigure-avg)), which is presented in two ways: (i) minimum value of the performance metric across all reference set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
+We recommend presenting performance metrics from the reference and robustness sets separately.
+For most visualisations, we recommend that the reference set performance metrics are averaged across all reference set scenarios.
+An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
 The first case is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
-
-Performance metrics from the robustness set scenarios are presented for individual robustness scenarios.
-This facilitates visualization of performance of MPs that perform well in the reference set under more diverse assumptions [@rademeyer2007].
+We recommend presenting performance metrics from the individual robustness set scenarios separately.
+This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
 *TODO: not sure if we need to add more about how we think the robustness set performance metrics will be used. Not sure whether it is the role of science to step any further. Maybe ask AK*
 
 ### Visual presentation of performance metrics
 
-Spider/kite plots [@punt2017]. These illustrate performance trade-offs amongst the various MPs in a condensed visual fashion that lends itself to small multiples [REF] to explore a variety of OMs and MPs in a small amount of space.
+Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
 
-A performance metric Table/Figure. Shaded by probability of achieving that performance metric with rows ordered by performance metric starting with the leftmost performance metric and working across the columns to break ties. We think the shading helps to draw the eye to differences and similarities in performance.
+First, we suggest a graphical representation of a probability table (Figure \@ref(fig:methods-tigure)) to visualize performance metric results.
+This visualization lends itself to a large number of MPs and so works well for displaying results for *all* MPs---not necessarily just satisficed MPs.
+By shading the cells according to their underlying performance metric value, the visualization draws the eye to similarities and differences across MPs.
+We suggest sorting the rows by performance metrics of particular interest, shading the MP name differently for reference MPs, and highlighting any satisficing criteria by outlining cells that pass satisficing thresholds.
+The default colour shading is colourblind proof, prints accurately in greyscale, and is visually linear in its gradient [viridis REF].
 
-Important to show historical trajectories of parameters such as: historical catch, historical recruitment, historical SSB, historical F, ... and any others that make particular sense for a given stock.
+Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across reference-set scenarios (Figure \@ref(fig:methods-dots)).
+This figure highlights average performance across scenarios (dots) along with the range of performance values seen across scenarios (thin lines).
+This figure also illustrates the range of performance after dropping the scenarios with the highest and lowest of each performance metric values (thicker lines).
 
-We developed projection plots that show the range of projected values in B/B~MSY~, F/F~MSY~, catch, and catch along with example replicates for the various MPs.
+We suggest two possible visualizations for highlighting performance-metric tradeoffs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
+The first is a bivariate dot plot, which lends itself to comparing any two performance metrics.
+The second is a "radar" plot (also known as a kite or spider plot).
+Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because (1) the arrangement of the "spokes" can affect perception of the resulting shapes and (2) humans have been shown to be somewhat slower and less accurate at interpreting radial vs. cartesian displays of data [@diehl2010; @feldman2013; @albo2016].
 
-We developed Kobe plots [REF] that illustrate the trade-off between F/F~MSY~ and B/B~MSY~ across replicates for the various MPs and emphasize the parameters space with the highest density via quantile kernel density estimate contour lines.
+To understand the processes leading to the performance metrics, we suggest that the results from the application of this Framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, catch, and population indexes (assuming MPs that rely on population indexes are being used).
+We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the timeseries across scenarios (Figure \@ref(fig:methods-proj-sens)).
+Inspection of these timeseries can help understand the performance metrics, it also possibly suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the timeseries (e.g., an MP is slowly but consistently lowering catch when not needed for conservation reasons, or all replicates behave similarly and poorly in some years but this is not captured by averaging performance metrics across all years and replicates).
 
-Figure \@ref(fig:methods-tigure) and Figure \@ref(fig:methods-spider) lend themselves well to comparing across operating models.
+Visualization of the simulated population index timeseries is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
+First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check (Gelman BDA REF) to ask whether the future simulations look like they are plausible given historical observations of the same population index.
+Second, the range of future projected can be used as a trigger for re-evaluating an OM.
+For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs [REF].
+We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers [REF].
+For example, after 10 years, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values, even if the operating model perfectly captured reality.
 
-In many cases it will also make sense to look at timeseries trajectories across multiple operating models (Figure \@ref(fig:methods-proj)).
-
-(ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation replicates have reached convergence in the rank order of MP performance.
-The y-axis represents the proportion of cumulative replicates that have achieved the performance metric.
-The cumulative replicates are shown along the x-axis.
-Each panel represents a different performance metric and the colours illustrate the various MPs.
-A wiggly line indicates that a given MP is still varying in its performance metric value as more replicates are run.
-Lines that are crossing indicate changes to the rank order of MP performance as more replicates are run.
-A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of the panel.
-
-```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
-knitr::include_graphics(here("report/figure/framework-convergence.png"))
-```
-
-(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single operating model.
-Dark lines indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
-Thin gray lines represent illustrative simulation replicates.
-The vertical dashed line indicates the last year of the historical period.
-The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4 and F/F~MSY~ = 1.
-Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line even if fishing perfectly at F~MSY~.
-
-```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/framework-main-projections.png"))
-```
-
-(ref:fig-methods-proj-sens) 
-This visualization highlights sensitivity of the historical conditioning and projected timeseries across OM scenarios.
-The solid lines correspond to median values and shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
-Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this scenario highlights the comparison within a given MP across scenarios.
-This visualization lends itself to multiple rows where each row represents a different MP.
-Note that sensitivity of the timeseries to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of performance metrics, which is ultimately the important result in an MP Framework.
-
-```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
-```
-
-(ref:fig-methods-index) This visualization illustrates the historical and projected relative population index values.
-The thin black lines represent example replicates.
-The shaded grey region represents the 95% quantile.
-The vertical dashed line represents the last historical year of the closed-loop simulation.
-In the historical period, the index represents the observed index (usually a survey index).
-In cases such as the one illustrated here, the survey is performed every second year.
-For index-based MPs, understanding the expected envelope of possible future survey trends is important for evaluating whether the system continues to be consistent with the OM assumptions in the future.
-For simple MPs, this visualization is also helpful for assessing whether the simulation is generating future index projections that are consistent with the observed historical trends.
-
-```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="6in",}
-knitr::include_graphics(here("report/figure/framework-index-projections.png"))
-```
+Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
+One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
+This visualization highlights the parameter space with the highest probability density via quantile kernel-density-estimate contour lines.
+The other visualization attempts to visualize the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
+The final year of Figure \@ref(fig:methods-worm) is an alternative representation of Figure \@ref(fig:methods-kobe).
 
 (ref:fig-methods-tigure) This probability table illustrates performance metric values across a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
@@ -451,6 +429,41 @@ Care should be taken when interpreting these plots because the arrangement of th
 
 ```{r methods-radar, fig.cap="(ref:fig-methods-radar)"}
 knitr::include_graphics(here("report/figure/framework-radar.png"))
+```
+
+(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single operating model.
+Dark lines indicates the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
+Thin gray lines represent illustrative simulation replicates.
+The vertical dashed line indicates the last year of the historical period.
+The horizontal dashed lines indicate B/B~MSY~ = 1, 0.8, and 0.4 and F/F~MSY~ = 1.
+Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~MSY~ are not expected to lie perfectly on the 1 line even if fishing perfectly at F~MSY~.
+
+```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-main-projections.png"))
+```
+
+(ref:fig-methods-index) This visualization illustrates the historical and projected relative population index values.
+The thin black lines represent example replicates.
+The shaded grey region represents the 95% quantile.
+The vertical dashed line represents the last historical year of the closed-loop simulation.
+In the historical period, the index represents the observed index (usually a survey index).
+In cases such as the one illustrated here, the survey is performed every second year.
+For index-based MPs, understanding the expected envelope of possible future survey trends is important for evaluating whether the system continues to be consistent with the OM assumptions in the future.
+For simple MPs, this visualization is also helpful for assessing whether the simulation is generating future index projections that are consistent with the observed historical trends.
+
+```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="6in",}
+knitr::include_graphics(here("report/figure/framework-index-projections.png"))
+```
+
+(ref:fig-methods-proj-sens)
+This visualization highlights sensitivity of the historical conditioning and projected timeseries across OM scenarios.
+The solid lines correspond to median values and shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
+Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this scenario highlights the comparison within a given MP across scenarios.
+This visualization lends itself to multiple rows where each row represents a different MP.
+Note that sensitivity of the timeseries to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of performance metrics, which is ultimately the important result in an MP Framework.
+
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
 ```
 
 (ref:fig-methods-kobe) Kobe (B/B~MSY~ vs. F/F~MSY~) plots for the final year of the projections across all replicates.
