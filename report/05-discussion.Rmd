@@ -22,10 +22,10 @@ An advantage of MP frameworks is that all objectives must be transparently state
 
 We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status.
 MP frameworks such as this one may be especially important for these species.
-The SFF and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
+The Sustainable Fisheries Framework and the Fish Stocks Provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be explicitly provided.
-The framework therefore increases capacity for provision of SFF- and Fish Stocks Provisions-compliant catch advice for data-limited species.
-We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accommodate status reports from MSE processes, which may use alternative wording such as "under the current management procedure, the stock has a less than 5% probability of being below the LRP over a 50-year time frame".
+The framework therefore increases capacity for provision of Sustainable-Fisheries-Framework- and Fish-Stocks-Provisions-compliant catch advice for data-limited species.
+We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accommodate status reports from MSE processes, which may use alternative wording such as "under the current management procedure, the stock has a less than [X]% probability of being below the LRP over a [Y]-year time frame".
 
 ## TUNING MPs
 

@@ -10,15 +10,19 @@ The majority of fish stocks encountered by the integrated groundfish fishery are
 
 ## MOTIVATION {#sec:intro-motivation}
 
-The Canadian Sustainable Fisheries Framework (SFF) lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. The PA Framework relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP) (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical"). Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock. Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the need to take into account risk and uncertainty when developing BRPs and determining stock status in relation to BRPs [@dfo2006; @dfo2009].
+The Canadian Sustainable Fisheries Framework (SFF) lays the foundation for the precautionary approach (PA) to fisheries management in Canada [@dfo2006; @dfo2009]. 
+The Precautionary Approach Framework [@@dfo2009]] relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability. 
+The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP) (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical"). 
+Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock.
+Other key elements of the PA Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the need to take into account risk and uncertainty when developing BRPs and determining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
-(ref:fig-pa) Illustration of DFO's PA Framework. Based on @dfo2009.
+(ref:fig-pa) Illustration of DFO's Precautionary Approach Framework. Based on @dfo2009.
 
 ```{r pa-illustration, fig.cap="(ref:fig-pa)", out.width="3.8in"}
 knitr::include_graphics(here::here("images/pa-framework.png"))
 ```
 
-On June 21, 2019, major amendments to Canada's [*Fisheries Act*](https://laws-lois.justice.gc.ca/eng/acts/f-14/page-3.html#h-1175547) received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "Fish Stocks provisions", the provisions legislate elements of Canada's SFF and PA Framework, and state:
+On June 21, 2019, major amendments to Canada's [*Fisheries Act*](https://laws-lois.justice.gc.ca/eng/acts/f-14/page-3.html#h-1175547) received Royal Assent, thus passing them into Canadian law. Among many other amendments, provisions in the new *Fisheries Act* require that fish stocks be managed at sustainable levels, specifically at biomass levels above the LRP. Hereafter referred to as the "Fish Stocks provisions", the provisions legislate elements of Canada's Sustainable Fisheries Framework and Precautionary Approach Framework, and state:
 
 > **Measures to maintain fish stocks**
 > 6.1(1) In the management of fisheries, the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock.
@@ -59,9 +63,9 @@ Since 2017, a partnership agreement between the University of British Columbia (
 
 This document aims to develop a management procedure framework (MP Framework) for selecting methods for provision of catch advice for Pacific groundfish stocks that do not have sufficient data to estimate the parameters needed for full statistical stock assessments.
 Therefore, the Framework will provide advice for stocks where biological reference points and stock status cannot be reliably estimated.
-In doing so, it aims to improve the capacity of DFO to meet the requirements of Canada's SFF and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+In doing so, it aims to improve the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
 The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers.
-We emphasize that biological reference points and stock status, which are integral to the SFF and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
+We emphasize that biological reference points and stock status, which are integral to the Sustainable Fisheries Framework and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
 Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.
 We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 
