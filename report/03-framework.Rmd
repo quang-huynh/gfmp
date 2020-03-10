@@ -489,6 +489,10 @@ knitr::include_graphics(here("report/figure/framework-worm.png"))
 
 \clearpage
 
+### Selection of management procedure
+
+Something on the selection of the final MP the and weighting recommendations (i.e., probably not)? **TODO**
+
 <!--*TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*-->
 
 <!-- how do we recommend a catch limit -->
