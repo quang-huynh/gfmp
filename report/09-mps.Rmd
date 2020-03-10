@@ -3,7 +3,7 @@
 Here we include an overview of MPs that may be used as part of this framework.
 The MPs are a combination of those from the literature and ones that have been used in recent assessments for other BC groundfish.
 We focus on "output-controlled" MPs---MPs that recommend a TAC---for consistency with the management approach for BC groundfish.
-The list is not exhaustive and will likely grow or be adopted over time.
+The list is not exhaustive and will likely grow or be adapted over time.
 
 We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or the primary source publications wherever possible.
 
