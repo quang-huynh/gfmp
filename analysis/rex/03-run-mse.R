@@ -302,7 +302,7 @@ if (optimize_png && !identical(.Platform$OS.type, "windows")) {
   files_per_core <- 4
   setwd("report/figure")
   system(paste0(
-    "find -X . -name '*.png' -print0 | xargs -0 -n ",
+    "find -X . -name 'rex-*.png' -print0 | xargs -0 -n ",
     files_per_core, " -P ", cores, " optipng -strip all"
   ))
   setwd(here())
