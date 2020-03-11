@@ -541,9 +541,6 @@ $$
 
 where $\sigma$ represents the standard deviation.
 
-<!-- TODO: check SP description -->
-<!-- TODO: add HCR "meta" rules -->
-
 We pair these surplus production models with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
 
 1. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by biomass at equilibrium stock size in unfished conditions), fish at the estimated MSY; at 10% of estimated *B*/*B*~0~, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
@@ -551,8 +548,6 @@ We pair these surplus production models with the following harvest control rules
 2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, fish at the calculated MSY; at 40% of estimated *B*/*B*~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
 
 3. HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until *B*/*B*~MSY~ < 0.6.
-
-<!-- TODO: discuss the meta- rules here -->
 
 We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
 
@@ -618,3 +613,12 @@ g3 <- make_hcr_fig(filter(pars, type == "HCR-6040"), expression(Estimated~B/B[MS
 
 cowplot::plot_grid(g1, g2, g3, nrow = 1)
 ```
+
+We also include the following "meta" HCR rules [e.g., @cox2020], that could be modified as needed for specific stocks:
+
+- The maximum TAC increase in any one year is 20%.
+- The maximum decrease in TAC in any one year is 50%.
+- The minimum TAC is 10% of the catch in the last historical year.
+- The TAC is not increased unless the MP recommends increasing it by at least 5%.
+
+We include these (modifiable) rules in an MP defined as `SP_gf()` in the gfdlm R package [@gfdlm].

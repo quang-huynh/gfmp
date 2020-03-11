@@ -404,10 +404,12 @@ knitr::include_graphics(here::here("report/figure/rex-compare-recdev-panel.png")
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:results-rex4}
 
 We started with the full set of provisional candidate MPs described in Appendix \@ref(app:MPs) (Table \@ref(tab:rex-mps)).
-Early explorations with the SP models  suggested little effect of the three alternative harvest control rules (HCRs) described in Section \@ref(sec:mp-sp) (presumably because the projected biomass spent little time on the HCR "ramp"). There was also very little difference in performance between the Fox and Schaefer production models.
+Early explorations with the SP models  suggested little effect of the three alternative harvest control rules (HCRs) described in Section \@ref(sec:mp-sp) (presumably because the projected biomass spent little time on the HCR "ramp"). 
+There was also very little difference in performance between the Fox and Schaefer production models.
 Therefore, for the SP models we focused mostly on tuning the prior on $r$, the intrinsic population growth rate.
 We evaluated three priors on $r$: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
 With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which approximately match the values of *M* explored in the operating models.
+We included the provisional "meta" HCR rules described in Appendix \@ref(app:MPs) Section \@ref(sec:mp-sp) and given that the stock does not have an existing TAC, we set the initial TAC for the purpose of the "meta" rules to the average catch from the last five years of the historical period.
 In applications of the framework, additional tuning of SP models and index-based MPs could be explored if needed.
 
 ```{r rex-mps, results='asis'}
