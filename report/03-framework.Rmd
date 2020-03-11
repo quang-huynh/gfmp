@@ -356,7 +356,7 @@ This facilitates visualization of performance of MPs that perform well in the re
 
 ### Visual presentation of performance metrics
 
-Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them.
+Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them. We have developed an R package gfdlm [@gfdlm] (Appendix \@ref(app:gfdlm)) for generating these visualizations.
 
 First, we suggest a graphical representation of a probability table (Figure \@ref(fig:methods-tigure)) to visualize performance metric results.
 This visualization lends itself to a large number of MPs and so works well for displaying results for *all* MPs---not necessarily just satisficed MPs.
@@ -489,10 +489,4 @@ knitr::include_graphics(here("report/figure/framework-worm.png"))
 
 \clearpage
 
-### Selection of management procedure
-
-Something on the selection of the final MP the and weighting recommendations (i.e., probably not)? **TODO**
-
 <!--*TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*-->
-
-<!-- how do we recommend a catch limit -->
