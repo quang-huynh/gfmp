@@ -483,7 +483,7 @@ cowplot::plot_grid(g1, g2, labels = "auto")
 
 ### SURPLUS PRODUCTION MODEL {#sec:mp-sp}
 
-In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool (REF) and based on Fletcher (TODO). Here we include a a modified version of the model description from the package vignette for completeness.
+In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool [@huynh_msetool_2019] and based on @fletcher1978. Here we include a a modified version of the model description from the package vignette for completeness.
 
 Biomass $B$ in year $y$ is calculated as
 
@@ -541,19 +541,20 @@ $$
 
 where $\sigma$ represents the standard deviation.
 
-<!-- TODO: finish up SP description -->
+<!-- TODO: check SP description -->
+<!-- TODO: add HCR "meta" rules -->
 
 We pair these surplus production models with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
 
-- HCR-MSY: Fish at the calculated MSY.
+1. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by biomass at carrying capacity), fish at the estimated MSY; at 10% of estimated *B*/*B*~0~, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
 
-- HCR-4010: Above 40% of estimated $\textrm{B}/\textrm{B}_0$, fish at the calculated MSY; at 10% of estimated $\textrm{B}/\textrm{B}_0$, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast (e.g., REF).
+2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, fish at the calculated MSY; at 40% of estimated *B*/*B*~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
 
-- HCR-8040: Above 80% of estimated $\textrm{B}/\textrm{B}_{\textrm{MSY}}$, fish at the calculated MSY; at 40% of estimated $\textrm{B}/\textrm{B}_{\textrm{MSY}}$, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on $\textrm{B}_{\textrm{MSY}}$ whereas HCR-4010 is based on $\textrm{B}_0$. This HCR creates operational control points (OCRs) that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework. We note, however, that an MP's HCR OCPs does not necessarily need to match the biological reference points (BRPs) to be consistent with the BRPs in the Sustainable Fisheries Framework. For example, a model may generate biased estimates of $\textrm{B}/\textrm{B}_{\textrm{MSY}}$ and be better paired with OCRs that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
+3. HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until B/B~MSY~ < 0.6.
 
-- HCR-6040: A slightly less conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until $\textrm{B}/\textrm{B}_{\textrm{MSY}} < 0.6$.
+<!-- TODO: discuss the meta- rules here -->
 
-We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the the choice of production function should not affect this depletion-based harvest control rule.
+We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
 
 ```{r, mp-hcrs, fig.cap="Proposed provisional harvest control rules to associate with model-based MPs.", fig.asp=0.25, fig.width=9, warning=FALSE, out.width="\\textwidth"}
 f <- function (Brel, LRP, TRP, rel_min = 0, rel_max = 1, ...) {

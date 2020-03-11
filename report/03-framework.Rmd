@@ -169,23 +169,13 @@ We provisionally include the SP model coded in MSEtool [@huynh_msetool_2019] and
 We suggest a weakly informative prior probability distribution be set on the intrinsic greater population increase $r$, possibly following recommendations such as that in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative OMs.
 
 The SP model estimates must be paired with an HCR to form a complete management procedure.
-We provisionally suggest the following HCRs:
-
-1. HCR-MSY: Fish at the value of MSY estimated by the SP model at each time step.
-
-2. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by biomass at carrying capacity), fish at the estimated MSY; at 10% of estimated *B*/*B*~0~, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
-
-3. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, fish at the calculated MSY; at 40% of estimated *B*/*B*~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
-
-* HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until B/B~MSY~ < 0.6.
-
-<!-- TODO: discuss the meta- rules here -->
+We provisionally suggest a number of HCRs in Appendix \@ref(app:MPs) Section \@ref(sec:mp-model-based).
 
 ### Dealing with multiple survey indices within MPs
 
 The vast majority of published data-limited MPs are based on single indices of abundance. This presents a challenge for BC groundfish stocks, since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis, alternating amongst areas. We suggest the following three possible solutions:
 
-1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas. This could be accomplished, for example, via a minimax-style solution (REF), where an MP is selected that performs the least poorly across all areas. If MP performance across areas differs substantially, then different MPs may be needed for different areas. A potential problem with this approach is when stocks are larger than the surveyed area and the information captured in a single index does not represent the entire stock.
+1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas. This could be accomplished, for example, via a minimax-style solution, where an MP is selected that performs the least poorly across all areas. If MP performance across areas differs substantially, then different MPs may be needed for different areas. A potential problem with this approach is when stocks are larger than the surveyed area and the information captured in a single index does not represent the entire stock.
 
 2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research [e.g., @shelton2014; @thorson2015; @anderson2019; @anderson2019synopsis] and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way combine multiple survey indices [e.g., @cox2019], geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple survey protocols or spatial areas.
 
@@ -211,15 +201,6 @@ MPs used when applying this framework may also be "tuned" to perform well for sp
 The framework presented here has been designed to accommodate new MPs and we expect the library of candidate MPs to grow over time, with the framework providing a means to rigorously test new MPs through the closed-loop simulation process.
 
 <!-- TODO: Quang: Text should highlight the fact that anyone can propose an MP so long as it is tested in closed-loop simulation. It should also be noted that MPs over time should be tuned to be more specific to stock/region (e.g. as pointed out in teleconference, build in a minimum TAC to the MPs for non-target stocks). -->
-
-<!-- In summary, we excluded all MPs that required knowledge of: -->
-
-<!-- * absolute abundance -->
-<!-- * recent age composition data -->
-<!-- * depletion -->
-<!-- * steepness. -->
-
-<!-- DLMtool contains a number of MPs that make catch recommendations based on trends in mean fish length. These may be appropriate for some stocks, but ... -->
 
 <!-- We suggest the empirical index-based MPs are likely to be most suitable for most data-limited groundfish stocks in the Pacific Region. This family of MPs generally try to maintain an index (usually a relative biomass or abundance index from a fisheries-independent survey) at some level by adjusting catch recommendations up or down as the index moves up or down. Different MPs include various levels of smoothing or thresholds and various methods of deriving a target index level. Such MPs have been considered as part of ... in the Pacific Region (REFs). -->
 
@@ -275,7 +256,7 @@ We recommend an iterative approach to selecting the satisficing criteria on a st
 The purpose is to simplify the decision step by focusing on a manageable number of MPs.
 If possible, criteria should not be so strict as to filter out MPs with broadly acceptable performance, or filter out almost all MPs.
 Similarly, criteria should be strict enough to filter out consistently under-performing MPs.
-We recommend selection of satisficing criteria be done iteratively with the technical committee. <!-- TODO, check if we have introduced Technical Committee-->
+We recommend selection of satisficing criteria be done iteratively with the technical committee.
 
 DLMtool is designed to follow standard MSE operating procedure (Figure \@ref(fig:mse-chart)).
 For each MP, the OM is used to simulate the various data streams required by the MP at each time step, then the population biomass is projected forward under the prescribed MP at each subsequent time step until the projection period is complete.
