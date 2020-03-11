@@ -90,7 +90,6 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 * Implementation error (actual catches are above or below the TAC)
 
 In some cases these uncertainties may be included in the reference set. We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
-
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
 We note that DLMtool OMs include a large number of parameters that can vary through time, or which can be set to be deliberately biased.
@@ -110,8 +109,8 @@ For some data-limited stocks, indices of abundance may be considered less reliab
 In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
 Where there is no index of abundance, we recommend developing a wide range of uncalibrated OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
-We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet and observation characteristics of a set of similar species.
-However, we strongly recommend focusing first on species for which customized OMs can be developed, which are calibrated to observed data.
+We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet, and observation characteristics of a set of similar species.
+However, we recommend focusing first on species for which customized OMs can be developed, which are calibrated to observed data.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
@@ -131,7 +130,7 @@ We excluded MPs that required knowledge of absolute abundance since there are un
 We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age-composition data are not available.
 We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty for the stocks to which this framework will be applied. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
 
-*TODO: MP application interval (see Issue #82)*
+<!--*TODO: MP application interval (see Issue #82)*-->
 
 All MPs included in this framework are described in Appendix \@ref(app:MPs).
 <!-- TODO: Quang: also desirable if MPs are easy to understand -->
@@ -168,8 +167,8 @@ For example, the Islope MPs [@geromont2015] as originally described and implemen
 ### Model-based MPs
 
 In addition to the data-based MPs, we suggest a surplus production (SP) model be considered amongst candidate MPs.
-We provisionally include the SP model coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest consideration of both @schaefer1954 and @fox1970 production models since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
-We suggest a weakly informative prior probability distribution be set on the intrinsic greater population increase $r$, possibly following recommendations such as that in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative OMs.
+We provisionally include the SP model coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Appendix \@ref(app:MPs) Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest consideration of both @schaefer1954 and @fox1970 production models since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
+We suggest a weakly informative prior probability distribution be set on the intrinsic greater population increase $r$, possibly following recommendations such as those in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative MPs.
 
 The SP model estimates must be paired with an HCR to form a complete management procedure.
 We provisionally suggest a number of HCRs in Appendix \@ref(app:MPs) Section \@ref(sec:mp-model-based).
@@ -326,11 +325,11 @@ The first case is a "worst-case scenario" approach, whereas the second case inte
 We recommend presenting performance metrics from the individual robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
-*TODO: not sure if we need to add more about how we think the robustness set performance metrics will be used. Not sure whether it is the role of science to step any further. Maybe ask AK*
+<!--*TODO: not sure if we need to add more about how we think the robustness set performance metrics will be used. Not sure whether it is the role of science to step any further. Maybe ask AK*-->
 
 ### Visual presentation of performance metrics
 
-Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them. We have developed an R package gfdlm [@gfdlm] (Appendix \@ref(app:gfdlm)) for generating these visualizations.
+Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them. We have developed an R package gfdlm [@gfdlm; Appendix \@ref(app:gfdlm)] for generating these visualizations.
 
 First, we suggest a graphical representation of a probability table (Figure \@ref(fig:methods-tigure)) to visualize performance metric results.
 This visualization lends itself to a large number of MPs and so works well for displaying results for *all* MPs---not necessarily just satisficed MPs.
@@ -364,7 +363,7 @@ Closed-loop simulation itself, can be used to establish appropriate triggers wit
 Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
 One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
 This visualization highlights the parameter space with the highest probability density via quantile kernel-density-estimate contour lines.
-The other visualization attempts to visualize the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
+The other visualization visualizes the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
 The final year of Figure \@ref(fig:methods-worm) is an alternative representation of Figure \@ref(fig:methods-kobe).
 
 (ref:fig-methods-tigure) This probability table illustrates performance metric values across a number of MPs.
