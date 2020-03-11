@@ -199,7 +199,7 @@ pars %>%
   scale_x_continuous(breaks = seq(-0.75, 0.75, 0.25))
 ```
 
-### IDX: Index-based MP from Cox et al. (In press) {#sec:mp-idx}
+### IDX: Index-based MP from @cox2020 {#sec:mp-idx}
 
 This MP was used in the rebuilding plan for outside Yelloweye Rockfish in BC [@cox2020] (Fig. \@ref(fig:mp-idx-demo)).
 The MP assigns TAC based on:

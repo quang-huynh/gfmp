@@ -8,7 +8,7 @@ round2 <- function(x) sprintf("%.2f",round(x, 2))
 
 ## BACKGROUND
 
-Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the Groundfish bottom trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
+Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the groundfish bottom-trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
 
 Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters, while the oldest aged individual was a 34 cm female aged 15 years. However, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. 
 
@@ -185,7 +185,7 @@ The decision to be made is which MP to use to determine catch limits for the per
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:results-rex2}
 
-We defined the objectives for Rex Sole based on the provisional objectives presented in Section \@ref(sec:approach2). These objectives are guided by the PA Framework, elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act*.
+We defined the objectives for Rex Sole based on the provisional objectives presented in Section \@ref(sec:approach2). These objectives are guided by the Precautionary Approach Framework, elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act*.
 
 1. Maintain stock status above the LRP in the long term with high probability.
 2. Maintain stock status above the USR in the long term with moderately high probability.
@@ -289,7 +289,7 @@ Unless otherwise stated, all other scenarios drew from a length selectivity curv
 
 We considered the above six scenarios to represent the major sources of plausible uncertainty for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
 
-### The Robustness Set {#sec:results-robustness-set}
+### THE ROBUSTNESS SET {#sec:results-robustness-set}
 
 To illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two robustness scenarios (Table \@ref(tab:rex-scen)):
 
@@ -310,7 +310,7 @@ natural mortality used in GOA assessment 0.17-->
 
 We included a detailed explanation of the initial OM specification in Appendix \@ref(app:desc-om-rex).
 
-### OM CONDITIONING
+### OM CONDITIONING {#sec:results-om-conditioning}
 
 After specifying most of the OM parameters (Appendix \@ref(app:desc-om-rex)), we conditioned the OMs using the SRA model described in Appendix \@ref(app:sra).
 We conditioned the models using: (1) commercial catch data from 1996--2019; (2) the synoptic WCVI (SYN WCVI) trawl relative biomass index (a depth-stratified random survey); and (3) commercial bottom trawl CPUE.
