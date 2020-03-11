@@ -53,9 +53,11 @@ We chose this specific representation of variability to be easy to understand an
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers.
 In other words, it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
-<!-- RF has asked Rob K for input-->
-<!-- TODO: finish this -->
-In cases where performance metrics are calculated over a range of years, we suggest the metrics be calculated across all years and simulation replicates simultaneously. This mimics the approach in XX (REF) but differs from the approach by ICES (REF), which typically considers its performance metrics based on each and every year. For example, one could calculate the probability that B > 0.4 *B*~MSY~ in each and every year. There is an inherent trade-off between these two approaches. The first (calculating across all years and replicates simultaneously)... TODO
+In cases where performance metrics are calculated over a range of years, care needs to be taken to clearly report how summary statistics are calculated.
+Provisionally, we suggest calculating performance statistics across replicates and the entire time window as defined for the performance metric.
+For example, we recommend calculating the *F*~MSY~ performance metric across all replicates and years simultaneously.
+Alternative calculations would include calculating the performance statistics for a specific year of interest, or ensuring that the performance metric threshold is met in each-and-every year [@ices2016criteria], or each-and-every iteration.
+Best practices for these calculations and their implications is an open area of research.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:approach3}
 
@@ -108,7 +110,6 @@ Where there is no index of abundance, we recommend developing a wide range of un
 
 We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet and observation characteristics of a set of similar species.
 However, we strongly recommend focusing first on species for which customized OMs can be developed, which are calibrated to observed data.
-
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
@@ -281,16 +282,6 @@ A plot is consistent with convergence when the lines are remaining roughly paral
 ```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
 knitr::include_graphics(here("report/figure/framework-convergence.png"))
 ```
-
-Performance statistics for each OM-MP combination are calculated and summarized across replicates.
-Care needs to be taken to clearly report how summary statistics are calculated, e.g., whether probabilities are calculated across replicates, across time, or across time and replicates.
-Similarly, it is important to report how probabilities are calculated.
-Provisionally, we calculate performance statistics across replicates and the entire time window as defined for the performance metric.
-For example, we calculate the $F_\textrm{MSY}$ performance metric across all replicates and years simultaneously.
-Alternative calculations would include calculating the performance statistics for a specific year of interest, or ensuring that the performance metric threshold is met in each-and-every year (ICES REF), or each-and-every iteration.
-Best practices for these calculations and their implications is an open area of research.
-
-<!--*TODO: What is missing in this section?*-->
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:approach6}
 
