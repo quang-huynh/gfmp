@@ -438,4 +438,3 @@ if (optimize_png && !identical(.Platform$OS.type, "windows")) {
   ))
   setwd(here())
 }
-
