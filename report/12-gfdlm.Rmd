@@ -15,6 +15,9 @@ All plotting functions are set up to take either:
 
 In all cases, the list elements should contain different scenarios from the reference and/or robustness sets and the names should reflect the scenario names.
 
+Note that the `pkg::f()` syntax refers to a function `f()` within the package `pkg` without loading the package via the `library()` function.
+We have written code in this appendix using this syntax so that it is clear where various functions originate.
+
 The following are the main plotting functions:
 
 * `plot_index_fits()` takes a named list of SRA model fits and creates a plot of historical population index data and model fits. For example, Figure \@ref(fig:rex-survey-fits).
@@ -39,16 +42,13 @@ The following are the main plotting functions:
 
 * `plot_scenario_projections()` takes a named list of DLMtool simulations and creates a timeseries plot of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch with all scenarios overlaid on the same plots using different colours. For example, Figure \@ref(fig:rex-proj-scenarios).
 
-* `plot_factory()` is "the one [plotting function] to rule them all". This function takes a named list of DLMtool simulations along with a number of other arguments specifying characteristics like satisficed MPs and performance metrics and generates common versions of all the figures described below. The output is a named list of ggplot2 [REF] elements that can be viewed, modified, and/or saved for inclusion in a report. For example, this function was used to create all the main figures in the Rex Sole case study in this document (Figures \@ref(fig:rex-converge)--\@ref(fig:rex-proj-scenarios)).
+* `plot_factory()` is "the one [plotting function] to rule them all". This function takes a named list of DLMtool simulations along with a number of other arguments specifying characteristics like satisficed MPs and performance metrics and generates common versions of all the figures described below. The output is a named list of ggplot2 [@wickham2016] elements that can be viewed, modified, and/or saved for inclusion in a report. For example, this function was used to create all the main figures in the Rex Sole case study in this document (Figures \@ref(fig:rex-converge)--\@ref(fig:rex-proj-scenarios)).
 
 * `pm_factory()` is a function factory that generates a performance metric function. For example, the following creates a performance metric `LT LRP` that is based on spotting biomass, a reference level of 0.4 of B~MSY~, and calculated over years 36--50 in the projection period.
 
 ```{r, echo=TRUE, eval=FALSE}
 `LT LRP` <- gfdlm::pm_factory("SBMSY", ref = 0.4, yrs = c(36, 50))
 ```
-
-Note that the `::` syntax refers to a function within the package gfdlm without loading the package via the `library()` function.
-We write our code in this appendix using the syntax so that it is clear where various functions originate.
 
 ## MP MANIPULATION FUNCTIONS
 
@@ -133,7 +133,7 @@ sha_csasdown <- get_sha("pbs-assess/csasdown")
 The source code for this document is available at:\
 <`r paste0("https://github.com/pbs-assess/gfmp/tree/", sha_gfmp)`>.
 
-This document was compiled with the R package csasdown [REF].
+This document was compiled with the R package csasdown [@csasdown].
 
 The specific versions of the primary packages used to generate this report can be viewed at:
 
