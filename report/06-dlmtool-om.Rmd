@@ -461,7 +461,7 @@ $$
 
 ## CALCULATION OF MSY-BASED REFERENCE POINTS {#sec:dlmtool-msy-refpts}
 
-Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's PA Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\textrm{MSY}$ and the upper stock reference (USR) is defined as the OM value of $0.8B_\textrm{MSY}$.
+Biological reference points (BRPs) in the MP Framework are currently based on the provisional reference points recommended in Canada's Precautionary Approach Framework [@dfo2006; @dfo2009], where the limit reference point (LRP) is defined as the OM value of $0.4B_\textrm{MSY}$ and the upper stock reference (USR) is defined as the OM value of $0.8B_\textrm{MSY}$.
 $B_\textrm{MSY}$ is defined as the equilibrium spawning biomass $B^e$ that would occur if the stock were fished at the constant rate of fishing mortality $F^e$ that produces maximum sustainable yield $\textrm{MSY}$.
 
 Calculation of BRPs is done using estimated parameters from the conditioning stage, described in Appendix \@ref(app:sra).
