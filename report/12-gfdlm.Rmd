@@ -62,7 +62,7 @@ oddify <- function(x) seq(2, x, by = 2)
   gfdlm::reduce_survey(index = oddify)
 ```
 
-Note that `%>%` refers to the "pipe" function from the magrittr R package [REF].
+Note that `%>%` refers to the "pipe" function from the magrittr R package [@magrittr].
 It can be read as "and then".
 Technically, it places the output from the function before the `%>%` into the first argument of the function after the `%>%`.
 
