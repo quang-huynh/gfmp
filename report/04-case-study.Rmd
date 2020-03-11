@@ -3,7 +3,9 @@
 # REX SOLE CASE STUDY SUMMARY
 
 We undertook a case study of the Rex Sole (*Glyptocephalus zachirus*) stock in the West Coast Vancouver Island (WCVI) groundfish management area (Area 3CD) to demonstrate an application of the MP Framework.
+This stock was selected because it lacks recent ageing data, lacks current assessment advice, and contrasts with the life-history of Yelloweye Rockfish, to which this framework has been applied concurrently [@haggarty2020yelloweye]. 
 We briefly summarize that case study here; full details are available in Appendix \@ref(app:mse-rex) and Appendix \@ref(app:desc-om-rex).
+The case-study is presented to illustrate the framework and its outputs but *is not intended for the provision of catch advice at this time*.
 
 Rex Sole are a flatfish caught primarily in the bottom-trawl fishery in BC.
 They can live as long as 29 years, grow as large as 58 cm, and weight up to 1.44 kg.
