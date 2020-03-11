@@ -44,7 +44,7 @@ If the time series is long enough, the historical period can be assumed to begin
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
 In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
 We note that $C^{\textrm{eq}}_f$ need not be the true catch prior to the first year---factors such as recruitment, predator mortality, or any number of catch trends could have caused the estimated initial depletion---but $C^{\textrm{eq}}_f$ represents the corresponding catch in equilibrium.
-The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period (see Equation \@ref).
+The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
 
 Initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
 We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
@@ -113,9 +113,9 @@ $$
 v_{a,f} =
 \begin{cases}
 2^{-[(L_{a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{asc}}_f)]^2} & \textrm{if } L_{a} < L^{\textrm{FS}}_f\\
-1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}}_f,\\
-2^{-[(L_{a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}_f
-\end{cases},
+1 & \textrm{if logistic and } L_{a} \ge L^{\textrm{FS}}_f\\
+2^{-[(L_{a} - L^{\textrm{FS}}_f)/(\sigma^{\textrm{des}}_f)]^2} & \textrm{if dome-shaped and } L_{a} \ge L^{\textrm{FS}}_f,
+\end{cases}
 (\#eq:sra-om-vaf)
 $$
 
@@ -142,7 +142,7 @@ N_{1,a} =
       R^{\textrm{eq}} & a = 1 \\
       N_{1,a-1} \exp(-Z^{\textrm{eq}}_a) & a = 2, \ldots, A-1\\
       \dfrac{N_{1,a-1} \exp(-Z^{\textrm{eq}}_a)}{1 - \exp(-Z^{\textrm{eq}}_A)} & a = A,
-\end{cases},
+\end{cases}
 (\#eq:sra-om-numinit)
 $$
 
@@ -173,7 +173,7 @@ R^{\textrm{eq}} =
 \begin{cases}
       \dfrac{\alpha^{\textrm{B}}\phi - 1}{\beta^{\textrm{B}}\phi} & \textrm{Beverton-Holt}\\
       \dfrac{\log(\alpha^{\textrm{R}}\phi)}{\beta^{\textrm{R}}\phi} & \textrm{Ricker},
-\end{cases},
+\end{cases}
 (\#eq:sra-om-recinit)
 $$
 
