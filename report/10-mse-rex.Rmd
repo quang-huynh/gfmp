@@ -10,7 +10,7 @@ round2 <- function(x) sprintf("%.2f",round(x, 2))
 
 Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the groundfish bottom-trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
 
-Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters, while the oldest aged individual was a 34 cm female aged 15 years. However, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. 
+Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters. The oldest aged individual was a 34 cm female aged 15 years; however, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole have been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. 
 
 Rex Sole are commonly caught in the West Coast Vancouver Island (WCVI) synoptic groundfish bottom trawl survey (Figure \@ref(fig:rex-surv-set-plot)). While they are caught in the commercial mixed-species bottom trawl fishery (Figures \@ref(fig:rex-catch-plot) and \@ref(fig:rex-cpue-map)), there is no directed fishery or assigned quota for them.
 They are commonly caught with Pacific Cod (*Gadus macrocephalus*), Dover Sole (*Microstomus pacificus*), English Sole (*Parophrys vetulus*) and Arrowtooth Flounder (*Atheresthes stomias*). Rex Sole have never been formally assessed in BC. 
@@ -26,7 +26,7 @@ There are limited biological samples of any kind from the commercial fleet (Figu
 
 <!-- Research survey data and commercial biological data from the 1940s to present are housed in GFBio, the Groundfish Biological Samples database. In order to improve data on BC groundfish stocks, fishery-independent synoptic bottom trawl surveys were established in 2003 that are conducted in four areas: the west coast of Vancouver Island, Hecate Strait, Queen Charlotte Sound and the west coast of Haida Gwaii. The surveys alternately cover two areas each year. These survey and observer data are available to provide important time-series and biological data for stock assessment of a broad range of BC groundfish species. -->
 
-In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska (GOA) stock  [@mcgilliard2017], the Bering Sea/Aleutian Islands (BSAI) stock [@wilderbuer2015], and the West Coast (WC) stock from Washington to California [@cope2015]. 
+In the US, Rex Sole are caught in the bottom trawl fishery and are considered to form three separate stocks: the Gulf of Alaska stock  [@mcgilliard2017], the Bering Sea/Aleutian Islands stock [@wilderbuer2015], and the West Coast stock from Washington to California [@cope2015]. 
 
 We demonstrate the MP Framework here, through a case study of the Rex Sole stock in the WCVI groundfish management area (Area 3CD). 
 This detailed case study is illustrative and is not intended for catch advice at this time. 
@@ -413,7 +413,7 @@ In applications of the framework, additional tuning of SP models and index-based
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs. The `.` in front of some MPs denotes versions of the MPs that only observe the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
+csasdown::csas_table(mp, caption = "Candidate MPs. The '`.`' in front of some MPs denotes versions of the MPs that only observe the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
 ```
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
@@ -450,7 +450,7 @@ We ran the closed-loop simulations across 250 stochastic replicates using DLMtoo
 We assessed convergence of the closed-loop simulation by plotting the cumulative performance metrics as replicates were added (Figure \@ref(fig:rex-converge)).
 We deemed 250 replicates sufficient since the rank order of MPs was consistent for this number of replicates (Figure \@ref(fig:rex-converge)).
 
-To determine which MPs would be carried forward as satisficed MPs [@miller2010], we began by assessing average and minimum performance across all candidate MPs for the reference set of OMs (Figures \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-min)) .
+To determine which MPs would be carried forward as satisficed MPs [@miller2010], we began by assessing average and minimum performance across all candidate MPs for the reference set of OMs (Figures \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-min)).
 To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of `r names(satisficed_criteria)[1]` $>$ `r satisficed_criteria[[1]]` and `r names(satisficed_criteria)[2]` $>$ `r satisficed_criteria[[2]]`.
 We could apply these criteria to either the average (Figures \@ref(fig:rex-tigure-avg)) or minimum performance (Figures \@ref(fig:rex-tigure-min)) and such a decision is likely best made by a technical working group or decision-makers coupled with stakeholders in an applied setting.
 In this case study, it made little difference whether we chose the average or minimum performance metrics to apply the satisficing criteria.
@@ -536,7 +536,7 @@ The timeseries trajectories of the projected survey index (Figure \@ref(fig:rex-
 Kobe plots demonstrate either the final *B*/*B*~MSY~ vs. *F*/*F*~MSY~ status among replicates (Figure \@ref(fig:rex-kobe)) or the trajectory of these stock status values through time (Figure \@ref(fig:rex-worm)).
 
 (ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
-MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-avg).
+MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-avg)).
 These are the same data underlying Figure \@ref(fig:rex-tigure-avg) and Figure \@ref(fig:rex-tigure-min) but shown for individual reference-set scenarios and only for satisficed MPs.
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="0.8\\textwidth"}
@@ -562,7 +562,7 @@ knitr::include_graphics(here("report/figure/rex-tradeoff-refset-avg.png"))
 
 \clearpage
 
-```{r rex-spider-satisficed-mps-avg, fig.cap="Radar-plot representation of average performance metric trade-offs for the reference-set scenarios. The outside of the hexagon represents a performance metric probability of 1.0 in the middle represents a value of 0. Dashed lines represent reference MPs.", out.width="5in"}
+```{r rex-spider-satisficed-mps-avg, fig.cap="Radar-plot representation of average performance metric trade-offs for the reference-set scenarios. The outside of the hexagon represents a performance metric probability of 1.0; in the middle represents a value of 0. Dashed lines represent reference MPs.", out.width="5in"}
 knitr::include_graphics(here("report/figure/rex-radar-refset-avg.png"))
 ```
 
@@ -649,7 +649,7 @@ Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
 Figure \@ref(fig:rex-proj-scenarios)
 -->
 
-The "No CPUE Ceq. 50%" robustness scenario represents a markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
+The "No CPUE Ceq. 50%" robustness scenario represents markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
 This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_t$ values around 2005 (Figure \@ref(fig:rex-F-om)).
 In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60, while the constant catch and surplus production model achieve LT LRP $<$ 0.35 (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 Other performance metrics show less contrast among the MPs, although LT USR also remains higher for the Itarget vs. constant-catch or surplus-production MPs (Figure \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
