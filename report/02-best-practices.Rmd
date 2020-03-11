@@ -8,14 +8,6 @@
 knitr::include_graphics(here::here("images/mse-chart.pdf"))
 ```
 
-<!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
-
-
-<!--When an MSE approach is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selection of MPs [e.g., @cox2008a].-->
-
-<!-- NOTE (RF): I commented the above paragraph out, it interrupts the flow and should be captured in the steps anyway. I think we need a "roles and responsibilities" heading. However, we  somewhere need to state that this report represents the elements of the framework as tested by Science but will require engagement when implemented in providing advice for specific stocks, as we haven't done a full engagement process. I think in the discussion.  -->
-
-
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:best1}
 
 Key questions to guide defining the decision context for MSE include:
@@ -31,8 +23,6 @@ Key questions to guide defining the decision context for MSE include:
 * How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance against objectives.
 
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
-
-<!-- TODO: figure out how to cite the Landmark report. We are not allowed to cite unpublished reports in CSAS docs (I don't think), but we could include it in a footnote. I tried doing a footnote but it didn't work. Anyway, here is the ref    ([^1]: Cox, S.P., and Benson, A.J. Unpublished. Roadmap to more sustainable Pacific herring fisheries in Canada: a step-by-step guide to the management strategy evaluation approach. Prepared for Pelagics Resource Management, Fisheries and Oceans Canada Pacific Region. Available on request.) -->
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
 

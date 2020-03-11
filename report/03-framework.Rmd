@@ -1,9 +1,9 @@
 # METHODS: THE PROPOSED FRAMEWORK {#sec:approach}
 
-We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs, illustrated via a case-study fish with Rex Sole (*Glyptocephalus zachirus*) in Area 3CD (West Coast Vancouver Island). 
-This stock was selected because it lacks recent ageing data, lacks current assessment advice, and contrasts with the life-history of Yelloweye Rockfish, to which this framework has been applied concurrently [REF]. 
-The case-study is presented to illustrate the framework and its outputs but *is not intended for the provision of catch advice at this time*.
+We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs.
 Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organized according to the six best-practice steps described in Section \@ref(sec:best-practices).
+We note that the elements of the framework as laid out here, represent primarily the role of Science.
+When this framework is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selection of MPs [e.g., @cox2008a].
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:approach1}
 
@@ -355,7 +355,7 @@ Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY t
 Visualization of the simulated population index timeseries is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
 First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
 Second, the range of future projected can be used as a trigger for re-evaluating an OM.
-For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [e.g., @carruthers_hordyk_2018]).
+For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
 We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
 For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
 Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018]. 
