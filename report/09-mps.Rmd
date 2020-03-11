@@ -8,7 +8,7 @@ The list is not exhaustive and will likely grow or be adapted over time.
 We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or the primary source publications wherever possible.
 
 We have created alternative versions of the index-based MPs that discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will be based.
-We did note these MPs with a `.` in front of them.
+We did note these MPs with a "`.`" in front of them.
 For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data.
 We do not make this distinction in the descriptions below, but use the dot notation throughout the case studies.
 
@@ -100,7 +100,7 @@ The TAC is subject to the following conditions that limit the rate at which the 
 - if next TAC < 0.8 last catch, then TAC = 0.8 $\times$ last catch.
 
 The default $\lambda$ value is 1 in DLMtool.
-Here we propose adding a version with a lower version of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index.
+Here we propose adding a version with a lower value of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index.
 Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data.
 We denote these MPs as "GB_slope_6_1", "GB_slope_6_0.66", "GB_slope_8_1", and "GB_slope_8_0.66", where the numbers indicate the number of years and $\lambda$ value, respectively.
 The number of years and the $\lambda$ parameter could be explored as tuning parameters for specific stocks.
@@ -139,7 +139,7 @@ pars %>%
 
 ### Islope: Index slope tracking {#sec:mp-islope}
 
-These MPs incrementally adjusts the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)).
+These MPs incrementally adjust the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)).
 The MPs are similar to "GB_slope" with the addition of a parameter that determines the TAC in the first projection year and different choices of the $\lambda$ parameter.
 The TAC is calculated as:
 
@@ -159,7 +159,7 @@ There are four variants of this procedure as described in @geromont2015a:
 - Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $x = 0.4$
 
 Because of the $x$ values, all 4 versions start TAC at 60--80% of recent average catch.
-For our BC groundfish fisheries, we do not have an a priori expectation that they are currently being overfished, we propose the following set that start TAC at 80% or 100% of average catch over the last 5 historical years:
+For our BC groundfish fisheries, we do not have an a priori expectation that they are currently being overfished. We therefore propose the following set that start TAC at 80% or 100% of average catch over the last 5 historical years:
 
 - Islope0.4_100: $\lambda = 0.4$ and $x = 0$
 - Islope0.4_80: $\lambda = 0.4$ and $x = 0.2$
