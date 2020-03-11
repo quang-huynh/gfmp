@@ -87,7 +87,7 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 * Alternative catch histories (e.g., for species such as rockfishes, which were historically reported under generic species names)
 * Implementation error (actual catches are above or below the TAC)
 
-In some cases these uncertainties may be included in the reference set.
+In some cases these uncertainties may be included in the reference set. We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
 
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
