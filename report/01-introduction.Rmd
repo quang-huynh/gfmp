@@ -66,7 +66,7 @@ Therefore, the Framework will provide advice for stocks where biological referen
 In doing so, it aims to improve the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
 The management procedure framework will apply closed-loop simulation to formalize the process of testing and selecting MPs for data-limited groundfish stocks, which will support the provision of scientific advice to fisheries managers.
 We emphasize that biological reference points and stock status, which are integral to the Sustainable Fisheries Framework and Fish Stocks provisions, are also integral to the MP Framework, even if they are not explicitly stated in the catch advice.
-Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly-defined probabilities of maintaining OM stock status above reference points.
+Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly defined probabilities of maintaining OM stock status above reference points.
 We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 
 This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
