@@ -649,12 +649,12 @@ Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
 Figure \@ref(fig:rex-proj-scenarios)
 -->
 
-The "No CPUE Ceq. 50%" robustness scenario represents a markedly different biomass and fishing mortality historical trajectories to any of the reference set scenarios.
+The "No CPUE Ceq. 50%" robustness scenario represents a markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
 This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_t$ values around 2005 (Figure \@ref(fig:rex-F-om)).
 In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60, while the constant catch and surplus production model achieve LT LRP $<$ 0.35 (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 Other performance metrics show less contrast among the MPs, although LT USR also remains higher for the Itarget vs. constant-catch or surplus-production MPs (Figure \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 
-This scenario demonstrates stronger trade-offs among performance metrics than the reference set scenarios (Figures \@ref(fig:rex-tradeoff-robust) and \@ref(fig:rex-spider-satisficed-mps-robust)).
+This robustness scenario demonstrates stronger trade-offs among performance metrics than the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-robust) and \@ref(fig:rex-spider-satisficed-mps-robust)).
 In particular, there is an obvious trade-off between STC and LT LRP (Figures \@ref(fig:rex-tradeoff-robust)).
 The constant catch MPs achieved the highest STC values but at the expense of lower LT LRP values.
 The Itarget MPs struck more of a balance between LT LRP and STC (Figures \@ref(fig:rex-tradeoff-robust)).
@@ -668,7 +668,7 @@ The Itarget MPs were able to ramp down catch as $M$ increased (Figure \@ref(fig:
 By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
 The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the other scenarios.
 The projected trajectories were relatively similar across all reference-set scenarios, while differing for the "No CPUE Ceq. 50%" and "M increasing" robustness scenarios.
-Note that sensitivity of the projections does not necessarily correspond to sensitivity of the rank order of MPs (Figure \@ref(fig:rex-tigure-panel-rob)).
+Note that sensitivity of the projections does not necessarily correspond to sensitivity of the rank order of MPs (Figure \@ref(fig:rex-tigure-panel-rob)), which is ultimately the important characteristic for decision making.
 
 (ref:fig-rex-tigure-panel-rob) Performance of satisficed MPs for the robustness set OMs.
 

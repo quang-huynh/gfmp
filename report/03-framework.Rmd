@@ -318,10 +318,10 @@ These authors recommended reducing the set of robustness scenarios down to those
 Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios, represented in the robustness set.
 
 We recommend presenting performance metrics from the reference and robustness sets separately.
-For most visualisations, we recommend that the reference set performance metrics are averaged across all reference set scenarios.
-An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
+For most visualisations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
+An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference-set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
 The first case is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
-We recommend presenting performance metrics from the individual robustness set scenarios separately.
+We recommend presenting performance metrics from the individual robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
 *TODO: not sure if we need to add more about how we think the robustness set performance metrics will be used. Not sure whether it is the role of science to step any further. Maybe ask AK*

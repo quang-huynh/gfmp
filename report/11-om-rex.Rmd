@@ -215,7 +215,7 @@ cpars$AC[cpars$AC < -1] <- -1
 
 Although we do not have any ages in our database for WCVI, there exist a limited number of ages from the Hecate Strait Multispecies Assemblage Survey and a von Bertalanffy model fits reasonably well (Figure \@ref(fig:rex-length1)). We will extract samples from the model posterior (Figure \@ref(fig:desc-vb-parameters)) and save them as custom parameters.
 
-We fit the model with Stan [REF] using the model implemented in the gfplot R package [REF] according to the equation:
+We fit the model with Stan [@rstan] using the model implemented in the gfplot R package [@gfplot] according to the equation:
 
 $$
   L_i \sim \operatorname{Log-normal}
@@ -224,7 +224,7 @@ $$
 
 where $L_i$ and $A_i$ refer to the length and age of fish $i$, $\sigma$ refers to the scale parameter of the lognormal distribution, and all other parameters refer to the von Bertalanffy equation.
 We used weakly informative priors: $k \sim \textrm{Normal}(0, 2)$, $L_\mathrm{inf} \sim \textrm{Normal}(0, \varphi)$, $t_0 \sim \textrm{Normal}(0, 20)$, and $\sigma \sim \textrm{Student-t}(3,0, 2)$, where $\varphi$ refers to the 99% quantile of the observed lengths (36 cm).
-We sampled 8000 iterations across four chains from the posterior and checked that the chains were consistent with convergence via the Rhat and ESS (effective sample size) metrics along with traceplots of the samples [REF].
+We sampled 8000 iterations across four chains from the posterior and checked that the chains were consistent with convergence via the Rhat (potential scale reduction factor) and ESS (effective sample size) metrics along with traceplots of the samples [@gelman2014].
 
 ```{r rex-length1, echo=FALSE, fig.cap="von Bertalanffy model fit to lengths and ages from the Hecate Strait Multispecies Assemblage Survey. Dots represent individual fish and lines represent 100 samples from the posterior.", fig.width=6, out.width='4in'}
 if (!file.exists(here("generated-data", "msa-ages-rex.rds"))) {
@@ -319,7 +319,7 @@ ggplot(vbd, aes(value)) + geom_histogram() +
 
 We have sufficient maturity and length data to fit a logistic maturity model. @mcgilliard2017 noted that length at maturity varied by latitude, but that age at maturity was fairly consistent among stocks.
 
-Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm (REF) to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)).
+Although we visualize the relationship for male and female fish separately (Figure \@ref(fig:desc-stock-mat-plot)), we fit a Bayesian logistic GLM (generalized linear model) with rstanarm [@rstanarm] to sample parameter values from a model that estimates maturity for an average male/female fish from our samples (Figure \@ref(fig:desc-lw-fits)).
 We used priors of Normal(0, 50) for the intercept and Normal(0, 10) for the effect of length and male/female. 
 We sampled 2000 iterations for each of four chains from the posterior and check that the chains were consistent with convergence using the same approach as described above for the von Bertalanffy model.
 
@@ -422,7 +422,7 @@ stock_rex@D
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-(ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
+(ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB [@TMB] and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
 
 <!-- Suppressing a Makevars R message: -->
 ```{r desc-stock-a-rex1, message=FALSE, warning=FALSE, echo=FALSE, results='hide'}
