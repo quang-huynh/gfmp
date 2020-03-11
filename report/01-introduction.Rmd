@@ -6,7 +6,7 @@ Fishery-independent surveys conducted by Fisheries and Oceans Canada (DFO) encou
 
 In recent decades, advice on TACs for Pacific groundfish species has been developed using statistical stock assessment models that rely on indices of abundance, age-composition, commercial catch, and biological data that enable estimation of key population metrics such as stock status, relative depletion, recruitment, growth, fishery selectivity, and natural and fishing mortality. These stock assessment models are data and resource-intensive, with only a few assessments produced each year with available data and Science sector resources.
 
-The majority of fish stocks encountered by the integrated groundfish fishery are considered data-limited, where data-limited stocks are defined as those with insufficient data to: (1) reliably estimate stock status; or (2) estimate abundance or productivity with conventional stock assessment methods such as statistical catch-at-age models [@dowling2015; @dowling2015a]. Many of these stocks are without current assessment advice.
+The majority of fish stocks encountered by the integrated groundfish fishery are considered data-limited, where data-limited stocks are defined as those with insufficient data to: (1) reliably estimate stock status; or (2) estimate abundance or productivity with conventional stock assessment methods such as statistical catch-at-age models [@dowling2015; @dowling2015a]. Many of these stocks lack current assessment advice.
 
 ## MOTIVATION {#sec:intro-motivation}
 

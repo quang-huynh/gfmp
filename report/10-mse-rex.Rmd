@@ -255,7 +255,7 @@ Increasing CPUE is also possibly evidence of a stock rebuilding from a depleted 
 While there are many caveats associated with commercial CPUE timeseries, two factors suggest this trend is plausible: (1) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
 In the absence of targeting, CPUE trends may more closely match abundance.
 Second, the SYN WCVI survey has approximately doubled its relative index value for Rex Sole since the early 2000s, which would be consistent with the stock starting in a somewhat depleted state in 1996.
-Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported caught in substantial quantities before 1996 (**TODO FINISH ... will need to provide a table or figure for this**).
+Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported caught in substantial quantities before 1996.
 It therefore seems reasonable to assume that there is considerable unrecorded catch prior to 1996.
 
 We considered three reference-set scenarios and one robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)). The three reference-set scenarios are:
@@ -266,16 +266,16 @@ We considered three reference-set scenarios and one robustness-set scenario that
 
 * The scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
 
-#### Steepness of the stock-recruit relationship ($h$)
+#### Steepness of the stock-recruit relationship (*h*)
 
-We considered one alternative scenario that differed in terms of the value of $h$ (Table \@ref(tab:rex-scen)).
+We considered one alternative scenario that differed in terms of the value of *h* (Table \@ref(tab:rex-scen)).
 Unless otherwise stated, all other scenarios drew from a baseline beta distribution $h \sim \textrm{beta}(13.4, 2.4)$, which results in a mean and standard deviation of 0.85 and 0.09 (see Section \@ref(app:desc-stock-h-rex)).
 
 * The scenario "Higher steepness" uses the value $h = 0.95$.
 
-#### Natural Mortality ($M$)
+#### Natural Mortality (*M*)
 
-We considered one alternative scenario that differed in terms of the value of $M$ (Table \@ref(tab:rex-scen)).
+We considered one alternative scenario that differed in terms of the value of *M* (Table \@ref(tab:rex-scen)).
 Unless otherwise stated, all other scenarios drew from a baseline uniform distribution $M$ = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
 
 * The scenario "Higher M" considers that *M* could be latitude-dependent and may be substantially higher for stocks in warmer BC waters (*M* = 0.3 *y*^-1^).
@@ -295,7 +295,7 @@ To illustrate application of the framework in the presence of additional sources
 
 * The "No CPUE Ceq. 50%" scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996 ($C^{\textrm{eq}} = 0.5$). In other words, this scenario assumes that the stock started in a much less depleted state than the other scenarios. In order to fit the SRA model with plausible $F_{a,y}$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" scenario.
 
-* The "M increasing" scenario assumes that $M$ increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario.
+* The "M increasing" scenario assumes that *M* increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario.
 
 Results from the Robustness Set will be presented separately in Section \@ref(sec:results-rex6) and will be used to show whether performance of MPs is significantly affected by these other sources of uncertainty.
 
@@ -375,7 +375,7 @@ knitr::include_graphics(here("report/figure/rex-sra-filtered.png"))
 (ref:fig-rex-depletion-om)
 Spawning stock biomass ($B$) depletion trajectories for reference and robustness set OMs.
 Depletion is represented as a fraction of $B_0$ (spawning stock biomass at unfished equilibrium).
-Note that the "M increasing" scenario only represents $M$ increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of $M$ in the historical period.
+Note that the "M increasing" scenario only represents *M* increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of *M* in the historical period.
 Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across replicates.
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
@@ -407,7 +407,7 @@ We started with the full set of provisional candidate MPs described in Appendix 
 Early explorations with the SP models  suggested little effect of the three alternative harvest control rules (HCRs) described in Section \@ref(sec:mp-sp) (presumably because the projected biomass spent little time on the HCR "ramp"). There was also very little difference in performance between the Fox and Schaefer production models.
 Therefore, for the SP models we focused mostly on tuning the prior on $r$, the intrinsic population growth rate.
 We evaluated three priors on $r$: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
-With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which approximately match the values of $M$ explored in the operating models.
+With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which approximately match the values of *M* explored in the operating models.
 In applications of the framework, additional tuning of SP models and index-based MPs could be explored if needed.
 
 ```{r rex-mps, results='asis'}
@@ -662,8 +662,8 @@ The projection figures show the values underlying the performance metrics (Figur
 Within this scenario, over time, the .SP8040_0.6, CC1.1, and CC1.2 MPs all have a tendency to overfish the stock (Figure \@ref(fig:rex-proj-no-cpue-light)).
 
 For the "M increasing" scenario, the satisficed MPs were fairly robust to linear increases in natural mortality in the projection period, with the exception that all satisficed MPs had a considerably lower probability of achieving the long-term catch (LTC) metric (Figures \@ref(fig:rex-tigure-panel-rob)--\@ref(fig:rex-spider-satisficed-mps-robust)).
-Notably, the Itarget satisficed MPs maintained LT LRP $>$ 0.9 despite increasing $M$, whereas the fixed-catch and surplus-production MPs all resulted in LT LRP $<$ 0.9.
-The Itarget MPs were able to ramp down catch as $M$ increased (Figure \@ref(fig:rex-proj-inc-m)) to maintain most replicates above the LRP.
+Notably, the Itarget satisficed MPs maintained LT LRP $>$ 0.9 despite increasing *M*, whereas the fixed-catch and surplus-production MPs all resulted in LT LRP $<$ 0.9.
+The Itarget MPs were able to ramp down catch as *M* increased (Figure \@ref(fig:rex-proj-inc-m)) to maintain most replicates above the LRP.
 
 By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
 The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the other scenarios.
