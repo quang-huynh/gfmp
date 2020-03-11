@@ -250,7 +250,7 @@ fleet_default@AbsSelYears
 <!-- slot-chunk-begin -->
 ### L5Lower {#app:desc-fleet-l5lower-default}
 
-*(Optional) Lower bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of L5. Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
 
@@ -261,7 +261,7 @@ fleet_default@L5Lower
 <!-- slot-chunk-begin -->
 ### L5Upper {#app:desc-fleet-l5upper-default}
 
-*(Optional) Upper bound of L5 (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of L5. Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
 
@@ -272,7 +272,7 @@ fleet_default@L5Upper
 <!-- slot-chunk-begin -->
 ### LFSLower {#app:desc-fleet-lfslower-default}
 
-*(Optional) Lower bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Lower bound of LFS. Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
 
@@ -283,7 +283,7 @@ fleet_default@LFSLower
 <!-- slot-chunk-begin -->
 ### LFSUpper {#app:desc-fleet-lfsupper-default}
 
-*(Optional) Upper bound of LFS (use ChooseSelect function to set these). Vector. Non-negative real numbers.*
+*(Optional) Upper bound of LFS. Vector. Non-negative real numbers.*
 
 We will not use this functionality by default.
 
@@ -294,7 +294,7 @@ fleet_default@LFSUpper
 <!-- slot-chunk-begin -->
 ### VmaxLower {#app:desc-fleet-vmaxlower-default}
 
-*(Optional) Lower bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Lower bound of Vmaxlen. Vector. Fraction.*
 
 We will not use this functionality by default.
 
@@ -305,7 +305,7 @@ fleet_default@VmaxLower
 <!-- slot-chunk-begin -->
 ### VmaxUpper {#app:desc-fleet-vmaxupper-default}
 
-*(Optional) Upper bound of Vmaxlen (use ChooseSelect function to set these). Vector. Fraction.*
+*(Optional) Upper bound of Vmaxlen. Vector. Fraction.*
 
 We will not use this functionality by default.
 
@@ -474,7 +474,7 @@ obs_default@CAA_nsamp
 
 *Effective sample size (independent age draws) of the multinomial catch-at-age observation error model. Uniform distribution lower and upper bounds.*
 
-This slot will not be relevant in the main operating model since none of the MPs make use of age data.
+This slot will not be relevant in operating models unless MPs make use of age-composition data.
 
 ```{r desc-obs-caa_ess-default, results = knitr_results, echo = knitr_echo}
 obs_default@CAA_ESS
@@ -486,7 +486,7 @@ obs_default@CAA_ESS
 
 *Number of catch-at-length observations per time step. Uniform distribution lower and upper bounds.*
 
-This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+This slot will not be relevant in operating models unless MPs make use of length-composition data.
 
 ```{r desc-obs-cal_nsamp-default, results = knitr_results, echo = knitr_echo}
 obs_default@CAL_nsamp
@@ -498,7 +498,7 @@ obs_default@CAL_nsamp
 
 *Effective sample size (independent length draws) of the multinomial catch-at-length observation error model. Uniform distribution lower and upper bounds.*
 
-This slot will not be relevant in the main operating model since none of the MPs make use of length samples.
+This slot will not be relevant in operating models unless MPs make use of length-composition data.
 
 ```{r desc-obs-cal_ess-default, results = knitr_results, echo = knitr_echo}
 obs_default@CAL_ESS
