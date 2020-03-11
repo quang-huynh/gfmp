@@ -8,7 +8,7 @@ round2 <- function(x) sprintf("%.2f",round(x, 2))
 
 ## BACKGROUND
 
-Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. Rex Sole are primarily caught in the Groundfish bottom trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
+Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the Groundfish bottom trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
 
 Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters, while the oldest aged individual was a 34 cm female aged 15 years. However, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole has been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006]. 
 
