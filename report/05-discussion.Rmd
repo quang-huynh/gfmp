@@ -72,7 +72,7 @@ We therefore also recommend further analyses to evaluate protocols for detecting
 
 The Fish Stocks provisions of the *Fisheries Act* state that fisheries management decisions shall take "into account the biology of the fish and the environmental conditions affecting the stock" (Section \@ref(sec:intro-motivation)).
 Changing environmental conditions can affect fish stocks in many ways, including impacting natural mortality rates, growth rates and condition, recruitment success, and spatial distribution, which may impact fishery catchability or selectivity.
-Robust methods for including environmental considerations into single-species catch advice are not well-established in fisheries decision-making environments [but see @haltuch2011; @haltuch2019 @crone2019].
+Robust methods for including environmental considerations into single-species catch advice are not well-established in fisheries decision-making environments [but see @haltuch2011; @haltuch2019; @crone2019].
 This is because of large uncertainties associated with observing complex marine environments and understanding mechanisms linking fish population dynamics with environmental change [@myers1995].
 Unless mechanisms are well-understood [e.g., @swain2015], incorporating environmental variables into stock assessments does not necessarily improve advice [@punt2014].
 
@@ -80,7 +80,9 @@ Closed loop simulation-testing is an important means of evaluating how MPs perfo
 In this approach, hypotheses about how environmental variables impact population dynamics are incorporated into the OMs, with the performance of alternative MPs (which may or may not include environmental variables) evaluated in the same way as presented in this framework.
 Multiple OMs can be developed that represent multiple hypotheses for environmental effects.
 OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations, or linking predator abundance with $M$), or could be mechanism-free (e.g., allowing growth parameters or $M$ to vary through time with no specific driver).
-The latter, mechanism-free approaches are already straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ increased linearly through time. In this case, no specific mechanism for changing $M$ was provided.
+The latter, mechanism-free approaches are already straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). 
+The Rex Sole case study included one scenario in the robustness set where $M$ increased linearly through time.
+In this case, no specific mechanism for changing $M$ was provided.
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.
 These are sometimes referred to as "black-swan" events [e.g., @taleb2007; @anderson2017; @anderson2019] or "spasmodic recruitment" [@caddy1983] and can be incorporated into operating models through the addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
