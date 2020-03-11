@@ -317,7 +317,7 @@ permit easy comparison.
 
 In Step 3 (Section \@ref(sec:approach3)), we recommended dividing OM scenarios into a reference set, which includes a range of plausible alternative scenarios that impact results, and a robustness set, which includes a wider range of alternative scenarios, which may be less supported by available data, but still potentially impact results [@rademeyer2007].
 These authors recommended reducing the set of robustness scenarios down to those which yield the most contrasting results from the reference set.
-Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios, represented in the robustness set.
+Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios.
 
 We recommend presenting performance metrics from the reference and robustness sets separately.
 For most visualisations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
@@ -336,7 +336,7 @@ First, we suggest a graphical representation of a probability table (Figure \@re
 This visualization lends itself to a large number of MPs and so works well for displaying results for *all* MPs---not necessarily just satisficed MPs.
 By shading the cells according to their underlying performance metric value, the visualization draws the eye to similarities and differences across MPs.
 We suggest sorting the rows by performance metrics of particular interest, shading the MP name differently for reference MPs, and highlighting any satisficing criteria by outlining cells that pass satisficing thresholds.
-The default colour shading is colourblind proof, prints accurately in greyscale, and is visually linear in its gradient [viridis REF].
+The default colour shading is colourblind proof, prints accurately in greyscale, and is visually linear in its gradient [@viridis].
 
 Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across reference-set scenarios (Figure \@ref(fig:methods-dots)).
 This figure highlights average performance across scenarios (dots) along with the range of performance values seen across scenarios (thin lines).
@@ -344,19 +344,22 @@ This figure also illustrates the range of performance after dropping the scenari
 
 We suggest two possible visualizations for highlighting performance-metric tradeoffs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
 The first is a bivariate dot plot, which lends itself to comparing any two performance metrics.
-The second is a "radar" plot (also known as a kite or spider plot).
-Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because (1) the arrangement of the "spokes" can affect perception of the resulting shapes and (2) humans have been shown to be somewhat slower and less accurate at interpreting radial vs. cartesian displays of data [@diehl2010; @feldman2013; @albo2016].
+The second is a "radar" plot (also known as a "kite" or "spider" plot).
+Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to cartesian ones [@diehl2010; @feldman2013; @albo2016].
 
-To understand the processes leading to the performance metrics, we suggest that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, catch, and population indexes (assuming MPs that rely on population indexes are being used).
+To understand the processes leading to the performance metrics, we suggest that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
 We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the timeseries across scenarios (Figure \@ref(fig:methods-proj-sens)).
-Inspection of these timeseries can help understand the performance metrics, it also possibly suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the timeseries (e.g., an MP is slowly but consistently lowering catch when not needed for conservation reasons, or all replicates behave similarly and poorly in some years but this is not captured by averaging performance metrics across all years and replicates).
+Inspection of these timeseries can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the timeseries.
+For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
+Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
 
 Visualization of the simulated population index timeseries is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
-First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check (Gelman BDA REF) to ask whether the future simulations look like they are plausible given historical observations of the same population index.
+First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
 Second, the range of future projected can be used as a trigger for re-evaluating an OM.
-For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs [REF].
-We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers [REF].
-For example, after 10 years, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values, even if the operating model perfectly captured reality.
+For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [e.g., @carruthers_hordyk_2018]).
+We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
+For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
+Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018]. 
 
 Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
 One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
