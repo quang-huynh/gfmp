@@ -50,13 +50,14 @@ These MPs included index-target MPs, surplus production models paired with a har
 **Presentation of results**:
 We presented a number of visualizations featuring the reference-set OM scenarios to aid evaluating trade-offs amongst the seven satisficed MPs for final decision-making.
 We averaged results across reference-set scenarios, to integrate across the various uncertainties represented by these OMs. 
-Probability results were presented in terms of the average (Figures \@ref(fig:rex-tigure-avg)) or minimum performance (Figures \@ref(fig:rex-tigure-min)), where the latter accounts for the worst-case scenario among reference set scenarios
+We presented probability results in terms of the average (Figures \@ref(fig:rex-tigure-avg)) and minimum performance (Figures \@ref(fig:rex-tigure-min)), where the latter accounts for the worst-case scenario among reference-set scenarios
 We suggest that (Figures \@ref(fig:rex-tigure-avg)) and \@ref(fig:rex-tigure-min) would be the primary source of information used by decision-makers to reach a final MP-selection decision.
 To aid this decision, we included a number of other visualizations to help decision-makers understand the underlying dynamics and trade-offs of the various OMs across all satisficed MPs.
+
 Finally, we assessed performance of the satisficed MPs under the robustness scenarios.
 Results from the two robustness scenarios were presented separately, to allow decision-makers to see performance of MPs under these less plausible scenarios.
 Poor performance of an MP under one of these scenarios may influence a decision-maker to select another MP that performs well under both reference and robustness scenarios.
 Four Itarget MPs (Appendix \@ref(app:MPs) Section \@ref(sec:mp-itarget)) were relatively robust to the scenario where the stock was lightly fished prior to 1996 and to increasing natural mortality in the future.
 Conversely, the constant catch and surplus production MPs had substantially lower probabilities of achieving the LT LRP objective under the lightly fished robustness scenario.
 
-A full set of results and interpretation of results is provided in Appendix \@ref(app:mse-rex).
+We provide a full set of results and interpretation of results in Appendix \@ref(app:mse-rex).

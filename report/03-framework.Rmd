@@ -325,8 +325,6 @@ The first case is a "worst-case scenario" approach, whereas the second case inte
 We recommend presenting performance metrics from the individual robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
-<!--*TODO: not sure if we need to add more about how we think the robustness set performance metrics will be used. Not sure whether it is the role of science to step any further. Maybe ask AK*-->
-
 ### Visual presentation of performance metrics
 
 Here we focus on developing a set of provisional visualizations that facilitate comparison of performance metrics across MPs and evaluation of trade-offs amongst them. We have developed an R package gfdlm [@gfdlm] (Appendix \@ref(app:gfdlm)) for generating these visualizations.
@@ -464,5 +462,3 @@ knitr::include_graphics(here("report/figure/framework-worm.png"))
 ```
 
 \clearpage
-
-<!--*TODO: RF: Note about how to use reference results and robustness results (i.e., REF: min-max, average; ROBUST: Supporting cast)*-->
