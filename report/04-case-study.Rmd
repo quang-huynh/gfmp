@@ -3,7 +3,7 @@
 # REX SOLE CASE STUDY SUMMARY
 
 We undertook a case study of the Rex Sole (*Glyptocephalus zachirus*) stock in the West Coast Vancouver Island (WCVI) groundfish management area (Area 3CD) to demonstrate an application of the MP Framework.
-This stock was selected because it lacks recent ageing data, lacks current assessment advice, and ha a contrasting life-history with that of Strait of Georgia Yelloweye Rockfish (*Sebastes ruberrimus*), a fish stock for which this framework has been applied concurrently [@haggarty2020yelloweye]. 
+This stock was selected because it lacks recent ageing data, lacks current assessment advice, and has a contrasting life-history with that of Strait of Georgia Yelloweye Rockfish (*Sebastes ruberrimus*), a fish stock for which this framework has been applied concurrently [@haggarty2020yelloweye]. 
 We briefly summarize the Rex Sole case study here. Full details are available in Appendix \@ref(app:mse-rex) and Appendix \@ref(app:desc-om-rex).
 The case-study is presented to illustrate the framework and its outputs but *is not intended for the provision of catch advice at this time*.
 
