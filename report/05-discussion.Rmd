@@ -83,26 +83,26 @@ OMs could explicitly include environmental variables (e.g., linking ocean temper
 The latter, mechanism-free approaches are already straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)). The Rex Sole case study included one scenario in the robustness set where $M$ increased linearly through time. In this case, no specific mechanism for changing $M$ was provided.
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.
-These are sometimes referred to as "black-swan" events [e.g., @taleb2007; @anderson2017; @anderson2019] and can be incorporated into operating models through the addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
+These are sometimes referred to as "black-swan" events [e.g., @taleb2007; @anderson2017; @anderson2019] or "spasmodic recruitment" [@caddy1983] and can be incorporated into operating models through the addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
 An upcoming application of the MP Framework for the Inside stock of Yelloweye Rockfish (*Sebastes ruberrimus*) will include an OM scenario that incorporates occasional sudden large recruitment events.
 
 We recommend using the tools developed for this MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
 
 ## ASSESSING THE VALUE OF INFORMATION
 
-<!-- TODO: SA please have a look at this. It gets a bit wishy washy at the end but I think we need to say something like that. You might have some better statistical language-->
-
 The MP Framework provides the tools to test the "value of information" (VoI) on the performance of MPs. 
-VoI analyses assess whether performance can be improved with the addition of  resources invested in data-collection. 
-Or, conversely, to evaluate whether the same performance could be achieved if fewer data were available. 
-These are essentially sensitivity analyses to addition or removal of data sources.
+Value-of-information analyses assess whether performance can be improved with the addition of resources invested in data-collection. 
+Conversely, such analyses can evaluate whether similar performance could be achieved if fewer data were available. 
+These are essentially sensitivity analyses to the addition or removal of data sources or changes to data quantity or quality.
 
-Typical data types that could be included in a VoI analysis are age-composition data, survey data and survey CV.
-Sensitivity of MP performance to changes in survey frequency or CV (representing increases or decreases in survey coverage) could easily be tested using the framework.
-The framework could also be used to evaluate whether improved MP performance could be achieved by ageing the large archive of otoliths for Rex Sole.
+Typical data types that could be included in value-of-information analyses in applications of this framework for BC groundfish include survey-index and age-composition data.
+In terms of survey-index data, the Framework could be used to test the sensitivity of MP performance to changes in the precision of population indexes.
+For example, the Framework could quantify the expected change in the probability of maintaining a stock above its LRP in the long run given reductions or expansions in random-stratified survey programs.
+
+The Framework could also be used to evaluate whether improved MP performance could be achieved by ageing toliths for a given stock.
 This would be achieved by using the OM to simulate age-composition data, possibly with different effective sample sizes, and testing whether MPs that rely on age-composition data (e.g., a full age-structured model) outperform simpler, data-limited MPs such as the ones tested in this document.
-DLMtool's companion package MSEtool contains a large number of data-rich MPs that could be tested [huynh_msetool_2019].
-This type of analysis could be used to answer questions about whether data rich MPs such as full age-structured models would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment.
+DLMtool's companion package MSEtool contains a large number of data-rich MPs that could be tested [@huynh_msetool_2019].
+This type of analysis could be used to answer questions about whether data-rich MPs would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment.
 The effects of ageing imprecision and bias on assessment performance could also be evaluated.
 We note that simulating age- and length-composition data with sufficiently realistic "noise" can be challenging.
 Evaluating the performance of MPs with composition data that represent the underlying true composition more closely than real data may overestimate the performance of MPs that rely on composition data. 
