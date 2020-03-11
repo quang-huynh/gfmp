@@ -2,13 +2,13 @@
 
 In this document we have presented a framework for implementing an MP approach to providing Science advice for groundfish in British Columbia.
 We outlined an approach to developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
-Ultimately, it is our aim that the Framework improves the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
-Although the Framework does not emphasize explicit knowledge of fish-stock reference points, it emphasizes selecting management approaches that have a high likelihood of maintaining fish stocks above implicitly known reference points across multiple plausible states of nature.
-In the following discussion we highlight issues regarding reference points, MP tuning, assessment frequency and triggers, the inclusion of environmental effects, assessing the value of information, and use of the Framework as part of stock rebuilding plans.
+Ultimately, it is our aim that the MP Framework improves the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
+Although the MP Framework does not emphasize explicit knowledge of fish-stock reference points, it emphasizes selecting management approaches that have a high likelihood of maintaining fish stocks above implicitly known reference points across multiple plausible states of nature.
+In the following discussion we highlight issues regarding reference points, MP tuning, assessment frequency and triggers, the inclusion of environmental effects, assessing the value of information, and use of this framework as part of stock rebuilding plans.
 
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
-This MP framework, and all MSE processes, differ from conventional stock assessments in the way science advice is delivered.
+This MP Framework, and all MSE processes, differ from conventional stock assessments in the way science advice is delivered.
 In most BC groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future TAC levels.
 Uncertainty can be incorporated into the process in two main ways: (1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or (2) developing alternative models to test sensitivity to model assumptions.
 In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision table [e.g., @forrest2019], integrating uncertainties across multiple models.
@@ -16,7 +16,7 @@ This process depends upon explicit reporting of reference points and estimation 
 Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probabilities presented in the decision table and their consideration of other factors such as economic needs of the fishery.
 In this process, consideration of risk (i.e., probability of breaching reference points and resulting impacts) occurs at the final step of the decision-making process and may not always be transparent or be related to agreed-upon objectives.
 
-MP Frameworks differ from conventional assessments in two key ways: (1) Reference points and stock status are not explicitly reported; and (2) Objectives related to the probability of breaching reference points must be agreed upon at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
+MP frameworks differ from conventional assessments in two key ways: (1) Reference points and stock status are not explicitly reported; and (2) Objectives related to the probability of breaching reference points must be agreed upon at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
 Reference points and stock status are therefore still an integral component of the framework---they are calculated in the OMs and are built into the performance metrics.
 Critically, agreement on acceptable risk (acceptable probabilities of breaching reference points) must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established.
 The final decision point in this process is the MP that delivers a TAC that meets objectives, while, ideally, also achieving acceptable trade-offs among other objectives such as catch or variability in catch.
@@ -26,7 +26,7 @@ We note that, for many species, especially data-limited species, it is not possi
 MP frameworks such as this one may be especially important for these species.
 The Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status cannot be explicitly provided.
-The framework therefore increases capacity for provision of Sustainable-Fisheries-Framework- and Fish-Stocks-Provisions-compliant catch advice for data-limited species.
+The MP Framework therefore increases capacity for provision of Sustainable-Fisheries-Framework- and Fish-Stocks-Provisions-compliant catch advice for data-limited species.
 We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accommodate status reports from MSE processes, which may use alternative wording such as "under the current management procedure, the stock has a less than [X]% probability of being below the LRP over a [Y]-year time frame".
 
 ## TUNING MPs
@@ -95,11 +95,11 @@ Value-of-information analyses assess whether performance can be improved with th
 Conversely, such analyses can evaluate whether similar performance could be achieved if fewer data were available. 
 These are essentially sensitivity analyses to the addition or removal of data sources or changes to data quantity or quality.
 
-Typical data types that could be included in value-of-information analyses in applications of this framework for BC groundfish include survey-index and age-composition data.
-In terms of survey-index data, the Framework could be used to test the sensitivity of MP performance to changes in the precision of population indexes.
-For example, the Framework could quantify the expected change in the probability of maintaining a stock above its LRP in the long run given reductions or expansions in random-stratified survey programs.
+Typical data types that could be included in value-of-information analyses in applications of the MP Framework for BC groundfish include survey-index and age-composition data.
+In terms of survey-index data, this framework could be used to test the sensitivity of MP performance to changes in the precision of population indexes.
+For example, applications of this framework could quantify the expected change in the probability of maintaining a stock above its LRP in the long run given reductions or expansions in random-stratified survey programs.
 
-The Framework could also be used to evaluate whether improved MP performance could be achieved by ageing toliths for a given stock.
+The MP Framework could also be used to evaluate whether improved MP performance could be achieved by ageing toliths for a given stock.
 This would be achieved by using the OM to simulate age-composition data, possibly with different effective sample sizes, and testing whether MPs that rely on age-composition data (e.g., a full age-structured model) outperform simpler, data-limited MPs such as the ones tested in this document.
 DLMtool's companion package MSEtool contains a large number of data-rich MPs that could be tested [@huynh_msetool_2019].
 This type of analysis could be used to answer questions about whether data-rich MPs would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment.
@@ -127,7 +127,7 @@ We are grateful to the members of our technical advisory group Rob Kronlund, Ada
 We thank John Holmes for supporting our work on this framework within the Stock Assessment and Research Division at the Pacific Biological Station.
 
 We especially thank Tom Carruthers and Adrian Hordyk for their work on developing DLMtool and MSEtool.
-This project would have been a much bigger undertaking without these tools. Tom and Adrian's helpful guidance and willingness to add many new features on request have greatly improved the Framework.
+This project would have been a much bigger undertaking without these tools. Tom and Adrian's helpful guidance and willingness to add many new features on request have greatly improved this document.
 
 We thank DFO's Ocean and Freshwater Science Contribution Program for supporting the development of DLMtool and MSEtool.
 
