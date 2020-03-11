@@ -53,6 +53,8 @@ We chose this specific representation of variability to be easy to understand an
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers.
 In other words, it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
+Performance metrics in the MP Framework are easily customizable. Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria.
+
 In cases where performance metrics are calculated over a range of years, care needs to be taken to clearly report how summary statistics are calculated.
 Provisionally, we suggest calculating performance statistics across replicates and the entire time window as defined for the performance metric.
 For example, we recommend calculating the *F*~MSY~ performance metric across all replicates and years simultaneously.
