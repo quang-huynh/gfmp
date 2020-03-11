@@ -1,7 +1,7 @@
 # DISCUSSION
 
 In this document we have presented a framework for implementing an MP approach to providing Science advice for groundfish in British Columbia.
-We outlined a approach to developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
+We outlined an approach to developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
 Ultimately, it is our aim that the Framework improves the capacity of DFO to meet the requirements of Canada's Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* for data-limited species.
 Although the Framework does not emphasize explicit knowledge of fish-stock reference points, it emphasizes selecting management approaches that have a high likelihood of maintaining fish stocks above implicitly known reference points across multiple plausible states of nature.
 In the following discussion we highlight issues regarding reference points, MP tuning, assessment frequency and triggers, the inclusion of environmental effects, assessing the value of information, and use of the Framework as part of stock rebuilding plans.
@@ -9,9 +9,9 @@ In the following discussion we highlight issues regarding reference points, MP t
 ## IMPLICIT VS. EXPLICIT KNOWLEDGE OF LIMIT REFERENCE POINTS
 
 This MP framework, and all MSE processes, differ from conventional stock assessments in the way science advice is delivered.
-In most Pacific Groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future TAC levels.
-Uncertainty can be incorporated into the process in two main ways: 1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or 2) developing alternative models to test sensitivity to model assumptions.
-In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision-table [e.g., @forrest2019], integrating uncertainties across multiple models.
+In most BC groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future TAC levels.
+Uncertainty can be incorporated into the process in two main ways: (1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or (2) developing alternative models to test sensitivity to model assumptions.
+In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision table [e.g., @forrest2019], integrating uncertainties across multiple models.
 This process depends upon explicit reporting of reference points and estimation of stock status.
 Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probabilities presented in the decision table and their consideration of other factors such as economic needs of the fishery.
 In this process, consideration of risk (i.e., probability of breaching reference points and resulting impacts) occurs at the final step of the decision-making process and may not always be transparent or be related to agreed-upon objectives.
