@@ -2,13 +2,13 @@
 
 # REX SOLE CASE STUDY SUMMARY
 
-We undertook a case study of the Rex Sole (*Glyptocephalus zachirus*) stock in the West Coast Vancouver Island (WCVI) groundfish management area (Area 3CD).
-We briefly summarize that case study here, but full details are available in Appendix \@ref(app:mse-rex) and Appendix \@ref(app:desc-om-rex).
+We undertook a case study of the Rex Sole (*Glyptocephalus zachirus*) stock in the West Coast Vancouver Island (WCVI) groundfish management area (Area 3CD) to demonstrate an application of the MP Framework.
+We briefly summarize that case study here; full details are available in Appendix \@ref(app:mse-rex) and Appendix \@ref(app:desc-om-rex).
 
 Rex Sole are a flatfish caught primarily in the bottom-trawl fishery in BC.
 They can live as long as 29 years, grow as large as 58 cm, and weight up to 1.44 kg.
 Otoliths have been collected regularly on BC surveys but these otoliths have not yet been aged.
-Rex Sole are caught regularly in the DFO synoptic bottom trawl surveys and relative population indexes calculated from these surveys have a relatively small observation CV (0.07--0.12) compared to many other groundfish stocks caught in the same survey.
+Rex Sole are caught regularly in the DFO synoptic bottom trawl surveys and relative biomass indexes calculated from these surveys have a relatively small observation CV (0.07--0.12) compared to many other groundfish stocks caught in the same survey.
 Rex Sole in WCVI do not have an existing stock assessment or TAC.
 
 **Decision context**: 
@@ -26,6 +26,8 @@ We defined the performance metrics as:
 4. STC: Probability catch > reference catch (years 1--10)
 5. LTC: Probability catch > reference catch (years 35--50)
 6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (years 1--50)
+
+where reference catch was defined as the average catch from the last five years.
 
 **Operating model specification**:
 We established six reference-set OMs encompassing uncertainty in depletion of the stock prior to 1996, natural mortality (*M*), stock-recruit steepness (*h*), fishery and survey length selectivity, and the inclusion or exclusion of CPUE effort data (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-reference-set)).
