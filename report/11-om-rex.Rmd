@@ -386,7 +386,7 @@ ggplot(lwd, aes(value)) + geom_histogram() +
 L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 ```
 
-Our estimated average length at 50% maturity (`r round(mean(L50), 1)` cm) is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2005].
+Our estimated average length at 50% maturity (`r round(mean(L50), 1)` cm) is between the length at 50% maturity reported for Rex Sole off Oregon (24cm) and the Gulf of Alaska (35cm) [@abookire2006].
 
 <!-- slot-chunk-end -->
 
