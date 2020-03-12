@@ -12,14 +12,14 @@ This MP Framework, and all MSE processes, differ from conventional stock assessm
 In most BC groundfish stock assessments [e.g., @yamanaka2011; @starr2017; @forrest2019], catch advice is presented in the form of decision tables, where probabilities of breaching reference points (e.g., probability of the stock falling below the LRP) are presented over a range of possible future TAC levels.
 Uncertainty can be incorporated into the process in two main ways: (1) within a single model, through treating model parameters (e.g., $M$, $R_0$, $h$, process, and observation error terms) as random variables; and/or (2) developing alternative models to test sensitivity to model assumptions.
 In the latter case, results from some of these sensitivity models may be averaged to produce a model-averaged decision table [e.g., @forrest2019], integrating uncertainties across multiple models.
-This process depends upon explicit reporting of reference points and estimation of stock status.
+This approach depends upon explicit reporting of reference points and estimation of stock status.
 Following the production of a decision table, it is then the job of the decision-makers to select a future TAC based on the probabilities presented in the decision table and their consideration of other factors such as economic needs of the fishery.
 In this process, consideration of risk (i.e., probability of breaching reference points and resulting impacts) occurs at the final step of the decision-making process and may not always be transparent or be related to agreed-upon objectives.
 
 MP frameworks differ from conventional assessments in two key ways: (1) reference points and stock status are not explicitly reported; and (2) objectives related to the probability of breaching reference points must be agreed upon at the beginning of the process, i.e., at Step 2 of the best practices (Section \@ref(sec:best2)).
 Reference points and stock status are therefore still an integral component of the framework---they are calculated in the OMs and are built into the performance metrics.
 Critically, agreement on acceptable risk (e.g., acceptable probabilities of breaching reference points) must be reached at the beginning of the process so that performance metrics and satisficing criteria can be established.
-The final decision point in this process is the MP that delivers a TAC that meets objectives, while, ideally, also achieving acceptable trade-offs among other objectives such as catch or variability in catch.
+The final decision point in this process is the MP that delivers a TAC that meets objectives, while ideally also achieving acceptable trade-offs among other objectives such as catch or variability in catch.
 An advantage of MP frameworks is that all objectives must be transparently stated and are "baked in" to the final catch advice.
 
 We note that, for many species, especially data-limited species, it is not possible to reliably estimate biological reference points or estimate stock status.
@@ -33,14 +33,14 @@ Alternatively, if a minimum-performance-by-year calculation [@ices2016criteria] 
 ## TUNING MPs
 
 Many of the MPs in this framework are characterized by one or more parameters that control how the TAC should change in response to changes in the survey index (Appendix \@ref(app:MPs)).
-For example, the Itarget MPs have four "tuning" parameters, $w$, $x$, $\lambda$, and $\delta$, which control the rate and scale of TAC adjustments in response to the index (Appendix \@ref(app:MPs) Section \@ref(sec:mp-itarget)).
+For example, the Itarget MPs have four "tuning" parameters, $w$, $x$, $\lambda$, and $\delta$, which control the rate and scale of TAC adjustments in response to changes in the index (Appendix \@ref(app:MPs) Section \@ref(sec:mp-itarget)).
 In our Rex Sole case study, we tested six versions of the Itarget MPs over a fairly coarse scale of the tuning parameters.
 In this particular case, several of the MPs performed well with respect to satisficing criteria so we did not explore more combinations.
 However, in some applications of the framework it may be desirable to iteratively tune MPs on a fine scale to achieve desired performance outcomes.
 
-There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and homing in on better-performing MPs via the satisficing step vs. focusing effort on a few highly "tuned" MPs.
-In cases where generic MPs perform poorly, the latter approach may be desirable.
-This latter approach may also be desirable in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives [e.g., @cox2008a].
+There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and homing in on better-performing MPs via the satisficing step vs. focusing effort on a few MPs that are highly "tuned" to achieve desired outcomes.
+In cases where generic MPs perform poorly, the latter approach may be preferred.
+This latter approach may also be preferred in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives [e.g., @cox2008a].
 Ultimately, the decision about whether to evaluate generic or finely tuned MPs will be made on a stock-by-stock basis.
 The process may start with more generic MPs and graduate to more finely tuned MPs as experience is gained with the performance of specific MPs.
 
@@ -60,7 +60,8 @@ In established MSE processes [e.g., @cox2008a], informal evaluation of the perfo
 @carruthers_hordyk_2018 list several examples of MSEs where formal protocols for detecting exceptional circumstances have been established.
 In general, formal protocols have included monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
 Examples of triggers for re-evaluation include observed data falling outside some confidence interval of the OM-predicted data (e.g., 90% or 95%).
-@carruthers_hordyk_2018 recommend testing the statistical power of formal protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics.
+@carruthers_hordyk_2018 recommend testing the statistical power of formal protocols to detect exceptional circumstances.
+This may be especially important for data-limited species, where statistical power may be low due to large uncertainty in OM dynamics.
 For example, if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low.
 It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., examples provided in @carruthers_hordyk_2018].
 
@@ -85,8 +86,8 @@ In this case, no specific mechanism for changing $M$ was provided.
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.
 These are sometimes referred to as "black-swan" events [e.g., @taleb2007; @anderson2017; @anderson2019] or "spasmodic recruitment" [@caddy1983] and can be incorporated into operating models through the addition of alternative distributions for recruitment anomalies to allow for occasional very large or very small events.
-An upcoming application of the MP Framework for the Inside stock of Yelloweye Rockfish (*Sebastes ruberrimus*) will include an OM scenario that incorporates occasional sudden large recruitment events [@haggarty2020yelloweye].
-We recommend using the tools developed for this MP Framework to further explore simulation-testing of MPs that are robust to changing environmental conditions.
+An upcoming application of the MP Framework for the Inside stock of Yelloweye Rockfish will include an OM scenario that incorporates occasional sudden large recruitment events [@haggarty2020yelloweye].
+We recommend using the tools developed for this MP Framework to further explore simulation-testing approaches to identify MPs that are robust to changing environmental conditions.
 
 ## ASSESSING THE VALUE OF INFORMATION
 
