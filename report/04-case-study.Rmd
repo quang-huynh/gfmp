@@ -9,7 +9,7 @@ The case-study is presented to illustrate the framework and its outputs but *is 
 
 Rex Sole are a flatfish caught primarily in the bottom-trawl fishery in BC.
 They can live as long as 29 years, grow as large as 58 cm, and weight up to 1.44 kg.
-Otoliths have been collected regularly on BC surveys but these otoliths have not yet been aged.
+Otoliths have been collected regularly on BC surveys, but these otoliths have not yet been aged.
 Rex Sole are caught regularly in the DFO synoptic bottom trawl surveys and relative biomass indexes calculated from these surveys have a relatively small observation CV (0.07--0.12) compared to many other groundfish stocks caught in the same survey.
 Rex Sole in WCVI do not have an existing stock assessment or TAC.
 

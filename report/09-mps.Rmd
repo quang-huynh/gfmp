@@ -10,7 +10,7 @@ We note that the notation between MPs is not always consistent (e.g., different 
 We have created alternative versions of the index-based MPs that discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will be based.
 We did note these MPs with a "`.`" in front of them.
 For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data.
-We do not make this distinction in the descriptions below, but use the dot notation throughout the case studies.
+We do not make this distinction in the descriptions below but use the dot notation throughout the case studies.
 
 ## CONSTANT-CATCH MANAGEMENT PROCEDURES {#sec:mp-cc-overall}
 
@@ -268,7 +268,7 @@ pars %>%
 ## INDEX-TARGET MANAGEMENT PROCEDURES {#sec:mp-index-target}
 
 MPs in this category aim to maintain a relative abundance index at some reference level.
-Typically this reference level is based on an assumption of what the index would be if the stock was operating at $B_\textrm{MSY}$.
+Typically, this reference level is based on an assumption of what the index would be if the stock was operating at $B_\textrm{MSY}$.
 Since it will be challenging for us to apply this to real data in a manner consistent with the simulation, we instead propose modifying this MP to set the target index level to a historical index level likely chosen on a stock-by-stock basis.
 Provisionally, we set it to the mean index value from the 10 years prior to the projection period. Analysts may choose to adjust this reference period or choose some alternative reference index value on a stock-by-stock basis.
 Analysts and stakeholders can rest assured that the performance of a chosen reference index value will be evaluated based on the performance metrics of the closed-loop simulation.
@@ -319,7 +319,7 @@ where:
 - $w$ is a smoothing parameter that defines the "steepness" of the adjustment slope.
 
 @geromont2015 and @geromont2015a propose a number of configurations of these MPs.
-We propose starting with the following provisional versions, and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
+We propose starting with the following provisional versions and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
 
 We recommend the following provisional base values:
 $\lambda = 0.2$, $\delta = 1$, $w = 0.5$, $x = 1$.

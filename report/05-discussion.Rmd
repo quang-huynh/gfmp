@@ -37,7 +37,7 @@ In our Rex Sole case study, we tested six versions of the Itarget MPs over a fai
 In this particular case, several of the MPs performed well with respect to satisficing criteria so we did not explore more combinations.
 However, in some applications of the framework it may be desirable to iteratively tune MPs on a fine scale to achieve desired performance outcomes.
 
-There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and honing in on better-performing MPs via the satisficing step vs. focusing effort on a few highly "tuned" MPs.
+There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and homing in on better-performing MPs via the satisficing step vs. focusing effort on a few highly "tuned" MPs.
 In cases where generic MPs perform poorly, the latter approach may be desirable.
 This latter approach may also be desirable in more mature processes with strong stakeholder engagement, where MPs can be tuned iteratively to meet a more refined set of objectives [e.g., @cox2008a].
 Ultimately, the decision about whether to evaluate generic or finely tuned MPs will be made on a stock-by-stock basis.
@@ -52,7 +52,7 @@ Interim checks between assessments are also recommended to ensure the selected M
 
 In addition to the best practice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is formally reviewed once it has been implemented.
 Departures from an MP's predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
-Exceptional circumstances can be caused either by misspecification of the original OM(s), or can be due to unforeseen changes in the future system dynamics that were not captured in the original OM(s) (e.g., changes in natural mortality, growth, recruitment, or fishing dynamics).
+Exceptional circumstances can be caused either by misspecification of the original OM(s) or can be due to unforeseen changes in the future system dynamics that were not captured in the original OM(s) (e.g., changes in natural mortality, growth, recruitment, or fishing dynamics).
 Evidence for exceptional circumstances, occurring within the recommended assessment interval, would trigger a review of the OM(s) and MP, possibly resulting in a new OM, or an adjustment to the selected MP [@carruthers_hordyk_2018].
 
 In established MSE processes [e.g., @cox2008a], informal evaluation of the performance of MPs may be done at regular intervals as the MP is applied and new data are gathered (e.g., survey and commercial CPUE information).
@@ -60,10 +60,10 @@ In established MSE processes [e.g., @cox2008a], informal evaluation of the perfo
 In general, formal protocols have included monitoring the biomass index, catch, and sometimes other data-types such as age-composition data, and comparing observations to the OM predictions.
 Examples of triggers for re-evaluation include observed data falling outside some confidence interval of the OM-predicted data (e.g., 90% or 95%).
 @carruthers_hordyk_2018 recommend testing the statistical power of formal protocols to detect exceptional circumstances, which may be especially important for data-limited species where statistical power may be low due to large uncertainty in OM dynamics.
-For example if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low.
+For example, if the confidence interval of a predicted index is extremely large due to OM uncertainties, the likelihood of future observed indices falling outside its range may be low.
 It may therefore be necessary to use more rigorous test statistics, possibly based on multiple sources of data [e.g., examples provided in @carruthers_hordyk_2018].
 
-We recommend regular evaluation of the performance of MPs recommended by this framework, but recognize that a formal protocol has not yet been established.
+We recommend regular evaluation of the performance of MPs recommended by this framework but recognize that a formal protocol has not yet been established.
 We therefore also recommend further analyses to evaluate protocols for detecting exceptional circumstances as a matter of priority.
 
 ## INCLUDING ENVIRONMENTAL EFFECTS

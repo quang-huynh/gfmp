@@ -507,7 +507,7 @@ Between the two performance metrics used in the initial satisficing step, LT LRP
 A dot-and-line plot of the performance metrics aggregated across scenarios helps compare performance across satisficed MPs (Figure \@ref(fig:rex-dot-lines)).
 Long-term catch (LTC) was roughly comparable between a fishing strategy of fishing at *F*/*F*~MSY~ and the satisficed Itarget or .SP8040_0.6 MPs (Figure \@ref(fig:rex-dot-lines)).
 Short-term catch (STC) of all satisficed MPs exceeded these reference MPs (Figure \@ref(fig:rex-dot-lines)).
-Fixed catch MPs of 1.1 or 1.2 times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
+Fixed catch MPs of 1.1- or 1.2-times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
 These fixed-catch MPs do not incorporate feedback between the management and biological systems.
 
 Trade-offs among performance metrics for most of the satisficed MPs were relatively minor within the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-reference) and \@ref(fig:rex-spider-satisficed-mps-avg)).

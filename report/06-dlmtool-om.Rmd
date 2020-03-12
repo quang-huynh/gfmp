@@ -29,7 +29,7 @@ Operating model development in the MP Framework follows three steps:
 1. Set parameter values and ranges in the OM (OM equations are provided in this appendix; default parameter settings are provided in Appendix \@ref(app:default-slots); and examples of user-defined parameter settings are provided in Appendix \@ref(app:desc-om-rex)).
 
 2. Pass the OM parameters to the SRA model, which conditions the OM by fitting an age-structured SRA to historical observed catches and indices of abundance (with options to fit to age- and/or length-composition data if available).
-This results in calibrated estimates of model parameters, and estimates of historical biomass and historical fishing mortality (in years $t_1$ to $t_c$), which are consistent with historical observations.
+This results in calibrated estimates of model parameters and estimates of historical biomass and historical fishing mortality (in years $t_1$ to $t_c$), which are consistent with historical observations.
 Equations for the SRA model are provided in Appendix \@ref(app:sra).
 
 3. Pass the calibrated parameter values back to the OM (now the "conditioned" OM) for use in the closed-loop simulation projections, starting in year $t_{c+1}$.
@@ -262,7 +262,7 @@ r_{y,a} = \begin{cases}
 $$
 
 where $\widetilde{L}_\textrm{rmax}$ is the length at maximum retention.
-The standard deviation parameters of the ascending limb is given by the length at 5% retention $\widetilde{L}_{r5}$:
+The standard deviation parameter of the ascending limb is given by the length at 5% retention $\widetilde{L}_{r5}$:
 
 $$
 \sigma_{\textrm{rasc}} = \frac{{\widetilde{L}}_{r5} - \widetilde{L}_{\textrm{rmax}}}{\sqrt{- \log_{2^{0.05}}}}
@@ -285,7 +285,7 @@ F_{y,a} = \min \left( - \ln\left( 1 - \frac{C_{y,a}}{N_{y,a}{w}_{a}} \right),\wi
 (\#eq:dlm-om-Fay)
 $$
 
-The parameter ${F_\textrm{max}}$ can be adjusted, but is set to 3 by default.
+The parameter ${F_\textrm{max}}$ can be adjusted but is set to 3 by default.
 
 ## OBSERVATION DYNAMICS
 
@@ -504,7 +504,7 @@ Note that, as for Equation \@ref(eq:dlm-om-nya), the maximum age class $A$ is tr
 
 ## TIME-VARYING PARAMETERS {#sec:dlmtool-time-varying}
 
-The OM as described above assumes that model parameters representing growth, selectivity, and fishery catchability are time-invariant.
+The OM as described above assumes that model parameters representing growth, selectivity, and fishery catchability are time invariant.
 DLMtool allows users to set a number of key parameters to vary through time, according to user-specified slope and variation parameters.
 For example, if the growth parameters $L_\infty$ and $\kappa$ are set to be time-varying [@carruthers2018, their Appendix C, Equations 7 and 8], then the von Bertalanffy growth curve will vary through time.
 This will affect other model variables that depend on length, including weight-at-age (Equation \@ref(eq:dlm-om-wta)), maturity-at-length and age (Equations \@ref(eq:dlm-om-matl) and \@ref(eq:dlm-om-mata)), and selectivity-at-age (Equation \@ref(eq:dlm-om-va)).
@@ -524,7 +524,7 @@ which is the average unfished spawning biomass over the first $\theta_{a50}$ yea
 
 Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
 
-How to treat reference points when parameters, particularly productivity parameters such as $\widetilde{M}$ or $\widetilde{\kappa}$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points, and suggest this is an important research area for future applications of the Framework.
+How to treat reference points when parameters, particularly productivity parameters such as $\widetilde{M}$ or $\widetilde{\kappa}$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points and suggest this is an important research area for future applications of the Framework.
 
 \clearpage
 

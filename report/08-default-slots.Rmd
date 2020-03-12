@@ -21,7 +21,7 @@ stock_default <- methods::new('Stock')
 
 *(Optional) Natural mortality rate at age. Vector of length maxage. Positive real number*.
 
-By default we will not specify natural mortality rate by age.
+By default, we will not specify natural mortality rate by age.
 
 ```{r desc-stock-m2-default, results = knitr_results, echo = knitr_echo}
 stock_default@M2
@@ -32,7 +32,7 @@ stock_default@M2
 
 *Exponent of the Lorenzen function assuming an inverse relationship between M and weight. Uniform distribution lower and upper bounds. Real numbers <= 0.*
 
-By default we will not use this functionality.
+By default, we will not use this functionality.
 
 ```{r desc-stock-mexp-default, results = knitr_results, echo = knitr_echo}
 stock_default@Mexp <- c(NA_real_, NA_real_)
@@ -43,7 +43,7 @@ stock_default@Mexp <- c(NA_real_, NA_real_)
 
 *Inter-annual variability in natural mortality rate expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers*.
 
-By default we will assume that natural mortality is not time-varying, although this might be an important slot to explore as part of a robustness set for some stocks.
+By default, we will assume that natural mortality is not time-varying, although this might be an important slot to explore as part of a robustness set for some stocks.
 
 ```{r desc-stock-msd-default, results = knitr_results, echo = knitr_echo}
 stock_default@Msd
@@ -55,7 +55,7 @@ stock_default@Msd
 
 *(Optional) Period for cyclical recruitment pattern in years. Uniform distribution lower and upper bounds. Non-negative real numbers*
 
-By default we will not assume a cyclical recruitment pattern.
+By default, we will not assume a cyclical recruitment pattern.
 
 ```{r desc-stock-period-default, results = knitr_results, echo = knitr_echo}
 stock_default@Period
@@ -66,7 +66,7 @@ stock_default@Period
 
 *(Optional) Amplitude in deviation from long-term average recruitment during recruitment cycle (e.g., a range from 0 to 1 means recruitment decreases or increases by up to 100% each cycle). Uniform distribution lower and upper bounds. 0 < Amplitude < 1*.
 
-By default we will not assume a cyclical recruitment pattern.
+By default, we will not assume a cyclical recruitment pattern.
 
 ```{r desc-stock-amplitude-default, results = knitr_results, echo = knitr_echo}
 stock_default@Amplitude
@@ -77,7 +77,7 @@ stock_default@Amplitude
 
 *Inter-annual variability in growth parameter k expressed as coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-By default we will assume that growth is not time-varying.
+By default, we will assume that growth is not time-varying.
 
 ```{r desc-stock-ksd-default, results = knitr_results, echo = knitr_echo}
 stock_default@Ksd
@@ -88,7 +88,7 @@ stock_default@Ksd
 
 *Inter-annual variability in maximum length expressed as a coefficient of variation. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
-By default we will assume that growth is not time-varying.
+By default, we will assume that growth is not time-varying.
 
 ```{r desc-stock-linfsd-default, results = knitr_results, echo = knitr_echo}
 stock_default@Linfsd
@@ -164,7 +164,7 @@ fleet_default <- methods::new('Fleet')
 
 *Years representing join-points (vertices) of time-varying effort. Vector. Non-negative real numbers.*
 
-By default we will populate this from the SRA model.
+By default, we will populate this from the SRA model.
 
 ```{r desc-fleet-effyears-default, results = knitr_results, echo = knitr_echo}
 fleet_default@EffYears
@@ -175,7 +175,7 @@ fleet_default@EffYears
 
 *Lower bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-By default we will populate this from the SRA model.
+By default, we will populate this from the SRA model.
 
 ```{r desc-fleet-efflower-default, results = knitr_results, echo = knitr_echo}
 fleet_default@EffLower
@@ -186,7 +186,7 @@ fleet_default@EffLower
 
 *Upper bound on relative effort corresponding to EffYears. Vector. Non-negative real numbers.*
 
-By default we will populate this from the SRA model.
+By default, we will populate this from the SRA model.
 
 ```{r desc-fleet-effupper-default, results = knitr_results, echo = knitr_echo}
 fleet_default@EffUpper
