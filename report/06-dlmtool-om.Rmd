@@ -326,8 +326,6 @@ $$
 
 where the lognormal error term, $\varepsilon$, is drawn from a normal distribution whose standard deviation $\sigma_I$ is sampled at random in each simulation:
 
-<!-- TODO: Shouldn't the epsiloni equation use SD instead of variance?? RF changed to sd-->
-
 $$
 \varepsilon_{I,y}\sim \textrm{Normal}\left( 0,\widetilde{{\sigma}}_{I} \right).
 (\#eq:dlm-om-epsiloni)
@@ -375,24 +373,6 @@ $$
 (\#eq:dlm-om-epsiloni-addind)
 $$
 
-<!--
-By default the OM samples simulation-specific observation error
-${{\sigma}}_{I}$ from a uniform distribution.
--->
-
-<!--TODO: the above text will need to be modified to reflect that sigma comes from conditioning in the SRA. Still to determine whether it will come from historical observed index or from residuals in SRA fit to historical observed index-->
-
-<!--
-$$
-{\sigma}_{I}\sim \textrm{Uniform}\left( \textrm{LB}_{I},\textrm{UB}_{I} \right).
-(\#eq:dlm-om-sigi)
-$$
--->
-
-<!--
-This approach means that the OM can specify a time series with a low degree of error (e.g., low sampled values of ${\sigma}_{I}$ specified by lower $\textrm{LB}_I$ and $\textrm{UB}_I$), or a large degree of error (e.g., large sampled values of ${\sigma}_{I}$ specified by higher $\textrm{LB}_I$ and $\textrm{UB}_I$).
--->
-
 ### Catch composition data
 
 Two types of catch composition observations are simulated, catches-by-age-class-by-year (CAA) and catches-by-length-class-by-year (CAL).
@@ -405,13 +385,6 @@ For example, $\widetilde{\textrm{ESS}}_\textrm{CAA}$ independent catch
 samples-at-age (e.g., 20 per year) are sampled in proportion $p_a$ to the
 catches-at-age predicted by the model ($C_{y,a}$, Equation \@ref(eq:dlm-om-cata)):
 
-<!-- Delete this
-$$
-C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \textrm{ESS}_{\textrm{CAA}},p_{a} = \ \sum_{r}^{n_{r}}C_{y,a} \right)
-(\#eq:dlm-om-cataobs)
-$$
--->
-
 $$
 C_{y,a}^{\textrm{obs}}\sim \textrm{Multinomial}\left( \widetilde{\textrm{ESS}}_{\textrm{CAA}},p_{a} = \ C_{y,a} \right).
 (\#eq:dlm-om-cataobs)
@@ -419,8 +392,6 @@ $$
 
 For each year, the proportion of samples at age is then inflated to match the
 total sample size $\widetilde{n}_\textrm{CAA}$ and rounded to the nearest integer ($\textrm{nint}$):
-
-<!-- is this equation correct?-->
 
 $$
 C_{y,a}^{\textrm{obs}} = \textrm{nint}\left( \ \frac{{{C}}_{y,a}^{\textrm{obs}}\ \widetilde{n}_{\textrm{CAA}}}{\widetilde{\textrm{ESS}}_{\textrm{CAA}}} \right).

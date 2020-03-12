@@ -487,8 +487,6 @@ In addition to the data-based MPs described above, we propose including a simple
 
 Biomass $B$ in year $y$ is calculated as
 
-<!-- TODO: add Fletcher 1978 -->
-
 $$
 B_y = B_{y-1} + P_{y-1} - C_{y-1},
 $$

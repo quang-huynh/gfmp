@@ -78,8 +78,6 @@ To isolate the effects of specific sources of uncertainty on performance of MPs,
 In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
 For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality ($M$), steepness of the stock-recruit relationship ($h$), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
 
-<!-- TODO: Here would be a place to talk about fancier distributions versus uniform distributions vs point values. -->
-
 Candidate uncertainties to include in OMs in the robustness set may include:
 
 * Predation scenarios (e.g., seal predation)
@@ -200,52 +198,6 @@ Data-limited MP development is a rich area of research, likely still in its infa
 More MPs may be developed as part of the application of this framework and will certainly be developed elsewhere in the literature.
 MPs used when applying this framework may also be "tuned" to perform well for specific stocks by adjusting algorithm parameters or priors.
 The framework presented here has been designed to accommodate new MPs and we expect the library of candidate MPs to grow over time, with the framework providing a means to rigorously test new MPs through the closed-loop simulation process.
-
-<!-- TODO: Quang: Text should highlight the fact that anyone can propose an MP so long as it is tested in closed-loop simulation. It should also be noted that MPs over time should be tuned to be more specific to stock/region (e.g. as pointed out in teleconference, build in a minimum TAC to the MPs for non-target stocks). -->
-
-<!-- We suggest the empirical index-based MPs are likely to be most suitable for most data-limited groundfish stocks in the Pacific Region. This family of MPs generally try to maintain an index (usually a relative biomass or abundance index from a fisheries-independent survey) at some level by adjusting catch recommendations up or down as the index moves up or down. Different MPs include various levels of smoothing or thresholds and various methods of deriving a target index level. Such MPs have been considered as part of ... in the Pacific Region (REFs). -->
-
-<!-- In addition to the empirical index-based MPs DLMtool and MSEtool include simple surplus production models, which may be considered for some stocks. We emphasize that these model-based MPs are simpler than the implementations often used in previous Pacific Region stock assessments. The point of using these models is to test their success at achieving the performance metrics and not the specific assumptions made within the implementations of the model. -->
-
-<!--
-TODO: For discussion?
-
-### Broad types of MPs:
-
-- Make into a table?
-
-**Constant-catch MPs**
-
-- no feedback!
-- often fine for short-term projections
-- longterm biomass will go towards equilibrium, which may be far lower (e.g. effectively 0) or higher than desired
-- mostly included as a point of reference
-
-**Index-ratio MPs**
-
-- moving reference window
-- simple concept
-- has potential for pathological behaviour since it's not "anchored" to any fixed reference
-
-**Index-slope MPs**
-
-- moving reference window
-- similar to "index ratio" types, but fits a regression of some kind and makes recommendations based on the slope
-
-**Index-target MPs**
-
-- fixed reference window
-- likely to stabilize B and F and catch over time; at what level is the question
-- makes the assumption that the specified target index is where we want the stock to be (which is tested against objectives but conditional on the operating model)
-- target window may require judgement on a case-by-case basis
-
-**Model-based MPs**
-
-- here, SP models paired with HCRs
-- more complex than data-based rules
-- more theoretically sound; doesn't necessarily mean will perform well against objectives
-- likely requires "tuning" of priors and possibly HCRs
--->
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:approach5}
 
