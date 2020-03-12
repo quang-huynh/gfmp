@@ -128,12 +128,11 @@ We focus on two main types of MPs: data-based and model-based MPs.
 In choosing from the available data- and model-based MPs, we excluded MPs based on a number of requirements that would rarely be met for our stocks.
 We excluded MPs that required knowledge of absolute abundance since there are unlikely to be cases where we have such knowledge in a data-limited case.
 We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age-composition data are not available.
-We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty for the stocks to which this framework will be applied. While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
-
-<!--*TODO: MP application interval (see Issue #82)*-->
+We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty for the stocks to which this framework will be applied.
+While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
+We also, in some cases, excluded MPs that are difficult to understand and communicate.
 
 All MPs included in this framework are described in Appendix \@ref(app:MPs).
-<!-- TODO: Quang: also desirable if MPs are easy to understand -->
 
 ### Data-based MPs
 
