@@ -2,7 +2,7 @@
 
 ## BACKGROUND {#sec:intro-background}
 
-Fishery-independent surveys conducted by Fisheries and Oceans Canada (DFO) encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the British Columbia (BC) integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[@dfo2017] lists approximately 80 species-area fish stocks for which annual Total Allowable Catches (TACs) are required, most of which are applied as Individual Transferable Quotas (ITQs) within the BC integrated groundfish fishery.
+Fishery-independent surveys conducted by Fisheries and Oceans Canada (DFO) encounter over 200 groundfish species in the Pacific region. Of these, approximately 100 are regularly caught in the British Columbia (BC) integrated groundfish fishery. The Pacific Region Groundfish Integrated Fisheries Management Plan (IFMP)[@dfo2017] lists approximately 80 species-area fish stocks for which annual total allowable catches (TACs) are required, most of which are applied as individual transferable quotas (ITQs) within the BC integrated groundfish fishery.
 
 In recent decades, advice on TACs for Pacific groundfish species has been developed using statistical stock assessment models that rely on indices of abundance, age-composition, commercial catch, and biological data that enable estimation of key population metrics such as stock status, relative depletion, recruitment, growth, fishery selectivity, and natural and fishing mortality. These stock assessment models are data and resource-intensive, with only a few assessments produced each year with available data and Science sector resources.
 
