@@ -42,7 +42,7 @@ We propose the following provisional performance metrics, where MSY refers to ma
 
 In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term. FMSY is a conservation performance metric measuring Objective 3 over the whole projection period. LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AADC is an economic metric, representing Objective 5, measured over the whole projection period.
 
-The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period. However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species or 50 years. We further suggest averaging the performance metrics over a short (e.g., 5--15 year) window before the final year.
+The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period. However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species or 50 years. We further suggest averaging the long-term performance metrics over a short (e.g., 5--15 year) window before the final year.
 
 We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery. Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
 
@@ -99,7 +99,7 @@ DLMtool's companion software package, MSEtool [@huynh_msetool_2019], includes an
 An SRA is effectively a catch-at-age model that estimates the combinations of unfished recruitment, depletion, fishing effort, recruitment deviations, and selectivity that would be consistent with the observed data given assumptions about other parameters (e.g., growth, natural mortality).
 The SRA implementation in MSEtool can be conditioned on catch or effort time series (Appendix \@ref(app:sra)).
 For most applications for BC groundfish stocks, we suggest conditioning on catch, as historical trajectories of catch tend to be more reliable than time series of effort, especially given uncertainties in how to best represent and interpret effort in multispecies fisheries.
-Further details on the SRA OM-calibration model are available in Appendix \@ref(app:sra).
+Further details on the SRA OM-calibration model are provided in Appendix \@ref(app:sra).
 
 For some data-limited stocks, indices of abundance may be considered less reliable due to sampling difficulties or rarity.
 In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
@@ -268,7 +268,7 @@ The first is a bivariate dot plot, which lends itself to comparing any two perfo
 The second is a "radar" plot (also known as a "kite" or "spider" plot).
 Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian ones [@diehl2010; @feldman2013; @albo2016].
 
-To understand the processes leading to the performance metrics, we suggest that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
+To understand the processes leading to the performance metrics, we recommend that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
 We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the timeseries across scenarios (Figure \@ref(fig:methods-proj-sens)).
 Inspection of these timeseries can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the timeseries.
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
@@ -276,7 +276,7 @@ Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY t
 
 Visualization of the simulated population index timeseries is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
 First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
-Second, the range of future projected can be used as a trigger for re-evaluating an OM.
+Second, the range of future projected index values can be used as a trigger for re-evaluating an OM.
 For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
 We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
 For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
@@ -285,14 +285,14 @@ Closed-loop simulation itself, can be used to establish appropriate triggers wit
 Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
 One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
 This visualization highlights the parameter space with the highest probability density via quantile kernel-density-estimate contour lines.
-The other visualization visualizes the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
+The other visualization shows the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
 The final year of Figure \@ref(fig:methods-worm) is an alternative representation of Figure \@ref(fig:methods-kobe).
 
 (ref:fig-methods-tigure) This probability table illustrates performance metric values across a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
 The MPs are ordered by decreasing performance metric values from top to bottom starting with the left-most performance metric and using columns from left to right to break any ties.
 The colour shading reflects the underlying numbers and is included to make the differences in the values more readily apparent.
-Outline cells represent MPs that met a given satisficing criterion.
+Outlined cells represent MPs that met a given satisficing criterion.
 MP names shaded grey represent reference MPs.
 
 ```{r methods-tigure, fig.cap="(ref:fig-methods-tigure)", out.width="3.5in"}
