@@ -453,7 +453,7 @@ We assessed convergence of the closed-loop simulation by plotting the cumulative
 We deemed 250 replicates sufficient since the rank order of MPs was consistent for this number of replicates (Figure \@ref(fig:rex-converge)).
 
 To determine which MPs would be carried forward as satisficed MPs [@miller2010], we began by assessing average and minimum performance across all candidate MPs for the reference set of OMs (Figures \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-min)).
-To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of `r names(satisficed_criteria)[1]` $>$ `r satisficed_criteria[[1]]` and `r names(satisficed_criteria)[2]` $>$ `r satisficed_criteria[[2]]`.
+To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of `r names(satisficed_criteria)[1]` $>$ `r satisficed_criteria[[1]]` (9 times out of 10) and `r names(satisficed_criteria)[2]` $>$ `r satisficed_criteria[[2]]` (4 times out of 5).
 We could apply these criteria to either the average (Figures \@ref(fig:rex-tigure-avg)) or minimum performance (Figures \@ref(fig:rex-tigure-min)) and such a decision is likely best made by a technical working group or decision-makers coupled with stakeholders in an applied setting.
 In this case study, it made little difference whether we chose the average or minimum performance metrics to apply the satisficing criteria.
 We therefore chose to apply the satisficing criteria to the minimum performance metrics.
@@ -653,7 +653,7 @@ Figure \@ref(fig:rex-proj-scenarios)
 
 The "No CPUE Ceq. 50%" robustness scenario represents markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
 This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_t$ values around 2005 (Figure \@ref(fig:rex-F-om)).
-In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60, while the constant catch and surplus production model achieve LT LRP $<$ 0.35 (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
+In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60 (3 times out of 5), while the constant catch and surplus production model achieved LT LRP $<$ 0.35 (7 times out of 20) (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 Other performance metrics show less contrast among the MPs, although LT USR also remains higher for the Itarget vs. constant-catch or surplus-production MPs (Figure \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 
 This robustness scenario demonstrates stronger trade-offs among performance metrics than the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-robust) and \@ref(fig:rex-spider-satisficed-mps-robust)).
