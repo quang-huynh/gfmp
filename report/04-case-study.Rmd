@@ -33,7 +33,7 @@ where reference catch was defined as the average catch from the last five years.
 
 **Operating model specification**:
 We established six reference-set OMs encompassing uncertainty in depletion of the stock prior to 1996, natural mortality (*M*), stock-recruit steepness (*h*), fishery and survey length selectivity, and the inclusion or exclusion of CPUE effort data (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-reference-set)).
-We further established two robustness-set OMs encompassing less plausible but possible additional sources of structural uncertainty: (1) a scenario that assumes the stock was lightly fished before 1996 and excludes the CPUE data and (2) a scenario that assesses robustness to future increases in natural mortality (possibly due to climate change or shifts in predator abundance) (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-robustness-set)).
+We further established two robustness-set OMs encompassing less plausible but possible additional sources of structural uncertainty: (1) a scenario that assumes the stock was lightly fished before 1996 and excludes the CPUE data; and (2) a scenario that assesses robustness to future increases in natural mortality (possibly due to climate change or shifts in predator abundance) (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-robustness-set)).
 
 We documented the initial parameterization of the OMs (Appendix \@ref(app:desc-om-rex)) and the conditioning of the OMs using stochastic stock reduction analysis (SRA; Appendix \@ref(app:sra)).
 The conditioning estimated biomass depletion in the last historical year, the magnitude of unfished recruitment, fishing mortality at age by year, and historical recruitment deviations.
@@ -43,7 +43,7 @@ We retained only parameter combinations that had plausible fits to the observed 
 We worked with the full set of provisional candidate MPs described in Appendix \@ref(app:MPs).
 We modified the MPs to only observe even years of the survey index to reflect the biennial nature of the WCVI synoptic bottom trawl survey.
 
-**Close-loop simulation application**:
+**Closed-loop simulation application**:
 We applied satisficing criteria based on the LT LRP and STC performance metrics. We discarded some MPs with near-identical performance to render a manageable set of seven MPs for further consideration.
 These MPs included index-target MPs, surplus production models paired with a harvest control rule, and two constant catch MPs.
 
