@@ -91,18 +91,18 @@ We recommend using the tools developed for this MP Framework to further explore 
 
 ## ASSESSING THE VALUE OF INFORMATION
 
-The MP Framework provides the tools to test the "value of information" (VoI) on the performance of MPs.
+The MP Framework provides the tools to evaluate the "value of information" (VoI) on the performance of MPs.
 Value-of-information analyses assess whether performance can be improved with the addition of resources invested in data-collection.
 Conversely, such analyses can evaluate whether similar performance could be achieved if fewer data were available.
 These are essentially sensitivity analyses to the addition or removal of data sources or changes to data quantity or quality.
 
 Typical data types that could be included in value-of-information analyses in applications of the MP Framework for BC groundfish include survey-index and age-composition data.
 In terms of survey-index data, this framework could be used to test the sensitivity of MP performance to changes in the precision of population indexes.
-For example, applications of this framework could quantify the expected change in the probability of maintaining a stock above its LRP in the long run given reductions or expansions in random-stratified survey programs.
+For example, applications of the framework could quantify the expected change in the probability of maintaining a stock above its LRP in the long term given reductions or expansions in random-stratified survey programs.
 
 The MP Framework could also be used to evaluate whether improved MP performance could be achieved by ageing otoliths for a given stock.
 This would be achieved by using the OM to simulate age-composition data, possibly with different effective sample sizes, and testing whether MPs that rely on age-composition data (e.g., a full age-structured model) outperform simpler, data-limited MPs such as the ones tested in this document.
-DLMtool's companion package MSEtool contains a large number of data-rich MPs that could be tested [@huynh_msetool_2019].
+DLMtool's companion package MSEtool contains a large number of data-rich MPs (age-structured models) that could be utilized for this purpose [@huynh_msetool_2019].
 This type of analysis could be used to answer questions about whether data-rich MPs would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment.
 The effects of ageing imprecision and bias on assessment performance could also be evaluated.
 We note that simulating age- and length-composition data with sufficiently realistic "noise" can be challenging.
