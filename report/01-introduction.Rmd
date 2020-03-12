@@ -35,7 +35,7 @@ On June 21, 2019, major amendments to Canada's [*Fisheries Act*](https://laws-lo
 
 For data-limited stocks, data are generally insufficient to adequately account for uncertainty in development of BRPs and assessment of stock status relative to BRPs. To comply with the legal requirements identified in the Fish Stocks provisions for data-limited species, it is therefore necessary to develop defensible methods and a framework for setting catch limits that promote sustainability and maintain stocks above their LRP, recognizing that, in many cases, the LRP and stock status cannot be reliably estimated.
 
-The objective of the framework proposed in this document is to preserve the *intent* of the Precautionary Approach Framework, legislated in the Fish Stocks provisions, and provide decision-makers with a quantified characterization of risk with respect to the likelihood of maintaining stocks above the LRP, regardless of the quality of available data.
+The objective of the framework proposed in this document is to preserve the *intent* of the Precautionary Approach Framework, legislated in the Fish Stocks provisions, and provide decision-makers with a quantified characterization of risk with respect to the likelihood of maintaining stocks above the LRP, regardless of the quality and quantity of available data.
 
 ## TIERED APPROACHES {#sec:intro-tiered-approaches}
 
@@ -45,7 +45,7 @@ In 2016, a CSAS workshop was held in the Pacific region to review international 
 
 ## MANAGEMENT-ORIENTED APPROACHES {#sec:intro-management-oriented}
 
-In the scientific literature and in practice around the world, there has been a movement towards management-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment methods focus on estimation of biological parameters and stock status explicitly, a management-oriented approach focuses on identifying MPs that perform best with respect to policy and fishery objectives when implemented in a "closed-loop" simulation environment (Figure \@ref(fig:mse-chart-basic)).
+Worldwide, there has been a movement towards management-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016]. Whereas traditional stock assessment methods focus explicitly on estimation of biological parameters and stock status, a management-oriented approach focuses on identifying MPs that perform best with respect to policy and fishery objectives when implemented in a "closed-loop" simulation environment (Figure \@ref(fig:mse-chart-basic)).
 
 Closed-loop simulation is distinguished from conventional stock assessment because it simulates feedback between implementation of the MPs and the simulated system representing the fish stock and its environment, described by one or more operating models (OMs). This approach not only takes into account the effect of the MPs on the system but also the future data collected from the system and its use in the MPs [@punt2016]. Data-limited MPs may be represented by a simple empirical rule, such as an adjustment to catch based on a change in an index of abundance or may be based on more complex methods incorporating multiple data sources and statistical models.
 
@@ -81,8 +81,7 @@ There are a number of expected benefits of this project. Compared to the current
 
 * provide evidence-based catch advice for more stocks;
 * develop a standardized and transparent approach across stocks;
-* test performance of data-limited MPs for providing catch advice with respect to meeting sustainability and fishery objectives;
-* reduce the turnaround time between requests for science advice and provision of advice; and
+* test performance of data-limited MPs for providing catch advice with respect to meeting sustainability and fishery objectives; and
 * help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock assessment advice.
 
 Critically, the framework will develop methods to improve capacity for DFO Science to provide sustainable, data-limited catch advice, consistent with Canada's Precautionary Approach Framework as legislated under the Fish Stocks provisions, therefore enabling data-limited stocks to be brought into compliance with the Fish Stocks provisions of the *Fisheries Act*.
