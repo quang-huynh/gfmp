@@ -282,7 +282,7 @@ Unless otherwise stated, all other scenarios drew from a baseline uniform distri
 
 #### Selectivity
 
-We considered one alternative scenario that differed in terms of the length- and age- selectivity of the commercial fleet and the WCVI Synoptic survey (Table \@ref(tab:rex-scen)).
+We considered one alternative scenario that differed in terms of the length- and age- selectivity of the commercial fleet and the WCVI synoptic survey (Table \@ref(tab:rex-scen)).
 Unless otherwise stated, all other scenarios drew from a length selectivity curve that approximately matched the maturity ogive ($L^5 = 22$, $L^\textrm{FS} = 32$).
 
 * The scenario "Lower selectivity" considers that the selectivity curve could be shifted to the left resulting in both the survey and the commercial fleet capturing younger fish ($L^5 = 17$, $L^\textrm{FS} = 28$).

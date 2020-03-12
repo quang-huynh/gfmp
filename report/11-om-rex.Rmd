@@ -323,7 +323,7 @@ Although we visualize the relationship for male and female fish separately (Figu
 We used priors of Normal(0, 50) for the intercept and Normal(0, 10) for the effect of length and male/female.
 We sampled 2000 iterations for each of four chains from the posterior and check that the chains were consistent with convergence using the same approach as described above for the von Bertalanffy model.
 
-```{r desc-stock-mat-plot, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length. \"Rug lines\" along the top and bottom indicate individual sampled fish was some overlap. Curved lines represent predictions from a logistic regression. Vertical line represents the length at 50\\% maturity."}
+```{r desc-stock-mat-plot, fig.width=6, out.width="4in", fig.cap="Predicted maturity by length. \"Rug lines\" along the top and bottom indicate individual sampled fish with some overlap. Curved lines represent predictions from a logistic regression. Vertical line represents the length at 50\\% maturity."}
 m_mat <- gfplot::fit_mat_ogive(drex$survey_samples, type = "length")
 gfplot::plot_mat_ogive(m_mat)
 
@@ -373,7 +373,7 @@ mat_prob <- function(x, intercept, slope) {
 cpars$L50 <- L50[i]
 ```
 
-```{r desc-lw-fits, fig.cap="Posterior samples of length at maturity parameters. L50 represents length at 50\\% maturity, L90 represents link that 95\\% maturity, and L50\\_95 represents the length difference between L50 and L95.", fig.width=6, out.width="4in", fig.asp=0.5}
+```{r desc-lw-fits, fig.cap="Posterior samples of length at maturity parameters. L50 represents length at 50\\% maturity, L90 represents length at 95\\% maturity, and L50\\_95 represents the length difference between L50 and L95.", fig.width=6, out.width="4in", fig.asp=0.5}
 L95 <- logit_perc(a = post_mat$`(Intercept)`, b = post_mat$length, perc = 0.95)
 L50_95 <- L95 - L50
 set.seed(3828)
@@ -595,7 +595,7 @@ obs_rex@Name <- "BC observation model"
 
 *Log-normal catch observation error expressed as a CV. Uniform distribution lower and upper bounds.*
 
-Since 1996, observation error on catch should be negligible:
+Since 1996, observation error on catch should be negligible.
 
 ```{r desc-obs-cobs-rex, results = knitr_results, echo = knitr_echo}
 obs_rex@Cobs <- c(0, 0)
@@ -621,7 +621,7 @@ obs_rex@Cbiascv <- c(0, 0)
 
 *Observation error in the relative abundance indices expressed as a CV. Uniform distribution lower and upper bounds.*
 
-We will sample with replacement from the CVs of the observed WCVI Synoptic trawl survey index values for Rex Sole:
+We will sample with replacement from the CVs of the observed WCVI synoptic trawl survey index values for Rex Sole.
 
 ```{r}
 set.seed(2943)
