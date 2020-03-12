@@ -28,7 +28,7 @@ The following are the main plotting functions:
 
 * `plot_dots()` takes a named list of performance metric data frames and creates a dot or dot-and-line plot of performance metrics. For example, Figure \@ref(fig:rex-dot-lines).
 
-* `plot_tradeoff()` takes a named list of performance metric data frames and creates a tradeoff plot of two selected performance metrics. For example, Figure \@ref(fig:rex-tradeoff-reference).
+* `plot_tradeoff()` takes a named list of performance metric data frames and creates a trade-off plot of two selected performance metrics. For example, Figure \@ref(fig:rex-tradeoff-reference).
 
 * `plot_radar()` takes a named list of performance metric data frames and creates a radar plot. For example, Figure \@ref(fig:rex-spider-satisficed-mps-avg).
 

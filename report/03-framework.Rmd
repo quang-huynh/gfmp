@@ -48,7 +48,7 @@ We suggest the "short-term" year range, which only applies to the economic perfo
 
 The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole. This reference level could be obtained through consultation with stakeholders or by identifying the average or minimum catch in recent years (e.g., minimum catch in the last 5 years).
 
-The provisional performance metric AADC represents average absolute interannual difference in catch. 
+The provisional performance metric AADC represents average absolute interannual difference in catch.
 We chose this specific representation of variability to be easy to understand and simple to compare historical values.
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers.
 In other words, it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
@@ -270,7 +270,7 @@ These authors recommended reducing the set of robustness scenarios down to those
 Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios.
 
 We recommend presenting performance metrics from the reference and robustness sets separately.
-For most visualisations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
+For most visualizations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
 An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference-set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
 The first case is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
 We recommend presenting performance metrics from the individual robustness-set scenarios separately.
@@ -284,16 +284,16 @@ First, we suggest a graphical representation of a probability table (Figure \@re
 This visualization lends itself to a large number of MPs and so works well for displaying results for *all* MPs---not necessarily just satisficed MPs.
 By shading the cells according to their underlying performance metric value, the visualization draws the eye to similarities and differences across MPs.
 We suggest sorting the rows by performance metrics of particular interest, shading the MP name differently for reference MPs, and highlighting any satisficing criteria by outlining cells that pass satisficing thresholds.
-The default colour shading is colourblind proof, prints accurately in greyscale, and is visually linear in its gradient [@viridis].
+The default colour shading is colourblind proof, prints accurately in grey scale, and is visually linear in its gradient [@viridis].
 
 Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across reference-set scenarios (Figure \@ref(fig:methods-dots)).
 This figure highlights average performance across scenarios (dots) along with the range of performance values seen across scenarios (thin lines).
 This figure also illustrates the range of performance after dropping the scenarios with the highest and lowest of each performance metric values (thicker lines).
 
-We suggest two possible visualizations for highlighting performance-metric tradeoffs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
+We suggest two possible visualizations for highlighting performance-metric trade offs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
 The first is a bivariate dot plot, which lends itself to comparing any two performance metrics.
 The second is a "radar" plot (also known as a "kite" or "spider" plot).
-Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to cartesian ones [@diehl2010; @feldman2013; @albo2016].
+Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian ones [@diehl2010; @feldman2013; @albo2016].
 
 To understand the processes leading to the performance metrics, we suggest that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
 We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the timeseries across scenarios (Figure \@ref(fig:methods-proj-sens)).
@@ -307,7 +307,7 @@ Second, the range of future projected can be used as a trigger for re-evaluating
 For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
 We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
 For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
-Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018]. 
+Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018].
 
 Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
 One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
