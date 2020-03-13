@@ -14,7 +14,7 @@ The Canadian Sustainable Fisheries Framework (SFF) lays the foundation for the p
 The Precautionary Approach Framework [@dfo2009] relies on the definition of biological reference points (BRPs), which define biomass targets as well as low biomass thresholds to be avoided with high probability.
 The approach requires that fishing mortality be adjusted in relation to two levels of stock status---an Upper Stock Reference (USR) and a Limit Reference Point (LRP) (Figure \@ref(fig:pa-illustration)). The LRP and USR delineate three stock status zones ("healthy", "cautious", and "critical").
 Of particular importance is the LRP, which is defined as the spawning biomass below which serious harm may occur to the stock.
-Other key elements of the Precautionary Approach Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the need to take into account risk and uncertainty when developing BRPs and determining stock status in relation to BRPs [@dfo2006; @dfo2009].
+Other key elements of the Precautionary Approach Framework include a harvest control rule (HCR), which determines allowable removal rates in each of the three stock status zones (e.g., Figure \@ref(fig:pa-illustration)), and the requirement to take into account risk and uncertainty when developing BRPs and determining stock status in relation to BRPs [@dfo2006; @dfo2009].
 
 (ref:fig-pa) Illustration of DFO's Precautionary Approach Framework. Based on @dfo2009.
 
@@ -71,7 +71,7 @@ We choose the terminology MP Framework to clearly specify the focus on selection
 
 This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
 This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC.
-Although the proposed framework is software agnostic, in the current implementation, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool [@carruthers2018] and MSEtool packages [@huynh_msetool_2019] for the statistical software R [@r2019], which are then used in simulation-testing a range of data-limited MPs against performance metrics.
+Although the proposed framework is software agnostic, in the current implementation, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool [@carruthers2018] and MSEtool packages [@huynh_msetool_2019], implemented in the statistical software R [@r2019]. The OMs are then used in simulation-testing a range of data-limited MPs against performance metrics.
 An R package written by the authors for this framework, gfdlm [@gfdlm], houses many tools and custom visualizations to aid in the process.
 Steps of the process are described more fully in the following sections of the document.
 
