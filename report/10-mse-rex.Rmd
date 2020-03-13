@@ -8,9 +8,9 @@ round2 <- function(x) sprintf("%.2f",round(x, 2))
 
 ## BACKGROUND
 
-Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC [@mecklenburg2002]. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the groundfish bottom-trawl fishery in BC. This fishery implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
+Rex Sole (*Glyptocephalus zachirus*) occur from central Baja California to the western Bering Sea, and are generally distributed throughout coastal BC. They are sometimes referred to as "Witch Sole". Rex Sole are primarily caught in the groundfish bottom-trawl fishery in BC, which implemented 100% at-sea observer coverage and 100% dockside monitoring in 1996.
 
-Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters. The oldest aged individual was a 34 cm female aged 15 years; however, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not yet been aged. Rex Sole have been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006].
+Rex Sole are caught in BC at depths between 20 m and greater than 1000 m, with most captured between 75 m and 450 m. Rex Sole as large as 58 cm and weighing up to 1.44 kg have been caught in BC waters. The oldest aged individual was a 34 cm female aged 15 years; however, there is very little available ageing data for this species, with the only data coming from the Hecate Strait Multispecies Assemblage Bottom Trawl survey in 1998. Otoliths have been collected on BC surveys from 2000--present although they have not been aged. Rex Sole have been aged up to 29 years (female) in the Gulf of Alaska [@abookire2006].
 
 Rex Sole are commonly caught in the West Coast Vancouver Island (WCVI) synoptic groundfish bottom trawl survey (Figure \@ref(fig:rex-surv-set-plot)). While they are caught in the commercial mixed-species bottom trawl fishery (Figures \@ref(fig:rex-catch-plot) and \@ref(fig:rex-cpue-map)), there is no directed fishery or assigned quota for them.
 They are commonly caught with Pacific Cod (*Gadus macrocephalus*), Dover Sole (*Microstomus pacificus*), English Sole (*Parophrys vetulus*) and Arrowtooth Flounder (*Atheresthes stomias*). Rex Sole have never been formally assessed in BC.
@@ -251,14 +251,15 @@ We include an additional scenario with the 1995 stock closer to $B_0$ in the rob
 We believe the assumption of unrecorded catch prior to 1996 is consistent with the data and knowledge of the multispecies groundfish fishery for three reasons.
 First, the standardized commercial CPUE index shows an increasing trend from 1996 to 2003 before the SYN WCVI survey began (Figure \@ref(fig:rex-surv-index-plot)).
 Given that Rex Sole were not a targeted species, it seems unlikely that the fishery began catching Rex Sole coincident with the introduction of 100% at-sea observer coverage and dockside monitoring.
-Increasing CPUE is also possibly evidence of a stock rebuilding from a depleted state.
-While there are many caveats associated with commercial CPUE time series, two factors suggest this trend is plausible: (1) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
-In the absence of targeting, CPUE trends may more closely match abundance.
+Increasing CPUE is also consistent with (but not necessarily indicative of) a stock rebuilding from a depleted state.
+While there are many caveats associated with commercial CPUE time series, two factors suggest this trend is plausible: (a) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (b) Rex Sole have not been a targeted species by the commercial trawl fleet.
+The absence of targeting removes some of the reasons why CPUE trends may not reflect abundance trends.
 Second, the SYN WCVI survey has approximately doubled its relative index value for Rex Sole since the early 2000s, which would be consistent with the stock starting in a somewhat depleted state in 1996.
-Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported to have been caught in substantial quantities before 1996.
+Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported to have been caught in substantial quantities before 1996 [@anderson2019synopsis].
 It therefore seems reasonable to assume that there is considerable unrecorded catch prior to 1996.
 
-We considered three reference-set scenarios and one robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)). The three reference-set scenarios are:
+We considered three reference-set scenarios and one robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)).
+For the reference set:
 
 * The scenario "Ceq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996.
 
@@ -276,18 +277,18 @@ Unless otherwise stated, all other scenarios drew from a baseline beta distribut
 #### Natural Mortality (*M*)
 
 We considered one alternative scenario that differed in terms of the value of *M* (Table \@ref(tab:rex-scen)).
-Unless otherwise stated, all other scenarios drew from a baseline uniform distribution $M$ = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
+Unless otherwise stated, all other scenarios drew from a baseline uniform distribution *M* = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
 
 * The scenario "Higher M" considers that *M* could be latitude-dependent and may be substantially higher for stocks in warmer BC waters (*M* = 0.3 *y*^-1^).
 
 #### Selectivity
 
-We considered one alternative scenario that differed in terms of the length- and age- selectivity of the commercial fleet and the WCVI synoptic survey (Table \@ref(tab:rex-scen)).
+We considered one alternative scenario that differed in terms of the length- and age-selectivity of the commercial fleet and the WCVI synoptic survey (Table \@ref(tab:rex-scen)).
 Unless otherwise stated, all other scenarios drew from a length selectivity curve that approximately matched the maturity ogive ($L^5 = 22$, $L^\textrm{FS} = 32$).
 
 * The scenario "Lower selectivity" considers that the selectivity curve could be shifted to the left resulting in both the survey and the commercial fleet capturing younger fish ($L^5 = 17$, $L^\textrm{FS} = 28$).
 
-We considered the above six scenarios to represent the major sources of plausible uncertainty for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
+We considered the above six scenarios to represent the most plausible uncertainty scenarios for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
 
 ### THE ROBUSTNESS SET {#sec:results-robustness-set}
 
@@ -295,7 +296,7 @@ To illustrate application of the framework in the presence of additional sources
 
 * The "No CPUE Ceq. 50%" scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996 ($C^{\textrm{eq}} = 0.5$). In other words, this scenario assumes that the stock started in a much less depleted state than the other scenarios. In order to fit the SRA model with plausible $F_{a,y}$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" scenario.
 
-* The "M increasing" scenario assumes that *M* increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario.
+* The "M increasing" scenario assumes that *M* was fixed at 0.2 in the historical period and increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario. We do not necessarily expect this to become a default robustness OM in applications of the framework.
 
 Results from the Robustness Set will be presented separately in Section \@ref(sec:results-rex6) and will be used to show whether performance of MPs is significantly affected by these other sources of uncertainty.
 
@@ -308,13 +309,13 @@ MA50 = 5 years, MA100 = 9 years (212 females, 45 unsexed age 1 fish)
 Mortality
 natural mortality used in GOA assessment 0.17-->
 
-We included a detailed explanation of the initial OM specification in Appendix \@ref(app:desc-om-rex).
+We include a detailed explanation of the initial OM specification in Appendix \@ref(app:desc-om-rex).
 
 ### OM CONDITIONING {#sec:results-om-conditioning}
 
 After specifying most of the OM parameters (Appendix \@ref(app:desc-om-rex)), we conditioned the OMs using the SRA model described in Appendix \@ref(app:sra).
 We conditioned the models using: (1) commercial catch data from 1996--2019; (2) the synoptic WCVI (SYN WCVI) trawl relative biomass index (a depth-stratified random survey); and (3) commercial bottom trawl CPUE.
-We down-weighted the commercial CPUE index by inflating the standard errors 1.5 times, since we have greater confidence in the SYN WCVI data reflecting underlying biomass trends.
+We down-weighted the commercial CPUE index by inflating the standard errors 1.5 times since we have greater confidence in the SYN WCVI data reflecting underlying biomass trends.
 We specified a range of $C^{\textrm{eq}}$ values as described above to reflect uncertainty in initial stock depletion.
 
 The SRA was able to fit to the WCVI synoptic trawl survey relative biomass index and commercial bottom trawl CPUE reasonably well for all OM scenarios (Figure \@ref(fig:rex-survey-fits)).
@@ -341,10 +342,10 @@ We used the SRA to populate the following parameters in the conditioned OMs:
 - $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (historical recruitment deviations)
 
 The reference and robustness scenarios rendered a range of estimated parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
-In fitting the SRA across replicate draws from the initial OMs, we discarded any models that did not converge or had $F_{a,y} > 3$.
+In fitting the SRA across replicate draws from the initial OMs, we discarded any models that did not converge (with convergence defined as a positive-definite covariance matrix) or had $F_{a,y} > 3$.
 The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)). However, by discarding  replicates from non-converged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
 The discarded parameter values represent implausible parameter combinations according to the SRA model.
-The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs are similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
+The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs were similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
 
 ```{r rex-sra-fraction, results='asis'}
 rex_converged <- readRDS(here("generated-data/rex-converged.rds"))
@@ -375,8 +376,8 @@ knitr::include_graphics(here("report/figure/rex-sra-filtered.png"))
 (ref:fig-rex-depletion-om)
 Spawning stock biomass ($B$) depletion trajectories for reference and robustness set OMs.
 Depletion is represented as a fraction of $B_0$ (spawning stock biomass at unfished equilibrium).
-Note that the "M increasing" scenario only represents *M* increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of *M* in the historical period.
-Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across replicates.
+Note that the "M increasing" scenario only represents M increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of M in the historical period.
+Lines represent medians, and dark and light-grey shading represent 50% and 95% quantiles across replicates.
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-compare-SRA-depletion-panel.png"))
@@ -408,14 +409,14 @@ Early explorations with the SP models  suggested little effect of the three alte
 There was also very little difference in performance between the Fox and Schaefer production models.
 Therefore, for the SP models we focused mostly on tuning the prior on $r$, the intrinsic population growth rate.
 We evaluated three priors on $r$: $\textrm{Normal}(0.4, 0.1)$, $\textrm{Normal}(0.5, 0.1)$, and $\textrm{Normal}(0.6, 0.1)$.
-With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which approximately match the values of *M* explored in the operating models.
+With the Schaefer surplus production function, these correspond to $F_\textrm{MSY} = 0.2$, $F_\textrm{MSY} = 0.25$, and $F_\textrm{MSY} = 0.3$, which approximately match the values of *M* explored in the OMs.
 We included the provisional "meta" HCR rules described in Appendix \@ref(app:MPs) Section \@ref(sec:mp-sp) and given that the stock does not have an existing TAC, we set the initial TAC for the purpose of the "meta" rules to the average catch from the last five years of the historical period.
 In applications of the framework, additional tuning of SP models and index-based MPs could be explored if needed.
 
 ```{r rex-mps, results='asis'}
 mp <- readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#")
 mp_list <- split(mp, mp$type)
-csasdown::csas_table(mp, caption = "Candidate MPs. The '`.`' in front of some MPs denotes versions of the MPs that only observe the survey index every second year to mimic our biennial WCVI synoptic survey.", col_names = c("Management procedure", "MP type"))
+csasdown::csas_table(mp, caption = "Candidate MPs. The '`.`' in front of some MPs denotes versions of the MPs that only observe the survey index every second year to mimic our biennial WCVI synoptic survey. .SP6040_0.4 refers to an SP model with a prior on $r$ of 0.4, etc.", col_names = c("Management procedure", "MP type"))
 ```
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES  {#sec:results-rex5}
@@ -456,7 +457,7 @@ To determine which MPs would be carried forward as satisficed MPs [@miller2010],
 To obtain a manageable number of MPs for further consideration, we set satisficing thresholds of `r names(satisficed_criteria)[1]` $>$ `r satisficed_criteria[[1]]` (9 times out of 10) and `r names(satisficed_criteria)[2]` $>$ `r satisficed_criteria[[2]]` (4 times out of 5).
 We could apply these criteria to either the average (Figures \@ref(fig:rex-tigure-avg)) or minimum performance (Figures \@ref(fig:rex-tigure-min)) and such a decision is likely best made by a technical working group or decision-makers coupled with stakeholders in an applied setting.
 In this case study, it made little difference whether we chose the average or minimum performance metrics to apply the satisficing criteria.
-We therefore chose to apply the satisficing criteria to the minimum performance metrics.
+For the purposes of this case study, we chose to apply the satisficing criteria to the minimum performance metrics.
 This implies that the satisficed MPs pass these criteria even in the worst-case reference-set scenario.
 Applying these criteria resulted in `r number_to_word(length(mp_sat_b4_cut))` remaining MPs (`r gfutilities::commify(sort(mp_sat_b4_cut))`).
 
@@ -507,7 +508,7 @@ Between the two performance metrics used in the initial satisficing step, LT LRP
 A dot-and-line plot of the performance metrics aggregated across scenarios helps compare performance across satisficed MPs (Figure \@ref(fig:rex-dot-lines)).
 Long-term catch (LTC) was roughly comparable between a fishing strategy of fishing at *F*/*F*~MSY~ and the satisficed Itarget or .SP8040_0.6 MPs (Figure \@ref(fig:rex-dot-lines)).
 Short-term catch (STC) of all satisficed MPs exceeded these reference MPs (Figure \@ref(fig:rex-dot-lines)).
-Fixed catch MPs of 1.1- or 1.2-times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
+Fixed-catch MPs of 1.1- or 1.2-times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
 These fixed-catch MPs do not incorporate feedback between the management and biological systems.
 
 Trade-offs among performance metrics for most of the satisficed MPs were relatively minor within the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-reference) and \@ref(fig:rex-spider-satisficed-mps-avg)).
@@ -533,7 +534,7 @@ Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
 Figure \@ref(fig:rex-proj-scenarios)
 -->
 
-The time series trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch further demonstrate performance across the various MPs and reference set OMs (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)).
+The time series trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index)), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)) further demonstrate performance across the various MPs and reference set OMs.
 <!--Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).-->
 Kobe plots demonstrate either the final *B*/*B*~MSY~ vs. *F*/*F*~MSY~ status among replicates (Figure \@ref(fig:rex-kobe)) or the trajectory of these stock status values through time (Figure \@ref(fig:rex-worm)).
 
@@ -652,7 +653,7 @@ Figure \@ref(fig:rex-proj-scenarios)
 -->
 
 The "No CPUE Ceq. 50%" robustness scenario represents markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
-This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_t$ values around 2005 (Figure \@ref(fig:rex-F-om)).
+This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_y$ (apical $F$ by year) values around 2005 (Figure \@ref(fig:rex-F-om)).
 In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60 (3 times out of 5), while the constant catch and surplus production model achieved LT LRP $<$ 0.35 (7 times out of 20) (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 Other performance metrics show less contrast among the MPs, although LT USR also remains higher for the Itarget vs. constant-catch or surplus-production MPs (Figure \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 
@@ -661,7 +662,7 @@ In particular, there is an obvious trade-off between STC and LT LRP (Figures \@r
 The constant catch MPs achieved the highest STC values but at the expense of lower LT LRP values.
 The Itarget MPs struck more of a balance between LT LRP and STC (Figures \@ref(fig:rex-tradeoff-robust)).
 The projection figures show the values underlying the performance metrics (Figure \@ref(fig:rex-proj-no-cpue-light)).
-Within this scenario, over time, the .SP8040_0.6, CC1.1, and CC1.2 MPs all have a tendency to overfish the stock (Figure \@ref(fig:rex-proj-no-cpue-light)).
+Within this scenario, over time, the .SP8040_0.6, CC1.1, and CC1.2 MPs all had a tendency to overfish the stock (Figure \@ref(fig:rex-proj-no-cpue-light)).
 
 For the "M increasing" scenario, the satisficed MPs were fairly robust to linear increases in natural mortality in the projection period, with the exception that all satisficed MPs had a considerably lower probability of achieving the long-term catch (LTC) metric (Figures \@ref(fig:rex-tigure-panel-rob)--\@ref(fig:rex-spider-satisficed-mps-robust)).
 Notably, the Itarget satisficed MPs maintained LT LRP $>$ 0.9 despite increasing *M*, whereas the fixed-catch and surplus-production MPs all resulted in LT LRP $<$ 0.9.

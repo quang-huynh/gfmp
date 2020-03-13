@@ -85,7 +85,7 @@ Due to the biennial nature of most BC surveys for any one area, we propose an al
 
 ### GB_slope: Geromont and Butterworth index slope {#sec:mp-gb-slope}
 
-This MP adjusts TAC based on previous catch and the trend in a relative abundance index to aim for relatively stable catch rates [@geromont2015] (Fig. \@ref(fig:mp-gbslope-demo)).
+This MP adjusts TAC based on previous catch and the trend in a relative abundance index to aim for relatively stable catch rates [@geromont2015] (Figure \@ref(fig:mp-gbslope-demo)).
 The TAC is calculated as:
 
 <!--also Butterworth, D.S. and H.F. Geromont. 2001. Evaluation of a class of possible simple interim
@@ -141,7 +141,7 @@ pars %>%
 
 ### Islope: Index slope tracking {#sec:mp-islope}
 
-These MPs incrementally adjust the TAC in an attempt to maintain a constant relative abundance index (Fig. \@ref(fig:mp-islope-demo)).
+These MPs incrementally adjust the TAC in an attempt to maintain a constant relative abundance index (Figure \@ref(fig:mp-islope-demo)).
 The MPs are similar to "GB_slope" with the addition of a parameter that determines the TAC in the first projection year and different choices of the $\lambda$ parameter.
 The TAC is calculated as:
 
@@ -203,7 +203,7 @@ pars %>%
 
 ### IDX: Index-based MP from @cox2020 {#sec:mp-idx}
 
-This MP was used in the rebuilding plan for outside Yelloweye Rockfish in BC [@cox2020] (Fig. \@ref(fig:mp-idx-demo)).
+This MP was used in the rebuilding plan for outside Yelloweye Rockfish in BC [@cox2020] (Figure \@ref(fig:mp-idx-demo)).
 The MP assigns TAC based on:
 
 $$
@@ -272,7 +272,7 @@ pars %>%
 MPs in this category aim to maintain a relative abundance index at some reference level.
 Typically, this reference level is set based on an assumption of what the index would be if the stock was at $B_\textrm{MSY}$.
 Since it would be challenging to apply this to real data in a manner consistent with this assumption, we instead propose modifying this MP to set the target index level to a historical index level, which would be chosen on a stock-by-stock basis.
-Provisionally, we set the reference level to the mean index value from the 10 years prior to the projection period. 
+Provisionally, we set the reference level to the mean index value from the 10 years prior to the projection period.
 Analysts, in consultation with managers and stakeholders, may choose to adjust this reference period or choose some alternative reference index value.
 The performance of choices of reference index can be evaluated in the closed-loop simulation.
 
@@ -500,7 +500,7 @@ $$
 P_y = \gamma \times \textrm{MSY} \times \left(\dfrac{B_y}{K}-\left[\dfrac{B_y}{K}\right]^n\right),
 $$
 
-where $K$ is the carrying capacity, $\textrm{MSY}$ is the estimated maximum sustainable yield, and $n$ is the parameter that controls shape of the production curve, and $\gamma$ is defined as
+where $K$ is the carrying capacity, $\textrm{MSY}$ is the estimated maximum sustainable yield, and $n$ is the parameter that controls the shape of the production curve, and $\gamma$ is defined as
 
 $$
 \gamma = \dfrac{1}{n-1}n^{n/(n-1)}.
@@ -537,24 +537,24 @@ $$
 The likelihood of the observed index $I_y$, assuming a lognormal distribution, is
 
 $$
-\log(I_y) \sim \textrm{Normal}(\log[\hat{I}_y], \sigma^2),
+\log(I_y) \sim \textrm{Normal}(\log[\hat{I}_y], \sigma),
 $$
 
 where $\sigma$ represents the standard deviation.
 
-We pair these surplus production models with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
+We pair these surplus production models with the following harvest control rules (Figure \@ref(fig:mp-hcrs)):
 
 1. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by unfished equilibrium spawning biomass), $F_y = \hat{F}_\textrm{MSY}$; at 10% of estimated *B*/*B*~0~, $F_y = 0$; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
 
-2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, $F_y = \hat{F}_\textrm{MSY}$; at 40% of estimated *B*/*B*~MSY~, $F_y = 0$; between 40% and 80%, interpolate the adjustment factor linearly. 
-Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. 
-This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). 
-We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. 
+2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, $F_y = \hat{F}_\textrm{MSY}$; at 40% of estimated *B*/*B*~MSY~, $F_y = 0$; between 40% and 80%, interpolate the adjustment factor linearly.
+Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~.
+This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality).
+We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework.
 For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance that meet sustainability objectives defined by the BRPs [e.g., @cox2013].
 
 3. HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until *B*/*B*~MSY~ < 0.6.
 
-We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. 
+We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc.
 We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
 
 We also include the following "meta" HCR rules [e.g., @cox2020], that could be modified as needed for specific stocks:
