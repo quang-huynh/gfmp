@@ -10,7 +10,7 @@ This is especially important in data-limited or data-moderate situations, where 
 
 In the literature, the term "stock reduction analysis" has been used to describe a model in which the predicted total catch matches the observed catch.
 @kimura1982 presented SRA as an alternative to a virtual production analysis (VPA) or surplus production models.
-The SRA approach is more applicable to data-limited species than, for example, a VPA, which requires annual catch-at-age data. 
+The SRA approach is more applicable to data-limited species than, for example, a VPA, which requires annual catch-at-age data.
 The SRA uses an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history, rather than taking a pooled biomass-dynamics approach (e.g., surplus production model).
 Another advantage of the SRA approach for BC groundfish fisheries is that it accommodates conditioning on multiple indices of abundance (e.g., accommodating indices from multiple fishery-independent surveys and/or commercial CPUE series).
 
@@ -166,7 +166,7 @@ C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm
 (\#eq:sra-om-ceqpred)
 $$
 
-where $F^{\textrm{eq}}_f = 0$ are estimated parameters.
+where $F^{\textrm{eq}}_f$ are estimated parameters.
 
 Once $Z^{\textrm{eq}}_a$ is obtained, then the equilibrium recruitment is calculated, using either a Beverton-Holt [@beverton1957] or Ricker [@ricker1954] stock-recruit relationship:
 

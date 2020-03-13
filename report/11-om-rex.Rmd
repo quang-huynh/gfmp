@@ -169,6 +169,8 @@ stock_rex@M <- c(0.17, 0.25)
 cpars$h <- rbeta(nsim, 13.4, 2.4)
 ```
 
+Note that if the samples of $h$ were lower, they would ideally be constrained to $[0.2, 1)$ via a transformation. For example: `0.8 * rbeta(nsim, 13.4, 2.4) + 0.2`.
+
 ```{r desc-rex-h, fig.cap="Density of h prior.", fig.width=6, out.width="4in"}
 h <- seq(0, 1, length.out = 200)
 hd <- dbeta(h, 13.4, 2.4)
