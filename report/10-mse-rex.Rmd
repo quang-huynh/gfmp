@@ -503,7 +503,8 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
 
 Performance within the reference set of OMs varied across MPs and performance metrics (Figures \@ref(fig:rex-tigure-avg), \@ref(fig:rex-tigure-min), \@ref(fig:rex-tigure-panel), and \@ref(fig:rex-dot-lines)).
 There was variability in performance among the individual reference-set scenarios with the most variability in both the long-term and entire projection period performance metrics: LT USR, FMSY, LTC, and AADC (Figure \@ref(fig:rex-tigure-panel)).
-Between the two performance metrics used in the initial satisficing step, LT LRP varied between `r round2(min(pm_avg_sat$"LT LRP"))` and `r round2(max(pm_avg_sat$"LT LRP"))`, and STC varied between `r round2(min(pm_avg_sat$STC))` and `r round2(max(pm_avg_sat$STC))`.
+Between the two performance metrics used in the initial satisficing step, *average* LT LRP varied between `r round2(min(pm_avg_sat$"LT LRP"))` and `r round2(max(pm_avg_sat$"LT LRP"))`, and STC varied between `r round2(min(pm_avg_sat$STC))` and `r round2(max(pm_avg_sat$STC))` across MPs within the reference set (Figure \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-panel)).
+*Minimum* LT LRP varied between `r round2(min(pm_min_sat$"LT LRP"))` and `r round2(max(pm_min_sat$"LT LRP"))`, and STC varied between `r round2(min(pm_min_sat$STC))` and `r round2(max(pm_min_sat$STC))` across MPs within the reference set (Figure \@ref(fig:rex-tigure-min) and \@ref(fig:rex-tigure-panel)).
 
 A dot-and-line plot of the performance metrics aggregated across scenarios helps compare performance across satisficed MPs (Figure \@ref(fig:rex-dot-lines)).
 Long-term catch (LTC) was roughly comparable between a fishing strategy of fishing at *F*/*F*~MSY~ and the satisficed Itarget or .SP8040_0.6 MPs (Figure \@ref(fig:rex-dot-lines)).
@@ -513,29 +514,7 @@ These fixed-catch MPs do not incorporate feedback between the management and bio
 
 Trade-offs among performance metrics for most of the satisficed MPs were relatively minor within the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-reference) and \@ref(fig:rex-spider-satisficed-mps-avg)).
 Within the "Ceq. 200%" scenario, there was a slight trade-off between STC and LT LRP (Figure \@ref(fig:rex-tradeoff-reference)).
-
-<!--
-Figure \@ref(fig:rex-dot-lines)
-Figure \@ref(fig:rex-tradeoff-reference)
-Figure \@ref(fig:rex-spider-satisficed-mps-avg)
-Figure \@ref(fig:rex-proj-index)
-Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)
-
-Figure \@ref(fig:rex-kobe)
-Figure \@ref(fig:rex-worm)
-
-Figure \@ref(fig:rex-tigure-panel-rob)
-Figure \@ref(fig:rex-dots-satisficed-mps-robust)
-Figure \@ref(fig:rex-tradeoff-robust)
-Figure \@ref(fig:rex-spider-satisficed-mps-robust)
-
-Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
-
-Figure \@ref(fig:rex-proj-scenarios)
--->
-
 The time series trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index)), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)) further demonstrate performance across the various MPs and reference set OMs.
-<!--Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).-->
 Kobe plots demonstrate either the final *B*/*B*~MSY~ vs. *F*/*F*~MSY~ status among replicates (Figure \@ref(fig:rex-kobe)) or the trajectory of these stock status values through time (Figure \@ref(fig:rex-worm)).
 
 (ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
