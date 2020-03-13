@@ -7,10 +7,12 @@ The list is not exhaustive and will likely grow or be adapted over time.
 
 We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or the primary source publications wherever possible.
 
+<!--
 We have created alternative versions of the index-based MPs that discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will be based.
 We indicate these MPs with a "`.`" in front of them.
 For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data.
-For brevity, we do not make this distinction in the descriptions below but use the dot notation throughout the case studies.
+For brevity, we do not make this distinction in the descriptions below but use the dot notation throughout the case study.
+-->
 
 ## CONSTANT-CATCH MANAGEMENT PROCEDURES {#sec:mp-cc-overall}
 
@@ -213,7 +215,7 @@ $$
 \end{cases}
 $$
 
-where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor} = 0$) and $\Delta I_y$ is the current index value divided by the last observed index value (every two years for a biennial survey).
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor}$ is 20% of the average catch from the last 5 historical years) and $\Delta I_y$ is the current index value divided by the last observed index value (every two years for a biennial survey).
 We set $\delta_\textrm{min} = -0.5$ as in [@cox2020], but this could be tuned for individual stocks.
 The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
@@ -269,7 +271,7 @@ pars %>%
 
 MPs in this category aim to maintain a relative abundance index at some reference level.
 Typically, this reference level is based on an assumption of what the index would be if the stock was operating at $B_\textrm{MSY}$.
-Since it will be challenging for us to apply this to real data in a manner consistent with the simulation, we instead propose modifying this MP to set the target index level to a historical index level likely chosen on a stock-by-stock basis.
+Since it would be challenging for us to apply this to real data in a manner consistent with the simulation, we instead propose modifying this MP to set the target index level to a historical index level likely chosen on a stock-by-stock basis.
 Provisionally, we set it to the mean index value from the 10 years prior to the projection period. Analysts may choose to adjust this reference period or choose some alternative reference index value on a stock-by-stock basis.
 Analysts and stakeholders can rest assured that the performance of a chosen reference index value will be evaluated based on the performance metrics of the closed-loop simulation.
 
@@ -549,6 +551,16 @@ We pair these surplus production models with the following harvest control rules
 
 We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
 
+We also include the following "meta" HCR rules [e.g., @cox2020], that could be modified as needed for specific stocks:
+
+- The maximum TAC increase in any one year is 20%.
+- The maximum decrease in TAC in any one year is 50%.
+- The minimum TAC is 10% of the catch in the last historical year.
+- The TAC is not increased unless the MP recommends increasing it by at least 5%.
+
+We include these (modifiable) rules in an MP defined as `SP_gf()` in the gfdlm R package [@gfdlm].
+
+
 ```{r, mp-hcrs, fig.cap="Proposed provisional harvest control rules to associate with model-based MPs.", fig.asp=0.25, fig.width=9, warning=FALSE, out.width="\\textwidth"}
 f <- function (Brel, LRP, TRP, rel_min = 0, rel_max = 1, ...) {
     adj <- rep(rel_max, length(Brel))
@@ -611,12 +623,3 @@ g3 <- make_hcr_fig(filter(pars, type == "HCR-6040"), expression(Estimated~B/B[MS
 
 cowplot::plot_grid(g1, g2, g3, nrow = 1)
 ```
-
-We also include the following "meta" HCR rules [e.g., @cox2020], that could be modified as needed for specific stocks:
-
-- The maximum TAC increase in any one year is 20%.
-- The maximum decrease in TAC in any one year is 50%.
-- The minimum TAC is 10% of the catch in the last historical year.
-- The TAC is not increased unless the MP recommends increasing it by at least 5%.
-
-We include these (modifiable) rules in an MP defined as `SP_gf()` in the gfdlm R package [@gfdlm].
