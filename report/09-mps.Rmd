@@ -268,16 +268,17 @@ pars %>%
 ## INDEX-TARGET MANAGEMENT PROCEDURES {#sec:mp-index-target}
 
 MPs in this category aim to maintain a relative abundance index at some reference level.
-Typically, this reference level is based on an assumption of what the index would be if the stock was operating at $B_\textrm{MSY}$.
-Since it will be challenging for us to apply this to real data in a manner consistent with the simulation, we instead propose modifying this MP to set the target index level to a historical index level likely chosen on a stock-by-stock basis.
-Provisionally, we set it to the mean index value from the 10 years prior to the projection period. Analysts may choose to adjust this reference period or choose some alternative reference index value on a stock-by-stock basis.
-Analysts and stakeholders can rest assured that the performance of a chosen reference index value will be evaluated based on the performance metrics of the closed-loop simulation.
+Typically, this reference level is set based on an assumption of what the index would be if the stock was at $B_\textrm{MSY}$.
+Since it will be challenging to apply this to real data in a manner consistent with this assumption, we instead propose modifying this MP to set the target index level to a historical index level, which would be chosen on a stock-by-stock basis.
+Provisionally, we set the reference level to the mean index value from the 10 years prior to the projection period. 
+Analysts, in consultation with managers and stakeholders, may choose to adjust this reference period or choose some alternative reference index value.
+The performance of choices of reference index can be evaluated in the closed-loop simulation.
 
 ### IT: Iterative index target {#sec:mp-it}
 
-These are index target MPs where the TAC is modified according to current index levels, which is calculated as the mean index over the last 5 years, relative to a target level.
-Traditionally this target level is set to the index value at MSY subject to observation error.
-As noted above, we have modified this to set the target level to the average index value from the 10 years prior to the projection period.
+These are index target MPs where the TAC is modified according to current index levels (the mean index over the last 5 years) relative to a target level.
+Traditionally the target level is set to the index value at $B_\textrm{MSY}$, subject to observation error.
+As noted above, we modified this MP to set the target level as the average index value from the 10 year period prior to the projection period.
 
 The TAC is calculated as:
 
@@ -285,7 +286,7 @@ $$
 \textrm{TAC}_y = C_{y-1} I_\delta,
 $$
 
-where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past 5 years to the reference index level.
+where $C_{y-1}$ is the catch from the previous year and $I_\delta$ is the ratio of the mean index over the past five years to the reference index level.
 
 There are two variants of this procedure:
 
@@ -296,7 +297,7 @@ We denote our historical variants "IT5_hist" and "IT10_hist".
 
 ### Itarget: Incremental index target {#sec:mp-itarget}
 
-The "Itarget" MPs incrementally adjust the TAC based on reference catch and abundance index values (Figure \@ref(fig:mp-itarget-demo)).
+The "Itarget" MPs [@geromont2015; @geromont2015a] incrementally adjust the TAC based on reference catch and abundance index values (Figure \@ref(fig:mp-itarget-demo)).
 
 If $I_\textrm{recent}\ge I_0$ the TAC is calculated as:
 
@@ -313,19 +314,19 @@ $$
 where:
 
 - $I_0$ is $\lambda I_\textrm{ave}$, i.e., some fraction of the average index over the 10 years prior to the projection period, and represents a lower index level below which future TACs are reduced quadratically;
-- $I_\textrm{recent}$ is the average index over the most recent 5 years
+- $I_\textrm{recent}$ is the average index over the most recent five years
 - $I_\textrm{target}$ is $\delta I_\textrm{ave}$; the target index value
-- $\textrm{TAC}^*$ is a catch target defined as $x C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last 5 years of the historical period ($C_\textrm{ave}$).
+- $\textrm{TAC}^*$ is a catch target defined as $x C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last five years of the historical period ($C_\textrm{ave}$).
 - $w$ is a smoothing parameter that defines the "steepness" of the adjustment slope.
 
 @geromont2015 and @geromont2015a propose a number of configurations of these MPs.
-We propose starting with the following provisional versions and investigating tuning across a more complete range of parameter values if any of the provisional versions look promising based on their performance metrics.
+We propose starting with the following provisional versions and investigating tuning across a more complete range of parameter values if any of the provisional versions perform well.
 
 We recommend the following provisional base values:
 $\lambda = 0.2$, $\delta = 1$, $w = 0.5$, $x = 1$.
 This represents:
 
-- the TAC adjustment lowering quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
+- the TAC adjustment decreasing quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
 - a target index of the average index value over the last 10 years ($\delta = 1$),
 - a moderate steepness of the adjustment slope ($w = 0.5$),
 - and a target catch equal to the average historical catch over the last 5 years of the historical period ($x = 1$).
@@ -483,7 +484,7 @@ cowplot::plot_grid(g1, g2, labels = "auto")
 
 ### SURPLUS PRODUCTION MODEL {#sec:mp-sp}
 
-In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool [@huynh_msetool_2019] and based on @fletcher1978. Here we include a modified version of the model description from the package vignette for completeness.
+In addition to the data-based MPs described above, we propose including a simple surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool [@huynh_msetool_2019] and based on @fletcher1978.
 
 Biomass $B$ in year $y$ is calculated as
 
@@ -503,7 +504,7 @@ $$
 \gamma = \dfrac{1}{n-1}n^{n/(n-1)}.
 $$
 
-The production parameter $n$ is typically fixed and the Schaefer model with a symmetric productive curve ($B_{\textrm{MSY}}/K = 0.5$) is produced when $n = 2$. The Fox model is the limiting case of the Fletcher parameterization as $n \rightarrow 1$, where
+The production parameter $n$ is typically fixed, producing the Schaefer model [@schaefer1954] with a symmetric productive curve ($B_{\textrm{MSY}}/K = 0.5$) when $n = 2$. The Fox model is the limiting case of the Fletcher parameterization as $n \rightarrow 1$, where
 
 $$
 K = e \times B_{MSY},
@@ -541,13 +542,18 @@ where $\sigma$ represents the standard deviation.
 
 We pair these surplus production models with the following harvest control rules (Fig. \@ref(fig:mp-hcrs)):
 
-1. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by biomass at equilibrium stock size in unfished conditions), fish at the estimated MSY; at 10% of estimated *B*/*B*~0~, stop fishing; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
+1. HCR-4010: Above 40% of estimated *B*/*B*~0~ (biomass divided by unfished equilibrium spawning biomass), $F_y = \hat{F}_\textrm{MSY}$; at 10% of estimated *B*/*B*~0~, $F_y = 0$; between 10% and 40%, interpolate the adjustment factor linearly. This is a commonly applied HCR in the fisheries literature and on the US West Coast [e.g., @berger_2019].
 
-2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, fish at the calculated MSY; at 40% of estimated *B*/*B*~MSY~, stop fishing; between 40% and 80%, interpolate the adjustment factor linearly. Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance approximately in line with the BRPs [e.g., @cox2013].
+2. HCR-8040: Above 80% of estimated *B*/*B*~MSY~, $F_y = \hat{F}_\textrm{MSY}$; at 40% of estimated *B*/*B*~MSY~, $F_y = 0$; between 40% and 80%, interpolate the adjustment factor linearly. 
+Note that this reference point is based on *B*~MSY~ whereas HCR-4010 is based on *B*~0~. 
+This HCR creates operational control points that mimic the provisional biological upper stock reference and limit reference points from DFO's Sustainable Fisheries Framework (Figure \@ref(fig:pa-illustration)), where operational control points define the thresholds of management action (i.e., reducing fishing mortality). 
+We note, however, that operational control points do not necessarily need to match the biological reference points (BRPs) to be consistent with the Sustainable Fisheries Framework. 
+For example, a model may generate biased estimates of *B*/*B*~MSY~ and be better paired with operational control points that differ from the BRPs to obtain performance that meet sustainability objectives defined by the BRPs [e.g., @cox2013].
 
 3. HCR-6040: A slightly less biologically conservative HCR than HCR-8040 [@cox2013]. This HCR does not begin ramping down the TAC from MSY until *B*/*B*~MSY~ < 0.6.
 
-We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
+We denote these management procedures: "SP8040" (Schaefer surplus production model, 8040 HCR), "SP8040_Fox" (Fox surplus production model, 8040 HCR), etc. 
+We only include the Schaefer surplus production model with the 4010 rule, since the choice of production function should not affect a depletion-based harvest control rule.
 
 ```{r, mp-hcrs, fig.cap="Proposed provisional harvest control rules to associate with model-based MPs.", fig.asp=0.25, fig.width=9, warning=FALSE, out.width="\\textwidth"}
 f <- function (Brel, LRP, TRP, rel_min = 0, rel_max = 1, ...) {
