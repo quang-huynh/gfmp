@@ -252,7 +252,7 @@ We believe the assumption of unrecorded catch prior to 1996 is consistent with t
 First, the standardized commercial CPUE index shows an increasing trend from 1996 to 2003 before the SYN WCVI survey began (Figure \@ref(fig:rex-surv-index-plot)).
 Given that Rex Sole were not a targeted species, it seems unlikely that the fishery began catching Rex Sole coincident with the introduction of 100% at-sea observer coverage and dockside monitoring.
 Increasing CPUE is also possibly evidence of a stock rebuilding from a depleted state.
-While there are many caveats associated with commercial CPUE timeseries, two factors suggest this trend is plausible: (1) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
+While there are many caveats associated with commercial CPUE time series, two factors suggest this trend is plausible: (1) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
 In the absence of targeting, CPUE trends may more closely match abundance.
 Second, the SYN WCVI survey has approximately doubled its relative index value for Rex Sole since the early 2000s, which would be consistent with the stock starting in a somewhat depleted state in 1996.
 Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported caught in substantial quantities before 1996.
@@ -533,7 +533,7 @@ Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
 Figure \@ref(fig:rex-proj-scenarios)
 -->
 
-The timeseries trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch further demonstrate performance across the various MPs and reference set OMs (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)).
+The time series trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch further demonstrate performance across the various MPs and reference set OMs (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)).
 <!--Although these satisficed MPs mostly perform similarly to each other, by inspecting the projections from MPs that did not make it past the satisficing step, we can see the variety of ways that other MPs failed to achieve the baseline satisficing criteria (Figure \@ref(fig:rex-proj-failed)).-->
 Kobe plots demonstrate either the final *B*/*B*~MSY~ vs. *F*/*F*~MSY~ status among replicates (Figure \@ref(fig:rex-kobe)) or the trajectory of these stock status values through time (Figure \@ref(fig:rex-worm)).
 
