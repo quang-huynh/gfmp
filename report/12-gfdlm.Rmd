@@ -102,7 +102,7 @@ info %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-```{r sha, cache=TRUE}
+```{r sha, cache=FALSE}
 get_sha <- function(path) {
   if (!identical(.Platform$OS.type, "windows")) {
     suppressWarnings({
