@@ -460,7 +460,7 @@ stock_rex@D
 
 We have sufficient length and weight data to fit a model to our data for both sexes combined:
 
-(ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB [@TMB] and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
+(ref:desc-stock-a-rex) Length-weight relationship for Rex Sole sampled from the WCVI Synoptic Survey with both sexes combined. The model is fit as in @anderson2019synopsis (regression of log(weight) vs. log(length)) using the R package TMB [@tmb] and a Student-t observation model with degrees of freedom of 3 to downweight any outliers.
 
 <!-- Suppressing a Makevars R message: -->
 ```{r desc-stock-a-rex1, message=FALSE, warning=FALSE, echo=FALSE, fig.width=6, out.width="4in", results='hide', fig.cap="(ref:desc-stock-a-rex)"}

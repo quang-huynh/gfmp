@@ -22,7 +22,7 @@ We note that an SRA does not necessarily require age-composition data, as long a
 
 ## STOCK REDUCTION ANALYSIS IN THE CONTEXT OF DLMTOOL {#sec:sra-dlmtool}
 
-The SRA described here can be fit with the R package MSEtool via the function `SRA_scope()`.
+The SRA described here can be fit using TMB [@tmb] with the R package MSEtool via the function `SRA_scope()`.
 The function takes a DLMtool OM object (Appendix \@ref(app:dlmtool-om)) and historical observed data (observed catches, indices of abundance and, if available, composition data), fits the SRA to the observed data, and returns a list with an updated OM and outputs from the SRA.
 
 The approach can be stochastic (with Monte Carlo sampling) if the operating model is specified with ranges on key parameters.

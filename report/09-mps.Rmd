@@ -486,7 +486,7 @@ cowplot::plot_grid(g1, g2, labels = "auto")
 
 ### SURPLUS PRODUCTION MODEL {#sec:mp-sp}
 
-In addition to the empirical MPs described above, we propose including a surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool [@huynh_msetool_2019] and based on @fletcher1978.
+In addition to the empirical MPs described above, we propose including a surplus production model paired with a harvest control rule as a model-based MP. Here, we use the surplus production model implemented in MSEtool [@huynh_msetool_2019] and TMB [@tmb] and based on @fletcher1978.
 
 Biomass $B$ in year $y$ is calculated as
 
