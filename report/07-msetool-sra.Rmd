@@ -10,10 +10,11 @@ This is especially important in data-limited or data-moderate situations, where 
 
 In the literature, the term "stock reduction analysis" has been used to describe a model in which the predicted total catch matches the observed catch.
 @kimura1982 presented SRA as an alternative to a virtual production analysis (VPA) or surplus production models.
-The SRA approach is more applicable to data-limited species than, for example, a VPA when annual catch-at-age data are not available, while also using an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history, rather than taking a pooled biomass-dynamics approach (e.g., surplus production model).
-Another advantage of the SRA approach for BC groundfish fisheries is it accommodates conditioning on multiple indices of abundance (e.g., accommodating indices from multiple fishery-independent surveys and/or commercial CPUE series).
+The SRA approach is more applicable to data-limited species than, for example, a VPA, which requires annual catch-at-age data. 
+The SRA uses an age-structured modeling approach that incorporates natural mortality and recruitment information for reconstructing the stock history, rather than taking a pooled biomass-dynamics approach (e.g., surplus production model).
+Another advantage of the SRA approach for BC groundfish fisheries is that it accommodates conditioning on multiple indices of abundance (e.g., accommodating indices from multiple fishery-independent surveys and/or commercial CPUE series).
 
-For data-limited species, where it may only be possible to provide ranges of values for key parameters, the SRA approach tries to reduce the range of plausible parameters to be consistent with historical observations.
+For data-limited species, where it may only be possible to provide ranges of values for key parameters, the SRA approach tries to reduce the range of plausible parameter values to be consistent with historical observations, via its likelihood functions.
 In other words, it helps address the broader question:
 What combinations of historical fishing mortality and recruitment could have generated the observed data [@walters2006]?
 
@@ -35,16 +36,17 @@ The sampled values of $h$ (as well as all other input parameters to the SRA) are
 
 The SRA model can be conditioned on catch or fishing effort.
 For BC groundfish species, we recommend conditioning the model on catch.
-Catch data since the introduction of 100% at-sea and dockside observer coverage are known with very little error.
-Effort data in multispecies fisheries is more difficult to interpret.
+Catch data since the introduction of 100% at-sea and dockside observer coverage in 1996 are known with very little error.
+Effort data in multispecies fisheries are more difficult to interpret.
 If the model is conditioned on catch, then the SRA will generate predicted catches that match the observed catches.
 A full time series of the conditioning variable (i.e., catch) is required.
 
-If the time series is long enough, the historical period can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size in unfished conditions).
+If the catch time series is long enough, the historical period can be assumed to begin at unfished conditions ($B_{t=1} = B_0$, where $B_{t=1}$ is spawning biomass in the first historical year and $B_0$ represents equilibrium stock size under unfished conditions).
 However, for some BC groundfish species, catch records may be less reliable prior to the introduction of comprehensive catch monitoring (e.g., in 1996 for the BC groundfish trawl fleet).
 In these cases, the SRA model is set up such that a value for equilibrium catch in each fleet $f$ prior to the first year of the catch time series is assumed ($C^{\textrm{eq}}_f$).
 We note that $C^{\textrm{eq}}_f$ need not be the true catch prior to the first year---factors such as recruitment, predator mortality, or any number of catch trends could have caused the estimated initial depletion---but $C^{\textrm{eq}}_f$ represents the corresponding catch in equilibrium.
 The SRA will then use this value to estimate the initial depletion ($\frac{B_{t=1}}{B_0}$) in the first year of the historical period.
+Therefore, $C^{\textrm{eq}}_f$ is a convenient means of initializing the model at different levels of depletion.
 
 Initial depletion is difficult to estimate with precision without other sources of information (e.g., a long index of abundance, or age-composition data).
 We therefore recommend treating $C^{\textrm{eq}}_f$ as a major axis of uncertainty if this approach is taken.
@@ -88,7 +90,7 @@ If growth, maturity, or natural mortality are set to be time-varying in the hist
 
 If there are no age- or length-composition data, then selectivity in the model is fixed to these values.
 Otherwise, the ascending limb of selectivity is estimated with age or length composition data.
-If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed values sampled using the range of $V_{L_\infty}$ or estimated in the SRA. See Equation \@ref(eq:sra-om-vaf).
+If the selectivity is assumed to be dome-shaped, then the descending limb can either be fixed or estimated in the SRA. See Equation \@ref(eq:sra-om-vaf).
 
 - The recruitment deviation first-order autocorrelation ($\theta_{\textrm{AC}}$) is estimated post-hoc from the recruitment deviation estimates.
 
@@ -155,9 +157,9 @@ Z^{\textrm{eq}}_a = M + \Sigma_f v_{a,f} F^{\textrm{eq}}_f.
 (\#eq:sra-om-zeq)
 $$
 
-If the stock is assumed to be unfished in the first year of the historical period ($y= t_1$), unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. In practical terms, this is done by the user setting the equilibrium catch to zero ($C^\textrm{eq} = 0$).
+If the stock is assumed to be unfished in the first year of the historical period ($y= t_1$), unfished conditions are modeled by setting $F^{\textrm{eq}}_f = 0$. In practical terms, this is done by the user setting the equilibrium catch for each fleet to zero ($C^\textrm{eq}_f = 0$).
 
-If the stock was not unfished in year $t_1$, the population is assumed to be in an equilibrium state with catch equal to a user-defined equilibrium catch ($C^\textrm{eq}$), defined as a fraction of the observed catch in year $t_1$. In this case the SRA estimates predicted equilibrium catch ($C^{\textrm{eq,pred}}$), which is fit to $C^\textrm{eq}$, with very low standard deviation (0.01) in the likelihood function (Equation \@ref(eq:sra-om-like-eqcatch)). Equilibrium catch is predicted by the Baranov equation, summed across fleets ($f=1:nf$) and ages ($a=1:A$):
+If the stock was not unfished in year $t_1$, the population is assumed to be in an equilibrium state with catch equal to a user-defined equilibrium catch ($C^\textrm{eq}_f$), defined as a fraction of the observed catch in year $t_1$. In this case the SRA estimates predicted equilibrium catch ($C^{\textrm{eq,pred}}_f$), which is fit to $C^\textrm{eq}_f$, with very low standard deviation (0.01) in the likelihood function (Equation \@ref(eq:sra-om-like-eqcatch)). Equilibrium catch is predicted by the Baranov equation, summed across fleets ($f=1:nf$) and ages ($a=1:A$):
 
 $$
 C^{\textrm{eq,pred}}_f = \sum_{a=1}^A\dfrac{v_{a,f}F^{\textrm{eq}}_f}{Z^{\textrm{eq}}_a}(1-\exp^{-Z^{\textrm{eq}}})N_{1,a}w_a,
@@ -246,8 +248,7 @@ C^N_{y,a,f} = \dfrac{v_{a,f} F_{y,f}}{Z_{y,a}} N_{y,a} (1 - \exp(-Z_{y,a}).
 (\#eq:sra-om-cyaf)
 $$
 
-In this framework, we recommend conditioning the model on observed catches, as these are better reported than effort, and easier to interpret for a multispecies fishery.
-In this case, with a model conditioned on catch, $F_{y,f}$ can be estimated as parameters (or solved iteratively to match the observed catch).
+$F_{y,f}$ can be estimated as parameters (or solved iteratively to match the observed catch).
 
 ### Catch-at-length
 
@@ -270,7 +271,7 @@ P(\ell \vert a) =
 (\#eq:sra-om-pla)
 $$
 
-where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi^L(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$ ($CV^L$ is the coefficient of variation in mean length at age).
+where $L'_{\ell}$ is the length at the lower boundary of length bin $\ell$ and $\phi^L(L'_{\ell})$ is the cumulative distribution function of a normal variable with mean $\tilde{L}_{y,a}$ (the expected mean length at age $a$) and standard deviation $\tilde{L}_{y,a} \times CV^L$, where $CV^L$ is the coefficient of variation in mean length at age.
 
 The fitted catch in weight $C_{y,f}$ is
 
