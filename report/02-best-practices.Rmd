@@ -14,7 +14,7 @@ Key questions to guide defining the decision context for MSE include:
 
 * What is the exact decision to be made?
 
-* What is the timeframe for making the decision?
+* What is the time frame for making the decision?
 
 * What are the boundaries on the project and decision?
 
