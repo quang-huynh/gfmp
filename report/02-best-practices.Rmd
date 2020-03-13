@@ -20,7 +20,7 @@ Key questions to guide defining the decision context for MSE include:
 
 * What are specific roles and responsibilities of parties involved? Parties include Science, Management, First Nations, industry, academia, and/or non-governmental organizations (NGOs).
 
-* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance with respect to objectives.
+* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance for different objectives.
 
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
 
