@@ -18,9 +18,9 @@ Key questions to guide defining the decision context for MSE include:
 
 * What are the boundaries on the project and decision?
 
-* What are specific roles and responsibilities of parties involved. Parties include Science, Management, First Nations, industry, academia, and/or non-governmental organizations (NGOs).
+* What are specific roles and responsibilities of parties involved? Parties include Science, Management, First Nations, industry, academia, and/or non-governmental organizations (NGOs).
 
-* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance against objectives.
+* How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance with respect to objectives.
 
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
 
@@ -83,11 +83,9 @@ Feedback from managers, stakeholders and First Nations should be sought througho
 
 Selection of the "best" MP involves addressing trade-offs (e.g., between conservation and economic performance metrics), and therefore is the purview of managers, stakeholders, First Nations, and interested parties [@punt2016]. Ultimately, selection of the best MP may be a subjective process, depending on the magnitude of trade-offs. It may be necessary to rank performance metrics in order of priority before the process starts. The role of Science in this step is to ensure that results are clearly presented to decision-makers. Ideally this should include presentation of graphical outputs that enable clear comparison of MPs with respect to performance metrics and trade-offs [@punt2017].
 
-Two basic approaches may be used in selecting the final MP: satisficing and trading-off evaluation, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trading-off evaluation involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly performing MPs.
+Two basic approaches may be used in selecting the final MP: satisficing and trade-off evaluation, where satisficing involves setting minimum performance standards (described in Section \@ref(sec:best5)) and trade-off evaluation involves decision-makers and stakeholders finding a balance among competing performance metrics [@punt2017]. We already described an early satisficing step to screen out poorly performing MPs.
 A second satisficing step may be used towards the end of the process, to further screen out MPs that do not meet a minimum standard and to simplify the decision-making environment [@miller2010]. After this, MP selection may move to a trading-off stage with a final reduced set of MPs. An iterative process may also be required, where MPs and/or OMs are refined following examination of results [e.g., @cox2008a]. In cases where there is a reference and robustness set of OMs, OMs can be weighted on the basis of plausibility, although this may require a qualitative, expert-driven approach and may not be straightforward [@punt2016].
 
-@carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the simulations under the selected MP. In this document, we do not demonstrate this formal review, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a].
+@carruthers2018 also discuss a final step, which is formal review of the selected MP once it has been implemented with real data. Formal review includes evaluation of whether the MP is performing as expected. For example, this could be done by comparing whether real relative abundance indices follow similar trajectories to those predicted by the OMs under the selected MP. In this document, we do not demonstrate this formal review, but recognize that ongoing review of the performance of MPs following their application is a critical component of MSE, where OMs and MPs may be continuously refined as new data become available [@cox2008a; @carruthers_hordyk_2018].
 
 Selection of the final MP should ideally result from careful specification of the objectives and performance metrics. In cases where a trade-off remains, or multiple MPs achieve sufficient performance, it is the role of managers---with input from stakeholders and First Nations and advice from Science---to select the final MP.
-
-<!-- TODO: implementation section Dowling et al. 2015 -->
