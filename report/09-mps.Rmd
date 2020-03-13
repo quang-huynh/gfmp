@@ -8,15 +8,15 @@ The list is not exhaustive and will likely grow or be adapted over time.
 We note that the notation between MPs is not always consistent (e.g., different symbols may be used for the slope of a relative abundance index), but we have aimed to maintain consistency with the DLMtool documentation or the primary source publications wherever possible.
 
 We have created alternative versions of the index-based MPs that discard every second year of survey data to mimic the biennial groundfish surveys on which many assessments will be based.
-We did note these MPs with a "`.`" in front of them.
+We indicate these MPs with a "`.`" in front of them.
 For example, "IDX" refers to the full MP and ".IDX" refers to the MP with biennial survey data.
-We do not make this distinction in the descriptions below but use the dot notation throughout the case studies.
+For brevity, we do not make this distinction in the descriptions below but use the dot notation throughout the case studies.
 
 ## CONSTANT-CATCH MANAGEMENT PROCEDURES {#sec:mp-cc-overall}
 
 MPs in this category set a constant catch, often based on some average historical catch.
 This type of MP is static and therefore does not incorporate feedback between subsequent stock status and MP recommendations.
-Nonetheless, these MPs are simple, may represent only a minor modification to the status quo, and in some circumstances, may prove to satisfy performance metrics.
+Nonetheless, these MPs are simple, may represent only a minor modification to the status quo, and in some circumstances, may satisfy performance metrics.
 
 ### CC_hist20: Average historical catch {#sec:mp-cc-hist}
 
@@ -159,7 +159,7 @@ There are four variants of this procedure as described in @geromont2015a:
 - Islope4: The most biologically precautionary, with  $\lambda = 0.2$ and $x = 0.4$
 
 Because of the $x$ values, all 4 versions start TAC at 60--80% of recent average catch.
-For our BC groundfish fisheries, we do not have an a priori expectation that they are currently being overfished. We therefore propose the following set that start TAC at 80% or 100% of average catch over the last 5 historical years:
+For our BC groundfish fisheries, we do not have an a priori expectation that stocks are currently being overfished. We therefore propose the following set that start TAC at 80% or 100% of average catch over the last 5 historical years:
 
 - Islope0.4_100: $\lambda = 0.4$ and $x = 0$
 - Islope0.4_80: $\lambda = 0.4$ and $x = 0.2$
@@ -229,7 +229,7 @@ We define these MPs for DLMtool as "IDX" ($\delta_{\textrm{min}} = -0.5$, $\delt
 $\textrm{TAC}_\textrm{Floor}$ would ideally be set on a stock-specific basis to a reasonable value required to maintain other groundfish fisheries.
 Provisionally, in the absence of a stock-specific floor value, "IDX" will set the floor to 20% of the average catch from the last 5 historical years.
 
-```{r mp-idx-demo, fig.cap="Illustration of IDX."}
+```{r mp-idx-demo, fig.cap="Illustration of the IDX MPs across two values of $\\delta_{\\textrm{min}}$ and $\\delta_{\\textrm{max}}$, also illustrating two values of $\\textrm{TAC}_\\textrm{Floor}$ ."}
 f <- function(tac_prev, tac_floor, delta_min, delta_max, delta_ind) {
   if (delta_ind <= delta_min) tac <- tac_floor
   if (delta_ind > delta_min && delta_ind <= delta_max)
