@@ -271,7 +271,7 @@ pars %>%
 
 MPs in this category aim to maintain a relative abundance index at some reference level.
 Typically, this reference level is set based on an assumption of what the index would be if the stock was at $B_\textrm{MSY}$.
-Since it will be challenging to apply this to real data in a manner consistent with this assumption, we instead propose modifying this MP to set the target index level to a historical index level, which would be chosen on a stock-by-stock basis.
+Since it would be challenging to apply this to real data in a manner consistent with this assumption, we instead propose modifying this MP to set the target index level to a historical index level, which would be chosen on a stock-by-stock basis.
 Provisionally, we set the reference level to the mean index value from the 10 years prior to the projection period. 
 Analysts, in consultation with managers and stakeholders, may choose to adjust this reference period or choose some alternative reference index value.
 The performance of choices of reference index can be evaluated in the closed-loop simulation.
