@@ -1,9 +1,9 @@
 # METHODS: THE PROPOSED FRAMEWORK {#sec:approach}
 
-We present the steps of a proposed simulation framework for selecting MPs based on trade-offs in performance amongst MPs.
+We present the steps of a proposed framework for selecting MPs based on trade-offs in performance amongst MPs.
 Sections \@ref(sec:approach1) to \@ref(sec:approach6) describe the methods of the framework, as it would be applied in the provision of catch advice, organized according to the six best-practice steps described in Section \@ref(sec:best-practices).
 We note that the elements of the framework as laid out here, represent primarily the role of Science.
-When this framework is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selection of MPs [e.g., @cox2008a].
+When this framework is applied in provision of management advice, decision-makers, stakeholders, and other interested parties (e.g., First Nations, Nongovernmental Organizations [NGOs], and academics) should be engaged throughout the process, particularly in defining the decision context, setting objectives and performance metrics, and selecting MPs [e.g., @cox2008a].
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:approach1}
 
@@ -27,7 +27,7 @@ We propose the following provisional tactical conservation and fisheries objecti
 4. Given the above conservation objectives are achieved, maximize short- and long-term fisheries catch.
 5. Given the above conservation objectives are achieved, minimize variability in fisheries catch from year to year.
 
-Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(sec:intro-motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability. Here we use provisional values of LRP = 0.4 *B*~MSY~ and USR = 0.8 *B*~MSY~, suggested under the Precautionary Approach Framework [@dfo2009] (we herein use *B* to refer to spawning biomass for simplicity).
+Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(sec:intro-motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock". The term sustainability has many definitions. Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability. We use provisional values of LRP = 0.4 *B*~MSY~ and USR = 0.8 *B*~MSY~, suggested under the Precautionary Approach Framework [@dfo2009] (we herein use *B* to refer to spawning biomass).
 
 The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis. For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone) can be lower at around 50% [@mcilgorm2013].
 
@@ -53,7 +53,7 @@ We chose this specific representation of variability to be easy to understand an
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers.
 In other words, it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
-Performance metrics in the MP Framework are easily customizable. Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria.
+Performance metrics in the MP Framework are easily customizable. Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria [e.g., haggarty2020yelloweye].
 
 In cases where performance metrics are calculated over a range of years, care needs to be taken to clearly report how summary statistics are calculated.
 Provisionally, we suggest calculating performance statistics across replicates and the entire time window as defined for the performance metric.
@@ -70,13 +70,13 @@ DLMtool OMs are organized into four main components representing a real fished s
 3. observation processes (e.g., bias and precision in survey indices); and
 4. management implementation (e.g., percentage overages of catch limits).
 
-Parameters under the four components are entered into "slots" [terminology referring to a feature of the "S4" object-oriented programming system in R; @r2019], described in detail in Appendix \@ref(app:dlmtool-om) and in Appendix B of @carruthers2018.
+Parameters under the four components are entered into "slots" [terminology referring to a feature of the "S4" object-oriented programming system in R; @r2019], described in detail in our Appendix \@ref(app:dlmtool-om) and in Appendix B of @carruthers2018.
 
 DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution.
 See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified.
 To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest.
 In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
-For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality ($M$), steepness of the stock-recruit relationship ($h$), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
+For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
@@ -91,7 +91,7 @@ In some cases, these uncertainties may be included in the reference set. We disc
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
 We note that DLMtool OMs include a large number of parameters that can vary through time, or which can be set to be deliberately biased.
-To simplify the operating model and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time invariant and unbiased (Appendix \@ref(app:default-slots)).
+To simplify the OM and focus on what are likely the most important axes of uncertainty, we suggest fixing most parameters to be time invariant and unbiased (Appendix \@ref(app:default-slots)).
 Exceptions would occur when one or more of these parameters represent axes of uncertainty for specific stocks, or when certain time-varying parameters are already accepted components of the stock assessment.
 
 Best practice recommends calibrating OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data).
@@ -105,7 +105,7 @@ For some data-limited stocks, indices of abundance may be considered less reliab
 In these cases, as long as there is a time series of catch data, we still recommend using the SRA model for calibration, recognizing that a much broader range of uncertainties will need to be considered in the set of OMs, including large uncertainty in stock size, productivity and current depletion level.
 Where there is no index of abundance, we recommend developing a wide range of uncalibrated OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
-We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet, and observation characteristics of a set of similar species.
+We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet, and observation characteristics of a set of similar stocks
 However, we recommend focusing first on species for which customized OMs can be developed, which are calibrated to observed data.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
@@ -125,14 +125,14 @@ In choosing from the available data- and model-based MPs, we excluded MPs based 
 We excluded MPs that required knowledge of absolute abundance since there are unlikely to be cases where we have such knowledge in a data-limited case.
 We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age-composition data are not available.
 We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty for the stocks to which this framework will be applied.
-While it is necessary to explore these axes of uncertainty within the operating model, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
-We also, in some cases, excluded MPs that are difficult to understand and communicate.
+While it is necessary to explore these axes of uncertainty within the OM, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
+We also, in some cases, excluded MPs that were difficult to understand and communicate.
 
-All MPs included in this framework are described in Appendix \@ref(app:MPs).
+A library of provisional MPs included in this framework are described in Appendix \@ref(app:MPs).
 
 ### Data-based MPs
 
-Commercial catch data are available for all BC groundfish stocks with relative certainty since 1996 for BC trawl fisheries and 2008 for BC hook and line fisheries.
+Commercial catch data are available for all BC groundfish stocks with relative certainty since 1996 for BC trawl fisheries and 2008 for BC hook-and-line fisheries.
 Fisheries-independent trawl and longline surveys have been conducted systematically since the early 2000s for BC groundfish and the population indices derived from these data likely represent some of the most informative data for many data-limited groundfish stocks in BC.
 Fish lengths are collected on both surveys and commercial fishing trips for many species.
 However, length-based MPs often require strong assumptions and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data, which often have large and inconsistent variances among years and length bins. Simulating realistic length-composition data is challenging and we have not sufficiently investigated best practices for simulating length-compositions within the DLMtool software.
@@ -163,18 +163,17 @@ For example, the Islope MPs [@geromont2015] as originally described and implemen
 
 In addition to the data-based MPs, we suggest a surplus production (SP) model be considered amongst candidate MPs.
 We provisionally include the SP model coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Appendix \@ref(app:MPs) Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest consideration of both @schaefer1954 and @fox1970 production models since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
-We suggest a weakly informative prior probability distribution be set on the intrinsic greater population increase $r$, possibly following recommendations such as those in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative MPs.
-
+We suggest a weakly informative prior probability distribution be set on the intrinsic rate of population increase $r$, possibly following recommendations such as those in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative MPs.
 The SP model estimates must be paired with an HCR to form a complete management procedure.
 We provisionally suggest a number of HCRs in Appendix \@ref(app:MPs) Section \@ref(sec:mp-model-based).
 
 ### Dealing with multiple survey indices within MPs
 
-The vast majority of published data-limited MPs are based on single indices of abundance. This presents a challenge for BC groundfish stocks, since the trawl and hook and line fisheries-independent surveys that cover our coast do so on a biennial basis, alternating amongst areas. We suggest the following three possible solutions:
+The vast majority of published data-limited MPs are based on single indices of abundance. This presents a challenge for BC groundfish stocks, since the trawl and hook-and-line fisheries-independent surveys that cover our coast do so on a biennial basis, alternating amongst areas. We suggest the following three possible solutions:
 
-1. Build and test operating models for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas. This could be accomplished, for example, via a minimax-style solution, where an MP is selected that performs the least poorly across all areas. If MP performance across areas differs substantially, then different MPs may be needed for different areas. A potential problem with this approach is when stocks are larger than the surveyed area and the information captured in a single index does not represent the entire stock.
+1. Build and test OMs for areas associated with a single index. If these areas are considered simultaneously in a single application of the MP Framework then we suggest comparing performance of the MPs across all areas and, if possible, choosing an MP that performs reasonably well across all areas. This could be accomplished, for example, via a minimax-style solution, where an MP is selected that performs the least poorly across all areas. If MP performance across areas differs substantially, then different MPs may be needed for different areas. A potential problem with this approach is when stocks are larger than the surveyed area and the information captured in a single index does not represent the entire stock.
 
-2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research [e.g., @shelton2014; @thorson2015; @anderson2019; @anderson2019synopsis] and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way combine multiple survey indices [e.g., @cox2019], geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple survey protocols or spatial areas.
+2. Develop a single index by "stitching" multiple survey indices together, likely with the application of geostatistical spatiotemporal modeling. This is an active area of research [e.g., @shelton2014; @thorson2015; @anderson2019; @anderson2019synopsis] and will likely become more common within the fisheries literature and in stock assessments. While MPs could be developed that average or in some other way combine multiple survey indices, geostatistical modelling is likely to offer a more coherent way of combining survey data from multiple survey protocols or spatial areas.
 
 3. Develop MPs that incorporate multiple survey indices [e.g., @cox2019]. Many existing data-limited MPs, such as those described in this document (Appendix \@ref(app:MPs)), could be modified to incorporate information from multiple indices. For example, separate indices could be fed through the MP algorithms independently and the most biologically precautionary TAC recommendation could be made.
 
@@ -204,7 +203,7 @@ Once the objectives, performance metrics, calibrated OMs and MPs are fully speci
 We recommend beginning with a satisficing step, where trial simulations are run to screen out MPs that do not meet a basic set of performance criteria [@miller2010].
 For example, in our illustrative Rex Sole case study (Appendix \@ref(app:mse-rex)), we screened out MPs that did not achieve a long-term 90% probability of keeping the stock above the LRP (LT LRP $>$ 0.9) and a short-term 80% probability of catch being above recent average catch (STC $>$ 0.8).
 We recommend an iterative approach to selecting the satisficing criteria on a stock-by-stock basis.
-The purpose is to simplify the decision step by focusing on a manageable number of MPs.
+The purpose is to simplify the decision-making process by focusing on a manageable number of MPs.
 If possible, criteria should not be so strict as to filter out MPs with broadly acceptable performance or to filter out almost all MPs.
 Similarly, criteria should be strict enough to filter out consistently under-performing MPs.
 We recommend selection of satisficing criteria be done iteratively with the technical committee.
@@ -225,9 +224,9 @@ In our experience, the number of required replicates is likely to be at least 10
 The y-axis represents the proportion of cumulative replicates that have achieved the performance metric.
 The cumulative replicates are shown along the x-axis.
 Each panel represents a different performance metric and the colours illustrate the various MPs.
-A wiggly line indicates that a given MP is still varying in its performance metric value as more replicates are run.
-Lines that are crossing indicate changes to the rank order of MP performance as more replicates are run.
-A plot is consistent with convergence when the lines are remaining roughly parallel and not crossing each other towards the right of the panel.
+A wiggly line indicates that a given MP is still varying in its performance metric value as more replicates are added.
+Lines that are crossing indicate changes to the rank order of MP performance as more replicates are added.
+A plot is consistent with convergence when the lines are remaining roughly horizontal and parallel and are not crossing each other towards the right of the panel.
 
 ```{r methods-converge, fig.cap="(ref:fig-methods-converge)"}
 knitr::include_graphics(here("report/figure/framework-convergence.png"))
@@ -245,7 +244,7 @@ Poor performance of an MP under one of these scenarios may influence a decision-
 We recommend presenting performance metrics from the reference and robustness sets separately.
 For most visualizations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
 An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference-set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
-The first case is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
+The first is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
 We recommend presenting performance metrics from the individual robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
@@ -269,16 +268,16 @@ The second is a "radar" plot (also known as a "kite" or "spider" plot).
 Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian ones [@diehl2010; @feldman2013; @albo2016].
 
 To understand the processes leading to the performance metrics, we recommend that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
-We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the timeseries across scenarios (Figure \@ref(fig:methods-proj-sens)).
-Inspection of these timeseries can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the timeseries.
+We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across scenarios (Figure \@ref(fig:methods-proj-sens)).
+Inspection of these time series can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the time series.
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
-Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
+Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY~ that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
 
-Visualization of the simulated population index timeseries is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
+Visualizing the simulated population-index time series is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
 First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
 Second, the range of future projected index values can be used as a trigger for re-evaluating an OM.
 For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
-We note that the cumulative probability of the observed index at some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
+We note that the cumulative probability of the observed index exceeding some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
 For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
 Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018].
 
@@ -329,7 +328,7 @@ Care should be taken when interpreting these plots because the arrangement of th
 knitr::include_graphics(here("report/figure/framework-radar.png"))
 ```
 
-(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single operating model.
+(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single OM.
 Dark lines indicate the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation replicates.
 The vertical dashed line indicates the last year of the historical period.
@@ -354,11 +353,11 @@ knitr::include_graphics(here("report/figure/framework-index-projections.png"))
 ```
 
 (ref:fig-methods-proj-sens)
-This visualization highlights sensitivity of the historical conditioning and projected timeseries across OM scenarios.
+This visualization highlights sensitivity of the historical conditioning and projected time series across OM scenarios.
 The solid lines correspond to median values and shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
 Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this scenario highlights the comparison within a given MP across scenarios.
 This visualization lends itself to multiple rows where each row represents a different MP.
-Note that sensitivity of the timeseries to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.
+Note that sensitivity of the time series to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.
 
 ```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/framework-sens-projections.png"))

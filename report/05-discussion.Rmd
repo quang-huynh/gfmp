@@ -27,7 +27,7 @@ MP frameworks such as this one may be especially important for these species.
 The Sustainable Fisheries Framework and the Fish Stocks provisions of the *Fisheries Act* require that fish stocks be maintained at sustainable levels, and particularly above the LRP (Section \@ref(sec:intro-motivation)).
 This framework implicitly preserves the intent of these policies, despite the fact that reference points and stock status are not explicitly provided.
 The MP Framework therefore increases capacity for provision of Sustainable-Fisheries-Framework- and Fish-Stocks-Provisions-compliant catch advice for data-limited species.
-We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accommodate status reports from MP-approach processes, which may use alternative wording such as: "Under the current management procedure, the stock has a less than [X] probability ([Y] times out of [N] chance) of being below the LRP over a [Z]-year time frame." 
+We recommend that products such as [DFO's sustainability survey](https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/survey-sondage/index-en.html) be flexible to accommodate status reports from MP-approach processes, which may use alternative wording such as: "Under the current management procedure, the stock has a less than [X] probability ([Y] times out of [N] chance) of being below the LRP over a [Z]-year time frame."
 Alternatively, if a minimum-performance-by-year calculation [@ices2016criteria] is performed: "...less than [X] probability ([Y] times out of [N] chance) of being below the LRP in each and every year over a [Z]-year time frame."
 
 ## TUNING MPs

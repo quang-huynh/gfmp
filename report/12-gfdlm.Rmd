@@ -34,13 +34,13 @@ The following are the main plotting functions:
 
 * `plot_index()` takes a named list of DLMtool simulations and creates a plot showing historical and projected population index values. For example, Figure \@ref(fig:rex-proj-index).
 
-* `plot_main_projections()` takes a named list of DLMtool simulations and creates a timeseries plot of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch. For example, Figure \@ref(fig:rex-proj-ceq200).
+* `plot_main_projections()` takes a named list of DLMtool simulations and creates a time-series plot of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch. For example, Figure \@ref(fig:rex-proj-ceq200).
 
 * `plot_kobe()` takes a named list of DLMtool simulations and creates a Kobe plot (*F*/*F*~MSY~ vs. *B*/*B*~MSY~) for the last projected year. For example, Figure \@ref(fig:rex-kobe).
 
 * `plot_worms()` takes a named list of DLMtool simulations and creates a Kobe plot through time. For example, Figure \@ref(fig:rex-worm).
 
-* `plot_scenario_projections()` takes a named list of DLMtool simulations and creates a timeseries plot of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch with all scenarios overlaid on the same plots using different colours. For example, Figure \@ref(fig:rex-proj-scenarios).
+* `plot_scenario_projections()` takes a named list of DLMtool simulations and creates a time-series plot of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch with all scenarios overlaid on the same plots using different colours. For example, Figure \@ref(fig:rex-proj-scenarios).
 
 * `plot_factory()` is "the one [plotting function] to rule them all". This function takes a named list of DLMtool simulations along with a number of other arguments specifying characteristics like satisficed MPs and performance metrics and generates common versions of all the figures described above. The output is a named list of ggplot2 [@wickham2016] elements that can be viewed, modified, and/or saved for inclusion in a report. For example, this function was used to create all the main figures in the Rex Sole case study in this document (Figures \@ref(fig:rex-converge)--\@ref(fig:rex-proj-scenarios)).
 
