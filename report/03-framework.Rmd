@@ -164,7 +164,7 @@ For example, the Islope MPs [@geromont2015] as originally described and implemen
 In addition to the data-based MPs, we suggest a surplus production (SP) model be considered amongst candidate MPs.
 We provisionally include the SP model coded in MSEtool [@huynh_msetool_2019] and based on @fletcher1978 (Appendix \@ref(app:MPs) Section \@ref(sec:mp-sp)) paired with a number of possible harvest control rules (HCRs). We suggest consideration of both @schaefer1954 and @fox1970 production models since it is not clear, until simulation-tested, which will generate better performance statistics for a given stock.
 We suggest a weakly informative prior probability distribution be set on the intrinsic rate of population increase $r$, possibly following recommendations such as those in @mcallister2001. Alternative prior probability distributions could be considered tuning parameters in alternative MPs.
-The SP model estimates must be paired with an HCR to form a complete management procedure.
+The SP model estimates must be paired with an HCR to form a complete MP.
 We provisionally suggest a number of HCRs in Appendix \@ref(app:MPs) Section \@ref(sec:mp-model-based).
 
 ### Dealing with multiple survey indices within MPs
@@ -278,8 +278,8 @@ First, for simple MPs that closely resemble recent management, future simulation
 Second, the range of future projected index values can be used as a trigger for re-evaluating an OM.
 For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
 We note that the cumulative probability of the observed index exceeding some quantile of simulated values increases with time, so such a rule will generate more than the tail probability of false re-evaluation triggers.
-For example, even if the OM perfectly captured reality, there is a 50% probability that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
-Closed-loop simulation itself, can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018].
+For example, even if the OM perfectly captured reality, there is approximately a `r round(pbinom(9, 10, 0.95), 1)` probability (2 in 5 chance) that the observed index will at some point exceed the 95% quantile of simulated index values after 10 years.
+Closed-loop simulation itself can be used to establish appropriate triggers with acceptable statistical power [@carruthers_hordyk_2018].
 
 Finally, we suggest two visualizations that illustrate the trade-off between *F*/*F*~MSY~ and *B*/*B*~MSY~ across replicates for the various MPs (Figure \@ref(fig:methods-kobe) and \@ref(fig:methods-worm)).
 One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final year of the projection (Figure \@ref(fig:methods-kobe)).
@@ -311,7 +311,7 @@ knitr::include_graphics(here("report/figure/framework-dot.png"))
 
 (ref:fig-methods-tradeoff)
 This visualization demonstrates bivariate trade-offs between two performance metrics for a given scenario or average across scenarios.
-Bottom and left axis correspond to two performance metrics and individual dots represent MPs.
+The bottom and left axis correspond to two performance metrics and individual dots represent MPs.
 
 ```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="4.25in"}
 knitr::include_graphics(here("report/figure/framework-trade-off.png"))
@@ -319,7 +319,7 @@ knitr::include_graphics(here("report/figure/framework-trade-off.png"))
 
 (ref:fig-methods-radar) This radar plot illustrates performance metric trade-offs amongst a set of MPs.
 Each spoke represents a performance metric (Section \@ref(sec:approach2)).
-Each line represents a management procedure.
+Each line represents an MP.
 The position of each line on each spoke represents the probability of that MP achieving that performance metric.
 Therefore, lines closer to the outside correspond to MPs that are determined to have a higher probability of achieving that performance metric.
 Care should be taken when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes [@diehl2010; @feldman2013; @albo2016].
@@ -328,7 +328,7 @@ Care should be taken when interpreting these plots because the arrangement of th
 knitr::include_graphics(here("report/figure/framework-radar.png"))
 ```
 
-(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various management procedures for a single OM.
+(ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various MPs for a single OM.
 Dark lines indicate the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation replicates.
 The vertical dashed line indicates the last year of the historical period.
@@ -337,6 +337,17 @@ Note that the simulations are mean-unbiased and so the median B/B~MSY~ and F/F~M
 
 ```{r methods-proj, fig.cap="(ref:fig-methods-proj)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/framework-main-projections.png"))
+```
+
+(ref:fig-methods-proj-sens)
+This visualization highlights sensitivity of the historical conditioned and projected time series across OM scenarios.
+The solid lines correspond to median values and the shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
+Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this visualization helps compare time series within a given MP across scenarios.
+This visualization lends itself to multiple rows where each row represents a different MP.
+Note that sensitivity of the time series to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.
+
+```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
+knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
 ```
 
 (ref:fig-methods-index) This visualization illustrates the historical and projected relative population index values.
@@ -350,17 +361,6 @@ For simple MPs, this visualization is also helpful for assessing whether the sim
 
 ```{r methods-index, fig.cap="(ref:fig-methods-index)", out.width="6in",}
 knitr::include_graphics(here("report/figure/framework-index-projections.png"))
-```
-
-(ref:fig-methods-proj-sens)
-This visualization highlights sensitivity of the historical conditioning and projected time series across OM scenarios.
-The solid lines correspond to median values and shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
-Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this scenario highlights the comparison within a given MP across scenarios.
-This visualization lends itself to multiple rows where each row represents a different MP.
-Note that sensitivity of the time series to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.
-
-```{r methods-proj-sens, fig.cap="(ref:fig-methods-proj-sens)", out.width="\\textwidth"}
-knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
 ```
 
 (ref:fig-methods-kobe) Kobe (B/B~MSY~ vs. F/F~MSY~) plots for the final year of the projections across all replicates.
