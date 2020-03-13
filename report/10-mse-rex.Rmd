@@ -193,7 +193,7 @@ We defined the objectives for Rex Sole based on the provisional objectives prese
 4. Given the above conservation objectives are achieved, maximize short- and long-term fisheries catch.
 5. Given the above conservation objectives are achieved, minimize variability in fisheries catch from year to year.
 
-Our estimated length at 50% maturity (25.8 cm), coupled with our estimated growth parameters, imply an age at 50% maturity of approximately 4--5 years.
+Our estimated length-at-50% maturity (25.8 cm), coupled with our estimated growth parameters, imply an age-at-50% maturity of approximately 4--5 years.
 Since 1.5 to 2 generations would be less than 50 years, we chose to base our long-term performance metrics on a 50-year projection.
 
 The performance metrics measuring the objectives were:
@@ -235,8 +235,8 @@ sc %>% select(-scenario) %>%
 
 #### Magnitude of pre-1996 commercial catch and importance of commercial CPUE
 
-Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards (Figure \@ref(fig:rex-catch-plot)).
-This is likely partly due to a lack of at-sea observer coverage and reporting requirements prior to 1996.
+Prior to 1996, reported catches for WCVI Rex Sole were much lower than post-1995 and there were no reported discards.
+We have removed these catches from Figure \@ref(fig:rex-catch-plot) because these data are considered unreliable due to a lack of reporting requirements and at-sea observer coverage prior to 1996.
 Assumptions about pre-1996 catch levels affect the SRA model's estimates of the depletion level in 1996 (Appendix \@ref(app:sra)).
 The SRA model parameter $C^{\textrm{eq}}$, describes the equilibrium catch in weight prior to the first year of the model (1996 for Rex Sole), which is used to estimate equilibrium fishing mortality $F^{\textrm{eq}}$ prior to the first year of the model, which in turn is used to calculate total mortality $Z^{\textrm{eq}}$ needed to calculate recruits and numbers in the first year of the model (Equation \@ref(eq:sra-om-ceqpred)).
 We note that the use of $F^{\textrm{eq}}$ and $C^{\textrm{eq}}$ make the assumption that the population biomass and fishery were in equilibrium prior to 1996.
@@ -255,7 +255,7 @@ Increasing CPUE is also possibly evidence of a stock rebuilding from a depleted 
 While there are many caveats associated with commercial CPUE time series, two factors suggest this trend is plausible: (1) commercial CPUE has somewhat mirrored the broad patterns seen in the SYN WCVI survey index since the survey began (Figure \@ref(fig:rex-surv-index-plot)); and (2) Rex Sole have not been a targeted species by the commercial trawl fleet.
 In the absence of targeting, CPUE trends may more closely match abundance.
 Second, the SYN WCVI survey has approximately doubled its relative index value for Rex Sole since the early 2000s, which would be consistent with the stock starting in a somewhat depleted state in 1996.
-Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported caught in substantial quantities before 1996.
+Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported to have been caught in substantial quantities before 1996.
 It therefore seems reasonable to assume that there is considerable unrecorded catch prior to 1996.
 
 We considered three reference-set scenarios and one robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)). The three reference-set scenarios are:
@@ -383,8 +383,8 @@ knitr::include_graphics(here("report/figure/rex-compare-SRA-depletion-panel.png"
 ```
 
 (ref:fig-rex-F-om)
-Apical fishing mortality ($F$) trajectories for reference and robustness set OMs.
-Apical fishing mortality is the maximum $F$ experienced by fish of any age in a given year.
+Apical fishing mortality ($F_y$) trajectories for reference and robustness set OMs.
+Apical fishing mortality is the maximum $F_{a,f}$ experienced by fish of any age in a given year.
 Lines represent medians, and dark and light grey shading represent 50% and 95% quantiles across replicates.
 
 ```{r rex-F-om, fig.cap="(ref:fig-rex-F-om)", out.width="\\textwidth"}
