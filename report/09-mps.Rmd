@@ -102,6 +102,7 @@ The TAC is subject to the following conditions that limit the rate at which the 
 - if next TAC < 0.8 last catch, then TAC = 0.8 $\times$ last catch.
 
 The default $\lambda$ value is 1 in DLMtool.
+
 Here we propose adding a version with a lower value of $\lambda$ ($\lambda = 0.66$), which is therefore less responsive to changes in the relative abundance index.
 Furthermore, we propose extending the linear regression to encompass 6 or 8 years, due to the biennial nature of the synoptic trawl surveys, thereby encompassing a constant number of years with data.
 We denote these MPs as "GB_slope_6_1", "GB_slope_6_0.66", "GB_slope_8_1", and "GB_slope_8_0.66", where the numbers indicate the number of years and $\lambda$ value, respectively.
