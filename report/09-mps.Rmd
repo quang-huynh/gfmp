@@ -216,7 +216,7 @@ $$
 \end{cases}
 $$
 
-where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor}$ is 20% of the average catch from the last 5 historical years) and $\Delta I_y$ is the current index value divided by the last observed index value (every two years for a biennial survey).
+where $\delta_\textrm{min}$ is the most negative drop allowed in the relative biomass index before the fishery is closed that year (by default assuming $\textrm{TAC}_\textrm{Floor}$ is 20% of the average catch from the last 5 historical years) and $\Delta I_y$ is the current index value divided by the last observed index value minus 1.
 We set $\delta_\textrm{min} = -0.5$ as in [@cox2020], but this could be tuned for individual stocks.
 The maximum increase in TAC is capped at $\delta_\textrm{max} = 0.25$ by default.
 
