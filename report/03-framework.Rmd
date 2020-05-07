@@ -109,7 +109,7 @@ In these cases, as long as there is a time series of catch data, we still recomm
 Where there is no index of abundance, we recommend developing a wide range of OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
 We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet, and observation characteristics of a set of similar stocks.
-However, we recommend focusing first on species for which customized OMs can be developed, which are conditioned to observed data.
+However, we recommend focusing first on species for which customized OMs can be developed, which are conditioned on observed data.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
@@ -189,7 +189,7 @@ In addition to the candidate MPs, it is important to include reference MPs. Prov
 * Fishing at 0.75 *F*~MSY~
 * Maintaining the current TAC
 
-The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 *F*~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included because it illustrates what is likely the near-term default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
+The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MP provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 *F*~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included because it illustrates what is likely the near-term default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
 
 ### Including new MPs
 
