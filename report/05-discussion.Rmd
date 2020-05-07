@@ -116,7 +116,7 @@ The MP Framework can be easily modified to test performance of alternative MPs w
 The only real modifications needed are to the objectives and performance metrics, which are already customizable within this framework.
 
 A challenge for data-limited species is how stocks are assessed to be in the Critical Zone in the first place so that a rebuilding plan is triggered.
-However, we suggest that if calibrated OMs overwhelmingly place a fish stock in the Critical Zone across a range of plausible OM assumptions, this could be grounds for triggering a rebuilding plan.
+However, we suggest that if conditioned OMs overwhelmingly place a fish stock in the Critical Zone across a range of plausible OM assumptions, this could be grounds for triggering a rebuilding plan.
 This framework is currently being applied to evaluate alternative data-limited MPs for the rebuilding plan for the Inside stock of Yelloweye Rockfish in British Columbia [@haggarty2020yelloweye].
 
 # ACKNOWLEDGEMENTS
