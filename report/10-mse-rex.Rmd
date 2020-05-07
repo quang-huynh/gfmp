@@ -217,7 +217,7 @@ We considered the major axes of uncertainty for Rex Sole to be:
 4. The value of natural mortality (*M*)
 5. The age selectivity pattern of the commercial fleet and survey gear
 
-We divided OM scenarios into a reference set and a robustness set (Section \@ref(sec:best3)). We defined six OM reference-set scenarios that differed from each other in these respects and two OM robustness-set scenarios (Table \@ref(tab:rex-scen)), with parameter values provided in Appendix \@ref(app:desc-om-rex). We describe each of the scenarios below.
+We divided OM scenarios into a reference set and a robustness set (Section \@ref(sec:best3)). We defined six OM reference-set scenarios that differed from each other in these respects and two OM robustness-set scenarios (Table \@ref(tab:rex-scen)), with parameter values provided in Appendix \@ref(app:desc-om-rex). We describe each of the OM scenarios below.
 
 ```{r rex-scen, results='asis'}
 sc <- readRDS(here("generated-data/rex-scenarios.rds"))
@@ -227,7 +227,7 @@ sc <- sc %>%
   mutate(scenario_human = gsub("\\\n", " ", scenario_human))
 sc %>% select(-scenario) %>%
   csasdown::csas_table(caption = "Rex Sole OM scenarios. \"Ceq.\" refers to \"catch equilibrium\" in 1995 and is used as a way to parameterize the level of biomass depletion at the beginning of the recorded catch history.",
-    col_names = c("Scenario name", "Set type")) %>%
+    col_names = c("OM scenario name", "Set type")) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
@@ -246,7 +246,7 @@ For this reason, we treated the value of $C^{\textrm{eq}}$ as a major axis of un
 We attempted to fit $C^{\textrm{eq}}$ values ranging from 0 to 2.5 times the 1996 catch, which imply that equilibrium catch in 1995 was 0% to 250% of the 1996 catch, respectively.
 The SRA model estimated implausibly high values of fishing mortality ($F_{a,y} > 3$) for values of $C^{\textrm{eq}} < 200\%$ of 1996 catch, suggesting that there may have been considerable unrecorded, possibly discarded, catch prior to 1996, also implying that the stock was unlikely to have been close to $B_0$ in 1995.
 Therefore, our reference set includes only two levels of $C^{\textrm{eq}}$ that we thought rendered plausible OM conditioning.
-We include an additional scenario with the 1995 stock closer to $B_0$ in the robustness set (Section \@ref(sec:results-robustness-set)).
+We include an additional OM scenario with the 1995 stock closer to $B_0$ in the robustness set (Section \@ref(sec:results-robustness-set)).
 
 We believe the assumption of unrecorded catch prior to 1996 is consistent with the data and knowledge of the multispecies groundfish fishery for three reasons.
 First, the standardized commercial CPUE index shows an increasing trend from 1996 to 2003 before the SYN WCVI survey began (Figure \@ref(fig:rex-surv-index-plot)).
@@ -258,45 +258,45 @@ Second, the SYN WCVI survey has approximately doubled its relative index value f
 Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported to have been caught in substantial quantities before 1996 [@anderson2019synopsis].
 It therefore seems reasonable to assume that there is considerable unrecorded catch prior to 1996.
 
-We considered three reference-set scenarios and one robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)).
+We considered three OM reference-set scenarios and one OM robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)).
 For the reference set:
 
-* The scenario "Ceq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996.
+* The OM scenario "Ceq. 200%" assumes that equilibrium catch prior to 1996 was twice that in 1996.
 
-* The scenario "Ceq. 250%" assumes that equilibrium catch prior to 1996 was 2.5 times that in 1996.
+* The OM scenario "Ceq. 250%" assumes that equilibrium catch prior to 1996 was 2.5 times that in 1996.
 
-* The scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
+* The OM scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
 
 #### Steepness of the stock-recruit relationship (*h*)
 
-We considered one alternative scenario that differed in terms of the value of *h* (Table \@ref(tab:rex-scen)).
-Unless otherwise stated, all other scenarios drew from a baseline beta distribution $h \sim \textrm{beta}(13.4, 2.4)$, which results in a mean and standard deviation of 0.85 and 0.09 (see Section \@ref(app:desc-stock-h-rex)).
+We considered one alternative OM scenario that differed in terms of the value of *h* (Table \@ref(tab:rex-scen)).
+Unless otherwise stated, all other OM scenarios drew from a baseline beta distribution $h \sim \textrm{beta}(13.4, 2.4)$, which results in a mean and standard deviation of 0.85 and 0.09 (see Section \@ref(app:desc-stock-h-rex)).
 
-* The scenario "Higher steepness" uses the value $h = 0.95$.
+* The OM scenario "Higher steepness" uses the value $h = 0.95$.
 
 #### Natural Mortality (*M*)
 
-We considered one alternative scenario that differed in terms of the value of *M* (Table \@ref(tab:rex-scen)).
-Unless otherwise stated, all other scenarios drew from a baseline uniform distribution *M* = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
+We considered one alternative OM scenario that differed in terms of the value of *M* (Table \@ref(tab:rex-scen)).
+Unless otherwise stated, all other OM scenarios drew from a baseline uniform distribution *M* = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
 
-* The scenario "Higher M" considers that *M* could be latitude-dependent and may be substantially higher for stocks in warmer BC waters (*M* = 0.3 *y*^-1^).
+* The OM scenario "Higher M" considers that *M* could be latitude-dependent and may be substantially higher for stocks in warmer BC waters (*M* = 0.3 *y*^-1^).
 
 #### Selectivity
 
-We considered one alternative scenario that differed in terms of the length- and age-selectivity of the commercial fleet and the WCVI synoptic survey (Table \@ref(tab:rex-scen)).
-Unless otherwise stated, all other scenarios drew from a length selectivity curve that approximately matched the maturity ogive ($L^5 = 22$, $L^\textrm{FS} = 32$).
+We considered one alternative OM scenario that differed in terms of the length- and age-selectivity of the commercial fleet and the WCVI synoptic survey (Table \@ref(tab:rex-scen)).
+Unless otherwise stated, all other OM scenarios drew from a length selectivity curve that approximately matched the maturity ogive ($L^5 = 22$, $L^\textrm{FS} = 32$).
 
-* The scenario "Lower selectivity" considers that the selectivity curve could be shifted to the left resulting in both the survey and the commercial fleet capturing younger fish ($L^5 = 17$, $L^\textrm{FS} = 28$).
+* The OM scenario "Lower selectivity" considers that the selectivity curve could be shifted to the left resulting in both the survey and the commercial fleet capturing younger fish ($L^5 = 17$, $L^\textrm{FS} = 28$).
 
-We considered the above six scenarios to represent the most plausible uncertainty scenarios for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
+We considered the above six OM scenarios to represent the most plausible uncertainty OM scenarios for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
 
 ### THE ROBUSTNESS SET {#sec:results-robustness-set}
 
-To illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two robustness scenarios (Table \@ref(tab:rex-scen)):
+To illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two OM robustness scenarios (Table \@ref(tab:rex-scen)):
 
-* The "No CPUE Ceq. 50%" scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996 ($C^{\textrm{eq}} = 0.5$). In other words, this scenario assumes that the stock started in a much less depleted state than the other scenarios. In order to fit the SRA model with plausible $F_{a,y}$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" scenario.
+* The "No CPUE Ceq. 50%" OM scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996 ($C^{\textrm{eq}} = 0.5$). In other words, this OM scenario assumes that the stock started in a much less depleted state than the other OM scenarios. In order to fit the SRA model with plausible $F_{a,y}$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" OM scenario.
 
-* The "M increasing" scenario assumes that *M* was fixed at 0.2 in the historical period and increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario. We do not necessarily expect this to become a default robustness OM in applications of the framework.
+* The "M increasing" OM scenario assumes that *M* was fixed at 0.2 in the historical period and increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this OM scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario. We do not necessarily expect this to become a default robustness OM in applications of the framework.
 
 Results from the Robustness Set will be presented separately in Section \@ref(sec:results-rex6) and will be used to show whether performance of MPs is significantly affected by these other sources of uncertainty.
 
@@ -324,7 +324,7 @@ The SRA models fit the catch data almost perfectly by design, via setting the st
 
 (ref:fig-rex-survey-fits)
 SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indices.
-Panels from top to bottom represent scenarios.
+Panels from top to bottom represent OM scenarios.
 Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
 Dots represent index mean and line segments represent 2 times the standard errors as entered into the SRA models.
 In the case of the commercial CPUE, these standard errors have been inflated 1.5 times from the fitted standard errors to down-weight the commercial CPUE index relative to the survey index.
@@ -341,11 +341,11 @@ We used the SRA to populate the following parameters in the conditioned OMs:
 - $F_{a,y}$ (fishing mortality at age by year)
 - $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (historical recruitment deviations)
 
-The reference and robustness scenarios rendered a range of estimated parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
+The OM reference and robustness scenarios rendered a range of estimated parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
 In fitting the SRA across replicate draws from the initial OMs, we discarded any models that did not converge (with convergence defined as a positive-definite covariance matrix) or had $F_{a,y} > 3$.
 The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)). However, by discarding  replicates from non-converged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
 The discarded parameter values represent implausible parameter combinations according to the SRA model.
-The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs were similar with the exception of the "No CPUE Ceq. 50%" scenario (Figure \@ref(fig:rex-depletion-om)).
+The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs were similar with the exception of the "No CPUE Ceq. 50%" OM scenario (Figure \@ref(fig:rex-depletion-om)).
 
 ```{r rex-sra-fraction, results='asis'}
 rex_converged <- readRDS(here("generated-data/rex-converged.rds"))
@@ -353,7 +353,7 @@ rex_converged %>%
   mutate(fraction_converged = sprintf("%.2f",round(nsim / 650, 2))) %>%
   mutate(scenario = gsub("\\n", " ", scenario)) %>%
   select(-nsim) %>%
-  csasdown::csas_table(col_names = c("Scenario", "Fraction retained"),
+  csasdown::csas_table(col_names = c("OM Scenario", "Fraction retained"),
     caption = "Fraction of replicates retained after conditioning with the SRA model.")
 ```
 
@@ -365,7 +365,7 @@ knitr::include_graphics(here("report/figure/rex-sra-estimated.png"))
 ```
 
 (ref:fig-rex-sra-conditioned-parameters2)
-Frequency polygons for parameters input to the SRA. Parameters were sampled stochastically as input into the SRA (see Appendix \@ref(app:desc-om-rex) for ranges). Any samples associated with non-converged SRA models were discarded. Since most SRA models converged, these distributions are similar across scenarios unless they were specified differently in the OM. The large spikes represent fixed parameter values in the OM. sigma_R refers to $\sigma_R$.
+Frequency polygons for parameters input to the SRA. Parameters were sampled stochastically as input into the SRA (see Appendix \@ref(app:desc-om-rex) for ranges). Any samples associated with non-converged SRA models were discarded. Since most SRA models converged, these distributions are similar across OM scenarios unless they were specified differently in the OM. The large spikes represent fixed parameter values in the OM. sigma_R refers to $\sigma_R$.
 
 ```{r rex-sra-conditioned-parameters2, out.width="\\textwidth", fig.asp=0.85, fig.width=7, fig.cap="(ref:fig-rex-sra-conditioned-parameters2)"}
 knitr::include_graphics(here("report/figure/rex-sra-filtered.png"))
@@ -376,7 +376,7 @@ knitr::include_graphics(here("report/figure/rex-sra-filtered.png"))
 (ref:fig-rex-depletion-om)
 Spawning stock biomass ($B$) depletion trajectories for reference and robustness set OMs.
 Depletion is represented as a fraction of $B_0$ (spawning stock biomass at unfished equilibrium).
-Note that the "M increasing" scenario only represents M increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of M in the historical period.
+Note that the "M increasing" OM scenario only represents M increasing in the future projections---not the historical time period illustrated here---and uses a fixed value of M in the historical period.
 Lines represent medians, and dark and light-grey shading represent 50% and 95% quantiles across replicates.
 
 ```{r rex-depletion-om, fig.cap="(ref:fig-rex-depletion-om)", out.width="\\textwidth"}
@@ -458,7 +458,7 @@ To obtain a manageable number of MPs for further consideration, we set satisfici
 We could apply these criteria to either the average (Figures \@ref(fig:rex-tigure-avg)) or minimum performance (Figures \@ref(fig:rex-tigure-min)) and such a decision is likely best made by a technical working group or decision-makers coupled with stakeholders in an applied setting.
 In this case study, it made little difference whether we chose the average or minimum performance metrics to apply the satisficing criteria.
 For the purposes of this case study, we chose to apply the satisficing criteria to the minimum performance metrics.
-This implies that the satisficed MPs pass these criteria even in the worst-case reference-set scenario.
+This implies that the satisficed MPs pass these criteria even in the worst-case OM reference-set scenario.
 Applying these criteria resulted in `r number_to_word(length(mp_sat_b4_cut))` remaining MPs (`r gfutilities::commify(sort(mp_sat_b4_cut))`).
 
 We additionally decided to omit four MPs from further consideration.
@@ -502,24 +502,24 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
 ### Reference Set Results
 
 Performance within the reference set of OMs varied across MPs and performance metrics (Figures \@ref(fig:rex-tigure-avg), \@ref(fig:rex-tigure-min), \@ref(fig:rex-tigure-panel), and \@ref(fig:rex-dot-lines)).
-There was variability in performance among the individual reference-set scenarios with the most variability in both the long-term and entire projection period performance metrics: LT USR, FMSY, LTC, and AADC (Figure \@ref(fig:rex-tigure-panel)).
+There was variability in performance among the individual OM reference-set scenarios with the most variability in both the long-term and entire projection period performance metrics: LT USR, FMSY, LTC, and AADC (Figure \@ref(fig:rex-tigure-panel)).
 Between the two performance metrics used in the initial satisficing step, *average* LT LRP varied between `r round2(min(pm_avg_sat$"LT LRP"))` and `r round2(max(pm_avg_sat$"LT LRP"))`, and STC varied between `r round2(min(pm_avg_sat$STC))` and `r round2(max(pm_avg_sat$STC))` across MPs within the reference set (Figure \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-panel)).
 *Minimum* LT LRP varied between `r round2(min(pm_min_sat$"LT LRP"))` and `r round2(max(pm_min_sat$"LT LRP"))`, and STC varied between `r round2(min(pm_min_sat$STC))` and `r round2(max(pm_min_sat$STC))` across MPs within the reference set (Figure \@ref(fig:rex-tigure-min) and \@ref(fig:rex-tigure-panel)).
 
-A dot-and-line plot of the performance metrics aggregated across scenarios helps compare performance across satisficed MPs (Figure \@ref(fig:rex-dot-lines)).
+A dot-and-line plot of the performance metrics aggregated across OM scenarios helps compare performance across satisficed MPs (Figure \@ref(fig:rex-dot-lines)).
 Long-term catch (LTC) was roughly comparable between a fishing strategy of fishing at *F*/*F*~MSY~ and the satisficed Itarget or .SP8040_0.6 MPs (Figure \@ref(fig:rex-dot-lines)).
 Short-term catch (STC) of all satisficed MPs exceeded these reference MPs (Figure \@ref(fig:rex-dot-lines)).
-Fixed-catch MPs of 1.1- or 1.2-times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
+Fixed-catch MPs of 1.1- or 1.2-times average catch from the last five years rendered similar performance to other satisficed MPs across most performance metrics within the OM reference-set scenarios, with somewhat higher LTC and AADC metrics (Figure \@ref(fig:rex-dot-lines)).
 These fixed-catch MPs do not incorporate feedback between the management and biological systems.
 
-Trade-offs among performance metrics for most of the satisficed MPs were relatively minor within the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-reference) and \@ref(fig:rex-spider-satisficed-mps-avg)).
-Within the "Ceq. 200%" scenario, there was a slight trade-off between STC and LT LRP (Figure \@ref(fig:rex-tradeoff-reference)).
+Trade-offs among performance metrics for most of the satisficed MPs were relatively minor within the OM reference-set scenarios (Figures \@ref(fig:rex-tradeoff-reference) and \@ref(fig:rex-spider-satisficed-mps-avg)).
+Within the "Ceq. 200%" OM scenario, there was a slight trade-off between STC and LT LRP (Figure \@ref(fig:rex-tradeoff-reference)).
 The time series trajectories of the projected survey index (Figure \@ref(fig:rex-proj-index)), *B*/*B*~MSY~, *F*/*F*~MSY~, and catch (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue)) further demonstrate performance across the various MPs and reference set OMs.
 Kobe plots demonstrate either the final *B*/*B*~MSY~ vs. *F*/*F*~MSY~ status among replicates (Figure \@ref(fig:rex-kobe)) or the trajectory of these stock status values through time (Figure \@ref(fig:rex-worm)).
 
 (ref:fig-rex-tigure-panel) Performance of satisficed MPs for the reference set OMs.
 MPs are ordered by decreasing performance metric values from the averaged reference set (Figure \@ref(fig:rex-tigure-avg)).
-These are the same data underlying Figure \@ref(fig:rex-tigure-avg) and Figure \@ref(fig:rex-tigure-min) but shown for individual reference-set scenarios and only for satisficed MPs.
+These are the same data underlying Figure \@ref(fig:rex-tigure-avg) and Figure \@ref(fig:rex-tigure-min) but shown for individual OM reference-set scenarios and only for satisficed MPs.
 
 ```{r rex-tigure-panel, fig.cap="(ref:fig-rex-tigure-panel)", out.width="0.8\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
@@ -528,9 +528,9 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
 \clearpage
 
 (ref:fig-rex-dot-lines)
-Dot-and-line plot of performance metrics across scenarios.
-Dots represent average performance metric values and thin lines represent the range of values across scenarios.
-Thick lines represent the range of values across scenarios after dropping the high and low values.
+Dot-and-line plot of performance metrics across OM scenarios.
+Dots represent average performance metric values and thin lines represent the range of values across OM scenarios.
+Thick lines represent the range of values across OM scenarios after dropping the high and low values.
 
 ```{r rex-dot-lines, fig.cap="(ref:fig-rex-dot-lines)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-dot-refset-avg.png"))
@@ -538,13 +538,13 @@ knitr::include_graphics(here("report/figure/rex-dot-refset-avg.png"))
 
 \clearpage
 
-```{r rex-tradeoff-reference, fig.cap="Trade-off between LT LRP and STC average performance metrics across the reference-set scenarios.", out.width="5in"}
+```{r rex-tradeoff-reference, fig.cap="Trade-off between LT LRP and STC average performance metrics across the OM reference-set scenarios.", out.width="5in"}
 knitr::include_graphics(here("report/figure/rex-tradeoff-refset-avg.png"))
 ```
 
 \clearpage
 
-```{r rex-spider-satisficed-mps-avg, fig.cap="Radar-plot representation of average performance metric trade-offs for the reference-set scenarios. The outside of the hexagon represents a performance metric probability of 1.0; in the middle represents a value of 0. Dashed lines represent reference MPs.", out.width="5in"}
+```{r rex-spider-satisficed-mps-avg, fig.cap="Radar-plot representation of average performance metric trade-offs for the OM reference-set scenarios. The outside of the hexagon represents a performance metric probability of 1.0; in the middle represents a value of 0. Dashed lines represent reference MPs.", out.width="5in"}
 knitr::include_graphics(here("report/figure/rex-radar-refset-avg.png"))
 ```
 
@@ -631,25 +631,25 @@ Figure \@ref(fig:rex-proj-no-cpue-light) and Figure \@ref(fig:rex-proj-inc-m)
 Figure \@ref(fig:rex-proj-scenarios)
 -->
 
-The "No CPUE Ceq. 50%" robustness scenario represents markedly different biomass and fishing mortality historical trajectories to any of the reference-set scenarios.
-This scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_y$ (apical $F$ by year) values around 2005 (Figure \@ref(fig:rex-F-om)).
-In this scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60 (3 times out of 5), while the constant catch and surplus production model achieved LT LRP $<$ 0.35 (7 times out of 20) (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
+The "No CPUE Ceq. 50%" OM robustness scenario represents markedly different biomass and fishing mortality historical trajectories to any of the OM reference-set scenarios.
+This OM scenario estimates the stock to be smaller (smaller $R_0$ values in Figure \@ref(fig:rex-sra-conditioned-parameters)) with high $F_y$ (apical $F$ by year) values around 2005 (Figure \@ref(fig:rex-F-om)).
+In this OM scenario, the Itarget MPs are able to achieve LT LRP $>$ 0.60 (3 times out of 5), while the constant catch and surplus production model achieved LT LRP $<$ 0.35 (7 times out of 20) (Figures \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 Other performance metrics show less contrast among the MPs, although LT USR also remains higher for the Itarget vs. constant-catch or surplus-production MPs (Figure \@ref(fig:rex-tigure-panel-rob) and \@ref(fig:rex-dots-satisficed-mps-robust)).
 
-This robustness scenario demonstrates stronger trade-offs among performance metrics than the reference-set scenarios (Figures \@ref(fig:rex-tradeoff-robust) and \@ref(fig:rex-spider-satisficed-mps-robust)).
+This OM robustness scenario demonstrates stronger trade-offs among performance metrics than the OM reference-set scenarios (Figures \@ref(fig:rex-tradeoff-robust) and \@ref(fig:rex-spider-satisficed-mps-robust)).
 In particular, there is an obvious trade-off between STC and LT LRP (Figures \@ref(fig:rex-tradeoff-robust)).
 The constant catch MPs achieved the highest STC values but at the expense of lower LT LRP values.
 The Itarget MPs struck more of a balance between LT LRP and STC (Figures \@ref(fig:rex-tradeoff-robust)).
 The projection figures show the values underlying the performance metrics (Figure \@ref(fig:rex-proj-no-cpue-light)).
 Within this scenario, over time, the .SP8040_0.6, CC1.1, and CC1.2 MPs all had a tendency to overfish the stock (Figure \@ref(fig:rex-proj-no-cpue-light)).
 
-For the "M increasing" scenario, the satisficed MPs were fairly robust to linear increases in natural mortality in the projection period, with the exception that all satisficed MPs had a considerably lower probability of achieving the long-term catch (LTC) metric (Figures \@ref(fig:rex-tigure-panel-rob)--\@ref(fig:rex-spider-satisficed-mps-robust)).
+For the "M increasing" OM scenario, the satisficed MPs were fairly robust to linear increases in natural mortality in the projection period, with the exception that all satisficed MPs had a considerably lower probability of achieving the long-term catch (LTC) metric (Figures \@ref(fig:rex-tigure-panel-rob)--\@ref(fig:rex-spider-satisficed-mps-robust)).
 Notably, the Itarget satisficed MPs maintained LT LRP $>$ 0.9 despite increasing *M*, whereas the fixed-catch and surplus-production MPs all resulted in LT LRP $<$ 0.9.
 The Itarget MPs were able to ramp down catch as *M* increased (Figure \@ref(fig:rex-proj-inc-m)) to maintain most replicates above the LRP.
 
-By plotting the projections from all scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
-The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" scenario compared to the other scenarios.
-The projected trajectories were relatively similar across all reference-set scenarios, while differing for the "No CPUE Ceq. 50%" and "M increasing" robustness scenarios.
+By plotting the projections from all OM scenarios (Figures \@ref(fig:rex-proj-ceq200)--\@ref(fig:rex-proj-no-cpue) and \@ref(fig:rex-proj-no-cpue-light)--\@ref(fig:rex-proj-inc-m)) on the same panels, we can examine the sensitivity of the projections to the various OM scenario conditions (Figure \@ref(fig:rex-proj-scenarios)).
+The historical trajectories were most sensitive to the assumptions of the "No CPUE Ceq. 50%" OM scenario compared to the other OM scenarios.
+The projected trajectories were relatively similar across all OM reference-set scenarios, while differing for the "No CPUE Ceq. 50%" and "M increasing" OM robustness scenarios.
 Note that sensitivity of the projections does not necessarily correspond to sensitivity of the rank order of MPs (Figure \@ref(fig:rex-tigure-panel-rob)), which is ultimately the important characteristic for decision making.
 
 (ref:fig-rex-tigure-panel-rob) Performance of satisficed MPs for the robustness set OMs.
@@ -683,7 +683,7 @@ knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 ```
 
 (ref:fig-rex-proj-scenarios) B/B~MSY~, F/F~MSY~, and catch from the historical and projected time periods.
-Colours represent the reference- and robustness-set scenarios.
+Colours represent the reference- and OM robustness-set scenarios.
 Lines represent medians and shaded regions represent 50% quantiles.
 Satisficed and reference MPs are shown from top to bottom.
 
