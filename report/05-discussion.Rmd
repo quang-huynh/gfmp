@@ -119,6 +119,18 @@ A challenge for data-limited species is how stocks are assessed to be in the Cri
 However, we suggest that if conditioned OMs overwhelmingly place a fish stock in the Critical Zone across a range of plausible OM assumptions, this could be grounds for triggering a rebuilding plan.
 This framework is currently being applied to evaluate alternative data-limited MPs for the rebuilding plan for the Inside stock of Yelloweye Rockfish in British Columbia [@haggarty2020yelloweye].
 
+## DATA-MODERATE AND DATA-RICH STOCKS
+
+This framework has outlined the steps needed to evaluate the performance of data-limited MPs, with a focus on BC groundfish species.
+Data-richness occurs along a gradient and it may be desirable to apply the framework to evaluate the performance of data-moderate or data-rich MPs.
+The principles of this framework are the same along the data-richness continuum.
+The MSEtool R package [@huynh_msetool_2019] contains data-moderate (e.g., delay-difference models) and data-rich (e.g., statistical catch-age models) MPs that could easily be incorporated into this framework with some modification.
+However we note again that the framework is software agnostic.
+Other software tools have been used in a similar fashion for data-rich species in BC [e.g., Sablefish: @cox2008; Pacific Herring: @cox2019].
+
+We recommend separate review processes for extensions to the framework to evaluate data-moderate and/or data-rich MPs, as there will be additional considerations and sources of uncertainty.
+We also recommend separate review processes for extensions that include consideration of environmental effects, assessing the value of information and rebuilding plans. 
+
 # ACKNOWLEDGEMENTS
 
 We are grateful to the members of our technical advisory group Rob Kronlund, Adam Keizer, Chris Grandin, Ashleen Benson, Dana Haggarty, Rowan Haigh, Roger Kanno, Paul Starr, Rob Tadey, and Greg Workman for helpful discussions and comments on earlier drafts of this document.
