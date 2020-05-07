@@ -52,7 +52,7 @@ We suggest that the MP Framework itself can be used to test appropriate re-asses
 Interim checks between assessments are also recommended to ensure the selected MP is performing as expected.
 
 In addition to the best practice steps described in Section \@ref(sec:best-practices), @carruthers2018 describe a final evaluation step, where performance of the selected MP is formally reviewed once it has been implemented.
-Departures from an MP's predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
+Departures from an MP's predicted performance have been termed "exceptional circumstances", where the observed system dynamics fall outside the range of OM scenarios specified in the OM(s), over which the MPs were demonstrated to be robust [@butterworth2008].
 Exceptional circumstances can be caused either by misspecification of the original OM(s) or can be due to unforeseen changes in the future system dynamics that were not captured in the original OM(s) (e.g., changes in natural mortality, growth, recruitment, or fishing dynamics).
 Evidence for exceptional circumstances, occurring within the recommended assessment interval, would trigger a review of the OM(s) and MP, possibly resulting in a new OM, or an adjustment to the selected MP [@carruthers_hordyk_2018].
 
@@ -81,7 +81,7 @@ In this approach, hypotheses about how environmental variables impact population
 Multiple OMs can be developed that represent multiple hypotheses for environmental effects.
 OMs could explicitly include environmental variables (e.g., linking ocean temperature with recruitment deviations, or linking predator abundance with *M*), or could be mechanism-free (e.g., allowing growth parameters or $M$ to vary through time with no specific driver).
 The latter, mechanism-free approaches are already straightforward to incorporate into DLMtool operating models, via growth or mortality parameters (see Section \@ref(sec:dlmtool-time-varying)).
-The Rex Sole case study included one scenario in the robustness set where $M$ increased linearly through time.
+The Rex Sole case study included one OM scenario in the robustness set where $M$ increased linearly through time.
 In this case, no specific mechanism for changing $M$ was provided.
 
 Environmental changes may also increase the frequency of unexpected events such as very large or very small recruitment events.

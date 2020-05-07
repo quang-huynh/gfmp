@@ -85,7 +85,7 @@ For BC groundfish stocks, reference set uncertainties will likely be based on ke
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
-* Predation scenarios (e.g., seal predation)
+* Changes in predation rate (e.g., seal predation)
 * Changes in availability of prey
 * The effectiveness of or changes to closed areas such as Rockfish Conservation Areas (RCAs)
 * Alternative representations of survey and commercial fleet size selectivity
@@ -111,7 +111,7 @@ In these cases, as long as there is a time series of catch data, we still recomm
 Where there is no index of abundance, we recommend developing a wide range of OMs conditioned on available catch data, which differ in terms of major uncertainties, especially related to stock productivity and current depletion level.
 
 We recognize that, for some data-limited stocks, there may be some efficiency gains in developing more generic OMs that capture the major biological, fleet, and observation characteristics of a set of similar stocks.
-However, we recommend focusing first on species for which customized OMs can be developed, which are conditioned to observed data.
+However, we recommend focusing first on species for which customized OMs can be developed, which are conditioned on observed data.
 
 ## STEP 4: IDENTIFICATION OF CANDIDATE MANAGEMENT PROCEDURES  {#sec:approach4}
 
@@ -191,7 +191,7 @@ In addition to the candidate MPs, it is important to include reference MPs. Prov
 * Fishing at 0.75 *F*~MSY~
 * Maintaining the current TAC
 
-The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MPs provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 *F*~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included because it illustrates what is likely the near-term default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
+The purpose of reference MPs is not to explore viable management strategies but to bound the range of expected or possible performance and contextualize whether differences between performance statistics among MPs are meaningful [@punt2016]. For example, the "no fishing" reference MP provides information on maximum possible stock levels and the maximum possible rate of rebuilding under a rebuilding scenario. The "fishing at 0.75 *F*~MSY~" MP illustrates performance under an omniscient manager with perfect information. The MP that maintains the current TAC is included because it illustrates what is likely the near-term default had the framework not been implemented and illustrates the long-term performance expectations given current exploitation levels.
 
 ### Including new MPs
 
@@ -241,16 +241,16 @@ knitr::include_graphics(here("report/figure/framework-convergence.png"))
 
 ### Reference and robustness sets
 
-In Step 3 (Section \@ref(sec:approach3)), we recommended dividing OM scenarios into a reference set, which includes a range of plausible alternative scenarios that impact results, and a robustness set, which includes a wider range of alternative scenarios, which may be less supported by available data, but still potentially impact results [@rademeyer2007].
-These authors recommended reducing the set of robustness scenarios down to those which yield the most contrasting results from the reference set.
-Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of scenarios.
-Poor performance of an MP under one of these scenarios may influence a decision-maker to select another MP that performs well under both reference and robustness scenarios.
+In Step 3 (Section \@ref(sec:approach3)), we recommended dividing OM scenarios into a reference set, which includes a range of plausible alternative OM scenarios that impact results, and a robustness set, which includes a wider range of alternative OM scenarios, which may be less supported by available data, but still potentially impact results [@rademeyer2007].
+These authors recommended reducing the set of OM robustness scenarios down to those which yield the most contrasting results from the reference set.
+Therefore, before the final MP is selected, the role of the robustness set is to provide a check that the final MP performs well across a more diverse set of OM scenarios.
+Poor performance of an MP under one of these OM scenarios may influence a decision-maker to select another MP that performs well under both OM reference and robustness scenarios.
 
 We recommend presenting performance metrics from the reference and robustness sets separately.
-For most visualizations, we recommend that the reference-set performance metrics are averaged across all reference set scenarios.
-An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all reference-set scenarios; and (ii) average value of the performance metric across all reference set scenarios.
+For most visualizations, we recommend that the reference set performance metrics are averaged across all OM reference set scenarios.
+An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all OM reference set scenarios; and (ii) average value of the performance metric across all OM reference set scenarios.
 The first is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
-We recommend presenting performance metrics from the individual robustness-set scenarios separately.
+We recommend presenting performance metrics from the individual OM robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
 
 ### Visual presentation of performance metrics
@@ -263,9 +263,9 @@ By shading the cells according to their underlying performance metric value, the
 We suggest sorting the rows by performance metrics of particular interest, shading the MP name differently for reference MPs, and highlighting any satisficing criteria by outlining cells that pass satisficing thresholds.
 The default colour shading is colour-blind proof, prints accurately in grey scale, and is visually linear in its gradient [@viridis].
 
-Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across reference-set scenarios (Figure \@ref(fig:methods-dots)).
-This figure highlights average performance across scenarios (dots) along with the range of performance values seen across scenarios (thin lines).
-This figure also illustrates the range of performance after dropping the scenarios with the highest and lowest of each performance metric values (thicker lines).
+Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across OM reference set scenarios (Figure \@ref(fig:methods-dots)).
+This figure highlights average performance across OM scenarios (dots) along with the range of performance values seen across OM scenarios (thin lines).
+This figure also illustrates the range of performance after dropping the OM scenarios with the highest and lowest of each performance metric values (thicker lines).
 
 We suggest two possible visualizations for highlighting performance-metric trade-offs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
 The first is a bivariate dot plot, which lends itself to comparing any two performance metrics.
@@ -273,7 +273,7 @@ The second is a "radar" plot (also known as a "kite" or "spider" plot).
 Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian ones [@diehl2010; @feldman2013; @albo2016].
 
 To understand the processes leading to the performance metrics, we recommend that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
-We suggest two versions: one that lends itself to careful inspection of individual scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across scenarios (Figure \@ref(fig:methods-proj-sens)).
+We suggest two versions: one that lends itself to careful inspection of individual OM scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across OM scenarios (Figure \@ref(fig:methods-proj-sens)).
 Inspection of these time series can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the time series.
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
 Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY~ that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
@@ -304,18 +304,18 @@ knitr::include_graphics(here("report/figure/framework-tigure.png"))
 ```
 
 (ref:fig-methods-dots)
-This visualization summarizes performance of a small number of MPs (e.g., satisficed MPs) across scenarios.
-Dots represent mean performance across scenarios.
-Thin lines represent the range of performance across scenarios.
-Thicker lines represent the range of performance across scenarios after dropping the highest and lowest scenario within each performance metric.
-This visualization can also be used without the line segments to represent performance for individual scenarios (e.g., robustness scenarios).
+This visualization summarizes performance of a small number of MPs (e.g., satisficed MPs) across OM scenarios.
+Dots represent mean performance across OM scenarios.
+Thin lines represent the range of performance across OM scenarios.
+Thicker lines represent the range of performance across OM scenarios after dropping the highest and lowest OM scenario within each performance metric.
+This visualization can also be used without the line segments to represent performance for individual OM scenarios (e.g., OM robustness scenarios).
 
 ```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/framework-dot.png"))
 ```
 
 (ref:fig-methods-tradeoff)
-This visualization demonstrates bivariate trade-offs between two performance metrics for a given scenario or average across scenarios.
+This visualization demonstrates bivariate trade-offs between two performance metrics for a given OM scenario or average across OM scenarios.
 The bottom and left axis correspond to two performance metrics and individual dots represent MPs.
 
 ```{r methods-tradeoff, fig.cap="(ref:fig-methods-tradeoff)", out.width="4.25in"}
@@ -347,7 +347,7 @@ knitr::include_graphics(here("report/figure/framework-main-projections.png"))
 (ref:fig-methods-proj-sens)
 This visualization highlights sensitivity of the historical conditioned and projected time series across OM scenarios.
 The solid lines correspond to median values and the shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
-Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this visualization helps compare time series within a given MP across scenarios.
+Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this visualization helps compare time series within a given MP across OM scenarios.
 This visualization lends itself to multiple rows where each row represents a different MP.
 Note that sensitivity of the time series to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.
 

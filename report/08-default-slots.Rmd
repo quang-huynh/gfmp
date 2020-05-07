@@ -146,7 +146,7 @@ stock_default@SRrel <- 1L
 
 *Fraction of discarded fish that die. Uniform distribution lower and upper bounds.*
 
-As described below, provisionally, we suggest setting up the OM such that all discards are considered part of the catch. Since the discard rate will be set to zero, this parameter will have no effect. In specific scenarios it could be explored.
+As described below, provisionally, we suggest setting up the OM such that all discards are considered part of the catch. Since the discard rate will be set to zero, this parameter will have no effect. For specific OM scenarios it could be explored.
 
 ```{r desc-stock-fdisc-default, results = knitr_results, echo = knitr_echo}
 stock_default@Fdisc <- c(1, 1)

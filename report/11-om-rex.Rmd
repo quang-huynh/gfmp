@@ -80,7 +80,7 @@ knitr_echo <- TRUE
 ```
 
 This section describes the specification of the Rex Sole operating model.
-Some scenarios in the reference and robustness sets assign alternative options for some of the parameters.
+Some OM scenarios in the reference and robustness sets assign alternative options for some of the parameters.
 We note this below where it occurs.
 
 ## STOCK SLOT DESCRIPTIONS {#app:desc-stock-rex}
@@ -148,7 +148,7 @@ stock_rex@maxage <- 27
 
 *Natural mortality rate.*
 
-@mcgilliard2017 used 0.17 y^-1^ for *M* but they also note that growth rates and size can vary with latitude, which can affect *M*. *M* is likely slightly higher in BC at lower latitudes. Here, we add a range of possible *M* values starting with a lower bound of that from @mcgilliard2017. The maximum age observed in our database of 15 implies a higher value of *M*, although this maximum age is likely an underestimate. We include an alternative scenario with a higher *M* value (*M* = 0.3 y^-1^).
+@mcgilliard2017 used 0.17 y^-1^ for *M* but they also note that growth rates and size can vary with latitude, which can affect *M*. *M* is likely slightly higher in BC at lower latitudes. Here, we add a range of possible *M* values starting with a lower bound of that from @mcgilliard2017. The maximum age observed in our database of 15 implies a higher value of *M*, although this maximum age is likely an underestimate. We include an alternative OM scenario with a higher *M* value (*M* = 0.3 y^-1^).
 
 ```{r desc-stock-m-rex, results = knitr_results, echo = knitr_echo}
 stock_rex@M <- c(0.17, 0.25)
@@ -160,7 +160,7 @@ stock_rex@M <- c(0.17, 0.25)
 
 *Steepness of the stock-recruit relationship.*
 
-@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth (Figure \@ref(fig:desc-rex-h)) but we also include an alternative scenario with steepness fixed to a relatively high value of 0.95.
+@maunder2012 cite @myers1999 who found a median value of steepness of 0.80 for flatfish and note that, because of the bias in the value estimated for North Atlantic Cod in that paper, the value might be closer to 0.94. @grandin2017arrowtooth estimated steepness for Arrowtooth Flounder, but found their posterior was highly influenced by their prior (they estimated a median of 0.88 with a 95% confidence interval of 0.69--0.98, which nearly matches the prior). Here we will use the same prior used in @grandin2017arrowtooth (Figure \@ref(fig:desc-rex-h)) but we also include an alternative OM scenario with steepness fixed to a relatively high value of 0.95.
 
 <!-- quantile(rbeta(1e6, shape1 = 13.4, shape2 = 2.4), probs = c(0.025, 0.5, 0.975)) -->
 <!-- stock_rex@h <- c(0.80, 0.95) -->

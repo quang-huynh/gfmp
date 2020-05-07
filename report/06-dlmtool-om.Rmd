@@ -12,7 +12,7 @@ Full documentation of the DLMtool OM, including the range of possible parameteri
 Here, we adapt the documentation in @carruthers2018, following their notation conventions where possible for consistency.
 We present the simplest version of the OM, without time-varying parameters or multiple sub-areas.
 This simple OM structure should be suitable as a base OM for most stocks intended to be assessed within the framework.
-More complex structural assumptions, including time-varying parameters, could be developed as scenarios when justified for individual stocks.
+More complex structural assumptions, including time-varying parameters, could be developed as OM scenarios when justified for individual stocks.
 
 Following the lead of @carruthers2018, we denote parameters that are user-defined and sampled stochastically across replicates with a tilde (e.g. $\widetilde{M}$).
 For example, $\widetilde{M_i} \sim f \left( \theta \right)$ represents the $i^\textrm{th}$ simulation draw of parameter $M$ being sampled from the distribution function $f$ and parameters $\theta$.
