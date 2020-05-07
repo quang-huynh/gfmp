@@ -144,3 +144,5 @@ We thank John Holmes for supporting our work on this framework within the Stock 
 
 We thank DFO's Ocean and Freshwater Science Contribution Program for supporting the development of DLMtool and MSEtool.
 
+Finally, we thank Carrie Holt and Meaghan Bryan for insightful reviews that greatly improved this document.
+
