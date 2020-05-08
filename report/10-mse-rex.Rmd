@@ -612,6 +612,8 @@ knitr::include_graphics(here("report/figure/rex-kobe.png"))
 
 (ref:fig-rex-worm) Trajectory of B/B~MSY~ and F/F~MSY~ values summarized across replicates.
 The solid line corresponds to the median value.
+Vertical dashed lines shows B/B~MSY~ of 0.4 (left) and 0.8 (right).
+Horizontal dashed line shows F/F~MSY~ of 1.
 Each diamond represents the 50% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 
 ```{r rex-worm, fig.cap="(ref:fig-rex-worm)", out.width="\\textwidth"}
