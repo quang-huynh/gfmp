@@ -157,7 +157,7 @@ Importantly, constant-catch MPs do not incorporate feedback between the manageme
 
 2. Index-ratio MPs base their catch recommendation on a ratio of a population index in one time period compared to another time period---generally a recent period (e.g., last year) compared to a short period before that (e.g. 2--3 years ago).
 
-3. Index-slope MPs fit a regression to population index data and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
+3. Index-slope MPs fit a regression of population index data over time and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
 
 4. Index-target MPs compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
 In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs,
@@ -229,7 +229,7 @@ This is achieved by adding stochastic noise to the data (e.g., indices of abunda
 Coefficients of variation in the data should be consistent with those in historical observations [@rademeyer2007].
 We suggest selecting a sufficient number of replicates so that the rank order of MPs across the performance metrics remains consistent regardless of additional replicates [@carruthers_user_2019].
 This can be checked by plotting the cumulative performance statistics against the number of replicates, to check that the rank order of MPs with respect to performance statistics will not change with the addition of more replicates (e.g., Figure \@ref(fig:methods-converge)).
-In our experience, the number of required replicates is likely to be at least 100.
+In our experience with BC groundfish, the number of required replicates is likely to be at least 100.
 
 (ref:fig-methods-converge) This visualization illustrates the degree to which the closed-loop simulation replicates have reached convergence in the rank order of MP performance.
 The y-axis represents the proportion of cumulative replicates that have achieved the performance metric.
