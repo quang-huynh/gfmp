@@ -1,4 +1,4 @@
-# DISCUSSION
+# DISCUSSION {#sec:discussion}
 
 In this document we have presented a framework for implementing an MP approach to providing Science advice for groundfish in British Columbia.
 We outlined an approach to developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.

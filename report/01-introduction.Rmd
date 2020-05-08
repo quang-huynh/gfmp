@@ -91,11 +91,21 @@ Steps of the process are described more fully in the following sections of the d
 
 There are a number of expected benefits of this project. Compared to the current status quo, this framework will allow DFO to:
 
-* provide evidence-based catch advice for more stocks;
+* provide evidence-based catch advice for more stocks, including stocks for which advice was not previously available;
 * develop a standardized and transparent approach across stocks;
 * test performance of data-limited MPs for providing catch advice with respect to meeting sustainability and fishery objectives; and
 * help build an understanding of the most important data needs and research priorities for reducing uncertainty in stock assessment advice.
 
 Critically, the framework will develop methods to improve capacity for DFO Science to provide sustainable, data-limited catch advice, consistent with Canada's Precautionary Approach Framework as legislated under the Fish Stocks provisions, therefore enabling data-limited stocks to be brought into compliance with the Fish Stocks provisions of the *Fisheries Act*.
-We emphasize that while the framework does not explicitly report biological reference points and stock status, which often cannot be reliably estimated for data-limited stocks, the framework is designed to evaluate MPs with respect to the probability of maintaining stocks above reference points over a range of uncertainties.
+
+Extensions to the framework could be used to inform:
+
+* rebuilding plans and recovery potential assessments [e.g., @haggarty2020yelloweye];
+* methods for accounting for environmental conditions in management decisions, as required under the Fish Stocks Provisions;
+* assessing the value of collecting more information; and
+* evaluating the performance of data-moderate and data-rich MPs.
+
+See Section \@ref(sec:discussion) for discussion of these.
+
+We emphasize that while the framework does not explicitly report biological reference points and stock status, which often cannot be reliably estimated for data-limited stocks, the framework is designed to evaluate MPs with respect to the probability of maintaining stocks above reference points over a defined range of uncertainties.
 Reference points are therefore an integral component of the framework.
