@@ -600,6 +600,8 @@ knitr::include_graphics(here("report/figure/rex-projections-no-cpue.png"))
 
 (ref:fig-rex-kobe) B/B~MSY~ and F/F~MSY~ values from the final year of the projections across all replicates.
 Dots represent individual replicates.
+Vertical dashed lines shows B/B~MSY~ of 0.4 (left) and 0.8 (right).
+Horizontal dashed line shows F/F~MSY~ of 1.
 Contour lines indicate two-dimensional kernel-density-smoothed quantiles at 0.25, 0.50, and 0.75 levels, calculated in log space.
 
 ```{r rex-kobe, fig.cap="(ref:fig-rex-kobe)", out.width="\\textwidth"}

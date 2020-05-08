@@ -362,9 +362,9 @@ knitr::include_graphics(here("report/figure/framework-sens-projections.png"))
 ```
 
 (ref:fig-methods-index) This visualization illustrates the historical and projected relative population index values.
-The thin black lines represent example replicates.
-The shaded grey region represents the 95% quantile.
-The vertical dashed line represents the last historical year of the closed-loop simulation.
+The black lines represent example replicates.
+The shaded grey region represents the 95% quantile of the simulated index values.
+The vertical dashed line represents the last historical year of the observed data (final year of the catch-time series, see Appendix \@ref(app:dlmtool-om)).
 In the historical period, the index represents the observed index (usually a survey index).
 In cases such as the one illustrated here, the survey is performed every second year.
 For index-based MPs, understanding the expected envelope of possible future survey trends is important for evaluating whether the system continues to be consistent with the OM assumptions in the future.
@@ -377,7 +377,9 @@ knitr::include_graphics(here("report/figure/framework-index-projections.png"))
 (ref:fig-methods-kobe) Kobe (B/B~MSY~ vs. F/F~MSY~) plots for the final year of the projections across all replicates.
 Dots represent individual replicates.
 The contour lines indicate two-dimensional kernel-density-smoothed quantiles, calculated in log space.
-For example, the 0.50 contour lines encompass approximately 50% of the replicates.
+For example, the 0.50 contour lines encompass approximately 50% of the replicates. 
+The vertical dashed lines shows B/B~MSY~ of 0.4 (left) and 0.8 (right).
+The horizontal dashed line shows F/F~MSY~ of 1.
 Replicates with values beyond the outer axis limits are shown on the axis limit with an open circle (e.g., bottom right corner).
 
 ```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="5in"}
