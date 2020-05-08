@@ -58,7 +58,7 @@ Also, unless the decision context involves considering the value of collecting n
 For example, MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many data-limited BC groundfish stocks.
 While it is important to work with a manageable set of MPs, it is also important not to screen too aggressively, to make sure good candidate MPs are not screened out early on.
 
-In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations may be involved in determining desirable performance metrics and may also provide input on feasibility of implementing some MPs.
+In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations should be involved in identifying desirable MPs and provide input on feasibility of implementing some MPs and their likely success in terms of acceptance and compliance [@armitage2019].
 
 ## STEP 5: SIMULATION OF THE APPLICATION OF THE MANAGEMENT PROCEDURES {#sec:best5}
 
