@@ -45,6 +45,11 @@ The SRA updates one or more of the following OM parameters, depending on data av
 
 These parameters are defined in context in the following sections.
 
+Note that covariance among SRA parameter estimates is preserved when they are passed back to the OM.
+In general, covariance among other specified parameters is not accounted for since parameters are specified by single values or distributions.
+However, it is possible to include covariance among parameters if this information is available.
+For example, distributions of growth and maturity parameters for the Rex Sole case study are drawn from their posterior probability distributions (Appendix \@ref(app:desc-om-rex), Section \@ref(app:desc-stock-rex)).
+
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Parameters for the population dynamics are included in the `Stock` object of DLMtool. -->
