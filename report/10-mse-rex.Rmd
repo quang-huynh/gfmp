@@ -205,6 +205,7 @@ The performance metrics measuring the objectives were:
 5. LTC: Probability catch > reference catch (years 35--50)
 6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (years 1--50)
 
+where reference catch was defined as the average catch from the last five years.
 We measured the performance metrics as probabilities integrated over years and replicates simultaneously.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
