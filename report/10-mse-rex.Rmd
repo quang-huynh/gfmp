@@ -297,7 +297,7 @@ To illustrate application of the framework in the presence of additional sources
 
 * The "No CPUE Ceq. 50%" OM scenario assumes that catch at equilibrium in year 1995 was 50% of the catch in 1996 ($C^{\textrm{eq}} = 0.5$). In other words, this OM scenario assumes that the stock started in a much less depleted state than the other OM scenarios. In order to fit the SRA model with plausible $F_{a,y}$ values, we also had to omit the commercial CPUE and use the selectivity curve described in the "Lower selectivity" OM scenario.
 
-* The "M increasing" OM scenario assumes that *M* was fixed at 0.2 in the historical period and increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this OM scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario. We do not necessarily expect this to become a default robustness OM in applications of the framework.
+* The "M increasing" OM scenario assumes that *M* was fixed at 0.2 in the historical period and increases monotonically from 0.2 to 0.4 *y*^-1^ over the projection period. This could represent increasing natural mortality due to a process such as climate change or shifts in predator abundance. We include this OM scenario simply to illustrate including a time-varying parameter in the OM projection period that reflects an underlying environmental process, and to assess robustness of MPs to such a scenario.
 
 Results from the Robustness Set will be presented separately in Section \@ref(sec:results-rex6) and will be used to show whether performance of MPs is significantly affected by these other sources of uncertainty.
 
@@ -529,7 +529,7 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset.png"))
 \clearpage
 
 (ref:fig-rex-dot-lines)
-Dot-and-line plot of performance metrics across OM scenarios.
+Dot-and-line plot of performance metrics averaged across OM scenarios.
 Dots represent average performance metric values and thin lines represent the range of values across OM scenarios.
 Thick lines represent the range of values across OM scenarios after dropping the high and low values.
 
