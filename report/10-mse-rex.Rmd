@@ -324,7 +324,7 @@ The SYN WCVI survey was better fit than the commercial CPUE, likely due to the s
 The SRA models fit the catch data almost perfectly by design, via setting the standard deviations of the observation error to a value of 0.01 (Equation \@ref(eq:sra-om-like-catch)).
 
 (ref:fig-rex-survey-fits)
-SRA model fits to the SYN WCVI and commercial bottom trial CPUE relative biomass indices.
+SRA model fits to the SYN WCVI and commercial bottom trawl CPUE relative biomass indices.
 Panels from top to bottom represent OM scenarios.
 Thin lines represent individual SRA model fits across stochastic draws from the various OM parameters.
 Dots represent index mean and line segments represent 2 times the standard errors as entered into the SRA models.
