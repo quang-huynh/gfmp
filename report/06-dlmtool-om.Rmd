@@ -34,6 +34,17 @@ Equations for the SRA model are provided in Appendix \@ref(app:sra).
 
 3. Pass the conditioned parameter values back to the OM (now the "conditioned" OM) for use in the closed-loop simulation projections, starting in year $t_{c+1}$.
 
+The SRA updates one or more of the following OM parameters, depending on data availability (see Appendix \@ref(app:sra) for details):
+
+- $B_{t_c}/B_0$ (or "D"; depletion in the last historical year $t_c$)
+- $R_0$ (unfished recruitment)
+- $\theta_\textrm{AC}$ (or "AC"; first-order autocorrelation of recruitment deviations)
+- $\varepsilon_{\textrm{R},y}$ for years $t_1$ to $t_c$ (annual recruitment deviations for the historical period)
+- $F_{a,y}$ (fishing mortality at age by year for the historical period)
+- Selectivity parameters (age-based or length-based).
+
+These parameters are defined in context in the following sections.
+
 ## POPULATION DYNAMICS MODEL  {#sec:dlmtool-pop-dynamics}
 
 <!-- Parameters for the population dynamics are included in the `Stock` object of DLMtool. -->

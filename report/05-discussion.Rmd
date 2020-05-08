@@ -126,7 +126,7 @@ Data-richness occurs along a gradient and it may be desirable to apply the frame
 The principles of this framework are the same along the data-richness continuum.
 The MSEtool R package [@huynh_msetool_2019] contains data-moderate (e.g., delay-difference models) and data-rich (e.g., statistical catch-age models) MPs that could easily be incorporated into this framework with some modification.
 However we note again that the framework is software agnostic.
-Other software tools have been used in a similar fashion for data-rich species in BC [e.g., Sablefish: @cox2008; Pacific Herring: @cox2019].
+Other software tools have been used in a similar fashion for data-rich species in BC [e.g., Sablefish: @cox2008a; Pacific Herring: @cox2019].
 
 We recommend separate review processes for extensions to the framework to evaluate data-moderate and/or data-rich MPs, as there will be additional considerations and sources of uncertainty.
 We also recommend separate review processes for extensions that include consideration of environmental effects, assessing the value of information and rebuilding plans. 
