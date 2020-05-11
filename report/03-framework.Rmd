@@ -36,7 +36,7 @@ The term sustainability has many definitions as they pertain to fisheries [@hilb
 DFO is currently evaluating the language of the Fish Stocks Provisions to clarify definitions of sustainability with respect to managing Canadian fisheries [@marentette2020b].
 Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability.
 We use provisional values of LRP = 0.4 *B*~MSY~ and USR = 0.8 *B*~MSY~, suggested under the Precautionary Approach Framework [@dfo2009] (we herein use *B* to refer to spawning biomass).
-See @marentette2020b and @marentette2020c for discussion of current evolving thinking on the role of these reference points in Canadian policy and legislation.
+See @marentette2020c and @marentette2020b for discussion of current evolving thinking on the role of these reference points in Canadian policy and legislation.
 
 The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis. For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018; @marentette2020a], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone) can be lower at around 50% [@mcilgorm2013].
 
