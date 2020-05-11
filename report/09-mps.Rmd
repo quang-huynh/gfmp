@@ -314,13 +314,21 @@ $$
 \textrm{TAC}_{y+1} = w \cdot \textrm{TAC}^* \left(\frac{I_\textrm{recent}}{I_0}\right)^2,
 $$
 
-where:
+These calculations depend on: 
 
-- $I_0$ is $\lambda I_\textrm{ave}$, i.e., some fraction of the average index over the 10 years prior to the projection period, and represents a lower index level below which future TACs are reduced quadratically;
-- $I_\textrm{recent}$ is the average index over the most recent five years
-- $I_\textrm{target}$ is $\delta I_\textrm{ave}$; the target index value
-- $\textrm{TAC}^*$ is a catch target defined as $x C_\textrm{ave}$, where $x$ is the proportional difference between the future catch and the average historical catch over the last five years of the historical period ($C_\textrm{ave}$).
-- $w$ is a smoothing parameter that defines the "steepness" of the adjustment slope.
+- $I_\textrm{recent}$, the average index over the most recent five years;
+- $I_\textrm{ave}$, the average index over the 10 years prior to the projection period;
+- $C_\textrm{ave}$, the average historical catch over the last five years of the historical period;
+- $\lambda$, the fraction of $I_\textrm{ave}$ below which future TACs are reduced quadratically (Figure \@ref(fig:mp-itarget-demo));
+- $\delta$, the fraction of $I_\textrm{ave}$ defining the target index value; 
+- $x$, the proportional difference between the future catch and $C_\textrm{ave}$; and
+- $w$, a smoothing parameter that defines the "steepness" of the adjustment slope.
+
+then:
+
+- $I_0 = \lambda I_\textrm{ave}$;
+- $I_\textrm{target} = \delta I_\textrm{ave}$; and
+- $\textrm{TAC}^* = x C_\textrm{ave}$, the catch target.
 
 @geromont2015 and @geromont2015a propose a number of configurations of these MPs.
 We propose starting with the following provisional versions and investigating tuning across a more complete range of parameter values if any of the provisional versions perform well.
@@ -329,10 +337,10 @@ We recommend the following provisional base values:
 $\lambda = 0.2$, $\delta = 1$, $w = 0.5$, $x = 1$.
 This represents:
 
-- the TAC adjustment decreasing quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$),
-- a target index of the average index value over the last 10 years ($\delta = 1$),
-- a moderate steepness of the adjustment slope ($w = 0.5$),
-- and a target catch equal to the average historical catch over the last 5 years of the historical period ($x = 1$).
+- the TAC adjustment decreasing quadratically at 20% of the average index over the last 10 historical years ($\lambda = 0.2$);
+- a target index of the average index value over the last 10 years ($\delta = 1$);
+- a moderate steepness of the adjustment slope ($w = 0.5$); and
+- a target catch equal to the average historical catch over the last five years of the historical period ($x = 1$).
 
 We then recommend varying each of the parameters while holding the others at their default values (Figure \@ref(fig:mp-itarget-demo2)):
 
@@ -343,7 +351,7 @@ We then recommend varying each of the parameters while holding the others at the
 - Itarget_d1.2:   $\lambda = 0.2$, $\delta = 1.2$,   $w = 0.5$, $x = 1$
 - Itarget_d0.8:   $\lambda = 0.2$, $\delta = 0.8$,   $w = 0.5$, $x = 1$
 
-```{r mp-itarget-demo, fig.cap="Illustration of possible Itarget MPs across a range of tuning parameters based on Iave = 1.", fig.asp=0.75}
+```{r mp-itarget-demo, fig.cap="Illustration of possible Itarget MPs across a range of tuning parameters based on $I_\\textrm{ave} = 1$, showing the effect of varying $w$. In all cases, $I_0 = \\lambda I_\\textrm{ave} = 0.2$, below which the TAC is reduced quadratically.  Note that delta refers to $\\delta$.", fig.asp=0.75}
 f_itarget <- function(TACtarg, Irecent, Itarg, Iave, w, lambda = 0.2) {
   I0 <- lambda * Iave
   if (Irecent >= I0) {
@@ -364,8 +372,8 @@ pars <- expand.grid(
 )
 pars$tac <- purrr::pmap_dbl(pars, f_itarget)
 pars %>%
-  mutate(TACtarg = paste("TAC* = ", sprintf("%3.0f", TACtarg))) %>%
-  mutate(Itarg = paste("Itarget = ", Itarg)) %>%
+  mutate(TACtarg = paste("x = ", sprintf("%3.0f", TACtarg))) %>%
+  mutate(Itarg = paste("delta = ", Itarg)) %>%
   ggplot(aes(Irecent, tac, colour = as.factor(w), group = paste(lambda, w))) +
   geom_line() +
   gfdlm::theme_pbs() +
@@ -381,7 +389,7 @@ pars %>%
   coord_cartesian(expand = FALSE)
 ```
 
-```{r mp-itarget-demo2, fig.cap="Illustration of provisional Itarget MPs based on Iave = 1.", fig.asp=0.75}
+```{r mp-itarget-demo2, fig.cap="Illustration of provisional Itarget MPs based on $I_\\textrm{ave} = 1$, with recommended provisional combinations of parameters. In all cases, $I_0 = \\lambda I_\\textrm{ave} = 0.2$, below which the TAC is reduced quadratically. Note that delta refers to $\\delta$.", fig.asp=0.75}
 pars <- expand.grid(
   TACtarg = c(80, 100, 120),
   Irecent = seq(0, 2, length.out = 300),
@@ -399,8 +407,8 @@ pars2 <- dplyr::filter(pars, TACtarg == 100, Itarg == 1, w == 0.5) %>%
 
 pars2$tac <- purrr::pmap_dbl(pars2, f_itarget)
 pars2 %>%
-  mutate(TACtarg = paste("TAC* = ", sprintf("%3.0f", TACtarg))) %>%
-  mutate(Itarg = paste("Itarget = ", Itarg)) %>%
+  mutate(TACtarg = paste("x = ", sprintf("%3.0f", TACtarg))) %>%
+  mutate(Itarg = paste("delta = ", Itarg)) %>%
   ggplot(aes(Irecent, tac, colour = as.factor(w))) +
   geom_line() +
   gfdlm::theme_pbs() +
@@ -415,6 +423,8 @@ pars2 %>%
   scale_colour_viridis_d() +
   coord_cartesian(expand = FALSE)
 ```
+
+\clearpage
 
 ### ITM: Index target based on natural mortality rate {#sec:mp-itm}
 
