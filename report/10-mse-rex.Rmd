@@ -348,7 +348,8 @@ We used the SRA to populate the following parameters in the conditioned OMs:
 
 The OM reference and robustness scenarios rendered a range of estimated parameter values (Figures \@ref(fig:rex-sra-conditioned-parameters), \@ref(fig:rex-F-om), \@ref(fig:rex-recdev-om)).
 In fitting the SRA across replicate draws from the initial OMs, we discarded any models that did not converge (with convergence defined as a positive-definite covariance matrix) or had $F_{a,y} > 3$.
-The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)). However, by discarding  replicates from non-converged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
+The majority of replicates were retained (Table \@ref(tab:rex-sra-fraction)).
+However, by discarding  replicates from non-converged models, the input parameters carried through to the conditioned OMs varied slightly (Figure \@ref(fig:rex-sra-conditioned-parameters2)).
 The discarded parameter values represent implausible parameter combinations according to the SRA model.
 The implied spawning stock biomass depletion trajectories during the historical period from the eight OMs were similar with the exception of the "No CPUE Ceq. 50%" OM scenario (Figure \@ref(fig:rex-depletion-om)).
 

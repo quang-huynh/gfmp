@@ -129,6 +129,9 @@ Exceptions would occur when one or more of these parameters represent axes of un
 Best practice recommends conditioning OMs with observed data so they can reproduce historical observations (e.g., indices of abundance, age-composition data).
 DLMtool's companion software package, MSEtool [@huynh_msetool_2019], includes an efficient implementation of a stock reduction analysis (SRA) [@kimura1982; @walters2006] to help with this process (Appendix \@ref(app:sra)).
 An SRA is effectively a catch-at-age model that estimates the combinations of unfished recruitment, depletion, fishing effort, recruitment deviations, and selectivity that would be consistent with the observed data given assumptions about other parameters (e.g., growth, natural mortality).
+The SRA is run *n* times, with the number of replicates *n* matching that for the closed-loop simulations.
+The SRA draws from parameter ranges specified in the OM (e.g., Appendix \@ref(app:desc-om-rex)), estimates key parameters and updates those parameters in the OM (see Appendix \@ref(app:dlmtool-om) for details).
+SRA replicates that do not converge (with convergence defined as a positive-definite covariance matrix) are discarded.
 The SRA implementation in MSEtool can be conditioned on catch or effort time series (Appendix \@ref(app:sra)).
 For most applications for BC groundfish stocks, we suggest conditioning on catch, as historical trajectories of catch tend to be more reliable than time series of effort, especially given uncertainties in how to best represent and interpret effort in multispecies fisheries.
 Further details on the SRA OM-conditioning model are provided in Appendix \@ref(app:sra).
