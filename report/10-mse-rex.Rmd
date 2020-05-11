@@ -257,7 +257,7 @@ While there are many caveats associated with commercial CPUE time series, two fa
 The absence of targeting removes some of the reasons why CPUE trends may not reflect abundance trends.
 Second, the SYN WCVI survey has approximately doubled its relative index value for Rex Sole since the early 2000s, which would be consistent with the stock starting in a somewhat depleted state in 1996.
 Third, other species that are commonly caught with Rex Sole in catch records since 1996 were reported to have been caught in substantial quantities before 1996 [@anderson2019synopsis].
-It therefore seems reasonable to assume that there is considerable unrecorded catch prior to 1996.
+It therefore seems reasonable to assume that there was considerable unrecorded catch prior to 1996.
 
 We considered three OM reference set scenarios and one OM robustness-set scenario that varied in the assumed value of $C^{\textrm{eq}}$ (Table \@ref(tab:rex-scen)).
 For the reference set:
@@ -269,6 +269,8 @@ For the reference set:
 * The OM scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
 
 For all other OM scenarios $C^{\textrm{eq}}$ was set at 200%.
+We did explore some OM scenarios with $C^{\textrm{eq}} > 250%$.
+These OM scenarios did not provide greater contrast in the ranking of MPs and we chose to cap $C^{\textrm{eq}}$ at 250% in this illustrative example.
 
 #### Steepness of the stock-recruit relationship (*h*)
 
