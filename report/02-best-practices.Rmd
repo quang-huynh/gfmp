@@ -1,6 +1,9 @@
 # BEST PRACTICES FOR MANAGEMENT PROCEDURE APPROACHES {#sec:best-practices}
 
-@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016]. These steps in the MSE process can be iterative; for example, objectives can be refined or updated after simulations.
+@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016]. In most practical applications the steps in the MSE process will be iterative; for example, objectives can be refined or updated after simulations.
+
+In this section we provide an overview of the six best practice steps.
+We describe how each of the six steps is implemented in the proposed MP Framework in Section \@ref(sec:approach).
 
 (ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
 
