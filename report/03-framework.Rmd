@@ -316,6 +316,8 @@ Dots represent mean performance across OM scenarios.
 Thin lines represent the range of performance across OM scenarios.
 Thicker lines represent the range of performance across OM scenarios after dropping the highest and lowest OM scenario within each performance metric.
 This visualization can also be used without the line segments to represent performance for individual OM scenarios (e.g., OM robustness scenarios).
+Reference MPs are indicated by open circles (True).
+Non-reference MPs are indicated by closed circles (False).
 
 ```{r methods-dots, fig.cap="(ref:fig-methods-dots)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/framework-dot.png"))
