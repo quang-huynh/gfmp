@@ -7,11 +7,18 @@ When this framework is applied in provision of management advice, decision-maker
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:approach1}
 
-For quota-managed groundfish species in BC, the decision to be made is which MP to use to determine catch limits for the period until the next available catch advice. The time frame for making the decision should be stated in the request for science advice. The boundaries on the project should be decided by a "technical committee", convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required. Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered. These will be discussed in more detail in the following sections.
+For quota-managed groundfish species in BC, the decision to be made is which MP to use to determine catch limits for the period until the next available catch advice.
+The time frame for making the decision should be stated in the request for science advice. The boundaries on the project should be decided by a "technical committee", convened for each assessment, and typically comprised of representatives from DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties, as required.
+Examples of project elements to be scoped include key uncertainties to be included and excluded in the OMs, data to be included and excluded, and explicit trade-offs to be considered.
+These will be discussed in more detail in the following sections.
 
-The final decision on which MP to use to determine catch limits should be made based on a consensus by the Regional Peer Review committee, after review of the scientific content of the advice (including the structure and content of the OMs), and consideration of the relative performance of the MPs with respect to meeting stated objectives and trade-offs among performance metrics. The Regional Peer Review committee will typically be comprised of the technical committee plus a much broader range of interested parties representing DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties.
+The final decision on which MP to use to determine catch limits should be made based on a consensus by the Regional Peer Review committee, after review of the scientific content of the advice (including the structure and content of the OMs), and consideration of the relative performance of the MPs with respect to meeting stated objectives and trade-offs among performance metrics.
+The Regional Peer Review committee will typically be comprised of the technical committee plus a much broader range of interested parties representing DFO Science, Fisheries Management, First Nations, commercial and recreational fishing representatives, NGOs and other interested parties.
 
-The simulation framework tests the performance of specific MPs and ultimately a single catch limit from the final selected MP. The framework does not test posthoc adjustments to the catch limit recommended by an MP. This is in contrast to the decision tables presented in most Pacific Region groundfish stock assessments, where a range of possible catch limits with forecast of future stock status under each catch limit is provided for decision-making. Regardless of the framework used for advice, we note that it remains the purview of the Fisheries Minister to make posthoc adjustments to catch limits, based on cultural, social, or economic considerations, in accordance with the *Fisheries Act* (Sections 6.1 (2) and 6.2(2))
+The simulation framework tests the performance of specific MPs and ultimately a single catch limit from the final selected MP.
+The framework does not test posthoc adjustments to the catch limit recommended by an MP.
+This is in contrast to the decision tables presented in most Pacific Region groundfish stock assessments, where a range of possible catch limits with forecast of future stock status under each catch limit is provided for decision-making.
+Regardless of the framework used for advice, we note that it remains the purview of the Fisheries Minister to make posthoc adjustments to catch limits, based on cultural, social, or economic considerations, in accordance with the *Fisheries Act* (Sections 6.1 (2) and 6.2(2))
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS  {#sec:approach2}
 
@@ -20,7 +27,8 @@ In applications of the framework, objectives and performance metrics should be r
 Other objectives and performance metrics could be added (e.g., cultural objectives), decided on a stock-by-stock basis.
 The time-frame of interest for setting objectives and calculating performance metrics may also be determined on a stock-by-stock basis, as trade-offs change over time [@cox2008a]. 
 
-Key provisional conservation objectives are guided by the Precautionary Approach Framework [@dfo2006; @dfo2009], elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act* (see Section \@ref(sec:intro-motivation)). Additional objectives related to fisheries catch and variability in annual fisheries catch are based on precedents in other DFO Pacific Region analyses [e.g., @cox2008a; @forrest2018; @cox2019].
+Key provisional conservation objectives are guided by the Precautionary Approach Framework [@dfo2006; @dfo2009], elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act* (see Section \@ref(sec:intro-motivation)).
+Additional objectives related to fisheries catch and variability in annual fisheries catch are based on precedents in other DFO Pacific Region analyses [e.g., @cox2008a; @forrest2018; @cox2019].
  
 
 We propose the following provisional tactical conservation and fisheries objectives:
@@ -31,14 +39,16 @@ We propose the following provisional tactical conservation and fisheries objecti
 4. Given the above conservation objectives are achieved, maximize short- and long-term fisheries catch.
 5. Given the above conservation objectives are achieved, minimize variability in fisheries catch from year to year.
 
-Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(sec:intro-motivation) of this document). Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock".
+Objective 1 is implicit in Section 6.1 (1) of the *Fisheries Act* and explicit in Section 6.1(2) (see Section \@ref(sec:intro-motivation) of this document).
+Objectives 2 and 3 are interpretations of Section 6.1 (1) of the *Fisheries Act*, where it is stated that "the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock".
 The term sustainability has many definitions as they pertain to fisheries [@hilborn2015; @marentette2020a].
 DFO Science is currently evaluating the language of the Fish Stocks provisions to clarify definitions of sustainability with respect to managing Canadian fisheries [@marentette2020b].
 Here, we assume that the objective of maintaining the stock in the Healthy Zone (Figure \@ref(fig:pa-illustration)) with non-zero probability is consistent with the language of maintaining stocks at or above levels to promote sustainability.
 We use provisional values of LRP = 0.4 *B*~MSY~ and USR = 0.8 *B*~MSY~, suggested under the Precautionary Approach Framework [@dfo2009] (we herein use *B* to refer to spawning biomass).
 See @marentette2020c and @marentette2020b for discussion of current evolving thinking on the role of these reference points in Canadian policy and legislation.
 
-The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis. For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018; @marentette2020a], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone or some pre-defined target above the USR) can be lower at around 50% [@mcilgorm2013].
+The specific probabilities assigned to successfully achieving each objective likely need consideration on a stock-by-stock basis.
+For Objective 1, international best practice suggests the probability of maintaining stocks above the LRP should be 90--95% [@sainsbury2008; @mcilgorm2013; @ices2018; @marentette2020a], while the probability of reaching a target biomass (e.g., the threshold to the Healthy Zone or some pre-defined target above the USR) can be lower at around 50% [@mcilgorm2013].
 
 We propose the following provisional performance metrics, where MSY refers to maximum sustainable yield, *B*~MSY~ refers to equilibrium spawning biomass at MSY, and *F*~MSY~ refers to the fishing mortality that produces MSY over the long term:
 
@@ -49,18 +59,26 @@ We propose the following provisional performance metrics, where MSY refers to ma
 5. LTC: Probability catch > reference catch (long-term year range)
 6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (entire projection)
 
-In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term. FMSY is a conservation performance metric measuring Objective 3 over the whole projection period. LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively. AADC is an economic metric, representing Objective 5, measured over the whole projection period.
+In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term.
+FMSY is a conservation performance metric measuring Objective 3 over the whole projection period.
+LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively.
+AADC is an economic metric, representing Objective 5, measured over the whole projection period.
 
-The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period. However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species or 50 years. We further suggest averaging the long-term performance metrics over a short (e.g., 5--15 year) window before the final year.
+The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period.
+However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species or 50 years.
+We further suggest averaging the long-term performance metrics over a short (e.g., 5--15 year) window before the final year.
 
-We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery. Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
+We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery.
+Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
 
-The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole. This reference level could be obtained through consultation with stakeholders or by identifying the average or minimum catch in recent years (e.g., minimum catch in the last 5 years).
+The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole.
+This reference level could be obtained through consultation with stakeholders or by identifying the average or minimum catch in recent years (e.g., minimum catch in the last five years).
 
 The provisional performance metric AADC represents average absolute interannual difference in catch.
 We chose this specific representation of variability to be easy to understand and simple to compare historical values.
 It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers.
-In other words, it represents the expected deviation in catch from year to year. Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
+In other words, it represents the expected deviation in catch from year to year.
+Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
 Performance metrics in the MP Framework are easily customizable.
 Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria [e.g., @haggarty2020yelloweye].

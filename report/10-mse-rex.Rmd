@@ -198,14 +198,14 @@ Since 1.5 to 2 generations would be less than 50 years, we chose to base our lon
 
 The performance metrics measuring the objectives were:
 
-1. LT LRP: Probability *B* > 0.4 *B*~MSY~ (years 35--50)
-2. LT USR: Probability *B* > 0.8 *B*~MSY~ (years 35--50)
-3. FMSY: P(*F* < *F*~MSY~) (years 1--50)
-4. STC: Probability catch > reference catch (years 1--10)
-5. LTC: Probability catch > reference catch (years 35--50)
-6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (years 1--50)
+1. LT LRP: Probability *B* > 0.4 *B*~MSY~ (years 35--50).
+2. LT USR: Probability *B* > 0.8 *B*~MSY~ (years 35--50).
+3. FMSY: P(*F* < *F*~MSY~) (years 1--50).
+4. STC: Probability catch > reference catch (years 1--10).
+5. LTC: Probability catch > reference catch (years 35--50).
+6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (years 1--50).
 
-where reference catch was defined as the average catch from the last five years.
+Reference catch was defined as the average catch from the last five years.
 We measured the performance metrics as probabilities integrated over years and replicates simultaneously.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
