@@ -232,7 +232,7 @@ sc %>% select(-scenario) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
 
-### Reference Set {#sec:results-reference-set}
+### Reference set {#sec:results-reference-set}
 
 #### Magnitude of pre-1996 commercial catch and importance of commercial CPUE
 
@@ -275,7 +275,7 @@ Unless otherwise stated, all other OM scenarios drew from a baseline beta distri
 
 * The OM scenario "Higher steepness" uses the value $h = 0.95$.
 
-#### Natural Mortality (*M*)
+#### Natural mortality (*M*)
 
 We considered one alternative OM scenario that differed in terms of the value of *M* (Table \@ref(tab:rex-scen)).
 Unless otherwise stated, all other OM scenarios drew from a baseline uniform distribution *M* = 0.17--0.25 *y*^-1^, which starts at the value of 0.17 *y*^-1^ used for the Gulf of Alaska stock assessment of Rex Sole (@mcgilliard2017, see Section \@ref(app:desc-stock-m-rex)) and explores a slightly higher range since *M* is likely to be somewhat greater at a lower latitude.
@@ -291,7 +291,7 @@ Unless otherwise stated, all other OM scenarios drew from a length selectivity c
 
 We considered the above six OM scenarios to represent the most plausible uncertainty OM scenarios for Rex Sole and grouped them into the "reference set" of OMs (see Section \@ref(sec:best3)).
 
-### THE ROBUSTNESS SET {#sec:results-robustness-set}
+### Robustness set {#sec:results-robustness-set}
 
 To illustrate application of the framework in the presence of additional sources of structural uncertainty, we included two OM robustness scenarios (Table \@ref(tab:rex-scen)):
 
@@ -312,7 +312,7 @@ natural mortality used in GOA assessment 0.17-->
 
 We include a detailed explanation of the initial OM specification in Appendix \@ref(app:desc-om-rex).
 
-### OM CONDITIONING {#sec:results-om-conditioning}
+### OM conditioning {#sec:results-om-conditioning}
 
 After specifying most of the OM parameters (Appendix \@ref(app:desc-om-rex)), we conditioned the OMs using the SRA model described in Appendix \@ref(app:sra).
 We conditioned the models using: (1) commercial catch data from 1996--2019; (2) the synoptic WCVI (SYN WCVI) trawl relative biomass index (a depth-stratified random survey); and (3) commercial bottom trawl CPUE.
@@ -500,7 +500,7 @@ knitr::include_graphics(here("report/figure/rex-tigure-refset-min.png"))
 
 ## STEP 6: PRESENTATION OF RESULTS AND SELECTION OF MANAGEMENT PROCEDURE  {#sec:results-rex6}
 
-### Reference Set Results
+### Reference set results
 
 Performance within the reference set of OMs varied across MPs and performance metrics (Figures \@ref(fig:rex-tigure-avg), \@ref(fig:rex-tigure-min), \@ref(fig:rex-tigure-panel), and \@ref(fig:rex-dot-lines)).
 There was variability in performance among the individual OM reference set scenarios with the most variability in both the long-term and entire projection period performance metrics: LT USR, FMSY, LTC, and AADC (Figure \@ref(fig:rex-tigure-panel)).
@@ -623,7 +623,7 @@ knitr::include_graphics(here("report/figure/rex-worms-proj.png"))
 
 \clearpage
 
-### Robustness Set Results
+### Robustness set results
 
 <!--
 Figure \@ref(fig:rex-tigure-panel-rob)
