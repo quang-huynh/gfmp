@@ -413,25 +413,25 @@ imp_default <- methods::new('Imp')
 ```
 
 <!-- slot-chunk-begin -->
-### TAEFrac {#app:desc-imp-taefrac-default}
+### TACFrac {#app:desc-imp-tacfrac-default}
 
-*Mean fraction of Total Allowable Effort (TAE) taken. Uniform distribution lower and upper bounds. Positive real number.*
+*Mean fraction of Total Allowable Catch (TAC) taken. Uniform distribution lower and upper bounds. Positive real number.*
 
 We will not use this functionality by default.
 
-```{r desc-imp-taefrac-default, results = knitr_results, echo = knitr_echo}
-imp_default@TAEFrac
+```{r desc-imp-tacfrac-default, results = knitr_results, echo = knitr_echo}
+imp_default@TACFrac
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
-### TAESD {#app:desc-imp-taesd-default}
+### TACSD {#app:desc-imp-tacsd-default}
 
-*Log-normal coefficient of variation in the fraction of TAE taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
+*Log-normal coefficient of variation in the fraction of TAC taken. Uniform distribution lower and upper bounds. Non-negative real numbers.*
 
 We will not use this functionality by default.
 
-```{r desc-imp-taesd-default, results = knitr_results, echo = knitr_echo}
-imp_default@TAESD
+```{r desc-imp-tacsd-default, results = knitr_results, echo = knitr_echo}
+imp_default@TACSD
 ```
 <!-- slot-chunk-end -->
 <!-- slot-chunk-begin -->
