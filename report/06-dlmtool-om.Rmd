@@ -537,9 +537,15 @@ B_0 = \frac{\sum_{y=1}^{\theta_{a50}}B_\textrm{unfished}^y}{\theta_{a50}},
 (\#eq:dlm-om-dyn-bo)
 $$
 
-which is the average unfished spawning biomass over the first $\theta_{a50}$ (age-at-maturity) years of the historical period (rounded up to the nearest integer) and $B_\textrm{unfished}^y$ is calculated $B_0$ (Equation \@ref(eq:dlm-om-bo)). Other alternative interpretations of $B_0$ could also be programmed (e.g., average $B_0$ across the whole historical period, or at the end of the historical period), depending on the desired benchmark or target.
+which is the average unfished spawning biomass over the first $\theta_{a50}$ (age-at-maturity) years of the historical period (rounded up to the nearest integer) and $B_\textrm{unfished}^y$ is calculated $B_0$ (Equation \@ref(eq:dlm-om-bo)).
+Other alternative interpretations of $B_0$ could also be programmed (e.g., average $B_0$ across the whole historical period, or at the end of the historical period), depending on the desired benchmark or target.
 
-Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points. Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period.
+Time-varying growth, natural mortality and/or selectivity will result in time-varying MSY-based reference points, because DLMtool calculates $\textrm{MSY}$ and related metrics (e.g., $B_\textrm{MSY}$) at each time-step in the model, in which case annual performance metrics will be based on annual estimates of  reference points.
+Analysts should exercise caution with time-varying $B_\textrm{MSY}$ and $B_0$.
+Declining reference points can imply improved stock status relative to lower reference points, possibly leading to a "ratcheting" effect as both stock and reference points decline.
+Alternatively, it is possible to base performance metrics on an average $B_\textrm{MSY}$ from the historical period or on some other desired benchmark [e.g., the estimated average biomass from a productive historical period @dfo2009; @forrest2018].
+
+It is recommended that appropriate benchmarks or targets in the presence of time-varying productivity be resolved in collaboration with fisheries management, stakeholders, and First Nations, as performance metrics based on reference points such as $B_\textrm{MSY}$ and $B_0$ will be impacted by the methods used to calculate them. Such decisions should be documented to ensure transparency.
 
 How to treat reference points when parameters, particularly productivity parameters such as $\widetilde{M}$ or $\widetilde{\kappa}$, are time-varying is an active area of research [e.g., @haltuch2009; @haltuch2019; @punt2014]. We suggest that the MP Framework is a suitable environment for further simulation-testing alternative approaches for time-varying reference points and suggest this is an important research area for future applications of the framework.
 
