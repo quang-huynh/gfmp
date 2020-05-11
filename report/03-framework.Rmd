@@ -386,8 +386,8 @@ knitr::include_graphics(here("report/figure/framework-index-projections.png"))
 Dots represent individual replicates.
 The contour lines indicate two-dimensional kernel-density-smoothed quantiles, calculated in log space.
 For example, the 0.50 contour lines encompass approximately 50% of the replicates. 
-The vertical dashed lines shows B/B~MSY~ of 0.4 (left) and 0.8 (right).
-The horizontal dashed line shows F/F~MSY~ of 1.
+The vertical dashed lines shows B/B~MSY~ = 0.4 (left) and 0.8 (right).
+The horizontal dashed line shows F/F~MSY~ = 1.
 Replicates with values beyond the outer axis limits are shown on the axis limit with an open circle (e.g., bottom right corner).
 
 ```{r methods-kobe, fig.cap="(ref:fig-methods-kobe)", out.width="5in"}
@@ -396,6 +396,8 @@ knitr::include_graphics(here("report/figure/framework-kobe.png"))
 
 (ref:fig-methods-worm) This visualization illustrates the time trajectory of B/B~MSY~ and F/F~MSY~ values summarized across replicates.
 The solid line corresponds to the median value.
+The vertical dashed lines shows B/B~MSY~ = 0.4 (left) and 0.8 (right).
+The horizontal dashed line shows F/F~MSY~ = 1.
 Each diamond represents the 50% quantile of B/B~MSY~ (horizontal) and F/F~MSY~ (vertical).
 There is one diamond per year of the historical and projection period.
 The lines and diamonds change colour over time and specific points in time are illustrated with symbols (first year, last historical year, and last projected year).
