@@ -318,7 +318,7 @@ We include a detailed explanation of the initial OM specification in Appendix \@
 
 ### OM conditioning {#sec:results-om-conditioning}
 
-After specifying most of the OM parameters (Appendix \@ref(app:desc-om-rex)), we conditioned the OMs using the SRA model described in Appendix \@ref(app:sra).
+After specifying most of the OM parameters (Appendix \@ref(app:desc-om-rex)), we conditioned the OMs using the SRA model (with 250 replicates) described in Appendix \@ref(app:sra).
 We conditioned the models using: (1) commercial catch data from 1996--2019; (2) the synoptic WCVI (SYN WCVI) trawl relative biomass index (a depth-stratified random survey); and (3) commercial bottom trawl CPUE.
 We down-weighted the commercial CPUE index by inflating the standard errors 1.5 times since we have greater confidence in the SYN WCVI data reflecting underlying biomass trends.
 We specified a range of $C^{\textrm{eq}}$ values as described above to reflect uncertainty in initial stock depletion.
