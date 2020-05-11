@@ -66,7 +66,7 @@ Even in cases where availability of these data is sparse over time, they can sti
 For example, an age-composition sample from a single recent year that shows a very truncated age structure can imply a heavily depleted stock.
 Age-composition data from one or a few years can also be informative about selectivity, which in turn informs estimates of stock size.
 
-### PARAMETERS OF THE SRA MODEL
+### Parameters of the SRA model
 
 The required pre-specified OM parameters needed for SRA scoping are as follows (DLMtool slot names are provided in Table \@ref(tab:tab-om-pars)):
 
