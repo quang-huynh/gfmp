@@ -343,6 +343,8 @@ knitr::include_graphics(here("report/figure/framework-radar.png"))
 ```
 
 (ref:fig-methods-proj) This visualization illustrates historical and projected B/B~MSY~ (where B indicates spawning biomass), F/F~MSY~, and catch for various MPs for a single OM.
+Only one MP is shown here.
+In applications of the framework, all satisficed MPs would be shown as separate panels.
 Dark lines indicate the median value and the darker and lighter shaded ribbons indicate the 50% and 90% quantiles.
 Thin gray lines represent illustrative simulation replicates.
 The vertical dashed line indicates the last year of the historical period.
@@ -354,7 +356,10 @@ knitr::include_graphics(here("report/figure/framework-main-projections.png"))
 ```
 
 (ref:fig-methods-proj-sens)
-This visualization highlights sensitivity of the historical conditioned and projected time series across OM scenarios.
+This visualization highlights sensitivity of the historical conditioned and projected time series across OM scenarios for two hypothetical OM scenarios. 
+In applications of the framework with more than two OM scenarios, more lines would be shown.
+Only one MP is shown here.
+In applications of the framework, all satisficed MPs would be shown as separate panels.
 The solid lines correspond to median values and the shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
 Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this visualization helps compare time series within a given MP across OM scenarios.
 This visualization lends itself to multiple rows where each row represents a different MP.
