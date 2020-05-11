@@ -208,7 +208,7 @@ The performance metrics measuring the objectives were:
 Reference catch was defined as the average catch from the last five years.
 We measured the performance metrics as probabilities integrated over years and replicates simultaneously.
 
-## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
+## STEP 3: SELECTION OF UNCERTAINTIES AND SPECIFICATION OF OPERATING MODELS {#sec:results-rex3}
 
 We considered the major axes of uncertainty for Rex Sole to be:
 
@@ -227,7 +227,7 @@ sc <- sc %>%
   mutate(scenario_human = gsub("inc\\.", "increasing", scenario_human)) %>%
   mutate(scenario_human = gsub("\\\n", " ", scenario_human))
 sc %>% select(-scenario) %>%
-  csasdown::csas_table(caption = "Rex Sole OM scenarios. \"Ceq.\" refers to \"catch equilibrium\" in 1995 and is used as a way to parameterize the level of biomass depletion at the beginning of the recorded catch history.",
+  csasdown::csas_table(caption = "Rex Sole OM scenarios. \"Ceq.\" refers to \"catch equilibrium\" in 1995 and is used to parameterize the level of biomass depletion at the beginning of the recorded catch history. Unless otherwise specified, \"Ceq.\" was set at 200% in all scenarios.",
     col_names = c("OM scenario name", "Set type")) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"))
 ```
@@ -267,6 +267,8 @@ For the reference set:
 * The OM scenario "Ceq. 250%" assumes that equilibrium catch prior to 1996 was 2.5 times that in 1996.
 
 * The OM scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
+
+For all other OM scenarios $C^{\textrm{eq}}$ was set at 200%.
 
 #### Steepness of the stock-recruit relationship (*h*)
 
