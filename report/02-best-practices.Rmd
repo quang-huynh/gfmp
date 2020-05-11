@@ -1,6 +1,9 @@
 # BEST PRACTICES FOR MANAGEMENT PROCEDURE APPROACHES {#sec:best-practices}
 
-@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016]. In most practical applications the steps in the MSE process will be iterative; for example, objectives can be refined or updated after simulations.
+@punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016].
+In most practical applications the steps in the MSE process will be iterative.
+For example, objectives or performance metrics may be refined after experience is gained with their performance in simulations or the real world [e.g., @cox2013].
+OMs and MPs may also be refined or revised in light of new information or changes to fishing operations or the ecosystem [e.g., @plaganyi2007].
 
 In this section we provide an overview of the six best practice steps.
 We describe how each of the six steps is implemented in the proposed MP Framework in Section \@ref(sec:approach).
