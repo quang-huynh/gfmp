@@ -269,8 +269,8 @@ For the reference set:
 * The OM scenario "No CPUE Ceq. 250%" excludes the commercial CPUE index from the SRA model (Figure \@ref(fig:rex-surv-index-plot)). When the commercial CPUE data were excluded, values of $C^{\textrm{eq}} < 2.5$ rendered implausible SRA model fits ($F_{a,y} > 3$) without other changes to the model such as shifting length selectivity.
 
 For all other OM scenarios $C^{\textrm{eq}}$ was set at 200%.
-We did explore some OM scenarios with $C^{\textrm{eq}} > 250%$.
-These OM scenarios did not provide greater contrast in the ranking of MPs and we chose to cap $C^{\textrm{eq}}$ at 250% in this illustrative example.
+We did explore some OM scenarios with $C^{\textrm{eq}} > 250%$ (not shown).
+These OM scenarios did not provide greater contrast in terms of the ranking of MPs and we chose to cap $C^{\textrm{eq}}$ at 250% in this case study.
 
 #### Steepness of the stock-recruit relationship (*h*)
 
