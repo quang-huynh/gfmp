@@ -43,7 +43,7 @@ The SRA updates one or more of the following OM parameters, depending on data av
 - $F_{a,y}$ (fishing mortality at age by year for the historical period)
 - Selectivity parameters (age-based or length-based).
 
-These parameters are defined in context in the following sections.
+These parameters are defined in context in the following sections. Non-updated parameters are used as specified in the OM.
 
 Note that covariance among SRA parameter estimates is preserved when they are passed back to the OM.
 In general, covariance among other specified parameters is not accounted for since parameters are specified by single values or distributions.
