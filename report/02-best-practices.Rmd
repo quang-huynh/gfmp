@@ -28,17 +28,24 @@ Key questions to guide defining the decision context for MSE include:
 
 * How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance for different objectives.
 
+* How will the process be governed? For example, how will aceptability of trade-offs be determined? How will meetings be facilitated? How will consultation be managed? Failures in governence of the decision-making process can lead to a less succesful decisions in terms of acceptance and compliance [@armitage2019].
+
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
 
-Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@punt2016].
+Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@hilborn2007; @delamare1998; @punt2016].
 Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability of maintaining the stock above the LRP is greater than 0.95 [19 times out of 20], in each and every year of a 50-year period).
 
 Since the properties of the underlying system represented by the OM are known exactly, a wide range of biological and economic metrics can be calculated from the OM [@carruthers2018].
 However, having too many performance metrics can make the final decision process complex. Performance metrics should be chosen so they can be understood by decision-makers and participants, and to facilitate a tractable decision-making environment [@punt2016].
 
-Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties.
+Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties [e.g., @mapstone2008; @plaganyi2007; @cox2008a].
+@hilborn2007 identified four categories of fishery objectives: biological, economic, social and political, noting that many conflicts in fisheries in fact arise from conflicting objectives.
+Within each of these categories, different resource users and interest groups will place value on different components, leading to inevitable trade-offs.
+For example, while all resource users may place higher value on increased biological production, aboriginal users may prefer more stable access to yields and increased participation [@plaganyi2013], while recreational users may prefer lower yields and larger trophy fish [@hilborn2007].
+Achieving agreement on the list of objectives and performance metrics, especially with multiple user groups, can be time-consuming and should be iterative, as participants build familiarity with each other and the process.
+During Step 1 (Section \@ref(sec:best1)), attention should be given to governance of the process to ensure that there is meaningful participation by different groups and that participants can agree on the final set of objectives to adequately characterize the main trade-offs.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:best3}
 
