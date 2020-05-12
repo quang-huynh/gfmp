@@ -30,7 +30,6 @@ The time-frame of interest for setting objectives and calculating performance me
 Key provisional conservation objectives are guided by the Precautionary Approach Framework [@dfo2006; @dfo2009], elements of which are incorporated into the Fish Stocks provisions of the *Fisheries Act* (see Section \@ref(sec:intro-motivation)).
 Additional objectives related to fisheries catch and variability in annual fisheries catch are based on precedents in other DFO Pacific Region analyses [e.g., @cox2008a; @forrest2018; @cox2019].
  
-
 We propose the following provisional tactical conservation and fisheries objectives:
 
 1. Maintain stock status above the LRP in the long term with high probability.
@@ -84,6 +83,7 @@ Alternatives such as standard deviations in log space or coefficients of variati
 
 Performance metrics in the MP Framework are easily customizable.
 Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria [e.g., @haggarty2020yelloweye].
+
 
 In cases where performance metrics are calculated over a range of years, care needs to be taken to clearly report how summary statistics are calculated.
 Provisionally, we suggest calculating performance statistics across replicates and the entire time window as defined for the performance metric.
