@@ -84,7 +84,6 @@ Alternatives such as standard deviations in log space or coefficients of variati
 Performance metrics in the MP Framework are easily customizable.
 Performance metrics for applications of the framework may, for example, reflect a broader range of objectives such as those associated with rebuilding plans or COSEWIC criteria [e.g., @haggarty2020yelloweye].
 
-
 In cases where performance metrics are calculated over a range of years, care needs to be taken to clearly report how summary statistics are calculated.
 Provisionally, we suggest calculating performance statistics across replicates and the entire time window as defined for the performance metric.
 For example, we calculated the *F*~MSY~ performance metric across all replicates and years simultaneously.
@@ -106,9 +105,10 @@ Parameters under the four components are entered into "slots" [terminology refer
 
 DLMtool allows the incorporation of uncertainty in most OM parameters through optional specification of a distribution.
 See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified.
-To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest.
+To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest [@punt2016].
 In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
 For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
+For stocks with available stock assessments, these should be consulted to identify major sources of uncertainty.
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
@@ -119,7 +119,9 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 * Alternative catch histories (e.g., for species such as rockfishes, which were historically reported under generic species names)
 * Implementation error (actual catches are above or below the TAC)
 
-In some cases, these uncertainties may be included in the reference set. We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
+In some cases, these uncertainties may be included in the reference set.
+In general an iterative approach may be required to reduce the robustness down to a set of OMs that provide contrast to results obtained with reference set OMs [@rademeyer2007].
+We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
 We note that DLMtool OMs include a large number of parameters that can vary through time, or which can be set to be deliberately biased.
