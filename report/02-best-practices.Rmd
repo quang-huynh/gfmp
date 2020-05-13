@@ -60,7 +60,7 @@ They provide a list of factors which commonly have a large impact on MSE perform
 Where available, stock assessments can be consulted for the major sources of uncertainty.
 For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment, while the robustness set may include a broader, more exploratory set of uncertainties [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), T. Carruthers, personal communication, May 12 2020].
 
-Interactions among uncertainties may be considered by evaluating all combinations of uncertainty factors [e.g., @rademeyer2006a].
+Interactions among uncertainties may be considered by evaluating all combinations of uncertainty factors [e.g., @rademeyer2006a]. This may be presented in grid format [e.g., @carruthers2020].
 However, this may not always be computationally possible, and it is more common to select ‘base’ levels for each factor and then  develop alternative OMs which vary one (or more than one) factor in turn [@punt2016].
 An iterative approach may be required, where sensitivity tests are run to determine which combinations produce the largest differences in results [e.g., @rademeyer2006b; @carruthers2020].
 
