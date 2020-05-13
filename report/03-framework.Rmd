@@ -164,9 +164,10 @@ We excluded MPs that required knowledge of absolute abundance since there are un
 We excluded MPs that required recent age composition data because we intend this framework to be applied to stocks for which recent age-composition data are not available.
 We excluded MPs that required knowledge of depletion and steepness of the stock-recruit relationship since these are likely to be major axes of uncertainty for the stocks to which this framework will be applied.
 While it is necessary to explore these axes of uncertainty within the OM, implementing an MP on real data when that MP requires knowledge of depletion and steepness would require additional assumptions.
-We also, in some cases, excluded MPs that were difficult to understand and communicate.
+In a few cases, we excluded MPs that we found difficult to communicate [e.g., MPs based on the value of the index relative to the time series mean and standard error, @jardim2015].
+Such MPs did not perform appreciably differently from included MPs and we felt their exclusion would not lead to a loss in overall performance of the framework.
 
-A library of provisional MPs included in this framework are described in Appendix \@ref(app:MPs).
+A library of provisional MPs included in this framework is described in Appendix \@ref(app:MPs).
 
 ### Empirical MPs
 
