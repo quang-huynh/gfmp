@@ -58,11 +58,11 @@ These authors recommend  that the reference set of OMs include the most importan
 While there is no established formal means for selecting OMs for the reference set, @punt2016 suggest that best practice start from a common set of factors which commonly have a large impact on MSE performance due to uncertainties.
 They provide a list of factors which commonly have a large impact on MSE performance due to uncertainty (their Table 3) and suggests that, at a minimum, MSE processes should consider: parameter uncertainty (related to productivity and stock size); process uncertainty; and observation error [see also @cooke1999].
 Where available, stock assessments can be consulted for the major sources of uncertainty.
-For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), **REF**].
+For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment, while the robustness set may include a broader, more exploratory set of uncertainties [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), T. Carruthers, personal communication, May 12 2020].
 
 Interactions among uncertainties may be considered by evaluating all combinations of uncertainty factors [e.g., @rademeyer2006a].
 However, this may not always be computationally possible, and it is more common to select ‘base’ levels for each factor and then  develop alternative OMs which vary one (or more than one) factor in turn [@punt2016].
-An iterative approach may be required at the beginning to determine which combinations produce the largest differences in results.
+An iterative approach may be required, where sensitivity tests are run to determine which combinations produce the largest differences in results [e.g., @rademeyer2006b; @carruthers2020].
 
 Once an agreed-upon reference set of OMs has been determined, a wider range of OMs (the robustness set) should be developed to capture a wider range of uncertainties that may be less plausible but should nonetheless be explored [@rademeyer2007].
 These may include effects related to environmental change (e.g., time-varying mortality, climate-driven recruitment, predator-prey relationships); structural representation of population dynamics (e.g., form of the stock-recruit relationship); or fleet dynamics (e.g., selectivity).
