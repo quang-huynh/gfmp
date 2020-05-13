@@ -34,7 +34,8 @@ Definition of the decision context is the role of managers, stakeholders, First 
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
 
-Clear management and fishery objectives and the performance metrics that measure them must be identified. Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@hilborn2007; @delamare1998; @punt2016].
+Clear management and fishery objectives and the performance metrics that measure them must be identified.
+Objectives may initially be high level and "strategic" (e.g., achieve sustainable fisheries, maintain economic prosperity, maintain cultural access) but these must be converted into operational "tactical" objectives that can be expressed as quantitative performance metrics [@hilborn2007; @delamare1998; @punt2016].
 Fully quantified objectives include a metric, the desired probability of success, and a time frame to achieve the objective (e.g., probability of maintaining the stock above the LRP is greater than 0.95 [19 times out of 20], in each and every year of a 50-year period).
 
 Since the properties of the underlying system represented by the OM are known exactly, a wide range of biological and economic metrics can be calculated from the OM [@carruthers2018].
@@ -43,9 +44,10 @@ However, having too many performance metrics can make the final decision process
 Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties [e.g., @mapstone2008; @plaganyi2007; @cox2008a].
 @hilborn2007 identified four categories of fishery objectives: biological, economic, social and political, noting that many conflicts in fisheries in fact arise from conflicting objectives.
 Within each of these categories, different resource users and interest groups will place value on different components, leading to inevitable trade-offs.
-For example, while all resource users may place higher value on increased biological production, aboriginal users may prefer more stable access to yields and increased participation [@plaganyi2013], while recreational users may prefer lower yields and larger trophy fish [@hilborn2007].
-Achieving agreement on the list of objectives and performance metrics, especially with multiple user groups, can be time-consuming and should be iterative, as participants build familiarity with each other and the process.
-During Step 1 (Section \@ref(sec:best1)), attention should be given to governance of the process to ensure that there is meaningful participation by different groups and that participants can agree on the final set of objectives to adequately characterize the main trade-offs.
+For example, while all resource users may place higher value on increased biological production, aboriginal users may prefer more stable access to yields and increased participation [@plaganyi2013] or have spatial objectives [@okamoto2019]. Recreational users may prefer lower yields and larger trophy fish [@hilborn2007].
+Achieving agreement on the list of objectives and performance metrics, especially with multiple user groups is critical, can be time-consuming and should be iterative, as participants build familiarity with each other and the process.
+Incorporating social and cultural objectives may be particularly important and is lacking in many decision making processes [@stephenson2017, @benson2017, @okamoto2019; but see, for example, @plaganyi2013; @dfo2019; @dfo2020].
+During Step 1 (Section \@ref(sec:best1)), attention should be given to governance of the process to ensure that there is meaningful participation by different groups and that participants can agree on a final set of objectives to adequately represent their interests and characterize the main trade-offs [@stephenson2017, @okamoto2019]. An overview of possible approaches is provided in @benson2017.
 
 ## STEP 3: SELECTION OF UNCERTAINTIES/SPECIFICATION OF OPERATING MODELS {#sec:best3}
 
@@ -58,7 +60,7 @@ These authors recommend  that the reference set of OMs include the most importan
 While there is no established formal means for selecting OMs for the reference set, @punt2016 suggest that best practice start from a common set of factors which commonly have a large impact on MSE performance due to uncertainties.
 They provide a list of factors which commonly have a large impact on MSE performance due to uncertainty (their Table 3) and suggests that, at a minimum, MSE processes should consider: parameter uncertainty (related to productivity and stock size); process uncertainty; and observation error [see also @cooke1999].
 Where available, stock assessments can be consulted for the major sources of uncertainty.
-For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment, while the robustness set may include a broader, more exploratory set of uncertainties [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), T. Carruthers, personal communication, May 12 2020].
+For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment (possibly with additional scenarios), while the robustness set may include a broader, more exploratory set of uncertainties [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), T. Carruthers, personal communication, May 12 2020].
 
 Interactions among uncertainties may be considered by evaluating all combinations of uncertainty factors [e.g., @rademeyer2006a]. This may be presented in grid format [e.g., @carruthers2020].
 However, this may not always be computationally possible, and it is more common to select ‘base’ levels for each factor and then  develop alternative OMs which vary one (or more than one) factor in turn [@punt2016].
