@@ -135,12 +135,14 @@ We also recommend separate review processes for extensions that include consider
 
 We are grateful to the members of our technical advisory group Rob Kronlund, Adam Keizer, Chris Grandin, Ashleen Benson, Dana Haggarty, Rowan Haigh, Roger Kanno, Paul Starr, Rob Tadey, and Greg Workman for helpful discussions and comments on earlier drafts of this document.
 
-Chris Grandin developed a number of visualization and report-generation functions within the gfdlm R package that greatly improved this document and will be invaluable in applications of the framework.
+We thanks Chris Grandin, who developed a number of visualization and report-generation functions within the gfdlm R package that greatly improved this document and will be invaluable in applications of the framework.
 
 We thank Tom Carruthers and Adrian Hordyk for their work on developing DLMtool and MSEtool.
 This project would have been a much bigger undertaking without these tools. Tom and Adrian's helpful guidance and willingness to add many new features on request have greatly improved this framework.
 
 We thank John Holmes for supporting our work on this framework within the Stock Assessment and Research Division at the Pacific Biological Station.
+
+We thank Jaclyn Cleary and Ann-Marie Huang for helpful advice on other MSE processes in BC.
 
 We thank DFO's Ocean and Freshwater Science Contribution Program for supporting the development of DLMtool and MSEtool.
 
