@@ -107,6 +107,7 @@ DLMtool allows the incorporation of uncertainty in most OM parameters through op
 See Appendix B of @carruthers2018 for a full list of parameters for which a distribution can be specified.
 To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest [@punt2016].
 In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
+We do not attempt to weight OMs in this framework.
 For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
 For stocks with available stock assessments, these should be consulted to identify major sources of uncertainty.
 
