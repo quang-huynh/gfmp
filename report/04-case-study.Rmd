@@ -32,7 +32,7 @@ We defined the performance metrics as:
 where reference catch was defined as the average catch from the last five years.
 
 **Operating model specification**:
-We established six reference set OMs encompassing uncertainty in depletion of the stock prior to 1996, natural mortality (*M*), stock-recruit steepness (*h*), fishery and survey length selectivity, and the inclusion or exclusion of commercial CPUE effort data (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-reference-set)).
+We established six reference-set OMs encompassing uncertainty in depletion of the stock prior to 1996, natural mortality (*M*), stock-recruit steepness (*h*), fishery and survey length selectivity, and the inclusion or exclusion of commercial CPUE effort data (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-reference-set)).
 We further established two robustness-set OMs encompassing less plausible but possible additional sources of structural uncertainty: (1) an OM scenario that assumes the stock was lightly fished before 1996 and excludes the CPUE data; and (2) an OM scenario that assesses robustness to future increases in natural mortality (possibly due to climate change or shifts in predator abundance) (Appendix \@ref(app:mse-rex) Section \@ref(sec:results-robustness-set)).
 
 We documented the initial parameterization of the OMs (Appendix \@ref(app:desc-om-rex)) and the conditioning of the OMs using stochastic stock reduction analysis (SRA; Appendix \@ref(app:sra)).
@@ -48,9 +48,9 @@ We applied satisficing criteria based on the LT LRP and STC performance metrics 
 These MPs included index-target MPs, surplus production models paired with a harvest control rule, and two constant-catch MPs.
 
 **Presentation of results**:
-We presented a number of visualizations featuring the OM reference set scenarios to aid evaluating trade-offs amongst the seven satisficed MPs for final decision-making.
-We averaged results across OM reference set scenarios, to integrate across the various uncertainties represented by these OMs.
-We presented probability results in terms of the average (Figures \@ref(fig:rex-tigure-avg)) and minimum performance (Figures \@ref(fig:rex-tigure-min)), where the latter accounts for the worst-case scenario among OM reference set scenarios.
+We presented a number of visualizations featuring the OM reference-set scenarios to aid evaluating trade-offs amongst the seven satisficed MPs for final decision-making.
+We averaged results across OM reference-set scenarios, to integrate across the various uncertainties represented by these OMs.
+We presented probability results in terms of the average (Figures \@ref(fig:rex-tigure-avg)) and minimum performance (Figures \@ref(fig:rex-tigure-min)), where the latter accounts for the worst-case scenario among OM reference-set scenarios.
 We suggest that Figures \@ref(fig:rex-tigure-avg) and \@ref(fig:rex-tigure-min) would be the primary source of information used by decision-makers to reach a final MP-selection decision.
 To aid this decision, we included a number of other visualizations to help decision-makers understand the underlying dynamics and trade-offs of the various OMs across all satisficed MPs.
 
