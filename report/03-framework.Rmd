@@ -108,7 +108,7 @@ See Appendix B of @carruthers2018 for a full list of parameters for which a dist
 To isolate the effects of specific sources of uncertainty on performance of MPs, we recommend development of alternative OMs that change the value (or distribution) of one or more parameters and/or data sources of interest [@punt2016].
 In general, we recommend developing more than one OM, dividing OMs into a reference set of core OMs representing the most important plausible model uncertainties, and a robustness set for testing sensitivity to a broader range of structural uncertainties [@rademeyer2007].
 We do not attempt to weight OMs in this framework.
-For BC groundfish stocks, reference set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
+For BC groundfish stocks, reference-set uncertainties will likely be based on key uncertainties identified in typical groundfish stock assessments, namely natural mortality (*M*), steepness of the stock-recruit relationship (*h*), and initial depletion (i.e., depletion from an unfished state at the beginning of the projection period).
 For stocks with available stock assessments, these should be consulted to identify major sources of uncertainty.
 
 Candidate uncertainties to include in OMs in the robustness set may include:
@@ -121,7 +121,7 @@ Candidate uncertainties to include in OMs in the robustness set may include:
 * Implementation error (actual catches are above or below the TAC)
 
 In some cases, these uncertainties may be included in the reference set.
-In general an iterative approach may be required to reduce the robustness down to a set of OMs that provide contrast to results obtained with reference set OMs [@rademeyer2007].
+In general an iterative approach may be required to reduce the robustness down to a set of OMs that provide contrast to results obtained with reference-set OMs [@rademeyer2007].
 We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
 
@@ -281,8 +281,8 @@ Therefore, before the final MP is selected, the role of the robustness set is to
 Poor performance of an MP under one of these OM scenarios may influence a decision-maker to select another MP that performs well under both OM reference and robustness scenarios.
 
 We recommend presenting performance metrics from the reference and robustness sets separately.
-For most visualizations, we recommend that the reference set performance metrics are averaged across all OM reference set scenarios.
-An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all OM reference set scenarios; and (ii) average value of the performance metric across all OM reference set scenarios.
+For most visualizations, we recommend that the reference set performance metrics are averaged across all OM reference-set scenarios.
+An exception is the table of performance metrics (e.g., Figure \@ref(fig:methods-tigure)), which is presented in two ways: (i) minimum value of the performance metric across all OM reference-set scenarios; and (ii) average value of the performance metric across all OM reference-set scenarios.
 The first is a "worst-case scenario" approach, whereas the second case integrates across the whole reference set.
 We recommend presenting performance metrics from the individual OM robustness-set scenarios separately.
 This facilitates visualization of performance of MPs that perform well in the reference set under specific more diverse assumptions [@rademeyer2007].
@@ -297,7 +297,7 @@ By shading the cells according to their underlying performance metric value, the
 We suggest sorting the rows by performance metrics of particular interest, shading the MP name differently for reference MPs, and highlighting any satisficing criteria by outlining cells that pass satisficing thresholds.
 The default colour shading is colour-blind proof, prints accurately in grey scale, and is visually linear in its gradient [@viridis].
 
-Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across OM reference set scenarios (Figure \@ref(fig:methods-dots)).
+Second, we suggest a visualization that lends itself to summarizing performance for a small set of satisficed MPs across OM reference-set scenarios (Figure \@ref(fig:methods-dots)).
 This figure highlights average performance across OM scenarios (dots) along with the range of performance values seen across OM scenarios (thin lines).
 This figure also illustrates the range of performance after dropping the OM scenarios with the highest and lowest of each performance metric values (thicker lines).
 
