@@ -185,7 +185,7 @@ Importantly, constant-catch MPs do not incorporate feedback between the manageme
 
 2. Index-ratio MPs base their catch recommendation on a ratio of a population index in one time period compared to another time period---generally a recent period (e.g., last year) compared to a short period before that (e.g. 2--3 years ago).
 
-3. Index-slope MPs fit a regression of population index data over time and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
+3. Index-slope MPs fit a regression of population index data compared to time and make a catch recommendation based on the slope of the regression. They are closely related to index-ratio MPs.
 
 4. Index-target MPs compare recent population index values to the value of the index at a fixed, agreed-upon historical time period to make a catch recommendation that aims to maintain the population index at the fixed historical value.
 In this regard, index-target MPs differ subtly but importantly from the index-ratio and index-slope MPs,
