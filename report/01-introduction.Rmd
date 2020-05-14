@@ -49,7 +49,7 @@ Instead of recommending a discrete tiered approach based on data-availability, t
 
 ## MANAGEMENT-ORIENTED APPROACHES {#sec:intro-management-oriented}
 
-Worldwide, there has been a movement towards management-oriented approaches to stock assessment and fisheries management [e.g., @butterworth1999; @plaganyi2007; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016].
+Worldwide, there has been a movement towards management-oriented approaches to stock assessment and fisheries management [e.g., @delamare1998; @butterworth1999; @plaganyi2007; @rademeyer2007; @berkson2015; @geromont2015; @punt2016; @carruthers2016].
 Whereas traditional stock assessment methods focus explicitly on estimation of biological parameters and stock status, a management-oriented approach focuses on identifying MPs that perform best with respect to policy and fishery objectives when implemented in a "closed-loop" simulation environment (Figure \@ref(fig:mse-chart-basic)).
 
 Closed-loop simulation is distinguished from conventional stock assessment because it simulates feedback between implementation of the MPs and the simulated system representing the fish stock and its environment, described by one or more operating models (OMs).
@@ -80,7 +80,7 @@ We emphasize that biological reference points and stock status, which are integr
 Instead reference points and stock status are incorporated into the OMs (see Appendix \@ref(app:dlmtool-om)) and management procedures are selected based on explicitly defined probabilities of maintaining OM stock status above reference points.
 We choose the terminology MP Framework to clearly specify the focus on selection of best-performing MPs, rather than focusing on the available data.
 
-This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management and stakeholders.
+This document presents a methodology for developing appropriate OMs, testing suites of MPs, and identifying MPs that best meet the objectives of fisheries management, First Nations and stakeholders.
 This work builds on recent work by @anderson2019synopsis, which is a comprehensive, reproducible data synopsis for nearly all Pacific groundfish species encountered by DFO surveys and commercial fisheries in BC.
 Although the proposed framework is software agnostic, in the current implementation, data and empirical analyses from the synopsis are used to develop OMs using the DLMtool [@carruthers2018] and MSEtool packages [@huynh_msetool_2019], implemented in the statistical software R [@r2019].
 The OMs are then used in simulation-testing a range of data-limited MPs against performance metrics.

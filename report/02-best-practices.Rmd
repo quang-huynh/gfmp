@@ -2,7 +2,7 @@
 
 @punt2016 reviewed best practices for MSE and identified five key steps in the process (Steps 2--6 below). In large part, the DLMtool software has been designed to allow practitioners to follow these steps [Figure \@ref(fig:mse-chart); @carruthers2018]. We also identify a critical first step (Step 1 below): defining the decision context [@gregory2012; @cox2016].
 In most practical applications the steps in the MSE process will be iterative.
-For example, objectives or performance metrics may be refined after experience is gained with their performance in simulations or the real world [@delamare1998; @plaganyi2007; @cox2008a; @punt2016; ].
+For example, objectives or performance metrics may be refined after experience is gained with their performance in simulations or the real world [@delamare1998; @plaganyi2007; @cox2008a; @punt2016].
 OMs and MPs may also be refined or revised in light of new information or changes to fishing operations or the ecosystem [e.g., @plaganyi2007; @pestal2008].
 
 In this section we provide an overview of the six best practice steps.
@@ -28,9 +28,10 @@ Key questions to guide defining the decision context for MSE include:
 
 * How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance for different objectives.
 
-* How will the process be governed? For example, how will aceptability of trade-offs be determined? How will meetings be facilitated? How will consultation be managed? Failures in governence of the decision-making process can lead to a less succesful decisions in terms of acceptance and compliance [@armitage2019].
+* How will the process be governed? For example, how will aceptability of trade-offs be determined? How will meetings be facilitated? How will consultation be managed? Failures in governance of the decision-making process can lead to a less succesful decisions in terms of acceptance and compliance [@smith1999; @armitage2019].
 
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
+Engagement of resource users at all stages of the MSE cycle from the outset is critical, as it increases the likelihood that the process will be considered credible, objectives will reflect real objectives, and MPs will be successfully implemented as planned [@smith1999; @punt2016; @armitage2019].
 
 ## STEP 2: SELECTION OF OBJECTIVES AND PERFORMANCE METRICS {#sec:best2}
 
@@ -41,7 +42,7 @@ Fully quantified objectives include a metric, the desired probability of success
 Since the properties of the underlying system represented by the OM are known exactly, a wide range of biological and economic metrics can be calculated from the OM [@carruthers2018].
 However, having too many performance metrics can make the final decision process complex. Performance metrics should be chosen so they can be understood by decision-makers and participants, and to facilitate a tractable decision-making environment [@punt2016].
 
-Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties [e.g., @mapstone2008; @plaganyi2007; @cox2008a].
+Objectives should be developed with the participation of managers, stakeholders, First Nations, and other interested parties [e.g., @smith1999; @mapstone2008; @plaganyi2007; @cox2008a].
 @hilborn2007 identified four categories of fishery objectives: biological, economic, social and political, noting that many conflicts in fisheries in fact arise from conflicting objectives.
 Within each of these categories, different resource users and interest groups will place value on different components, leading to inevitable trade-offs.
 For example, while all resource users may place higher value on increased biological production, aboriginal users may prefer more stable access to yields and increased participation [@plaganyi2013] or have spatial objectives [@okamoto2020]. Recreational users may prefer lower yields and larger trophy fish [@hilborn2007].
