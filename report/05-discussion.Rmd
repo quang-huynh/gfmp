@@ -138,7 +138,9 @@ Some considerations will inevitably be considered outside the scope of the proce
 Therefore it is important to evaluate the performance of selected MPs once they are implemented, either through informal or formal means (Section \@ref(sec:discussion-triggers)).
 
 Our OMs were conditioned on observed data, using the SRA model in MSEtool.
-Outputs of this model rely on the quality of the available data, and also on the assumed distributions of its input parameters
+Outputs of this model rely on the quality of the available data, and also on the assumed distributions of its input parameters.
+In particular, assumptions about selectivity will be a key source of uncertainty for species with little or no age composition data.
+Therefore selectivity should be treated as an axis of uncertainty in most applications.
 Furthermore, as the SRA assumes almost no observation error in historical catch data, uncertainty may be underestimated in its outputs.
 For trawl-caught BC groundfish, catch estimates are considered very reliable since the 1996 introduction of 100% at-sea observer coverage.
 For line-caught species, catch data are considered reliable since 2006, when 100% electronic monitoring was introduced.
