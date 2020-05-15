@@ -11,7 +11,7 @@ We describe how each of the six steps is implemented in the proposed MP Framewor
 (ref:fig-mse-chart) The steps of the MSE process following @punt2016 as implemented in DLMtool. Adapted from @carruthers2018. This figure expands on Figure \@ref(fig:mse-chart-basic).
 
 ```{r mse-chart, fig.cap="(ref:fig-mse-chart)", out.width="\\textwidth"}
-knitr::include_graphics(here::here("images/mse-chart.pdf"))
+knitr::include_graphics(here::here("images/mse-chart.png"))
 ```
 
 ## STEP 1: DEFINE THE DECISION CONTEXT {#sec:best1}
