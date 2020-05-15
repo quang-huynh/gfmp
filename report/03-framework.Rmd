@@ -388,6 +388,7 @@ In applications of the framework with more than two OM scenarios, more lines wou
 Only one MP is shown here.
 In applications of the framework, all satisficed MPs would be shown as separate panels.
 The solid lines correspond to median values and the shaded ribbons correspond to 50% quantiles to indicate variability across replicates.
+The vertical dashed line indicates the last year of the historical period.
 Whereas Figure \@ref(fig:methods-proj) helps compare across MPs within a given OM scenario, and highlights example replicate performance, this visualization helps compare time series within a given MP across OM scenarios.
 This visualization lends itself to multiple rows where each row represents a different MP.
 Note that sensitivity of the time series to OM scenarios does not necessarily correspond to sensitivity in terms of rank order of MPs, which is ultimately the important result in a management-oriented approach.

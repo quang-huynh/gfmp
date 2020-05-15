@@ -698,6 +698,7 @@ knitr::include_graphics(here("report/figure/rex-projections-inc-m.png"))
 Colours represent the reference- and OM robustness-set scenarios.
 Lines represent medians and shaded regions represent 50% quantiles.
 Satisficed and reference MPs are shown from top to bottom.
+Vertical dashed lines represent 2019.
 
 ```{r rex-proj-scenarios, fig.cap="(ref:fig-rex-proj-scenarios)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-projections-scenarios.png"))
