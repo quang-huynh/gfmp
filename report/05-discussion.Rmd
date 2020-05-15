@@ -134,7 +134,7 @@ As in all MSE processes, results of this framework will depend on the degree to 
 For this reason we recommended developing multiple OMs to capture the key, most plausible hypotheses about the system in the reference set, and a wider range of uncertainties in the robustness set.
 However, it is inevitable that some uncertainties will not be considered, either because they are unknown or because including them would create unworkable complexity in the modelling and decision-making environment.
 For example, species for which spatial considerations are important (e.g., highly migratory species, or species with strong environmental drivers of productivity).
-Some considerations will inevitably be considered outside the scope of the process due to limitations in available data, time or expertise.
+Some considerations will inevitably be considered outside the scope of the process due to limitations in available data, time, or expertise.
 Therefore it is important to evaluate the performance of selected MPs once they are implemented, either through informal or formal means (Section \@ref(sec:discussion-triggers)).
 
 Our OMs were conditioned on observed data, using the SRA model in MSEtool.
@@ -142,14 +142,14 @@ Outputs of this model rely on the quality of the available data, and also on the
 In particular, assumptions about selectivity will be a key source of uncertainty for species with little or no age composition data.
 Therefore selectivity should be treated as an axis of uncertainty in most applications.
 Furthermore, as the SRA assumes almost no observation error in historical catch data, uncertainty may be underestimated in its outputs.
-For trawl-caught BC groundfish, catch estimates are considered very reliable since the 1996 introduction of 100% at-sea observer coverage.
+For trawl-caught BC groundfish, catch estimates are considered reliable since the 1996 introduction of 100% at-sea observer coverage.
 For line-caught species, catch data are considered reliable since 2006, when 100% electronic monitoring was introduced.
 For some species, especially those with low monetary value, catch data prior to these years may be more uncertain and it may be necessary to include alternative scenarios to account for uncertainty in catch [e.g. @haggarty2020yelloweye].
 
-We have presented a selection of empirical and model-based MPs for data-limited species but future applications of the framework may need to evaluate other MPs, either published in the literature or developed as part of the MSE process itself [e.g., @cox2008a].
+<!-- We have presented a selection of empirical and model-based MPs for data-limited species but future applications of the framework may need to evaluate other MPs, either published in the literature or developed as part of the MSE process itself [e.g., @cox2008a]. -->
 
 Finally, the success of this framework and any MSE process will depend on adequate engagement by fishery managers, First Nations, and stakeholders.
-For some species, different user groups may have very diverse objectives, creating large tradeoffs and a complex decision-making environment.
+For some species, different user groups may have diverse objectives, creating large tradeoffs and a complex decision-making environment.
 In these cases, careful governance of the process and attention to Steps 1 and 2 (Section \@ref(sec:best-practices)) will be especially critical. 
 
 <!-- We recommend separate review processes for extensions to the framework to evaluate data-moderate and/or data-rich MPs, as there will be additional considerations and sources of uncertainty. -->
