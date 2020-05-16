@@ -22,6 +22,8 @@ Key questions to guide defining the decision context for MSE include:
 
 * What is the time frame for making the decision?
 
+* How often will the decision be evaluated and updated? E.g., will a TAC decision be in place for one year or several years?
+
 * What are the boundaries on the project and decision?
 
 * What are specific roles and responsibilities of parties involved? Parties include Science, Management, First Nations, industry, academia, and/or non-governmental organizations (NGOs).
@@ -101,6 +103,8 @@ Given the large number of MP options available, a screening step is desirable.
 For example, MPs that do not return a catch limit (e.g., spatial closures or effort-based MPs) can be immediately screened out if management requires a catch limit.
 Also, unless the decision context involves considering the value of collecting new information, it is important to test MPs for which information or data are available [@punt2016].
 For example, MPs that rely on age-composition data or an estimate of current depletion may not be feasible for many data-limited BC groundfish stocks.
+It is also important to consider the period of time for which MPs will be left in place.
+Unless MPs will be updated annually, it will be important to design MPs that are left in place for several years and test their performance [e.g. @haggarty2020yelloweye].
 While it is important to work with a manageable set of MPs, it is also important not to screen too aggressively, to make sure good candidate MPs are not screened out early on.
 
 In general, identification of available MPs is the role of Science. Managers, stakeholders and First Nations should be involved in identifying desirable MPs [e.g., @cox2008a; @plaganyi2013] and provide input on feasibility of implementing some MPs and their likely success in terms of acceptance and compliance [@armitage2019].
