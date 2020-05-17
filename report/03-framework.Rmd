@@ -182,7 +182,9 @@ A library of provisional MPs included in this framework is described in Appendix
 Commercial catch data are available for all BC groundfish stocks with relative certainty since 1996 for BC trawl fisheries and 2008 for BC hook-and-line fisheries.
 Fisheries-independent trawl and longline surveys have been conducted systematically since the early 2000s for BC groundfish and the population indices derived from these data likely represent some of the most informative data for many data-limited groundfish stocks in BC.
 Fish lengths are collected on both surveys and commercial fishing trips for many species.
-However, length-based MPs often require strong assumptions and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data, which often have large and inconsistent variances among years and length bins. Simulating realistic length-composition data is challenging and we have not sufficiently investigated best practices for simulating length-compositions within the DLMtool software.
+However, length-based MPs often require strong assumptions and require that the simulated length-composition data are sufficiently "messy" to reflect the real-world length-composition data, which often have large and inconsistent variances among years and length bins.
+Simulating realistic length-composition data is challenging and we have not sufficiently investigated best practices for simulating length-compositions within the DLMtool software.
+Furthermore, length-based empirical MPs may be less responsive to changes in indices of abundance and perform more poorly than other data-limited MPs [@sagarese2018].
 Reliable and abundant age-composition data are generally not available for the data-limited species for which this framework is designed.
 For the above reasons, we propose MPs that make use of only catch and population index data as provisional candidate MPs.
 
