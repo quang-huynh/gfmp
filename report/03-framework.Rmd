@@ -69,13 +69,15 @@ The "long-term" year range should be defined on a stock-by-stock basis recognizi
 However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species [@dfo2009; @dfo2013rebuilding] or 50 years, whichever is longer.
 We selected 50 years as a time-frame that should lead to relatively stable behaviour of MPs for shorter-lived stocks such as flatfishes (e.g., case study in Appendix \@ref(app:mse-rex); @forrest2018).
 @cox2008a used a projection period of 40 years for Sablefish (*Anopoploma fimbria*).
-@cox2019 used a projection period of 40 years for Pacific Herring (*Clupea pallasii*).
+@cox2019 used a projection period of 20 years for Pacific Herring (*Clupea pallasii*).
 An example for a longer-lived stock is the first application of this framework for decision-making, an evaluation of rebuilding strategies for Inside Yelloweye Rockfish (*S. ruberrimus*) [@haggarty2020yelloweye].
 These authors evaluated long-term performance metrics over 1.5 generation times (56 years), but also calculated probability of extinction metrics, required for COSEWIC evaluation, over a projection period of 100 years.
+In most studies, conservation metrics are only presented over the long-term, reflecting legislated or policy-driven sustainability objectives.
+However, in some cases, shorter-term conservation metrics may also be valuable, for example to ensure that long-term rebuilding plans for depleted stocks don't come at a cost of further depleting the stock in the short term [e.g., @haggarty2020yelloweye].
 Preliminary simulation-testing may be needed to evaluate stability in projections to ensure that a long enough time period has been chosen.
 We further suggest averaging the long-term performance metrics over a short (e.g., 5--15 year) window before the final year.
 
-We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery.
+We suggest the "short-term" year range, which in the examples above only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery.
 Our suggestion of 1--10 years represents a starting point and could be modified for specific fisheries.
 
 The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole.
