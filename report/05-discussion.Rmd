@@ -36,7 +36,7 @@ Many of the MPs in this framework are characterized by one or more parameters th
 For example, the Itarget MPs have four "tuning" parameters, $w$, $x$, $\lambda$, and $\delta$, which control the rate and scale of TAC adjustments in response to changes in the index (Appendix \@ref(app:MPs) Section \@ref(sec:mp-itarget)).
 In our Rex Sole case study, we tested six versions of the Itarget MPs over a fairly coarse scale of the tuning parameters.
 In this particular case, several of the MPs performed well with respect to satisficing criteria so we did not explore more combinations.
-However, in some applications of the framework it may be desirable to iteratively tune MPs on a fine scale to achieve desired performance outcomes.
+However, in some applications of the framework it may be desirable to iteratively tune MPs on a fine scale to achieve desired performance outcomes [see @sagarese2018 for discussion on tuning MPs].
 
 There is a trade-off between testing a larger set of generic MPs across a coarse array of tuning parameters and homing in on better-performing MPs via the satisficing step vs. focusing effort on a few MPs that are highly "tuned" to achieve desired outcomes.
 In cases where generic MPs perform poorly, the latter approach may be preferred.
