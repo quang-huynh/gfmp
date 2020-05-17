@@ -318,7 +318,9 @@ Radar plots lend themselves to comparing across many performance metrics, but be
 
 To understand the processes leading to the performance metrics, we recommend that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
 We suggest two versions: one that lends itself to careful inspection of individual OM scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across OM scenarios (Figure \@ref(fig:methods-proj-sens)).
-Inspection of these time series can help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the time series.
+Inspection of these time series can provide a diagnostic check that the parameter space is being adequately sampled among replicates.
+For example, a bifurcated time series could indicate that a boundary condition is being reached in some replicates and would indicate that one or more parameters may need to be sampled from a broader distribution. 
+Inspection of these time series can also help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the time series.
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
 Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY~ that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
 
