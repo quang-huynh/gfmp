@@ -66,7 +66,7 @@ Variability in catch, represented by AADC, is likely to be more important for ta
 However, large fluctuations in incidentally caught species may represent a problem in multispecies fisheries, where sudden increases in abundance of low-quota species co-occurring with target species may limit the ability of the fishery to realise TACs of target species.
 
 The "long-term" year range should be defined on a stock-by-stock basis recognizing that shorter-lived stocks could use a shorter projection period, while longer-lived stocks may require a longer projection period.
-However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species or 50 years.
+However, barring some other specified requirement for a definition of long-term (e.g., an associated Committee on the Status of Endangered Wildlife in Canada [COSEWIC] process), we suggest considering "long-term" as the minimum of 1.5--2 generation times of the species [@dfo2009; @dfo2013rebuilding] or 50 years.
 We further suggest averaging the long-term performance metrics over a short (e.g., 5--15 year) window before the final year.
 
 We suggest the "short-term" year range, which only applies to the economic performance metric STC, reflect some time period that is of near-term interest to current participants in the fishery.
