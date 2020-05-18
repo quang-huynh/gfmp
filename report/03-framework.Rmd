@@ -325,9 +325,13 @@ To understand the processes leading to the performance metrics, we recommend tha
 We suggest two versions: one that lends itself to careful inspection of individual OM scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across OM scenarios (Figure \@ref(fig:methods-proj-sens)).
 Inspection of these time series can provide a diagnostic check that the parameter space is being adequately sampled among replicates.
 For example, a bifurcated time series could indicate that a boundary condition is being reached in some replicates and would indicate that one or more parameters may need to be sampled from a broader distribution. 
-Inspection of these time series can also help understand the performance metrics and may also suggest new performance metrics if the existing set fail to capture some important aspect that becomes apparent in the time series.
+Inspection of these time series can also improve understanding of the performance of MPs, and may lead to addition of new performance metrics if the existing set fails to capture some important behaviour that becomes apparent in the time series.
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
 Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY~ that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
+These plots may also indicate MPs that are likely to cause extinction of the stock, even if this behaviour is masked by long term average performance metrics.
+For example, like many OMs, the DLMtool OM prevents negative biomass in the event that TACs are greater than the stock biomass.
+Therefore MPs which do not consider feedback from the index of abundance, such as constant catch MPs, may sometimes generate TACs greater than the available biomass, which would be buffered against by the OM.
+Inspection of Figure \@ref(fig:methods-proj) would indicate this behaviour.
 
 Visualizing the simulated population-index time series is particularly important when using MPs that rely on the population index (e.g., Figure \@ref(fig:methods-index)).
 First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
