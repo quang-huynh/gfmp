@@ -62,6 +62,7 @@ Therefore, best practice recommends dividing MSE trials into a "reference set", 
 These authors recommend  that the reference set of OMs include the most important uncertainties, which are both highly plausible and have major impacts on results.
 While there is no established formal means for selecting OMs for the reference set, @punt2016 suggest that best practice start from a common set of factors which commonly have a large impact on MSE performance due to uncertainties.
 They provide a list of factors which commonly have a large impact on MSE performance due to uncertainty (their Table 3) and suggests that, at a minimum, MSE processes should consider: parameter uncertainty (related to productivity and stock size); process uncertainty; and observation error [see also @cooke1999].
+Implementation uncertainty is another important source of uncertainty, for example uncertainty in actual catches relative to TACs.
 Where available, stock assessments can be consulted for the major sources of uncertainty.
 For example, the initial reference set may be based on the set of sensitivity analyses presented in the stock assessment (possibly with additional scenarios), while the robustness set may include a broader, more exploratory set of uncertainties [e.g., Atlantic Bluefin Tuna (*Thunnus thynnus*), T. Carruthers, personal communication, May 12 2020].
 

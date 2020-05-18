@@ -121,14 +121,19 @@ For stocks with available stock assessments, these should be consulted to identi
 
 Candidate uncertainties to include in OMs in the robustness set may include:
 
-* Changes in predation rate (e.g., seal predation)
-* Changes in availability of prey
-* The effectiveness of or changes to closed areas such as Rockfish Conservation Areas (RCAs)
-* Alternative representations of survey and commercial fleet size selectivity
-* Alternative catch histories (e.g., for species such as rockfishes, which were historically reported under generic species names)
-* Implementation error (actual catches are above or below the TAC)
+* Changes in predation rate (e.g., seal predation).
+* Changes in availability of prey.
+* The effectiveness of or changes to closed areas such as Rockfish Conservation Areas (RCAs).
+* Alternative representations of survey and commercial fleet size selectivity.
+* Alternative catch histories (e.g., for species such as rockfishes, which were historically reported under generic species names).
+* Implementation error (actual catches are above or below the TAC).
 
-In some cases, these uncertainties may be included in the reference set.
+In BC commercial groundfish fisheries, 100% of trawl vessels have carried observers since 1996 [@turris2000] and 100% of line vessels have carried electronic monitoring (EM) systems since 2006 [@stanley2015].
+Therefore, recent catch data are considered to be reliable and can be expected to remain so in the future, barring any major changes or interruptions to the observer programs.
+For some species that are important recreationally or to First Nations, there may be other uncertainties associated with catch data.
+We suggest that implementation error scenarios concerning catch reporting should be developed in collaboration with fishery managers, including First Nations managers, and the commercial or recreational industry, as appropriate to the stock.
+
+In some cases, the above uncertainties may be included in the reference set.
 In general an iterative approach may be required to reduce the robustness down to a set of OMs that provide contrast to results obtained with reference-set OMs [@rademeyer2007].
 We discuss recommendations for treatment and presentation of results from the reference and robustness sets in Section \@ref(sec:approach6).
 To ensure transparency and reproducibility, we recommend that the full specification of OM parameters be clearly documented in appendices attached to the working paper and the code to accomplish the simulations be version controlled and archived on publication.
