@@ -103,10 +103,12 @@ For example, applications of the framework could quantify the expected change in
 The MP Framework could also be used to evaluate whether MP performance could be improved by ageing otoliths for a given stock.
 This would be achieved by using the OM to simulate age-composition data, possibly with different effective sample sizes, and testing whether MPs that rely on age-composition data (e.g., a full age-structured model) outperform simpler, data-limited MPs such as the ones tested in this document.
 DLMtool's companion package MSEtool contains a large number of data-rich MPs (age-structured models) that could be used for this purpose [@huynh_msetool_2019].
-This type of analysis could be used to answer questions about whether data-rich MPs would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment.
+This type of analysis could be used to answer questions about whether data-rich MPs would better meet management objectives for a given fish stock and, if so, how much ageing data would be required for a full assessment [e.g., @sagarese2018].
 The effects of ageing imprecision and bias on assessment performance could also be evaluated.
 We note that simulating age- and length-composition data with sufficiently realistic "noise" can be challenging.
 Evaluating the performance of MPs with composition data that represent the underlying true composition more closely than real data may overestimate the performance of MPs that rely on composition data.
+
+We suggest that expanding the framework to include VoI considerations may also require development of new objectives and performance metrics associated with the costs of expanding research programs, collecting more data, or benefits such as marginal improvements in accuracy of advice and improvements in catch accessibility. 
 
 ## REBUILDING PLANS {#sec:discussion-rebuilding}
 
