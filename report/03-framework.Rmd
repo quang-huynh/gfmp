@@ -314,7 +314,7 @@ This figure also illustrates the range of performance after dropping the OM scen
 We suggest two possible visualizations for highlighting performance-metric trade-offs (Figures \@ref(fig:methods-tradeoff) and \@ref(fig:methods-radar)).
 The first is a bivariate dot plot, which lends itself to comparing any two performance metrics.
 The second is a "radar" plot (also known as a "kite" or "spider" plot).
-Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian ones [@diehl2010; @feldman2013; @albo2016].
+Radar plots lend themselves to comparing across many performance metrics, but become difficult to interpret as the number of performance metrics grows (e.g., above six) and one needs to be careful when interpreting these plots because the arrangement of the "spokes" can affect perception of the resulting shapes and humans have been shown to be slower and less accurate at interpreting radial displays of data compared to Cartesian displays [@diehl2010; @feldman2013; @albo2016].
 
 To understand the processes leading to the performance metrics, we recommend that the results from the application of this framework should include visualizations of historical and projected *B*/*B*~MSY~, *F*/*F*~MSY~, and catch.
 We suggest two versions: one that lends itself to careful inspection of individual OM scenarios and an understanding of individual replicate behaviour (Figure \@ref(fig:methods-proj)) and another that lends itself to comparing the time series across OM scenarios (Figure \@ref(fig:methods-proj-sens)).
@@ -324,7 +324,7 @@ Inspection of these time series can also help understand the performance metrics
 For example, if some MPs are creating variable TAC recommendations in the initial implementation years this may suggest the need to specify a short-term TAC variability objective and performance metric.
 Alternatively, if some MPs are resulting in short-term declines in *B*/*B*~MSY~ that eventually recover by the long-term window, this may suggest the need for a short-term conservation objective and performance metric or the calculation of performance metric probabilities via the minimum probability in any year [e.g., @ices2016criteria].
 
-Visualizing the simulated population-index time series is particularly important when using MPs that rely on the population index (e.g. Figure \@ref(fig:methods-index)).
+Visualizing the simulated population-index time series is particularly important when using MPs that rely on the population index (e.g., Figure \@ref(fig:methods-index)).
 First, for simple MPs that closely resemble recent management, future simulations of the population index can be used as a type of posterior predictive check [@gelman2014] to ask whether the future simulations look like they are plausible given historical observations of the same population index.
 Second, the range of future projected index values can be used as a trigger for re-evaluating an OM.
 For example, if a future observed survey index deviates from some quantile of simulated survey index values, the observed state of nature can be considered unlikely given the assumed OMs (sometimes called "exceptional circumstances" [@butterworth2008]).
@@ -337,6 +337,9 @@ One is a standard Kobe plot showing *F*/*F*~MSY~ vs. *B*/*B*~MSY~ for the final 
 This visualization highlights the parameter space with the highest probability density via quantile kernel-density-estimate contour lines.
 The other visualization shows the trajectory of *F*/*F*~MSY~ vs. *B*/*B*~MSY~ through time (Figure \@ref(fig:methods-worm)).
 The final year of Figure \@ref(fig:methods-worm) is an alternative representation of Figure \@ref(fig:methods-kobe).
+Figure \@ref(fig:methods-worm) also presents another diagnostic check of the behaviour of MPs over time, for example by indicating how often the stock falls within the critical zone.
+While some MPs may meet long-term conservation metrics, they may cause conservation problems in the shorter term, possibly indicating the need to consider aditional short-term conservation metrics.  
+
 
 (ref:fig-methods-tigure) This probability table illustrates performance metric values across a number of MPs.
 See Section \@ref(sec:approach2) for definitions of the various  performance metrics (columns).
