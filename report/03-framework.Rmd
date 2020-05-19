@@ -58,12 +58,15 @@ We propose the following provisional performance metrics, where MSY refers to ma
 5. LTC: Probability catch > reference catch (over long-term year range)
 6. AADC: Probability AADC (average absolute interannual difference in catch) < historical AADC (over entire projection)
 
+All of the above performance metrics are expressed as probabilities of being above or below some criteria, where the probability is calculated as the average number of times the criteria is met across replicates and years, e.g.,
 
+$$\textrm{LT LRP}= \frac{\sum_{n = 1}^{n_{rep}}\sum_{t = t_1}^{t_2}B_t > 0.4B_\textrm{MSY}}{t_2 - t_1 + 1},$$
+where $t_1$ and $t_2$ are the first and last years over which the metric is calculated.
 
 In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term.
 FMSY is a conservation performance metric measuring Objective 3 over the whole projection period.
 LTC and STC are economic metrics, representing Objective 4, measured in the short and long-term, respectively.
-AADC is an economic metric, representing Objective 5, measured over the whole projection period.
+AADC is an economic metric, representing Objective 5, measured over the whole projection period (see description below).
 Variability in catch, represented by AADC, is likely to be more important for target species than for incidentally caught, and likely data-limited, species.
 However, large fluctuations in incidentally caught species may represent a problem in multispecies fisheries, where sudden increases in abundance of low-quota species co-occurring with target species may limit the ability of the fishery to realise TACs of target species.
 
@@ -88,7 +91,7 @@ This reference level could be obtained through consultation with stakeholders or
 
 The performance metric AADC represents average absolute interannual difference in catch.
 We chose this specific representation of variability to be easy to understand and simple to compare historical values.
-It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., $$\textrm{AADC} = \frac{\sum_{t = t_1}^{t_2}\lvert C_t - C_{t-1} \rvert}{t_2 - t_1 + 1}$$,
+It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., $$\textrm{AADC} = \frac{\sum_{t = t_1}^{t_2}\lvert C_t - C_{t-1} \rvert}{t_2 - t_1 + 1},$$
 where $t_1$ and $t_2$ are the first and last years over which the metric is calculated.
 In other words, AADC represents the expected deviation in catch from year to year.
 We suggest reporting AADC relative to AADC in some historical period that stakeholders identify as having acceptable annual variation in catch.
