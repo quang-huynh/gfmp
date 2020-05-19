@@ -60,8 +60,8 @@ We propose the following provisional performance metrics, where MSY refers to ma
 
 All of the above performance metrics are expressed as probabilities of being above or below some criteria, where the probability is calculated as the average number of times the criteria is met across replicates and years, e.g.,
 
-$$\textrm{LT LRP}= \frac{\sum_{n = 1}^{n_{rep}}\sum_{t = t_1}^{t_2}B_t > 0.4B_\textrm{MSY}}{t_2 - t_1 + 1},$$
-where $t_1$ and $t_2$ are the first and last years over which the metric is calculated, and $n_{rep}$ is the number of replicate simulations. The other performance metrics are calculated in the same way.
+$$\textrm{LT LRP}= \frac{\sum_{n = 1}^{n_{\textrm{rep}}}\sum_{t = t_1}^{t_2}B_t > 0.4B_\textrm{MSY}}{t_2 - t_1 + 1},$$
+where $t_1$ and $t_2$ are the first and last years over which the metric is calculated, and $n_\textrm{rep}$ is the number of replicate simulations. The other performance metrics are calculated in the same way.
 
 In the above list of performance metrics, LT LRP and LT USR are conservation metrics measuring Objectives 1 and 2 over the long term.
 FMSY is a conservation performance metric measuring Objective 3 over the whole projection period.
