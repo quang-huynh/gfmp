@@ -117,7 +117,7 @@ Rebuilding plans require that management measures should rebuild stocks out of t
 The MP Framework can be easily modified to test performance of alternative MPs with respect to meeting rebuilding objectives for stocks requiring rebuilding plans.
 The only real modifications needed are to the objectives and performance metrics, which are already customizable within this framework.
 
-A challenge for data-limited species is how to determine whether a stock is in the critical zone in the first place, in order to trigger a rebuilding plan is triggered.
+A challenge for data-limited species is how to determine whether a stock is in the critical zone in the first place, required in order to trigger a rebuilding plan.
 In light of new legislative requirements for rebuilding under the  Fish Stocks provisions, DFO Science is currently developing more detailed guidance on considerations for the design of rebuilding strategies [@kronlund2020].
 Drawing on precedents by Health Canada [@weight2018], @kronlund2020 suggest a "weight of evidence" approach to determine whether rebuilding is required.
 A weight of evidence approach may include consideration of combined contributions of individual studies (totality of evidence), and expert judgement-assigned weights for each line of evidence, where a line of evidence may consist of one or more studies.
