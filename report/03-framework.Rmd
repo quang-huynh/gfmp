@@ -86,10 +86,12 @@ Our suggestion of 1--10 years represents a starting point and could be modified 
 The catch objectives STC and LTC are provisionally defined in terms of some reference catch that is deemed necessary or desirable for economic reasons to maintain the fishery in question or to maintain the multispecies BC groundfish fishery as a whole.
 This reference level could be obtained through consultation with stakeholders or by identifying the average or minimum catch in recent years (e.g., minimum catch in the last five years).
 
-The provisional performance metric AADC represents average absolute interannual difference in catch.
+The performance metric AADC represents average absolute interannual difference in catch.
 We chose this specific representation of variability to be easy to understand and simple to compare historical values.
-It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., $$\textrm{AADC} = \frac{\sum_{t = t_1}^{t_2}\lvert C_t - C_{t-1} \rvert}{t_2 - t_1 + 1}$$.
-In other words, it represents the expected deviation in catch from year to year.
+It is calculated by subtracting each year's catch from the previous year's catch and taking the mean of the absolute value of these numbers, i.e., $$\textrm{AADC} = \frac{\sum_{t = t_1}^{t_2}\lvert C_t - C_{t-1} \rvert}{t_2 - t_1 + 1}$$,
+where $t_1$ and $t_2$ are the first and last years over which the metric is calculated.
+In other words, AADC represents the expected deviation in catch from year to year.
+We suggest reporting AADC relative to AADC in some historical period that stakeholders identify as having acceptable annual variation in catch.
 Alternatives such as standard deviations in log space or coefficients of variation have a more abstract meaning and have been found to be challenging for some stakeholders to interpret [@punt2017].
 
 Performance metrics in the MP Framework are easily customizable.
