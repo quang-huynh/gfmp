@@ -112,15 +112,17 @@ We suggest that expanding the framework to include VoI considerations may also r
 
 ## REBUILDING PLANS {#sec:discussion-rebuilding}
 
-The [Precautionary Approach policy](https://waves-vagues.dfo-mpo.gc.ca/Library/40584781.pdf) and the Fish Stocks provisions of the *Fisheries Act* (Section \@ref(sec:intro-motivation)) require that management measures be put in place if fish stocks are assessed to be in the Critical Zone (i.e., below the LRP).
-Rebuilding plans require that management measures should rebuild stocks out of the Critical Zone within a specified time frame (e.g., one or two generation times), with a specified probability.
+The [Precautionary Approach policy](https://waves-vagues.dfo-mpo.gc.ca/Library/40584781.pdf) and the Fish Stocks provisions of the *Fisheries Act* (Section \@ref(sec:intro-motivation)) require that management measures be put in place if fish stocks are assessed to be in the critical zone (i.e., below the LRP).
+Rebuilding plans require that management measures should rebuild stocks out of the critical zone within a specified time frame (e.g., one or two generation times), with a specified probability.
 The MP Framework can be easily modified to test performance of alternative MPs with respect to meeting rebuilding objectives for stocks requiring rebuilding plans.
 The only real modifications needed are to the objectives and performance metrics, which are already customizable within this framework.
 
-A challenge for data-limited species is how stocks are assessed to be in the Critical Zone in the first place so that a rebuilding plan is triggered.
-However, we suggest that if conditioned OMs place a high probability of a fish stock being in the Critical Zone across a range of plausible OM assumptions, this could be grounds for triggering a rebuilding plan.
-DFO Science is currently developing more detailed guidance on the criteria required to trigger a rebuilding plan [**REF**], in light of new legislative requirements under the  Fish Stocks provisions (Section \@ref(sec:intro-motivation)).
-<!-- Have asked Rob K for the latest draft of the rebuilding guidance. May add more to this once received-->
+A challenge for data-limited species is how stocks are assessed to be in the critical zone in the first place so that a rebuilding plan is triggered.
+In light of new legislative requirements for rebuilding under the  Fish Stocks provisions, DFO Science is currently developing more detailed guidance on considerations for the design of rebuilding strategies [@kronlund2020].
+Drawing on precedents by Health Canada [@weight2018], @kronlund2020 suggest a "weight of evidence" approach to determine whether rebuilding is required.
+A weight of evidence approach may include considerations of combined contributions of individual studies (totality of evidence), and expert judgement-assigned weights for each line of evidence, where a line of evidence may consist of one or more studies.
+We suggest that if conditioned OMs place a high probability of a fish stock being in the critical zone across a range of plausible OM assumptions, this could contribute to the evidence used to trigger a rebuilding plan.
+
 This framework is currently being applied to evaluate alternative data-limited MPs for the rebuilding plan for the Inside stock of Yelloweye Rockfish in British Columbia [@haggarty2020yelloweye].
 
 ## DATA-MODERATE AND DATA-RICH STOCKS {#sec:discussion-data-rich}
