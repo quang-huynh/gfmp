@@ -479,6 +479,7 @@ Assessing convergence of the Rex Sole closed-loop simulations on consistent rank
 Colours represent individual satisficed and reference MPs.
 Lines that do not cross by the final replicates indicate that rank order among replicates had converged.
 Although not shown, we also checked that the satisficing rules had converged (i.e., the selection of satisficed MPs did not change with additional replicates).
+Note that in the "M increasing" OM scenario the LTC and AADC metrics do not appear because they are below the lower y-axis limit (or perfectly at 1 in the case of AADC and NFref).
 
 ```{r rex-converge, fig.cap="(ref:fig-rex-converge)", out.width="\\textwidth"}
 knitr::include_graphics(here("report/figure/rex-convergence.png"))
