@@ -30,7 +30,7 @@ Key questions to guide defining the decision context for MSE include:
 
 * How will the final decision be made? For example, it may be necessary to rank or weight objectives if there are large trade-offs with respect to performance for different objectives.
 
-* How will the process be governed? For example, how will aceptability of trade-offs be determined? How will meetings be facilitated? How will consultation be managed? Failures in governance of the decision-making process can lead to a less succesful decisions in terms of acceptance and compliance [@smith1999; @armitage2019].
+* How will the process be governed? For example, how will acceptability of trade-offs be determined? How will meetings be facilitated? How will consultation be managed? Failures in governance of the decision-making process can lead to a less successful decisions in terms of acceptance and compliance [@smith1999; @armitage2019].
 
 Definition of the decision context is the role of managers, stakeholders, First Nations, and other key interested parties.
 Engagement of resource users at all stages of the MSE cycle from the outset is critical, as it increases the likelihood that the process will be considered credible, objectives will reflect real objectives, and MPs will be successfully implemented as planned [@smith1999; @punt2016; @armitage2019].
