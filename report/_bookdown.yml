@@ -10,8 +10,8 @@ rmd_files: ["index.Rmd",
             "07-msetool-sra.Rmd",
             "08-default-slots.Rmd",
             "09-mps.Rmd",
-            "10-om-rex.Rmd",
-            "11-mse-rex.Rmd",
+            "10-mse-rex.Rmd",
+            "11-om-rex.Rmd",
             "12-gfdlm.Rmd",
             "99-references.Rmd"]
 download: [["resdoc.pdf", "PDF"], ["resdoc.docx", "Word"]]

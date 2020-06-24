@@ -212,14 +212,15 @@ sc <- tibble::tribble(
   "ceq200", "Ceq. 200%", "Reference",
   "ceq250", "Ceq. 250%", "Reference",
   "high-m", "Higher M", "Reference",
-  "high-h", "Higher steepness", "Reference",
-  "sel1", "Lower selectivity", "Reference",
-  "no-cpue", "No CPUE Ceq. 250%", "Reference",
-  "no-cpue-light", "No CPUE Ceq. 50%", "Robustness",
-  "inc-m", "M inc.", "Robustness"
+  "high-h", "Higher\nsteepness", "Reference",
+  "sel1", "Lower\nselectivity", "Reference",
+  "no-cpue", "No CPUE\nCeq. 250%", "Reference",
+  "no-cpue-light", "No CPUE\nCeq. 50%", "Robustness",
+  "inc-m", "M\nincreasing", "Robustness"
 )
 sc <- mutate(sc, order = seq_len(n()))
 saveRDS(sc, file = here("generated-data/rex-scenarios.rds"))
+sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 
 sra_rex <- purrr::map(sc$scenario, ~ {
   readRDS(here("generated-data", paste0("rex-sra-", .x, ".rds")))
@@ -252,6 +253,45 @@ get_depletion <- function(x, scenario) {
   left_join(d1, d2, by = "year")
 }
 
+get_F <- function(x, scenario) {
+
+  .F1 <- map(x@Misc, "F_at_age")
+  .F <- map_dfc(.F1, ~tibble(.F = apply(.x, 1, max)))
+  .F <- t(as.matrix(.F))
+
+  last_year <- dim(.F)[2]
+  all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
+  all_years <- all_years #[-length(all_years)]
+
+  d1 <- t(apply(.F[, ], 2,
+    FUN = quantile,
+    probs = c(0.025, 0.5, 0.975)
+  )) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    mutate(scenario = scenario) %>%
+    rename(lwr = 1, med = 2, upr = 3, year = all_years)
+  d2 <- t(apply(.F[, ], 2,
+    FUN = quantile,
+    probs = c(0.25, 0.75))) %>%
+    as.data.frame() %>%
+    cbind(all_years) %>%
+    rename(lwr50 = 1, upr50 = 2, year = all_years)
+
+  left_join(d1, d2, by = "year")
+}
+
+get_Perr_y <- function(x, scenario) {
+  max_age <- x@OM@maxage
+  nyears <- x@OM@nyears
+  perr_y <- x@OM@cpars$Perr_y[,max_age:(max_age+nyears-1), drop=FALSE]
+  all_years <- seq(x@OM@CurrentYr - x@OM@nyears + 1, x@OM@CurrentYr)
+  reshape2::melt(perr_y) %>%
+    rename(iteration = Var1) %>%
+    mutate(year = rep(all_years, each = max(iteration))) %>%
+    mutate(scenario = scenario)
+}
+
 g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
   mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
   ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
@@ -260,14 +300,43 @@ g <- purrr::map2_df(sra_rex, sc$scenario_human, get_depletion) %>%
   geom_line() +
   facet_wrap(vars(scenario)) +
   gfplot::theme_pbs() +
-  labs(x = "Year", y = "Depletion")
+  labs(x = "Year", y = "Depletion") +
+  coord_cartesian(ylim = c(0, 1), expand = FALSE)
 ggsave(here::here("report/figure/rex-compare-SRA-depletion-panel.png"),
-  width = 8, height = 6
+  width = 8, height = 6.75
+)
+g <- purrr::map2_df(sra_rex, sc$scenario_human, get_F) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
+  ggplot(aes(year, med, ymin = lwr, ymax = upr)) +
+  geom_ribbon(fill = "grey90") +
+  geom_ribbon(fill = "grey70", mapping = aes(ymin = lwr50, ymax = upr50)) +
+  geom_line() +
+  facet_wrap(vars(scenario)) +
+  gfplot::theme_pbs() +
+  labs(x = "Year", y = "F") +
+  coord_cartesian(ylim = c(0, 1.8), expand = FALSE)
+ggsave(here::here("report/figure/rex-compare-F-panel.png"),
+  width = 8, height = 6.75
+)
+g <- purrr::map2_df(sra_rex, sc$scenario_human, get_Perr_y) %>%
+  mutate(scenario = factor(scenario, levels = sc$scenario_human)) %>%
+  dplyr::filter(iteration %in% 1:100) %>%
+  ggplot(aes(year, y = log(value), group = iteration)) +
+  geom_line(alpha = 0.1) +
+  facet_wrap(vars(scenario)) +
+  gfplot::theme_pbs() +
+  labs(x = "Year", y = "Recruitment deviation in log space") +
+  coord_cartesian(ylim = c(-1.5, 1.7), expand = FALSE) +
+  geom_hline(yintercept = 0, lty = 2, alpha = 0.6)
+# g
+ggsave(here::here("report/figure/rex-compare-recdev-panel.png"),
+  width = 8, height = 6.75
 )
 
-sra_rex %>% set_names(sc$scenario_human) %>%
+g <- sra_rex %>% set_names(sc$scenario_human) %>%
   gfdlm::plot_index_fits(survey_names = c("SYN WCVI", "Commercial CPUE")) +
-  ylim(0, 2.5)
+  coord_cartesian(ylim = c(0, 2.5), expand = FALSE) +
+  scale_y_continuous(breaks = seq(0, 2, .5))
 ggsave(here::here("report/figure/rex-index-fits.png"), width = 5.5, height = 9.5)
 
 # FIXME: get this into gfdlm:
@@ -290,3 +359,82 @@ ggsave(here::here("report/figure/rex-selectivity.png"), width = 5, height = 3)
 
 # sra_rex[[1]]@Misc[[1]]$s_vul[1,,1]
 # sra_rex[[1]]@Misc[[1]]$s_vul[1,,2]
+
+# for report ---------------------------------
+
+sp <- "rex"
+scenarios <- sc$scenario %>% purrr::set_names(sc$scenario_human)
+oms <- map(scenarios, ~ {
+  readRDS(here("generated-data", paste0(sp, "-sra-", .x, ".rds")))@OM
+})
+rex_converged <- map_dfr(oms, ~tibble(nsim = .x@nsim), .id = "scenario")
+saveRDS(rex_converged, file = here("generated-data/rex-converged.rds"))
+
+sc2 <- readRDS(here("generated-data", "rex-scenarios.rds"))
+sc2$scenario_human <- paste0(sc2$order, " - ", sc2$scenario_human)
+x <- oms %>% set_names(sc2$scenario_human) %>%
+  map_dfr(~tibble(
+    D = .x@cpars$D,
+    h = .x@cpars$h,
+    R0 = .x@cpars$R0,
+    sigma_R = .x@cpars$Perr,
+    AC = .x@cpars$AC,
+    L50 = .x@cpars$L50,
+    L50_95 = .x@cpars$L50_95,
+    t0 = .x@cpars$t0,
+    k = .x@cpars$K,
+    Linf = .x@cpars$Linf,
+    M = .x@cpars$M_ageArray[,1,1],
+  ), .id = "Scenario") %>%
+  reshape2::melt(id.vars = "Scenario") %>%
+  dplyr::filter(!(variable == "R0" & value > 1e7))
+
+# x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
+#   ggplot(aes(value)) +
+#   geom_histogram(bins = 40, colour = "grey60") +
+#   facet_grid(Scenario~variable, scales = "free_x")+
+#   theme_pbs() +
+#   coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+#   xlab("Parameter value") +
+#   theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank())
+
+x %>% dplyr::filter(variable %in% c("R0", "AC", "D")) %>%
+  ggplot(aes(value)) +
+  geom_histogram(bins = 30, colour = "grey40", fill = "white", lwd = 0.4) +
+  # geom_freqpoly(aes(colour = Scenario), bins = 30) +
+  facet_grid(Scenario~variable, scales = "free_x")+
+  gfdlm::theme_pbs() +
+  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+  xlab("Parameter value") + ylab("Count") +
+  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
+  scale_colour_brewer(palette = "Dark2")
+
+ggsave(here::here("report/figure/rex-sra-estimated.png"),
+  width = 6.5, height = 8.5)
+
+x %>% dplyr::filter(variable %in% c("sigma_R", "h", "L50", "L50_95", "t0", "k", "Linf", "M")) %>%
+  ggplot(aes(value)) +
+  # geom_histogram(bins = 40, colour = "grey60") +
+  geom_freqpoly(aes(colour = Scenario), bins = 30) +
+  facet_wrap(~variable, scales = "free_x")+
+  gfdlm::theme_pbs() +
+  coord_cartesian(ylim = c(0, 200), expand = FALSE) +
+  xlab("Parameter value") + ylab("Count") +
+  # theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank()) +
+  scale_colour_brewer(palette = "Dark2")
+
+ggsave(here::here("report/figure/rex-sra-filtered.png"),
+  width = 6.5, height = 5.5)
+
+# Substantially speeds up LaTeX rendering on a Mac
+# by pre-optimizing the PNG compression:
+optimize_png <- TRUE
+if (optimize_png && !identical(.Platform$OS.type, "windows")) {
+  files_per_core <- 4
+  setwd("report/figure")
+  system(paste0(
+    "find -X . -name 'rex-*.png' -print0 | xargs -0 -n ",
+    files_per_core, " -P ", cores, " optipng -strip all"
+  ))
+  setwd(here())
+}

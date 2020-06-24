@@ -9,22 +9,23 @@ library("assertthat")
 # load_all("../gfdlm")
 
 cores <- floor(parallel::detectCores() / 2L)
-future::plan(future::multiprocess, workers = cores)
-# future::plan(future::sequential)
+# future::plan(future::multiprocess, workers = cores)
+future::plan(future::sequential)
 
 # Settings --------------------------------------------------------------------
 
 sp <- "rex" # Species: used in filenames
 sc <- readRDS(here("generated-data", "rex-scenarios.rds"))
+sc$scenario_human <- paste0(sc$order, " - ", sc$scenario_human)
 sc # look good?
-nsim <- 250
+nsim <- 250L
 interval <- 2L
 mp <- suppressMessages(readr::read_csv(here("analysis", "rex", "mp.txt"), comment = "#"))
 as.data.frame(mp) # look good?
 reference_mp <- c("FMSYref75", "NFref", "FMSYref")
 ref_mp_cols <- c("grey45", "grey10", "grey75") %>% set_names(reference_mp)
-#
-catch_breaks <- seq(0, 500000, 100000)
+
+catch_breaks <- seq(0, 600000, 100000)
 catch_labels <- catch_breaks / 1000
 
 # Set up PMs ------------------------------------------------------------------
@@ -123,26 +124,14 @@ oddify <- function(x) seq(2, x, by = 2)
   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
-# .SP4010_0.4 <- SP4010_gf %>%
-#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
-# .SP8040_0.4 <- SP8040_gf %>%
-#   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
-#   reduce_survey(index = oddify) %>%
-#   use_AddInd()
-
 .SP6040_0.4 <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.4, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
 .SP6040_0.5 <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.5, 0.1), initial_tac = ref_catch) %>%
   reduce_survey(index = oddify) %>%
   use_AddInd()
-
 .SP6040_0.6_fox <- SP6040_gf %>%
   add_SP_prior(r_prior = c(0.6, 0.1), initial_tac = ref_catch, start = list(n = 1)) %>%
   reduce_survey(index = oddify) %>%
@@ -195,19 +184,19 @@ pm_df <- bind_rows(pm_df_list, .id = "scenario")
 pm_avg <- group_by(pm_df, MP) %>% summarise_if(is.numeric, mean)
 pm_min <- group_by(pm_df, MP) %>% summarise_if(is.numeric, min)
 saveRDS(pm_df_list, file = here("generated-data", "rex-pm-all.rds"))
+saveRDS(pm_df_list_rob, file = here("generated-data", "rex-pm-all-rob.rds"))
 
-satisficed_criteria <- c("LT LRP" = 0.8, "STC" = 0.7)
-plot_tigure(pm_avg, satisficed = satisficed_criteria)
-plot_tigure(pm_min, satisficed = satisficed_criteria)
+satisficed_criteria <- c("LT LRP" = 0.9, "STC" = 0.8)
+# plot_tigure(pm_avg, satisficed = satisficed_criteria)
+# plot_tigure(pm_min, satisficed = satisficed_criteria)
 
-mp_sat <- dplyr::filter(pm_avg, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
-  # arrange(-`LT LRP`, -`LT LRP`, -`LT USR`, -`STC`, -`LTC`, -AAVC) %>%
+mp_sat <- dplyr::filter(pm_min, `LT LRP` > satisficed_criteria[1], `STC` > satisficed_criteria[2]) %>%
   pull(MP)
 mp_sat <- mp_sat[!mp_sat %in% reference_mp]
 mp_sat
 
-# mp_sat <- mp_sat[!mp_sat %in% c(".SP4010", ".SP6040")] # same PM as ".SP8040"
-mp_sat <- mp_sat[!mp_sat %in% c(".SP6040_0.5", ".SP6040_0.4")] # dominated by .6
+# Near identical performance:
+mp_sat <- mp_sat[!mp_sat %in% c(".SP4010_0.6", ".SP6040_0.6_fox", ".SP6040_0.6")]
 mp_sat <- mp_sat[!mp_sat %in% c("CC_hist20")] # similar to "CC1.2"
 mp_sat
 
@@ -217,7 +206,7 @@ mp_sat_with_ref <- union(mp_sat, reference_mp)
 mp_not_sat <- mp$mp[!mp$mp %in% mp_sat_with_ref]
 stopifnot(length(mp_not_sat) > 1)
 
-custom_pal <- c(RColorBrewer::brewer.pal(8, "Set2")[seq_along(mp_sat)], ref_mp_cols) %>%
+custom_pal <- c(RColorBrewer::brewer.pal(8, "Dark2")[seq_along(mp_sat)], ref_mp_cols) %>%
   set_names(mp_sat_with_ref)
 
 mp_eg_not_sat <- c(
@@ -229,7 +218,8 @@ mp_eg_not_sat <- c(
   ".IDX_smooth",
   ".IT5_hist",
   ".IT10_hist",
-  ".ITM_hist"
+  ".ITM_hist",
+  ".SP6040_0.4"
 )
 
 plots <- gfdlm::plot_factory(
@@ -241,42 +231,46 @@ plots <- gfdlm::plot_factory(
   mp_not_sat2 = mp_eg_not_sat,
   mp_ref = reference_mp,
   custom_pal = custom_pal,
-  eg_scenario = "ceq150",
-  tradeoff = c("LT LRP", "STC"),
+  eg_scenario = sc$scenario[1],
+  tradeoff = names(satisficed_criteria),
   catch_breaks = catch_breaks,
   catch_labels = catch_labels,
   satisficed_criteria = satisficed_criteria,
   skip_projections = FALSE,
   survey_type = "AddInd",
-  omit_index_fn = function(x) seq(2, x, by = 2)
+  omit_index_fn = oddify
 )
 
-# pm_angle <- theme(
-#   axis.text.x.bottom = element_text(angle = 90, hjust = 1),
-#   panel.grid.major.y = element_line(colour = "grey85"),
-#   panel.grid.minor.y = element_line(colour = "grey96")
-# )
-# plots$dot_refset + pm_angle
-
 .ggsave("dot-refset-avg", width = 7.5, height = 4.5, plot = plots$dot_refset_avg)
+.ggsave("dot-robset", width = 8, height = 6, plot = plots$dot_robset + facet_wrap(~scenario, ncol = 1))
+.ggsave("convergence", width = 10.5, height = 8.25,
+  plot = plots$convergence + scale_x_continuous(breaks = seq(100, 300, 100)) +
+    theme(
+      legend.box.margin = ggplot2::margin(0.2, 0.2, 12, .2),
+      legend.position = "bottom"
+    ))
 
-g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 3)
-.ggsave("tradeoff-refset", width = 7.5, height = 5, plot = g)
-.ggsave("tradeoff-robset", width = 6, height = 3, plot = plots$tradeoff_robset)
+g <- plots$tradeoff_refset + facet_wrap(~scenario, ncol = 6)
+.ggsave("tradeoff-refset", width = 9.5, height = 5, plot = g)
+.ggsave("tradeoff-refset-avg", width = 4.5, height = 4,
+  plot = plots$tradeoff_avg + coord_equal(xlim = c(0.8, 1), ylim = c(0.8, 1), expand = FALSE))
+.ggsave("tradeoff-robset", width = 7, height = 3, plot = plots$tradeoff_robset)
 
 .ggsave("tigure-refset", width = 6.5, height = 8, plot = plots$tigure_refset)
-.ggsave("tigure-robset", width = 4, height = 3.5, plot = plots$tigure_robset)
-.ggsave("tigure-refset-min", width = 4, height = 7, plot = plots$tigure_refset_min)
-.ggsave("tigure-refset-avg", width = 4, height = 7, plot = plots$tigure_refset_avg)
+.ggsave("tigure-robset", width = 6.5, height = 3, plot = plots$tigure_robset)
+.ggsave("tigure-refset-min", width = 4.7, height = 7.5, plot = plots$tigure_refset_min)
+.ggsave("tigure-refset-avg", width = 4.7, height = 7.5, plot = plots$tigure_refset_avg)
 
-.ggsave("radar-refset", width = 10, height = 10, plot = plots$radar_refset)
+.ggsave("radar-refset", width = 11.5, height = 9, plot = plots$radar_refset)
+.ggsave("radar-robset", width = 9, height = 5, plot = plots$radar_robset)
 .ggsave("radar-refset-avg", width = 6, height = 6, plot = plots$radar_refset_avg)
+.ggsave("radar-refset-min", width = 6, height = 6, plot = plots$radar_refset_min)
 
 g <- plots$projections_index +
-  scale_x_continuous(breaks = seq(1980, 2090, 20)) +
+  scale_x_continuous(breaks = seq(1975, 2100, 25)) +
   coord_cartesian(ylim = c(0, 16e6)) +
   scale_y_continuous(labels = function(x) x / 1e6)
-.ggsave("projections-index", width = 12, height = 10, plot = g)
+.ggsave("projections-index", width = 9, height = 8.5, plot = g)
 
 walk(names(plots$projections), ~ {
   .ggsave(paste0("projections-", .x),
@@ -285,47 +279,31 @@ walk(names(plots$projections), ~ {
   )
 })
 .ggsave("projections-not-sat2",
-  width = 6.5, height = 9,
+  width = 7, height = 10,
   plot = plots$projections_not_sat2
 )
 .ggsave("projections-not-sat",
   width = 6.5, height = 20,
   plot = plots$projections_not_sat
 )
-.ggsave("projections-scenarios-ref",
+.ggsave("projections-scenarios",
   width = 8, height = 10,
   plot = plots$projections_scenarios
 )
 
-get_filtered_scenario <- function(type, column) {
-  dplyr::filter(sc, scenario_type == type) %>%
-    dplyr::pull(!!column) %>%
-    purrr::set_names()
+.ggsave("worms-proj", width = 8.5, height = 9.5, plot = plots$worms_proj_ref)
+.ggsave("worms-hist-proj", width = 8.5, height = 9.5, plot = plots$worms_hist_proj_ref)
+.ggsave("kobe", width = 8, height = 10.5, plot = plots$kobe_ref)
+
+# Substantially speeds up LaTeX rendering on a Mac
+# by pre-optimizing the PNG compression:
+optimize_png <- FALSE
+if (optimize_png && !identical(.Platform$OS.type, "windows")) {
+  files_per_core <- 4
+  setwd("report/figure")
+  system(paste0(
+    "find -X . -name 'rex-*.png' -print0 | xargs -0 -n ",
+    files_per_core, " -P ", cores, " optipng -strip all"
+  ))
+  setwd(here())
 }
-scenarios <- sc$scenario %>% set_names()
-scenarios_human <- sc$scenario_human %>% set_names()
-scenarios_ref <- get_filtered_scenario("Reference", "scenario")
-scenarios_ref_human <- get_filtered_scenario("Reference", "scenario_human")
-x <- purrr::map(
-  scenarios_ref,
-  ~ DLMtool::Sub(mse[[.x]], MPs = mp_sat_with_ref)
-) %>%
-  set_names(scenarios_ref_human)
-
-plot_index(x, type = "AddInd", omit_index_fn = oddify)
-
-# g <- c("Ceq. 150%", "Ceq. 200%", "No CPUE Ceq. 200%", "No CPUE Ceq. 50%") %>%
-#   set_names() %>%
-#   map(~ x[[.]]) %>%
-#   plot_scenario_projections()
-# .ggsave("projections-scenarios-ref1", width = 8, height = 10)
-#
-# g <- c("Ceq. 150%", "Higher M", "Higher steepness", "Lower selectivity") %>%
-#   set_names() %>%
-#   map(~ x[[.]]) %>%
-#   plot_scenario_projections()
-# .ggsave("projections-scenarios-ref2", width = 8, height = 10)
-
-.ggsave("worms-proj", width = 13, height = 8.5, plot = plots$worms_proj)
-.ggsave("worms-hist-proj", width = 13, height = 8.5, plot = plots$worms_hist_proj)
-.ggsave("kobe", width = 13, height = 8.5, plot = plots$kobe)
